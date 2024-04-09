@@ -23,41 +23,19 @@ const Invoices = db.invoices;
 
 const ContactsData = [
   {
-    name: 'Stephen Hawking',
+    name: 'Andreas Vesalius',
 
-    email: 'tyrone.walsh@kemmer-hermann.co',
+    email: 'merilyn.hartmann@armstrong.net',
 
-    phone: '1-679-919-7463 x625',
+    phone: '(870) 977-7964',
 
-    adress: 'Yup',
+    adress: 'Got depression, Smith and Wessen',
 
-    firstName: 'Got depression, Smith and Wessen',
+    firstName: 'Come on now',
 
-    lastName: 'Yup',
+    lastName: 'That goddamn Datamate',
 
-    stage: 'Lead',
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-  },
-
-  {
-    name: 'Willard Libby',
-
-    email: 'evan.turner@schoen-abernathy.biz',
-
-    phone: '1-941-295-0462 x145',
-
-    adress: "Y'all never listen to me",
-
-    firstName: "I'm washing my hands of it",
-
-    lastName: "Goin' hog huntin'",
-
-    stage: 'Lead',
+    stage: 'Prospect',
 
     // type code here for "relation_many" field
 
@@ -67,39 +45,61 @@ const ContactsData = [
   },
 
   {
-    name: 'Emil Kraepelin',
+    name: 'Karl Landsteiner',
 
-    email: 'ruth@emmerich-feeney.co',
+    email: 'bobby@wolff.info',
 
-    phone: '1-492-091-0734 x2712',
-
-    adress: "Y'all never listen to me",
-
-    firstName: "That Barbala couldn't fly his way out of a wet paper bag",
-
-    lastName: "It's around here somewhere",
-
-    stage: 'Lead',
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-  },
-
-  {
-    name: 'Emil Fischer',
-
-    email: 'leonora@kris.net',
-
-    phone: '(977) 836-4528 x8325',
+    phone: '(115) 727-6462',
 
     adress: 'Like a red-headed stepchild',
 
-    firstName: 'Might be DQ time',
+    firstName: "That's messed up",
 
-    lastName: 'Contact the tower',
+    lastName: 'I got that scurvy',
+
+    stage: 'Prospect',
+
+    // type code here for "relation_many" field
+
+    // type code here for "relation_many" field
+
+    // type code here for "relation_many" field
+  },
+
+  {
+    name: 'Linus Pauling',
+
+    email: 'kareem@aufderhar-grimes.net',
+
+    phone: '530-441-0011',
+
+    adress: 'That damn gimble',
+
+    firstName: "Goin' hog huntin'",
+
+    lastName: 'My boss gonna fire me',
+
+    stage: 'Customer',
+
+    // type code here for "relation_many" field
+
+    // type code here for "relation_many" field
+
+    // type code here for "relation_many" field
+  },
+
+  {
+    name: 'Robert Koch',
+
+    email: 'kai_ondricka@blick-runolfsdottir.io',
+
+    phone: '475.202.5963 x380',
+
+    adress: 'I got that scurvy',
+
+    firstName: 'Always the last one to the party',
+
+    lastName: "That's messed up",
 
     stage: 'Prospect',
 
@@ -113,7 +113,7 @@ const ContactsData = [
 
 const AppointmentsData = [
   {
-    date: new Date('2023-10-24'),
+    date: new Date('2023-09-12'),
 
     scheduled: true,
 
@@ -123,11 +123,11 @@ const AppointmentsData = [
 
     // type code here for "relation_many" field
 
-    name: 'William Harvey',
+    name: 'Noam Chomsky',
   },
 
   {
-    date: new Date('2023-12-28'),
+    date: new Date('2024-03-05'),
 
     scheduled: true,
 
@@ -137,11 +137,11 @@ const AppointmentsData = [
 
     // type code here for "relation_many" field
 
-    name: 'Max Born',
+    name: 'Robert Koch',
   },
 
   {
-    date: new Date('2023-10-19'),
+    date: new Date('2023-10-25'),
 
     scheduled: true,
 
@@ -151,59 +151,33 @@ const AppointmentsData = [
 
     // type code here for "relation_many" field
 
-    name: 'Murray Gell-Mann',
+    name: 'Gustav Kirchhoff',
   },
 
   {
-    date: new Date('2023-11-06'),
+    date: new Date('2023-11-04'),
 
-    scheduled: true,
-
-    // type code here for "relation_many" field
+    scheduled: false,
 
     // type code here for "relation_many" field
 
     // type code here for "relation_many" field
 
-    name: 'Jean Piaget',
+    // type code here for "relation_many" field
+
+    name: 'Theodosius Dobzhansky',
   },
 ];
 
 const JobsData = [
   {
-    name: 'Jean Baptiste Lamarck',
+    name: 'Alfred Kinsey',
 
     // type code here for "relation_many" field
 
     category: 'Property Management',
 
-    type: 'Retail',
-
-    status: 'Approved',
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-  },
-
-  {
-    name: 'Alfred Binet',
-
-    // type code here for "relation_many" field
-
-    category: 'Commercial',
-
-    type: 'Retail',
+    type: 'New',
 
     status: 'Completed',
 
@@ -223,13 +197,39 @@ const JobsData = [
   },
 
   {
-    name: 'Louis Victor de Broglie',
+    name: 'Claude Bernard',
 
     // type code here for "relation_many" field
 
-    category: 'Residential',
+    category: 'Property Management',
 
-    type: 'Inspection',
+    type: 'Retail',
+
+    status: 'Invoiced',
+
+    // type code here for "relation_many" field
+
+    // type code here for "relation_many" field
+
+    // type code here for "relation_many" field
+
+    // type code here for "relation_many" field
+
+    // type code here for "relation_many" field
+
+    // type code here for "relation_many" field
+
+    // type code here for "relation_many" field
+  },
+
+  {
+    name: 'Carl Linnaeus',
+
+    // type code here for "relation_many" field
+
+    category: 'Commercial',
+
+    type: 'Service',
 
     status: 'Quoted',
 
@@ -249,15 +249,15 @@ const JobsData = [
   },
 
   {
-    name: 'Linus Pauling',
+    name: 'Isaac Newton',
 
     // type code here for "relation_many" field
 
-    category: 'Property Management',
+    category: 'Residential',
 
-    type: 'Warranty',
+    type: 'New',
 
-    status: 'Quoted',
+    status: 'Active',
 
     // type code here for "relation_many" field
 
@@ -281,9 +281,9 @@ const EstimatesData = [
 
     // type code here for "relation_many" field
 
-    status: 'Draft',
+    status: 'Approved',
 
-    name: 'Claude Levi-Strauss',
+    name: 'Archimedes',
   },
 
   {
@@ -291,19 +291,9 @@ const EstimatesData = [
 
     // type code here for "relation_many" field
 
-    status: 'Rejected',
+    status: 'Sent',
 
-    name: 'Nicolaus Copernicus',
-  },
-
-  {
-    // type code here for "relation_one" field
-
-    // type code here for "relation_many" field
-
-    status: 'Rejected',
-
-    name: 'John Dalton',
+    name: 'Sigmund Freud',
   },
 
   {
@@ -313,25 +303,35 @@ const EstimatesData = [
 
     status: 'Approved',
 
-    name: 'George Gaylord Simpson',
+    name: 'J. Robert Oppenheimer',
+  },
+
+  {
+    // type code here for "relation_one" field
+
+    // type code here for "relation_many" field
+
+    status: 'Draft',
+
+    name: 'Frederick Sanger',
   },
 ];
 
 const TradesData = [
   {
-    name: 'Louis Victor de Broglie',
+    name: 'Jean Piaget',
   },
 
   {
-    name: 'Carl Gauss (Karl Friedrich Gauss)',
+    name: 'Karl Landsteiner',
   },
 
   {
-    name: 'Sheldon Glashow',
+    name: 'Christiaan Huygens',
   },
 
   {
-    name: 'Louis Pasteur',
+    name: 'Arthur Eddington',
   },
 ];
 
@@ -339,81 +339,81 @@ const TemplatesData = [
   {
     // type code here for "relation_many" field
 
-    materialCost: 41.27,
+    materialCost: 38.36,
 
-    laborCost: 72.97,
+    laborCost: 20.47,
 
-    markup: 87.48,
+    markup: 47.23,
 
-    profitMargin: 61.11,
+    profitMargin: 52.64,
 
-    name: 'Rudolf Virchow',
+    name: 'Louis Victor de Broglie',
 
-    totalPrice: 35.89,
+    totalPrice: 41.93,
 
-    unitOfMeasurement: 'LF',
+    unitOfMeasurement: 'SQ',
 
-    description: 'I want my 5$ back',
+    description: 'Let me tell ya',
   },
 
   {
     // type code here for "relation_many" field
 
-    materialCost: 67.44,
+    materialCost: 25.89,
 
-    laborCost: 44.15,
+    laborCost: 41.88,
 
-    markup: 45.19,
+    markup: 19.46,
 
-    profitMargin: 40.93,
+    profitMargin: 39.89,
 
-    name: 'Frederick Gowland Hopkins',
+    name: 'Enrico Fermi',
 
-    totalPrice: 31.62,
+    totalPrice: 92.67,
 
     unitOfMeasurement: 'LF',
 
-    description: 'I want my 5$ back',
+    description: 'Turd gone wrong',
   },
 
   {
     // type code here for "relation_many" field
 
-    materialCost: 64.03,
+    materialCost: 52.01,
 
-    laborCost: 14.07,
+    laborCost: 56.31,
 
-    markup: 39.25,
+    markup: 78.41,
 
-    profitMargin: 25.81,
+    profitMargin: 84.73,
 
-    name: 'Max Planck',
+    name: 'Claude Bernard',
 
-    totalPrice: 89.37,
+    totalPrice: 84.49,
 
-    unitOfMeasurement: 'LF',
+    unitOfMeasurement: 'SQ',
 
-    description: 'My buddy Harlen',
+    description: "I'm washing my hands of it",
   },
 
   {
     // type code here for "relation_many" field
 
-    materialCost: 99.52,
+    materialCost: 63.02,
 
-    laborCost: 91.12,
+    laborCost: 91.17,
 
-    markup: 79.49,
+    markup: 49.75,
 
-    profitMargin: 43.67,
+    profitMargin: 25.16,
 
-    name: 'Murray Gell-Mann',
+    name: 'Konrad Lorenz',
 
-    totalPrice: 29.23,
+    totalPrice: 55.07,
 
-    unitOfMeasurement: 'LF',
+    unitOfMeasurement: 'SQ',
 
-    description: 'Reminds me of my old girlfriend Olga Goodntight',
+    description: 'Got depression, Smith and Wessen',
   },
 ];
 
@@ -421,33 +421,33 @@ const DocumentsData = [
   {
     // type code here for "relation_many" field
 
-    name: 'Noam Chomsky',
+    name: 'Gertrude Belle Elion',
 
-    url: "Goin' hog huntin'",
+    url: 'No one tells me shit',
   },
 
   {
     // type code here for "relation_many" field
 
-    name: 'William Harvey',
+    name: 'Sigmund Freud',
 
-    url: "How 'bout them Cowboys",
+    url: "I'm washing my hands of it",
   },
 
   {
     // type code here for "relation_many" field
 
-    name: 'Werner Heisenberg',
+    name: 'Max Born',
 
-    url: 'I tell you what',
+    url: 'Contact the tower',
   },
 
   {
     // type code here for "relation_many" field
 
-    name: 'Charles Darwin',
+    name: 'Justus Liebig',
 
-    url: "That's messed up",
+    url: 'Got depression, Smith and Wessen',
   },
 ];
 
@@ -455,7 +455,7 @@ const ImagesData = [
   {
     // type code here for "relation_many" field
 
-    name: 'Justus Liebig',
+    name: 'John von Neumann',
 
     url: "How 'bout them Cowboys",
   },
@@ -463,31 +463,31 @@ const ImagesData = [
   {
     // type code here for "relation_many" field
 
-    name: 'Konrad Lorenz',
+    name: 'Ludwig Boltzmann',
 
-    url: 'That damn diabetes',
+    url: 'No one tells me shit',
   },
 
   {
     // type code here for "relation_many" field
 
-    name: 'Charles Lyell',
+    name: 'Max Delbruck',
 
-    url: "That Barbala couldn't fly his way out of a wet paper bag",
+    url: "Y'all never listen to me",
   },
 
   {
     // type code here for "relation_many" field
 
-    name: 'John Dalton',
+    name: 'Ludwig Boltzmann',
 
-    url: 'Standby',
+    url: 'Contact the tower',
   },
 ];
 
 const TeamsData = [
   {
-    name: 'Claude Bernard',
+    name: 'Frederick Gowland Hopkins',
 
     // type code here for "relation_many" field
 
@@ -495,7 +495,7 @@ const TeamsData = [
   },
 
   {
-    name: 'Frederick Sanger',
+    name: 'Justus Liebig',
 
     // type code here for "relation_many" field
 
@@ -503,7 +503,7 @@ const TeamsData = [
   },
 
   {
-    name: 'Louis Pasteur',
+    name: 'Christiaan Huygens',
 
     // type code here for "relation_many" field
 
@@ -511,7 +511,7 @@ const TeamsData = [
   },
 
   {
-    name: 'Hans Selye',
+    name: 'Sheldon Glashow',
 
     // type code here for "relation_many" field
 
@@ -527,27 +527,7 @@ const InvoicesData = [
 
     // type code here for "relation_one" field
 
-    number: 6,
-  },
-
-  {
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_one" field
-
-    number: 4,
-  },
-
-  {
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_one" field
-
-    number: 1,
+    number: 8,
   },
 
   {
@@ -558,6 +538,26 @@ const InvoicesData = [
     // type code here for "relation_one" field
 
     number: 7,
+  },
+
+  {
+    // type code here for "relation_many" field
+
+    // type code here for "relation_many" field
+
+    // type code here for "relation_one" field
+
+    number: 5,
+  },
+
+  {
+    // type code here for "relation_many" field
+
+    // type code here for "relation_many" field
+
+    // type code here for "relation_one" field
+
+    number: 4,
   },
 ];
 
