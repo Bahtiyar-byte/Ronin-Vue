@@ -11,23 +11,21 @@ export const useJobsStore = defineStore('jobs', {
       typeNotification: 'warn',
     },
 
-            searchResultContactId: [],
-
-            searchResultCreatedBy: [],
+            searchResultContact: [],
 
             searchResultAssignedUser: [],
 
             searchResultAssignedTeam: [],
 
-            searchResultEstimateId: [],
+            searchResultEstimate: [],
 
-            searchResultAppointmentId: [],
+            searchResultAppointment: [],
 
-            searchResultImageId: [],
+            searchResultImage: [],
 
-            searchResultDocumentId: [],
+            searchResultDocument: [],
 
-            searchResultInvoiceId: [],
+            searchResultInvoice: [],
 
   }),
   actions: {
@@ -79,37 +77,20 @@ export const useJobsStore = defineStore('jobs', {
       }
     },
 
-            async searchContactId(val) {
+            async searchContact(val) {
               try {
                 if (val) {
                   const result = await axios(
                     `/contacts/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setContactId(result.data);
+                  this.setContact(result.data);
                 } else {
                   const result = await axios(`/contacts/autocomplete?limit=100`);
-                  this.setContactId(result.data);
+                  this.setContact(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setContactId([]);
-              }
-            },
-
-            async searchCreatedBy(val) {
-              try {
-                if (val) {
-                  const result = await axios(
-                    `/users/autocomplete?query=${val}&limit=100`,
-                  );
-                  this.setCreatedBy(result.data);
-                } else {
-                  const result = await axios(`/users/autocomplete?limit=100`);
-                  this.setCreatedBy(result.data);
-                }
-              } catch (e) {
-                this.showNotification(e, 'error')
-                this.setCreatedBy([]);
+                this.setContact([]);
               }
             },
 
@@ -147,88 +128,88 @@ export const useJobsStore = defineStore('jobs', {
               }
             },
 
-            async searchEstimateId(val) {
+            async searchEstimate(val) {
               try {
                 if (val) {
                   const result = await axios(
                     `/estimates/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setEstimateId(result.data);
+                  this.setEstimate(result.data);
                 } else {
                   const result = await axios(`/estimates/autocomplete?limit=100`);
-                  this.setEstimateId(result.data);
+                  this.setEstimate(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setEstimateId([]);
+                this.setEstimate([]);
               }
             },
 
-            async searchAppointmentId(val) {
+            async searchAppointment(val) {
               try {
                 if (val) {
                   const result = await axios(
                     `/appointments/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setAppointmentId(result.data);
+                  this.setAppointment(result.data);
                 } else {
                   const result = await axios(`/appointments/autocomplete?limit=100`);
-                  this.setAppointmentId(result.data);
+                  this.setAppointment(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setAppointmentId([]);
+                this.setAppointment([]);
               }
             },
 
-            async searchImageId(val) {
+            async searchImage(val) {
               try {
                 if (val) {
                   const result = await axios(
                     `/images/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setImageId(result.data);
+                  this.setImage(result.data);
                 } else {
                   const result = await axios(`/images/autocomplete?limit=100`);
-                  this.setImageId(result.data);
+                  this.setImage(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setImageId([]);
+                this.setImage([]);
               }
             },
 
-            async searchDocumentId(val) {
+            async searchDocument(val) {
               try {
                 if (val) {
                   const result = await axios(
                     `/documents/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setDocumentId(result.data);
+                  this.setDocument(result.data);
                 } else {
                   const result = await axios(`/documents/autocomplete?limit=100`);
-                  this.setDocumentId(result.data);
+                  this.setDocument(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setDocumentId([]);
+                this.setDocument([]);
               }
             },
 
-            async searchInvoiceId(val) {
+            async searchInvoice(val) {
               try {
                 if (val) {
                   const result = await axios(
                     `/invoices/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setInvoiceId(result.data);
+                  this.setInvoice(result.data);
                 } else {
                   const result = await axios(`/invoices/autocomplete?limit=100`);
-                  this.setInvoiceId(result.data);
+                  this.setInvoice(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setInvoiceId([]);
+                this.setInvoice([]);
               }
             },
 
@@ -251,12 +232,8 @@ export const useJobsStore = defineStore('jobs', {
       this.notify.textNotification = ''
     },
 
-        setContactId(payload) {
-            this.searchResultContactId = payload
-        },
-
-        setCreatedBy(payload) {
-            this.searchResultCreatedBy = payload
+        setContact(payload) {
+            this.searchResultContact = payload
         },
 
         setAssignedUser(payload) {
@@ -267,24 +244,24 @@ export const useJobsStore = defineStore('jobs', {
             this.searchResultAssignedTeam = payload
         },
 
-        setEstimateId(payload) {
-            this.searchResultEstimateId = payload
+        setEstimate(payload) {
+            this.searchResultEstimate = payload
         },
 
-        setAppointmentId(payload) {
-            this.searchResultAppointmentId = payload
+        setAppointment(payload) {
+            this.searchResultAppointment = payload
         },
 
-        setImageId(payload) {
-            this.searchResultImageId = payload
+        setImage(payload) {
+            this.searchResultImage = payload
         },
 
-        setDocumentId(payload) {
-            this.searchResultDocumentId = payload
+        setDocument(payload) {
+            this.searchResultDocument = payload
         },
 
-        setInvoiceId(payload) {
-            this.searchResultInvoiceId = payload
+        setInvoice(payload) {
+            this.searchResultInvoice = payload
         },
 
   }

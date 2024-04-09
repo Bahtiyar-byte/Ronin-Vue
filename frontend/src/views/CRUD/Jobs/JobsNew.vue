@@ -22,29 +22,27 @@ const router = useRouter();
 const notification = computed(() => jobsStore.notify)
 const titleStack = ref(['Admin', 'Jobs'])
 
-        const optionsContactId = computed(() => jobsStore.searchResultContactId);
-
-        const optionsCreatedBy = computed(() => jobsStore.searchResultCreatedBy);
+        const optionsContact = computed(() => jobsStore.searchResultContact);
 
         const optionsAssignedUser = computed(() => jobsStore.searchResultAssignedUser);
 
         const optionsAssignedTeam = computed(() => jobsStore.searchResultAssignedTeam);
 
-        const optionsEstimateId = computed(() => jobsStore.searchResultEstimateId);
+        const optionsEstimate = computed(() => jobsStore.searchResultEstimate);
 
-        const optionsAppointmentId = computed(() => jobsStore.searchResultAppointmentId);
+        const optionsAppointment = computed(() => jobsStore.searchResultAppointment);
 
-        const optionsImageId = computed(() => jobsStore.searchResultImageId);
+        const optionsImage = computed(() => jobsStore.searchResultImage);
 
-        const optionsDocumentId = computed(() => jobsStore.searchResultDocumentId);
+        const optionsDocument = computed(() => jobsStore.searchResultDocument);
 
-        const optionsInvoiceId = computed(() => jobsStore.searchResultInvoiceId);
+        const optionsInvoice = computed(() => jobsStore.searchResultInvoice);
 
 const form = reactive({
 
       name: '',
 
-      contactId: [],
+      contact: [],
 
       category: false,
 
@@ -52,50 +50,46 @@ const form = reactive({
 
       status: false,
 
-      createdBy: '',
-
       assignedUser: [],
 
       assignedTeam: [],
 
-      estimateId: [],
+      estimate: [],
 
-      appointmentId: [],
+      appointment: [],
 
-      imageId: [],
+      image: [],
 
-      documentId: [],
+      document: [],
 
-      invoiceId: [],
+      invoice: [],
 
 })
 
 onBeforeMount(async () => {
 
-  await searchContactId();
-
-  await searchCreatedBy();
+  await searchContact();
 
   await searchAssignedUser();
 
   await searchAssignedTeam();
 
-  await searchEstimateId();
+  await searchEstimate();
 
-  await searchAppointmentId();
+  await searchAppointment();
 
-  await searchImageId();
+  await searchImage();
 
-  await searchDocumentId();
+  await searchDocument();
 
-  await searchInvoiceId();
+  await searchInvoice();
 
 })
 
 const submit = async () => {
   try {
 
-            form.contactId = form.contactId.map(item => item.id);
+            form.contact = form.contact.map(item => item.id);
 
             form.category = form.category.label;
 
@@ -103,21 +97,19 @@ const submit = async () => {
 
             form.status = form.status.label;
 
-            form.createdBy = form.createdBy.id;
-
             form.assignedUser = form.assignedUser.map(item => item.id);
 
             form.assignedTeam = form.assignedTeam.map(item => item.id);
 
-            form.estimateId = form.estimateId.map(item => item.id);
+            form.estimate = form.estimate.map(item => item.id);
 
-            form.appointmentId = form.appointmentId.map(item => item.id);
+            form.appointment = form.appointment.map(item => item.id);
 
-            form.imageId = form.imageId.map(item => item.id);
+            form.image = form.image.map(item => item.id);
 
-            form.documentId = form.documentId.map(item => item.id);
+            form.document = form.document.map(item => item.id);
 
-            form.invoiceId = form.invoiceId.map(item => item.id);
+            form.invoice = form.invoice.map(item => item.id);
 
     await jobsStore.newItem({ ...form })
     router.push('/jobs');
@@ -130,7 +122,7 @@ const reset = () => {
 
         form.name = '';
 
-        form.contactId = [];
+        form.contact = [];
 
         form.category = false;
 
@@ -138,21 +130,19 @@ const reset = () => {
 
         form.status = false;
 
-        form.createdBy = '';
-
         form.assignedUser = [];
 
         form.assignedTeam = [];
 
-        form.estimateId = [];
+        form.estimate = [];
 
-        form.appointmentId = [];
+        form.appointment = [];
 
-        form.imageId = [];
+        form.image = [];
 
-        form.documentId = [];
+        form.document = [];
 
-        form.invoiceId = [];
+        form.invoice = [];
 
 }
 
@@ -160,12 +150,8 @@ const cancel = () => {
   router.push('/users')
 }
 
-    async function searchContactId(val) {
-      await jobsStore.searchContactId(val);
-    }
-
-    async function searchCreatedBy(val) {
-      await jobsStore.searchCreatedBy(val);
+    async function searchContact(val) {
+      await jobsStore.searchContact(val);
     }
 
     async function searchAssignedUser(val) {
@@ -176,24 +162,24 @@ const cancel = () => {
       await jobsStore.searchAssignedTeam(val);
     }
 
-    async function searchEstimateId(val) {
-      await jobsStore.searchEstimateId(val);
+    async function searchEstimate(val) {
+      await jobsStore.searchEstimate(val);
     }
 
-    async function searchAppointmentId(val) {
-      await jobsStore.searchAppointmentId(val);
+    async function searchAppointment(val) {
+      await jobsStore.searchAppointment(val);
     }
 
-    async function searchImageId(val) {
-      await jobsStore.searchImageId(val);
+    async function searchImage(val) {
+      await jobsStore.searchImage(val);
     }
 
-    async function searchDocumentId(val) {
-      await jobsStore.searchDocumentId(val);
+    async function searchDocument(val) {
+      await jobsStore.searchDocument(val);
     }
 
-    async function searchInvoiceId(val) {
-      await jobsStore.searchInvoiceId(val);
+    async function searchInvoice(val) {
+      await jobsStore.searchInvoice(val);
     }
 
 watch(() => jobsStore.notify.showNotification, (newValue, oldValue) => {
@@ -233,10 +219,10 @@ watch(() => jobsStore.notify.showNotification, (newValue, oldValue) => {
         label="Contact"
       >
         <v-select
-          v-model="form.contactId"
-          :options="optionsContactId"
+          v-model="form.contact"
+          :options="optionsContact"
           multiple
-          @input="searchContactId($event.target.value)"
+          @input="searchContact($event.target.value)"
         />
     </FormField>
 
@@ -276,16 +262,6 @@ watch(() => jobsStore.notify.showNotification, (newValue, oldValue) => {
       />
     </FormField>
 
-  <FormField
-      label="Created"
-    >
-        <v-select
-          v-model="form.createdBy"
-          :options="optionsCreatedBy"
-          @input="searchCreatedBy($event.target.value)"
-        />
-  </FormField>
-
     <FormField
         label="Assigned User"
       >
@@ -312,10 +288,10 @@ watch(() => jobsStore.notify.showNotification, (newValue, oldValue) => {
         label="Estimate"
       >
         <v-select
-          v-model="form.estimateId"
-          :options="optionsEstimateId"
+          v-model="form.estimate"
+          :options="optionsEstimate"
           multiple
-          @input="searchEstimateId($event.target.value)"
+          @input="searchEstimate($event.target.value)"
         />
     </FormField>
 
@@ -323,10 +299,10 @@ watch(() => jobsStore.notify.showNotification, (newValue, oldValue) => {
         label="Appointment"
       >
         <v-select
-          v-model="form.appointmentId"
-          :options="optionsAppointmentId"
+          v-model="form.appointment"
+          :options="optionsAppointment"
           multiple
-          @input="searchAppointmentId($event.target.value)"
+          @input="searchAppointment($event.target.value)"
         />
     </FormField>
 
@@ -334,10 +310,10 @@ watch(() => jobsStore.notify.showNotification, (newValue, oldValue) => {
         label="Image"
       >
         <v-select
-          v-model="form.imageId"
-          :options="optionsImageId"
+          v-model="form.image"
+          :options="optionsImage"
           multiple
-          @input="searchImageId($event.target.value)"
+          @input="searchImage($event.target.value)"
         />
     </FormField>
 
@@ -345,10 +321,10 @@ watch(() => jobsStore.notify.showNotification, (newValue, oldValue) => {
         label="Document"
       >
         <v-select
-          v-model="form.documentId"
-          :options="optionsDocumentId"
+          v-model="form.document"
+          :options="optionsDocument"
           multiple
-          @input="searchDocumentId($event.target.value)"
+          @input="searchDocument($event.target.value)"
         />
     </FormField>
 
@@ -356,10 +332,10 @@ watch(() => jobsStore.notify.showNotification, (newValue, oldValue) => {
         label="Invoice"
       >
         <v-select
-          v-model="form.invoiceId"
-          :options="optionsInvoiceId"
+          v-model="form.invoice"
+          :options="optionsInvoice"
           multiple
-          @input="searchInvoiceId($event.target.value)"
+          @input="searchInvoice($event.target.value)"
         />
     </FormField>
 

@@ -26,23 +26,15 @@ module.exports = class AppointmentsDBApi {
       { transaction },
     );
 
-    await appointments.setCreatedBy(data.createdBy || null, {
+    await appointments.setContact(data.contact || [], {
       transaction,
     });
 
-    await appointments.setUserId(data.userId || [], {
+    await appointments.setJob(data.job || [], {
       transaction,
     });
 
-    await appointments.setContactId(data.contactId || [], {
-      transaction,
-    });
-
-    await appointments.setJobId(data.jobId || [], {
-      transaction,
-    });
-
-    await appointments.setEstimateId(data.estimateId || [], {
+    await appointments.setEstimate(data.estimate || [], {
       transaction,
     });
 
@@ -98,23 +90,15 @@ module.exports = class AppointmentsDBApi {
       { transaction },
     );
 
-    await appointments.setCreatedBy(data.createdBy || null, {
+    await appointments.setContact(data.contact || [], {
       transaction,
     });
 
-    await appointments.setUserId(data.userId || [], {
+    await appointments.setJob(data.job || [], {
       transaction,
     });
 
-    await appointments.setContactId(data.contactId || [], {
-      transaction,
-    });
-
-    await appointments.setJobId(data.jobId || [], {
-      transaction,
-    });
-
-    await appointments.setEstimateId(data.estimateId || [], {
+    await appointments.setEstimate(data.estimate || [], {
       transaction,
     });
 
@@ -157,23 +141,15 @@ module.exports = class AppointmentsDBApi {
 
     const output = appointments.get({ plain: true });
 
-    output.userId = await appointments.getUserId({
+    output.contact = await appointments.getContact({
       transaction,
     });
 
-    output.contactId = await appointments.getContactId({
+    output.job = await appointments.getJob({
       transaction,
     });
 
-    output.jobId = await appointments.getJobId({
-      transaction,
-    });
-
-    output.estimateId = await appointments.getEstimateId({
-      transaction,
-    });
-
-    output.createdBy = await appointments.getCreatedBy({
+    output.estimate = await appointments.getEstimate({
       transaction,
     });
 
@@ -193,68 +169,48 @@ module.exports = class AppointmentsDBApi {
     let where = {};
     let include = [
       {
-        model: db.users,
-        as: 'createdBy',
-      },
-
-      {
-        model: db.users,
-        as: 'userId',
-        through: filter.userId
-          ? {
-              where: {
-                [Op.or]: filter.userId.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.userId ? true : null,
-      },
-
-      {
         model: db.contacts,
-        as: 'contactId',
-        through: filter.contactId
+        as: 'contact',
+        through: filter.contact
           ? {
               where: {
-                [Op.or]: filter.contactId.split('|').map((item) => {
+                [Op.or]: filter.contact.split('|').map((item) => {
                   return { ['Id']: Utils.uuid(item) };
                 }),
               },
             }
           : null,
-        required: filter.contactId ? true : null,
+        required: filter.contact ? true : null,
       },
 
       {
         model: db.jobs,
-        as: 'jobId',
-        through: filter.jobId
+        as: 'job',
+        through: filter.job
           ? {
               where: {
-                [Op.or]: filter.jobId.split('|').map((item) => {
+                [Op.or]: filter.job.split('|').map((item) => {
                   return { ['Id']: Utils.uuid(item) };
                 }),
               },
             }
           : null,
-        required: filter.jobId ? true : null,
+        required: filter.job ? true : null,
       },
 
       {
         model: db.estimates,
-        as: 'estimateId',
-        through: filter.estimateId
+        as: 'estimate',
+        through: filter.estimate
           ? {
               where: {
-                [Op.or]: filter.estimateId.split('|').map((item) => {
+                [Op.or]: filter.estimate.split('|').map((item) => {
                   return { ['Id']: Utils.uuid(item) };
                 }),
               },
             }
           : null,
-        required: filter.estimateId ? true : null,
+        required: filter.estimate ? true : null,
       },
     ];
 
@@ -313,17 +269,6 @@ module.exports = class AppointmentsDBApi {
         where = {
           ...where,
           scheduled: filter.scheduled,
-        };
-      }
-
-      if (filter.createdBy) {
-        var listItems = filter.createdBy.split('|').map((item) => {
-          return Utils.uuid(item);
-        });
-
-        where = {
-          ...where,
-          createdById: { [Op.or]: listItems },
         };
       }
 

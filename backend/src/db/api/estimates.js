@@ -24,11 +24,11 @@ module.exports = class EstimatesDBApi {
       { transaction },
     );
 
-    await estimates.setJobId(data.jobId || null, {
+    await estimates.setJob(data.job || null, {
       transaction,
     });
 
-    await estimates.setTemplateId(data.templateId || [], {
+    await estimates.setTemplate(data.template || [], {
       transaction,
     });
 
@@ -76,11 +76,11 @@ module.exports = class EstimatesDBApi {
       { transaction },
     );
 
-    await estimates.setJobId(data.jobId || null, {
+    await estimates.setJob(data.job || null, {
       transaction,
     });
 
-    await estimates.setTemplateId(data.templateId || [], {
+    await estimates.setTemplate(data.template || [], {
       transaction,
     });
 
@@ -120,11 +120,11 @@ module.exports = class EstimatesDBApi {
 
     const output = estimates.get({ plain: true });
 
-    output.jobId = await estimates.getJobId({
+    output.job = await estimates.getJob({
       transaction,
     });
 
-    output.templateId = await estimates.getTemplateId({
+    output.template = await estimates.getTemplate({
       transaction,
     });
 
@@ -145,22 +145,22 @@ module.exports = class EstimatesDBApi {
     let include = [
       {
         model: db.jobs,
-        as: 'jobId',
+        as: 'job',
       },
 
       {
         model: db.templates,
-        as: 'templateId',
-        through: filter.templateId
+        as: 'template',
+        through: filter.template
           ? {
               where: {
-                [Op.or]: filter.templateId.split('|').map((item) => {
+                [Op.or]: filter.template.split('|').map((item) => {
                   return { ['Id']: Utils.uuid(item) };
                 }),
               },
             }
           : null,
-        required: filter.templateId ? true : null,
+        required: filter.template ? true : null,
       },
     ];
 
@@ -198,14 +198,14 @@ module.exports = class EstimatesDBApi {
         };
       }
 
-      if (filter.jobId) {
-        var listItems = filter.jobId.split('|').map((item) => {
+      if (filter.job) {
+        var listItems = filter.job.split('|').map((item) => {
           return Utils.uuid(item);
         });
 
         where = {
           ...where,
-          jobIdId: { [Op.or]: listItems },
+          jobId: { [Op.or]: listItems },
         };
       }
 

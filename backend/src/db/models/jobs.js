@@ -65,12 +65,12 @@ module.exports = function (sequelize, DataTypes) {
 
   jobs.associate = (db) => {
     db.jobs.belongsToMany(db.contacts, {
-      as: 'contactId',
+      as: 'contact',
       foreignKey: {
-        name: 'jobs_contactIdId',
+        name: 'jobs_contactId',
       },
       constraints: false,
-      through: 'jobsContactIdContacts',
+      through: 'jobsContactContacts',
     });
 
     db.jobs.belongsToMany(db.users, {
@@ -92,69 +92,61 @@ module.exports = function (sequelize, DataTypes) {
     });
 
     db.jobs.belongsToMany(db.estimates, {
-      as: 'estimateId',
+      as: 'estimate',
       foreignKey: {
-        name: 'jobs_estimateIdId',
+        name: 'jobs_estimateId',
       },
       constraints: false,
-      through: 'jobsEstimateIdEstimates',
+      through: 'jobsEstimateEstimates',
     });
 
     db.jobs.belongsToMany(db.appointments, {
-      as: 'appointmentId',
+      as: 'appointment',
       foreignKey: {
-        name: 'jobs_appointmentIdId',
+        name: 'jobs_appointmentId',
       },
       constraints: false,
-      through: 'jobsAppointmentIdAppointments',
+      through: 'jobsAppointmentAppointments',
     });
 
     db.jobs.belongsToMany(db.images, {
-      as: 'imageId',
+      as: 'image',
       foreignKey: {
-        name: 'jobs_imageIdId',
+        name: 'jobs_imageId',
       },
       constraints: false,
-      through: 'jobsImageIdImages',
+      through: 'jobsImageImages',
     });
 
     db.jobs.belongsToMany(db.documents, {
-      as: 'documentId',
+      as: 'document',
       foreignKey: {
-        name: 'jobs_documentIdId',
+        name: 'jobs_documentId',
       },
       constraints: false,
-      through: 'jobsDocumentIdDocuments',
+      through: 'jobsDocumentDocuments',
     });
 
     db.jobs.belongsToMany(db.invoices, {
-      as: 'invoiceId',
+      as: 'invoice',
       foreignKey: {
-        name: 'jobs_invoiceIdId',
+        name: 'jobs_invoiceId',
       },
       constraints: false,
-      through: 'jobsInvoiceIdInvoices',
+      through: 'jobsInvoiceInvoices',
     });
 
     /// loop through entities and it's fields, and if ref === current e[name] and create relation has many on parent entity
 
     db.jobs.hasMany(db.estimates, {
-      as: 'estimates_jobId',
+      as: 'estimates_job',
       foreignKey: {
-        name: 'jobIdId',
+        name: 'jobId',
       },
       constraints: false,
     });
 
     //end loop
-
-    db.jobs.belongsTo(db.users, {
-      as: 'createdBy',
-      foreignKey: {
-        name: 'createdById',
-      },
-      constraints: false,
-    });
 
     db.jobs.belongsTo(db.users, {
       as: 'createdBy',

@@ -26,8 +26,6 @@ const notification = computed(() => usersStore.notify)
 
         const optionsRoleId = computed(() => usersStore.searchResultRoleId);
 
-        const optionsCreatedBy = computed(() => usersStore.searchResultCreatedBy);
-
 const usersItem = computed(() => usersStore.data);
 
 const form = reactive({
@@ -48,16 +46,12 @@ const form = reactive({
 
     name: '',
 
-      createdBy: '',
-
 })
 
 const submit = async () => {
   try {
 
             form.roleId = form.roleId.map(item => item.id);
-
-            form.createdBy = form.createdBy?.id;
 
     await usersStore.edit({id: route.params.id, data: {...form} })
     router.push('/users');
@@ -71,8 +65,6 @@ onBeforeMount(async () => {
 
   await searchRoleId();
 
-  await searchCreatedBy();
-
     await usersStore.fetch(route.params.id)
     formatData();
   } catch (e) {
@@ -83,10 +75,6 @@ onBeforeMount(async () => {
 
     async function searchRoleId(val) {
       await usersStore.searchRoleId(val);
-    }
-
-    async function searchCreatedBy(val) {
-      await usersStore.searchCreatedBy(val);
     }
 
 const formatData = () => {
@@ -104,8 +92,6 @@ const formatData = () => {
     form.roleId = dataFormatter.rolesManyListFormatterEdit(usersItem.value.roleId)
 
     form.name = usersItem.value.name
-
-    form.createdBy = dataFormatter.usersOneListFormatterEdit(usersItem.value.createdBy)
 
 form.password = usersItem.value.password
 
@@ -213,16 +199,6 @@ const cancel = () => {
         placeholder="Your Name"
         />
     </FormField>
-
-  <FormField
-      label="Created "
-    >
-      <v-select
-        v-model="form.createdBy"
-        :options="optionsCreatedBy"
-        @input="searchCreatedBy($event.target.value)"
-      />
-  </FormField>
 
     <BaseDivider />
 

@@ -41,10 +41,9 @@ const headers = [
 { text: 'First Name', value: 'firstName'},
 { text: 'Last Name', value: 'lastName'},
 { text: 'Stage', value: 'stage'},
-{ text: 'Job', value: 'jobId'},
-{ text: 'Estimate', value: 'estimateId'},
-{ text: 'Created By', value: 'createdBy'},
-{ text: 'Appointment', value: 'appointmentId'},]
+{ text: 'Job', value: 'job'},
+{ text: 'Estimate', value: 'estimate'},
+{ text: 'Appointment', value: 'appointment'},]
 const isModalActive = ref(false)
 
 const isModalDangerActive = ref(false)
@@ -195,23 +194,18 @@ const sort = (title) => {
       >Stage</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'jobId' && props.sortDirection]"
-        @click="sort('jobId')"
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'job' && props.sortDirection]"
+        @click="sort('job')"
       >Job</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'estimateId' && props.sortDirection]"
-        @click="sort('estimateId')"
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'estimate' && props.sortDirection]"
+        @click="sort('estimate')"
       >Estimate</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'createdBy' && props.sortDirection]"
-        @click="sort('createdBy')"
-      >Created By</th>
-
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'appointmentId' && props.sortDirection]"
-        @click="sort('appointmentId')"
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'appointment' && props.sortDirection]"
+        @click="sort('appointment')"
       >Appointment</th>
 
         <th />
@@ -256,34 +250,30 @@ const sort = (title) => {
                 {{ client.stage }}
               </td>
 
-              <td data-label="jobId">
+              <td data-label="job">
                   <span
-                    v-for="(i, idx) in dataFormatter.jobsManyListFormatter(client.jobId)"
-                    :key="idx + client.jobId"
+                    v-for="(i, idx) in dataFormatter.jobsManyListFormatter(client.job)"
+                    :key="idx + client.job"
                     class="block"
                   >
                       {{ i }}
                   </span>
               </td>  
 
-              <td data-label="estimateId">
+              <td data-label="estimate">
                   <span
-                    v-for="(i, idx) in dataFormatter.estimatesManyListFormatter(client.estimateId)"
-                    :key="idx + client.estimateId"
+                    v-for="(i, idx) in dataFormatter.estimatesManyListFormatter(client.estimate)"
+                    :key="idx + client.estimate"
                     class="block"
                   >
                       {{ i }}
                   </span>
               </td>  
 
-              <td data-label="createdBy">
-                {{ dataFormatter.usersOneListFormatter(client.createdBy) }}
-              </td>
-
-              <td data-label="appointmentId">
+              <td data-label="appointment">
                   <span
-                    v-for="(i, idx) in dataFormatter.appointmentsManyListFormatter(client.appointmentId)"
-                    :key="idx + client.appointmentId"
+                    v-for="(i, idx) in dataFormatter.appointmentsManyListFormatter(client.appointment)"
+                    :key="idx + client.appointment"
                     class="block"
                   >
                       {{ i }}

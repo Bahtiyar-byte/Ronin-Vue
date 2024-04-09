@@ -24,7 +24,7 @@ const rolesStore = useRolesStore()
 const titleStack = ref(['Admin', 'Roles'])
 const notification = computed(() => rolesStore.notify)
 
-        const optionsUserId = computed(() => rolesStore.searchResultUserId);
+        const optionsUser = computed(() => rolesStore.searchResultUser);
 
 const rolesItem = computed(() => rolesStore.data);
 
@@ -34,14 +34,14 @@ const form = reactive({
 
     permissions: '',
 
-      userId: [],
+      user: [],
 
 })
 
 const submit = async () => {
   try {
 
-            form.userId = form.userId.map(item => item.id);
+            form.user = form.user.map(item => item.id);
 
     await rolesStore.edit({id: route.params.id, data: {...form} })
     router.push('/roles');
@@ -53,7 +53,7 @@ const submit = async () => {
 onBeforeMount(async () => {
   try {
 
-  await searchUserId();
+  await searchUser();
 
     await rolesStore.fetch(route.params.id)
     formatData();
@@ -63,8 +63,8 @@ onBeforeMount(async () => {
   }
 })
 
-    async function searchUserId(val) {
-      await rolesStore.searchUserId(val);
+    async function searchUser(val) {
+      await rolesStore.searchUser(val);
     }
 
 const formatData = () => {
@@ -73,7 +73,7 @@ const formatData = () => {
 
     form.permissions = rolesItem.value.permissions
 
-    form.userId = dataFormatter.usersManyListFormatterEdit(rolesItem.value.userId)
+    form.user = dataFormatter.usersManyListFormatterEdit(rolesItem.value.user)
 
 }
 
@@ -131,10 +131,10 @@ const cancel = () => {
         label="User"
       >
         <v-select
-          v-model="form.userId"
-          :options="optionsUserId"
+          v-model="form.user"
+          :options="optionsUser"
           multiple
-          @input="searchUserId($event.target.value)"
+          @input="searchUser($event.target.value)"
         />
     </FormField>
 

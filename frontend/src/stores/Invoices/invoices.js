@@ -11,11 +11,9 @@ export const useInvoicesStore = defineStore('invoices', {
       typeNotification: 'warn',
     },
 
-            searchResultJobId: [],
+            searchResultJob: [],
 
-            searchResultCreatedBy: [],
-
-            searchResultEstimateId: [],
+            searchResultEstimate: [],
 
             searchResultDocument: [],
 
@@ -69,54 +67,37 @@ export const useInvoicesStore = defineStore('invoices', {
       }
     },
 
-            async searchJobId(val) {
+            async searchJob(val) {
               try {
                 if (val) {
                   const result = await axios(
                     `/jobs/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setJobId(result.data);
+                  this.setJob(result.data);
                 } else {
                   const result = await axios(`/jobs/autocomplete?limit=100`);
-                  this.setJobId(result.data);
+                  this.setJob(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setJobId([]);
+                this.setJob([]);
               }
             },
 
-            async searchCreatedBy(val) {
-              try {
-                if (val) {
-                  const result = await axios(
-                    `/users/autocomplete?query=${val}&limit=100`,
-                  );
-                  this.setCreatedBy(result.data);
-                } else {
-                  const result = await axios(`/users/autocomplete?limit=100`);
-                  this.setCreatedBy(result.data);
-                }
-              } catch (e) {
-                this.showNotification(e, 'error')
-                this.setCreatedBy([]);
-              }
-            },
-
-            async searchEstimateId(val) {
+            async searchEstimate(val) {
               try {
                 if (val) {
                   const result = await axios(
                     `/estimates/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setEstimateId(result.data);
+                  this.setEstimate(result.data);
                 } else {
                   const result = await axios(`/estimates/autocomplete?limit=100`);
-                  this.setEstimateId(result.data);
+                  this.setEstimate(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setEstimateId([]);
+                this.setEstimate([]);
               }
             },
 
@@ -156,16 +137,12 @@ export const useInvoicesStore = defineStore('invoices', {
       this.notify.textNotification = ''
     },
 
-        setJobId(payload) {
-            this.searchResultJobId = payload
+        setJob(payload) {
+            this.searchResultJob = payload
         },
 
-        setCreatedBy(payload) {
-            this.searchResultCreatedBy = payload
-        },
-
-        setEstimateId(payload) {
-            this.searchResultEstimateId = payload
+        setEstimate(payload) {
+            this.searchResultEstimate = payload
         },
 
         setDocument(payload) {

@@ -22,26 +22,18 @@ const router = useRouter();
 const notification = computed(() => tradesStore.notify)
 const titleStack = ref(['Admin', 'Trades'])
 
-        const optionsCreatedBy = computed(() => tradesStore.searchResultCreatedBy);
-
 const form = reactive({
 
       name: '',
-
-      createdBy: '',
 
 })
 
 onBeforeMount(async () => {
 
-  await searchCreatedBy();
-
 })
 
 const submit = async () => {
   try {
-
-            form.createdBy = form.createdBy.id;
 
     await tradesStore.newItem({ ...form })
     router.push('/trades');
@@ -54,17 +46,11 @@ const reset = () => {
 
         form.name = '';
 
-        form.createdBy = '';
-
 }
 
 const cancel = () => {
   router.push('/users')
 }
-
-    async function searchCreatedBy(val) {
-      await tradesStore.searchCreatedBy(val);
-    }
 
 watch(() => tradesStore.notify.showNotification, (newValue, oldValue) => {
   if(newValue){
@@ -98,16 +84,6 @@ watch(() => tradesStore.notify.showNotification, (newValue, oldValue) => {
         placeholder="Your Name"
       />
     </FormField>
-
-  <FormField
-      label="Created"
-    >
-        <v-select
-          v-model="form.createdBy"
-          :options="optionsCreatedBy"
-          @input="searchCreatedBy($event.target.value)"
-        />
-  </FormField>
 
     <BaseDivider />
 

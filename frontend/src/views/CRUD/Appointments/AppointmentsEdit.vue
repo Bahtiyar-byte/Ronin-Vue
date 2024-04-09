@@ -24,15 +24,11 @@ const appointmentsStore = useAppointmentsStore()
 const titleStack = ref(['Admin', 'Appointments'])
 const notification = computed(() => appointmentsStore.notify)
 
-        const optionsUserId = computed(() => appointmentsStore.searchResultUserId);
+        const optionsContact = computed(() => appointmentsStore.searchResultContact);
 
-        const optionsContactId = computed(() => appointmentsStore.searchResultContactId);
+        const optionsJob = computed(() => appointmentsStore.searchResultJob);
 
-        const optionsJobId = computed(() => appointmentsStore.searchResultJobId);
-
-        const optionsEstimateId = computed(() => appointmentsStore.searchResultEstimateId);
-
-        const optionsCreatedBy = computed(() => appointmentsStore.searchResultCreatedBy);
+        const optionsEstimate = computed(() => appointmentsStore.searchResultEstimate);
 
 const appointmentsItem = computed(() => appointmentsStore.data);
 
@@ -42,15 +38,11 @@ const form = reactive({
 
       scheduled: false,
 
-      userId: [],
+      contact: [],
 
-      contactId: [],
+      job: [],
 
-      jobId: [],
-
-      estimateId: [],
-
-      createdBy: '',
+      estimate: [],
 
     name: '',
 
@@ -59,15 +51,11 @@ const form = reactive({
 const submit = async () => {
   try {
 
-            form.userId = form.userId.map(item => item.id);
+            form.contact = form.contact.map(item => item.id);
 
-            form.contactId = form.contactId.map(item => item.id);
+            form.job = form.job.map(item => item.id);
 
-            form.jobId = form.jobId.map(item => item.id);
-
-            form.estimateId = form.estimateId.map(item => item.id);
-
-            form.createdBy = form.createdBy?.id;
+            form.estimate = form.estimate.map(item => item.id);
 
     await appointmentsStore.edit({id: route.params.id, data: {...form} })
     router.push('/appointments');
@@ -79,15 +67,11 @@ const submit = async () => {
 onBeforeMount(async () => {
   try {
 
-  await searchUserId();
+  await searchContact();
 
-  await searchContactId();
+  await searchJob();
 
-  await searchJobId();
-
-  await searchEstimateId();
-
-  await searchCreatedBy();
+  await searchEstimate();
 
     await appointmentsStore.fetch(route.params.id)
     formatData();
@@ -97,39 +81,27 @@ onBeforeMount(async () => {
   }
 })
 
-    async function searchUserId(val) {
-      await appointmentsStore.searchUserId(val);
+    async function searchContact(val) {
+      await appointmentsStore.searchContact(val);
     }
 
-    async function searchContactId(val) {
-      await appointmentsStore.searchContactId(val);
+    async function searchJob(val) {
+      await appointmentsStore.searchJob(val);
     }
 
-    async function searchJobId(val) {
-      await appointmentsStore.searchJobId(val);
-    }
-
-    async function searchEstimateId(val) {
-      await appointmentsStore.searchEstimateId(val);
-    }
-
-    async function searchCreatedBy(val) {
-      await appointmentsStore.searchCreatedBy(val);
+    async function searchEstimate(val) {
+      await appointmentsStore.searchEstimate(val);
     }
 
 const formatData = () => {
 
     form.date = dataFormatter.dateTimeFormatter(appointmentsItem.value.date)
 
-    form.userId = dataFormatter.usersManyListFormatterEdit(appointmentsItem.value.userId)
+    form.contact = dataFormatter.contactsManyListFormatterEdit(appointmentsItem.value.contact)
 
-    form.contactId = dataFormatter.contactsManyListFormatterEdit(appointmentsItem.value.contactId)
+    form.job = dataFormatter.jobsManyListFormatterEdit(appointmentsItem.value.job)
 
-    form.jobId = dataFormatter.jobsManyListFormatterEdit(appointmentsItem.value.jobId)
-
-    form.estimateId = dataFormatter.estimatesManyListFormatterEdit(appointmentsItem.value.estimateId)
-
-    form.createdBy = dataFormatter.usersOneListFormatterEdit(appointmentsItem.value.createdBy)
+    form.estimate = dataFormatter.estimatesManyListFormatterEdit(appointmentsItem.value.estimate)
 
     form.name = appointmentsItem.value.name
 
@@ -187,24 +159,13 @@ const cancel = () => {
     </FormField>
 
     <FormField
-        label="User "
-      >
-        <v-select
-          v-model="form.userId"
-          :options="optionsUserId"
-          multiple
-          @input="searchUserId($event.target.value)"
-        />
-    </FormField>
-
-    <FormField
         label="Contact"
       >
         <v-select
-          v-model="form.contactId"
-          :options="optionsContactId"
+          v-model="form.contact"
+          :options="optionsContact"
           multiple
-          @input="searchContactId($event.target.value)"
+          @input="searchContact($event.target.value)"
         />
     </FormField>
 
@@ -212,10 +173,10 @@ const cancel = () => {
         label="Job"
       >
         <v-select
-          v-model="form.jobId"
-          :options="optionsJobId"
+          v-model="form.job"
+          :options="optionsJob"
           multiple
-          @input="searchJobId($event.target.value)"
+          @input="searchJob($event.target.value)"
         />
     </FormField>
 
@@ -223,22 +184,12 @@ const cancel = () => {
         label="Estimate"
       >
         <v-select
-          v-model="form.estimateId"
-          :options="optionsEstimateId"
+          v-model="form.estimate"
+          :options="optionsEstimate"
           multiple
-          @input="searchEstimateId($event.target.value)"
+          @input="searchEstimate($event.target.value)"
         />
     </FormField>
-
-  <FormField
-      label="Created"
-    >
-      <v-select
-        v-model="form.createdBy"
-        :options="optionsCreatedBy"
-        @input="searchCreatedBy($event.target.value)"
-      />
-  </FormField>
 
     <FormField
       label="Name"

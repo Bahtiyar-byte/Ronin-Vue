@@ -24,7 +24,7 @@ const titleStack = ref(['Admin', 'Users'])
 const filters = ref([]);
 const filtersList = [{label: 'First Name', title: 'firstName'},{label: 'Last Name', title: 'lastName'},{label: 'Phone Number', title: 'phoneNumber'},{label: 'E-Mail', title: 'email'},{label: 'Name', title: 'name'},
 
-          {label: 'Created ', title: 'createdBy'},];
+          ];
 const showFilters = ref(false);
 
 const query = ref('');

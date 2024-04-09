@@ -11,8 +11,6 @@ export const useTradesStore = defineStore('trades', {
       typeNotification: 'warn',
     },
 
-            searchResultCreatedBy: [],
-
   }),
   actions: {
     async fetch(id = '', query) {
@@ -63,23 +61,6 @@ export const useTradesStore = defineStore('trades', {
       }
     },
 
-            async searchCreatedBy(val) {
-              try {
-                if (val) {
-                  const result = await axios(
-                    `/users/autocomplete?query=${val}&limit=100`,
-                  );
-                  this.setCreatedBy(result.data);
-                } else {
-                  const result = await axios(`/users/autocomplete?limit=100`);
-                  this.setCreatedBy(result.data);
-                }
-              } catch (e) {
-                this.showNotification(e, 'error')
-                this.setCreatedBy([]);
-              }
-            },
-
     startLoading() {
       this.loading = false;
     },
@@ -98,10 +79,6 @@ export const useTradesStore = defineStore('trades', {
       this.notify.showNotification = false
       this.notify.textNotification = ''
     },
-
-        setCreatedBy(payload) {
-            this.searchResultCreatedBy = payload
-        },
 
   }
 })

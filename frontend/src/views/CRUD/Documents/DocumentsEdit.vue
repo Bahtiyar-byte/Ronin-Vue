@@ -24,17 +24,13 @@ const documentsStore = useDocumentsStore()
 const titleStack = ref(['Admin', 'Documents'])
 const notification = computed(() => documentsStore.notify)
 
-        const optionsCreatedBy = computed(() => documentsStore.searchResultCreatedBy);
-
-        const optionsJobId = computed(() => documentsStore.searchResultJobId);
+        const optionsJob = computed(() => documentsStore.searchResultJob);
 
 const documentsItem = computed(() => documentsStore.data);
 
 const form = reactive({
 
-      createdBy: '',
-
-      jobId: [],
+      job: [],
 
     name: '',
 
@@ -45,9 +41,7 @@ const form = reactive({
 const submit = async () => {
   try {
 
-            form.createdBy = form.createdBy?.id;
-
-            form.jobId = form.jobId.map(item => item.id);
+            form.job = form.job.map(item => item.id);
 
     await documentsStore.edit({id: route.params.id, data: {...form} })
     router.push('/documents');
@@ -59,9 +53,7 @@ const submit = async () => {
 onBeforeMount(async () => {
   try {
 
-  await searchCreatedBy();
-
-  await searchJobId();
+  await searchJob();
 
     await documentsStore.fetch(route.params.id)
     formatData();
@@ -71,19 +63,13 @@ onBeforeMount(async () => {
   }
 })
 
-    async function searchCreatedBy(val) {
-      await documentsStore.searchCreatedBy(val);
-    }
-
-    async function searchJobId(val) {
-      await documentsStore.searchJobId(val);
+    async function searchJob(val) {
+      await documentsStore.searchJob(val);
     }
 
 const formatData = () => {
 
-    form.createdBy = dataFormatter.usersOneListFormatterEdit(documentsItem.value.createdBy)
-
-    form.jobId = dataFormatter.jobsManyListFormatterEdit(documentsItem.value.jobId)
+    form.job = dataFormatter.jobsManyListFormatterEdit(documentsItem.value.job)
 
     form.name = documentsItem.value.name
 
@@ -123,24 +109,14 @@ const cancel = () => {
       @submit.prevent="submit"
     >
 
-  <FormField
-      label="Created"
-    >
-      <v-select
-        v-model="form.createdBy"
-        :options="optionsCreatedBy"
-        @input="searchCreatedBy($event.target.value)"
-      />
-  </FormField>
-
     <FormField
         label="Job"
       >
         <v-select
-          v-model="form.jobId"
-          :options="optionsJobId"
+          v-model="form.job"
+          :options="optionsJob"
           multiple
-          @input="searchJobId($event.target.value)"
+          @input="searchJob($event.target.value)"
         />
     </FormField>
 

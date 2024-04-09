@@ -15,7 +15,6 @@ import BaseButtons from '@/components/BaseButtons.vue'
       :class="[cardClass, 'text-center p-10']"
       :rounded="cardRounded"
       form
-      @submit.prevent="submit"
     >
 
       <h2 class="text-2xl mb-5">

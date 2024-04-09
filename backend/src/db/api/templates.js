@@ -30,7 +30,7 @@ module.exports = class TemplatesDBApi {
       { transaction },
     );
 
-    await templates.setTradeId(data.tradeId || [], {
+    await templates.setTrade(data.trade || [], {
       transaction,
     });
 
@@ -90,7 +90,7 @@ module.exports = class TemplatesDBApi {
       { transaction },
     );
 
-    await templates.setTradeId(data.tradeId || [], {
+    await templates.setTrade(data.trade || [], {
       transaction,
     });
 
@@ -130,7 +130,7 @@ module.exports = class TemplatesDBApi {
 
     const output = templates.get({ plain: true });
 
-    output.tradeId = await templates.getTradeId({
+    output.trade = await templates.getTrade({
       transaction,
     });
 
@@ -151,17 +151,17 @@ module.exports = class TemplatesDBApi {
     let include = [
       {
         model: db.trades,
-        as: 'tradeId',
-        through: filter.tradeId
+        as: 'trade',
+        through: filter.trade
           ? {
               where: {
-                [Op.or]: filter.tradeId.split('|').map((item) => {
+                [Op.or]: filter.trade.split('|').map((item) => {
                   return { ['Id']: Utils.uuid(item) };
                 }),
               },
             }
           : null,
-        required: filter.tradeId ? true : null,
+        required: filter.trade ? true : null,
       },
     ];
 

@@ -34,9 +34,8 @@ const items = computed(() => invoicesStore.data)
 
 const headers = [
 
-{ text: 'Job', value: 'jobId'},
-{ text: 'Created', value: 'createdBy'},
-{ text: 'Estimate', value: 'estimateId'},
+{ text: 'Job', value: 'job'},
+{ text: 'Estimate', value: 'estimate'},
 { text: 'Document', value: 'document'},
 { text: 'Number', value: 'number'},]
 const isModalActive = ref(false)
@@ -154,18 +153,13 @@ const sort = (title) => {
       <th v-if="checkable" />
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'jobId' && props.sortDirection]"
-        @click="sort('jobId')"
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'job' && props.sortDirection]"
+        @click="sort('job')"
       >Job</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'createdBy' && props.sortDirection]"
-        @click="sort('createdBy')"
-      >Created</th>
-
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'estimateId' && props.sortDirection]"
-        @click="sort('estimateId')"
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'estimate' && props.sortDirection]"
+        @click="sort('estimate')"
       >Estimate</th>
 
       <th
@@ -192,24 +186,20 @@ const sort = (title) => {
           @checked="checked($event, client)"
         />
 
-              <td data-label="jobId">
+              <td data-label="job">
                   <span
-                    v-for="(i, idx) in dataFormatter.jobsManyListFormatter(client.jobId)"
-                    :key="idx + client.jobId"
+                    v-for="(i, idx) in dataFormatter.jobsManyListFormatter(client.job)"
+                    :key="idx + client.job"
                     class="block"
                   >
                       {{ i }}
                   </span>
               </td>  
 
-              <td data-label="createdBy">
-                {{ dataFormatter.usersOneListFormatter(client.createdBy) }}
-              </td>
-
-              <td data-label="estimateId">
+              <td data-label="estimate">
                   <span
-                    v-for="(i, idx) in dataFormatter.estimatesManyListFormatter(client.estimateId)"
-                    :key="idx + client.estimateId"
+                    v-for="(i, idx) in dataFormatter.estimatesManyListFormatter(client.estimate)"
+                    :key="idx + client.estimate"
                     class="block"
                   >
                       {{ i }}

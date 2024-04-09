@@ -37,25 +37,17 @@ module.exports = function (sequelize, DataTypes) {
 
   images.associate = (db) => {
     db.images.belongsToMany(db.jobs, {
-      as: 'jobId',
+      as: 'job',
       foreignKey: {
-        name: 'images_jobIdId',
+        name: 'images_jobId',
       },
       constraints: false,
-      through: 'imagesJobIdJobs',
+      through: 'imagesJobJobs',
     });
 
     /// loop through entities and it's fields, and if ref === current e[name] and create relation has many on parent entity
 
     //end loop
-
-    db.images.belongsTo(db.users, {
-      as: 'createdBy',
-      foreignKey: {
-        name: 'createdById',
-      },
-      constraints: false,
-    });
 
     db.images.belongsTo(db.users, {
       as: 'createdBy',

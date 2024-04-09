@@ -34,8 +34,8 @@ const items = computed(() => estimatesStore.data)
 
 const headers = [
 
-{ text: 'Job', value: 'jobId'},
-{ text: 'Template', value: 'templateId'},
+{ text: 'Job', value: 'job'},
+{ text: 'Template', value: 'template'},
 { text: 'Status', value: 'status'},
 { text: 'Name', value: 'name'},]
 const isModalActive = ref(false)
@@ -153,13 +153,13 @@ const sort = (title) => {
       <th v-if="checkable" />
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'jobId' && props.sortDirection]"
-        @click="sort('jobId')"
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'job' && props.sortDirection]"
+        @click="sort('job')"
       >Job</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'templateId' && props.sortDirection]"
-        @click="sort('templateId')"
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'template' && props.sortDirection]"
+        @click="sort('template')"
       >Template</th>
 
       <th
@@ -186,14 +186,14 @@ const sort = (title) => {
           @checked="checked($event, client)"
         />
 
-              <td data-label="jobId">
-                {{ dataFormatter.jobsOneListFormatter(client.jobId) }}
+              <td data-label="job">
+                {{ dataFormatter.jobsOneListFormatter(client.job) }}
               </td>
 
-              <td data-label="templateId">
+              <td data-label="template">
                   <span
-                    v-for="(i, idx) in dataFormatter.templatesManyListFormatter(client.templateId)"
-                    :key="idx + client.templateId"
+                    v-for="(i, idx) in dataFormatter.templatesManyListFormatter(client.template)"
+                    :key="idx + client.template"
                     class="block"
                   >
                       {{ i }}

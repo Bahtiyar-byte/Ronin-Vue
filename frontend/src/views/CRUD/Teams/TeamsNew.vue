@@ -22,34 +22,34 @@ const router = useRouter();
 const notification = computed(() => teamsStore.notify)
 const titleStack = ref(['Admin', 'Teams'])
 
-        const optionsUserId = computed(() => teamsStore.searchResultUserId);
+        const optionsUser = computed(() => teamsStore.searchResultUser);
 
-        const optionsTeamId = computed(() => teamsStore.searchResultTeamId);
+        const optionsTeam = computed(() => teamsStore.searchResultTeam);
 
 const form = reactive({
 
       name: '',
 
-      userId: [],
+      user: [],
 
-      teamId: [],
+      team: [],
 
 })
 
 onBeforeMount(async () => {
 
-  await searchUserId();
+  await searchUser();
 
-  await searchTeamId();
+  await searchTeam();
 
 })
 
 const submit = async () => {
   try {
 
-            form.userId = form.userId.map(item => item.id);
+            form.user = form.user.map(item => item.id);
 
-            form.teamId = form.teamId.map(item => item.id);
+            form.team = form.team.map(item => item.id);
 
     await teamsStore.newItem({ ...form })
     router.push('/teams');
@@ -62,9 +62,9 @@ const reset = () => {
 
         form.name = '';
 
-        form.userId = [];
+        form.user = [];
 
-        form.teamId = [];
+        form.team = [];
 
 }
 
@@ -72,12 +72,12 @@ const cancel = () => {
   router.push('/users')
 }
 
-    async function searchUserId(val) {
-      await teamsStore.searchUserId(val);
+    async function searchUser(val) {
+      await teamsStore.searchUser(val);
     }
 
-    async function searchTeamId(val) {
-      await teamsStore.searchTeamId(val);
+    async function searchTeam(val) {
+      await teamsStore.searchTeam(val);
     }
 
 watch(() => teamsStore.notify.showNotification, (newValue, oldValue) => {
@@ -117,10 +117,10 @@ watch(() => teamsStore.notify.showNotification, (newValue, oldValue) => {
         label="User"
       >
         <v-select
-          v-model="form.userId"
-          :options="optionsUserId"
+          v-model="form.user"
+          :options="optionsUser"
           multiple
-          @input="searchUserId($event.target.value)"
+          @input="searchUser($event.target.value)"
         />
     </FormField>
 
@@ -128,10 +128,10 @@ watch(() => teamsStore.notify.showNotification, (newValue, oldValue) => {
         label="Team"
       >
         <v-select
-          v-model="form.teamId"
-          :options="optionsTeamId"
+          v-model="form.team"
+          :options="optionsTeam"
           multiple
-          @input="searchTeamId($event.target.value)"
+          @input="searchTeam($event.target.value)"
         />
     </FormField>
 

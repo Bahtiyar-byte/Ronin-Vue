@@ -29,19 +29,15 @@ module.exports = class ContactsDBApi {
       { transaction },
     );
 
-    await contacts.setCreatedBy(data.createdBy || null, {
+    await contacts.setJob(data.job || [], {
       transaction,
     });
 
-    await contacts.setJobId(data.jobId || [], {
+    await contacts.setEstimate(data.estimate || [], {
       transaction,
     });
 
-    await contacts.setEstimateId(data.estimateId || [], {
-      transaction,
-    });
-
-    await contacts.setAppointmentId(data.appointmentId || [], {
+    await contacts.setAppointment(data.appointment || [], {
       transaction,
     });
 
@@ -99,19 +95,15 @@ module.exports = class ContactsDBApi {
       { transaction },
     );
 
-    await contacts.setCreatedBy(data.createdBy || null, {
+    await contacts.setJob(data.job || [], {
       transaction,
     });
 
-    await contacts.setJobId(data.jobId || [], {
+    await contacts.setEstimate(data.estimate || [], {
       transaction,
     });
 
-    await contacts.setEstimateId(data.estimateId || [], {
-      transaction,
-    });
-
-    await contacts.setAppointmentId(data.appointmentId || [], {
+    await contacts.setAppointment(data.appointment || [], {
       transaction,
     });
 
@@ -151,19 +143,15 @@ module.exports = class ContactsDBApi {
 
     const output = contacts.get({ plain: true });
 
-    output.jobId = await contacts.getJobId({
+    output.job = await contacts.getJob({
       transaction,
     });
 
-    output.estimateId = await contacts.getEstimateId({
+    output.estimate = await contacts.getEstimate({
       transaction,
     });
 
-    output.createdBy = await contacts.getCreatedBy({
-      transaction,
-    });
-
-    output.appointmentId = await contacts.getAppointmentId({
+    output.appointment = await contacts.getAppointment({
       transaction,
     });
 
@@ -183,53 +171,48 @@ module.exports = class ContactsDBApi {
     let where = {};
     let include = [
       {
-        model: db.users,
-        as: 'createdBy',
-      },
-
-      {
         model: db.jobs,
-        as: 'jobId',
-        through: filter.jobId
+        as: 'job',
+        through: filter.job
           ? {
               where: {
-                [Op.or]: filter.jobId.split('|').map((item) => {
+                [Op.or]: filter.job.split('|').map((item) => {
                   return { ['Id']: Utils.uuid(item) };
                 }),
               },
             }
           : null,
-        required: filter.jobId ? true : null,
+        required: filter.job ? true : null,
       },
 
       {
         model: db.estimates,
-        as: 'estimateId',
-        through: filter.estimateId
+        as: 'estimate',
+        through: filter.estimate
           ? {
               where: {
-                [Op.or]: filter.estimateId.split('|').map((item) => {
+                [Op.or]: filter.estimate.split('|').map((item) => {
                   return { ['Id']: Utils.uuid(item) };
                 }),
               },
             }
           : null,
-        required: filter.estimateId ? true : null,
+        required: filter.estimate ? true : null,
       },
 
       {
         model: db.appointments,
-        as: 'appointmentId',
-        through: filter.appointmentId
+        as: 'appointment',
+        through: filter.appointment
           ? {
               where: {
-                [Op.or]: filter.appointmentId.split('|').map((item) => {
+                [Op.or]: filter.appointment.split('|').map((item) => {
                   return { ['Id']: Utils.uuid(item) };
                 }),
               },
             }
           : null,
-        required: filter.appointmentId ? true : null,
+        required: filter.appointment ? true : null,
       },
     ];
 
@@ -299,17 +282,6 @@ module.exports = class ContactsDBApi {
         where = {
           ...where,
           stage: filter.stage,
-        };
-      }
-
-      if (filter.createdBy) {
-        var listItems = filter.createdBy.split('|').map((item) => {
-          return Utils.uuid(item);
-        });
-
-        where = {
-          ...where,
-          createdById: { [Op.or]: listItems },
         };
       }
 

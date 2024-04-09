@@ -34,8 +34,7 @@ const items = computed(() => imagesStore.data)
 
 const headers = [
 
-{ text: 'Job', value: 'jobId'},
-{ text: 'Created', value: 'createdBy'},
+{ text: 'Job', value: 'job'},
 { text: 'Name', value: 'name'},
 { text: 'Url', value: 'url'},]
 const isModalActive = ref(false)
@@ -153,14 +152,9 @@ const sort = (title) => {
       <th v-if="checkable" />
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'jobId' && props.sortDirection]"
-        @click="sort('jobId')"
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'job' && props.sortDirection]"
+        @click="sort('job')"
       >Job</th>
-
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'createdBy' && props.sortDirection]"
-        @click="sort('createdBy')"
-      >Created</th>
 
       <th
         :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'name' && props.sortDirection]"
@@ -186,19 +180,15 @@ const sort = (title) => {
           @checked="checked($event, client)"
         />
 
-              <td data-label="jobId">
+              <td data-label="job">
                   <span
-                    v-for="(i, idx) in dataFormatter.jobsManyListFormatter(client.jobId)"
-                    :key="idx + client.jobId"
+                    v-for="(i, idx) in dataFormatter.jobsManyListFormatter(client.job)"
+                    :key="idx + client.job"
                     class="block"
                   >
                       {{ i }}
                   </span>
               </td>  
-
-              <td data-label="createdBy">
-                {{ dataFormatter.usersOneListFormatter(client.createdBy) }}
-              </td>
 
               <td data-label="name">
                 {{ client.name }}

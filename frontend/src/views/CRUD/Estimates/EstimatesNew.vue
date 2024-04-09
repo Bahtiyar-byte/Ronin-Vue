@@ -22,15 +22,15 @@ const router = useRouter();
 const notification = computed(() => estimatesStore.notify)
 const titleStack = ref(['Admin', 'Estimates'])
 
-        const optionsJobId = computed(() => estimatesStore.searchResultJobId);
+        const optionsJob = computed(() => estimatesStore.searchResultJob);
 
-        const optionsTemplateId = computed(() => estimatesStore.searchResultTemplateId);
+        const optionsTemplate = computed(() => estimatesStore.searchResultTemplate);
 
 const form = reactive({
 
-      jobId: '',
+      job: '',
 
-      templateId: [],
+      template: [],
 
       status: false,
 
@@ -40,18 +40,18 @@ const form = reactive({
 
 onBeforeMount(async () => {
 
-  await searchJobId();
+  await searchJob();
 
-  await searchTemplateId();
+  await searchTemplate();
 
 })
 
 const submit = async () => {
   try {
 
-            form.jobId = form.jobId.id;
+            form.job = form.job.id;
 
-            form.templateId = form.templateId.map(item => item.id);
+            form.template = form.template.map(item => item.id);
 
             form.status = form.status.label;
 
@@ -64,9 +64,9 @@ const submit = async () => {
 
 const reset = () => {
 
-        form.jobId = '';
+        form.job = '';
 
-        form.templateId = [];
+        form.template = [];
 
         form.status = false;
 
@@ -78,12 +78,12 @@ const cancel = () => {
   router.push('/users')
 }
 
-    async function searchJobId(val) {
-      await estimatesStore.searchJobId(val);
+    async function searchJob(val) {
+      await estimatesStore.searchJob(val);
     }
 
-    async function searchTemplateId(val) {
-      await estimatesStore.searchTemplateId(val);
+    async function searchTemplate(val) {
+      await estimatesStore.searchTemplate(val);
     }
 
 watch(() => estimatesStore.notify.showNotification, (newValue, oldValue) => {
@@ -114,9 +114,9 @@ watch(() => estimatesStore.notify.showNotification, (newValue, oldValue) => {
       label="Job"
     >
         <v-select
-          v-model="form.jobId"
-          :options="optionsJobId"
-          @input="searchJobId($event.target.value)"
+          v-model="form.job"
+          :options="optionsJob"
+          @input="searchJob($event.target.value)"
         />
   </FormField>
 
@@ -124,10 +124,10 @@ watch(() => estimatesStore.notify.showNotification, (newValue, oldValue) => {
         label="Template"
       >
         <v-select
-          v-model="form.templateId"
-          :options="optionsTemplateId"
+          v-model="form.template"
+          :options="optionsTemplate"
           multiple
-          @input="searchTemplateId($event.target.value)"
+          @input="searchTemplate($event.target.value)"
         />
     </FormField>
 

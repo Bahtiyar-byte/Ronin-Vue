@@ -11,7 +11,7 @@ export const useTemplatesStore = defineStore('templates', {
       typeNotification: 'warn',
     },
 
-            searchResultTradeId: [],
+            searchResultTrade: [],
 
   }),
   actions: {
@@ -63,20 +63,20 @@ export const useTemplatesStore = defineStore('templates', {
       }
     },
 
-            async searchTradeId(val) {
+            async searchTrade(val) {
               try {
                 if (val) {
                   const result = await axios(
                     `/trades/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setTradeId(result.data);
+                  this.setTrade(result.data);
                 } else {
                   const result = await axios(`/trades/autocomplete?limit=100`);
-                  this.setTradeId(result.data);
+                  this.setTrade(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setTradeId([]);
+                this.setTrade([]);
               }
             },
 
@@ -99,8 +99,8 @@ export const useTemplatesStore = defineStore('templates', {
       this.notify.textNotification = ''
     },
 
-        setTradeId(payload) {
-            this.searchResultTradeId = payload
+        setTrade(payload) {
+            this.searchResultTrade = payload
         },
 
   }
