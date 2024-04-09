@@ -38,14 +38,6 @@ module.exports = function (sequelize, DataTypes) {
 
     db.trades.belongsTo(db.users, {
       as: 'createdBy',
-      foreignKey: {
-        name: 'createdById',
-      },
-      constraints: false,
-    });
-
-    db.trades.belongsTo(db.users, {
-      as: 'createdBy',
     });
 
     db.trades.belongsTo(db.users, {

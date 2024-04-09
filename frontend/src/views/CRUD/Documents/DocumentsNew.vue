@@ -22,15 +22,11 @@ const router = useRouter();
 const notification = computed(() => documentsStore.notify)
 const titleStack = ref(['Admin', 'Documents'])
 
-        const optionsCreatedBy = computed(() => documentsStore.searchResultCreatedBy);
-
-        const optionsJobId = computed(() => documentsStore.searchResultJobId);
+        const optionsJob = computed(() => documentsStore.searchResultJob);
 
 const form = reactive({
 
-      createdBy: '',
-
-      jobId: [],
+      job: [],
 
       name: '',
 
@@ -40,18 +36,14 @@ const form = reactive({
 
 onBeforeMount(async () => {
 
-  await searchCreatedBy();
-
-  await searchJobId();
+  await searchJob();
 
 })
 
 const submit = async () => {
   try {
 
-            form.createdBy = form.createdBy.id;
-
-            form.jobId = form.jobId.map(item => item.id);
+            form.job = form.job.map(item => item.id);
 
     await documentsStore.newItem({ ...form })
     router.push('/documents');
@@ -62,9 +54,7 @@ const submit = async () => {
 
 const reset = () => {
 
-        form.createdBy = '';
-
-        form.jobId = [];
+        form.job = [];
 
         form.name = '';
 
@@ -76,12 +66,8 @@ const cancel = () => {
   router.push('/users')
 }
 
-    async function searchCreatedBy(val) {
-      await documentsStore.searchCreatedBy(val);
-    }
-
-    async function searchJobId(val) {
-      await documentsStore.searchJobId(val);
+    async function searchJob(val) {
+      await documentsStore.searchJob(val);
     }
 
 watch(() => documentsStore.notify.showNotification, (newValue, oldValue) => {
@@ -108,24 +94,14 @@ watch(() => documentsStore.notify.showNotification, (newValue, oldValue) => {
       @submit.prevent="submit"
     >
 
-  <FormField
-      label="Created"
-    >
-        <v-select
-          v-model="form.createdBy"
-          :options="optionsCreatedBy"
-          @input="searchCreatedBy($event.target.value)"
-        />
-  </FormField>
-
     <FormField
         label="Job"
       >
         <v-select
-          v-model="form.jobId"
-          :options="optionsJobId"
+          v-model="form.job"
+          :options="optionsJob"
           multiple
-          @input="searchJobId($event.target.value)"
+          @input="searchJob($event.target.value)"
         />
     </FormField>
 

@@ -22,7 +22,7 @@ const router = useRouter();
 const notification = computed(() => rolesStore.notify)
 const titleStack = ref(['Admin', 'Roles'])
 
-        const optionsUserId = computed(() => rolesStore.searchResultUserId);
+        const optionsUser = computed(() => rolesStore.searchResultUser);
 
 const form = reactive({
 
@@ -30,20 +30,20 @@ const form = reactive({
 
       permissions: '',
 
-      userId: [],
+      user: [],
 
 })
 
 onBeforeMount(async () => {
 
-  await searchUserId();
+  await searchUser();
 
 })
 
 const submit = async () => {
   try {
 
-            form.userId = form.userId.map(item => item.id);
+            form.user = form.user.map(item => item.id);
 
     await rolesStore.newItem({ ...form })
     router.push('/roles');
@@ -58,7 +58,7 @@ const reset = () => {
 
         form.permissions = '';
 
-        form.userId = [];
+        form.user = [];
 
 }
 
@@ -66,8 +66,8 @@ const cancel = () => {
   router.push('/users')
 }
 
-    async function searchUserId(val) {
-      await rolesStore.searchUserId(val);
+    async function searchUser(val) {
+      await rolesStore.searchUser(val);
     }
 
 watch(() => rolesStore.notify.showNotification, (newValue, oldValue) => {
@@ -116,10 +116,10 @@ watch(() => rolesStore.notify.showNotification, (newValue, oldValue) => {
         label="User"
       >
         <v-select
-          v-model="form.userId"
-          :options="optionsUserId"
+          v-model="form.user"
+          :options="optionsUser"
           multiple
-          @input="searchUserId($event.target.value)"
+          @input="searchUser($event.target.value)"
         />
     </FormField>
 

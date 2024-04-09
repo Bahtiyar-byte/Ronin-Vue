@@ -37,12 +37,12 @@ module.exports = function (sequelize, DataTypes) {
 
   roles.associate = (db) => {
     db.roles.belongsToMany(db.users, {
-      as: 'userId',
+      as: 'user',
       foreignKey: {
-        name: 'roles_userIdId',
+        name: 'roles_userId',
       },
       constraints: false,
-      through: 'rolesUserIdUsers',
+      through: 'rolesUserUsers',
     });
 
     /// loop through entities and it's fields, and if ref === current e[name] and create relation has many on parent entity

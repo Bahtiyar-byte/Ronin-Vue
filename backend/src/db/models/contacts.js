@@ -59,43 +59,35 @@ module.exports = function (sequelize, DataTypes) {
 
   contacts.associate = (db) => {
     db.contacts.belongsToMany(db.jobs, {
-      as: 'jobId',
+      as: 'job',
       foreignKey: {
-        name: 'contacts_jobIdId',
+        name: 'contacts_jobId',
       },
       constraints: false,
-      through: 'contactsJobIdJobs',
+      through: 'contactsJobJobs',
     });
 
     db.contacts.belongsToMany(db.estimates, {
-      as: 'estimateId',
+      as: 'estimate',
       foreignKey: {
-        name: 'contacts_estimateIdId',
+        name: 'contacts_estimateId',
       },
       constraints: false,
-      through: 'contactsEstimateIdEstimates',
+      through: 'contactsEstimateEstimates',
     });
 
     db.contacts.belongsToMany(db.appointments, {
-      as: 'appointmentId',
+      as: 'appointment',
       foreignKey: {
-        name: 'contacts_appointmentIdId',
+        name: 'contacts_appointmentId',
       },
       constraints: false,
-      through: 'contactsAppointmentIdAppointments',
+      through: 'contactsAppointmentAppointments',
     });
 
     /// loop through entities and it's fields, and if ref === current e[name] and create relation has many on parent entity
 
     //end loop
-
-    db.contacts.belongsTo(db.users, {
-      as: 'createdBy',
-      foreignKey: {
-        name: 'createdById',
-      },
-      constraints: false,
-    });
 
     db.contacts.belongsTo(db.users, {
       as: 'createdBy',

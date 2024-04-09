@@ -26,11 +26,7 @@ module.exports = class JobsDBApi {
       { transaction },
     );
 
-    await jobs.setCreatedBy(data.createdBy || null, {
-      transaction,
-    });
-
-    await jobs.setContactId(data.contactId || [], {
+    await jobs.setContact(data.contact || [], {
       transaction,
     });
 
@@ -42,23 +38,23 @@ module.exports = class JobsDBApi {
       transaction,
     });
 
-    await jobs.setEstimateId(data.estimateId || [], {
+    await jobs.setEstimate(data.estimate || [], {
       transaction,
     });
 
-    await jobs.setAppointmentId(data.appointmentId || [], {
+    await jobs.setAppointment(data.appointment || [], {
       transaction,
     });
 
-    await jobs.setImageId(data.imageId || [], {
+    await jobs.setImage(data.image || [], {
       transaction,
     });
 
-    await jobs.setDocumentId(data.documentId || [], {
+    await jobs.setDocument(data.document || [], {
       transaction,
     });
 
-    await jobs.setInvoiceId(data.invoiceId || [], {
+    await jobs.setInvoice(data.invoice || [], {
       transaction,
     });
 
@@ -108,11 +104,7 @@ module.exports = class JobsDBApi {
       { transaction },
     );
 
-    await jobs.setCreatedBy(data.createdBy || null, {
-      transaction,
-    });
-
-    await jobs.setContactId(data.contactId || [], {
+    await jobs.setContact(data.contact || [], {
       transaction,
     });
 
@@ -124,23 +116,23 @@ module.exports = class JobsDBApi {
       transaction,
     });
 
-    await jobs.setEstimateId(data.estimateId || [], {
+    await jobs.setEstimate(data.estimate || [], {
       transaction,
     });
 
-    await jobs.setAppointmentId(data.appointmentId || [], {
+    await jobs.setAppointment(data.appointment || [], {
       transaction,
     });
 
-    await jobs.setImageId(data.imageId || [], {
+    await jobs.setImage(data.image || [], {
       transaction,
     });
 
-    await jobs.setDocumentId(data.documentId || [], {
+    await jobs.setDocument(data.document || [], {
       transaction,
     });
 
-    await jobs.setInvoiceId(data.invoiceId || [], {
+    await jobs.setInvoice(data.invoice || [], {
       transaction,
     });
 
@@ -180,15 +172,11 @@ module.exports = class JobsDBApi {
 
     const output = jobs.get({ plain: true });
 
-    output.estimates_jobId = await jobs.getEstimates_jobId({
+    output.estimates_job = await jobs.getEstimates_job({
       transaction,
     });
 
-    output.contactId = await jobs.getContactId({
-      transaction,
-    });
-
-    output.createdBy = await jobs.getCreatedBy({
+    output.contact = await jobs.getContact({
       transaction,
     });
 
@@ -200,23 +188,23 @@ module.exports = class JobsDBApi {
       transaction,
     });
 
-    output.estimateId = await jobs.getEstimateId({
+    output.estimate = await jobs.getEstimate({
       transaction,
     });
 
-    output.appointmentId = await jobs.getAppointmentId({
+    output.appointment = await jobs.getAppointment({
       transaction,
     });
 
-    output.imageId = await jobs.getImageId({
+    output.image = await jobs.getImage({
       transaction,
     });
 
-    output.documentId = await jobs.getDocumentId({
+    output.document = await jobs.getDocument({
       transaction,
     });
 
-    output.invoiceId = await jobs.getInvoiceId({
+    output.invoice = await jobs.getInvoice({
       transaction,
     });
 
@@ -236,23 +224,18 @@ module.exports = class JobsDBApi {
     let where = {};
     let include = [
       {
-        model: db.users,
-        as: 'createdBy',
-      },
-
-      {
         model: db.contacts,
-        as: 'contactId',
-        through: filter.contactId
+        as: 'contact',
+        through: filter.contact
           ? {
               where: {
-                [Op.or]: filter.contactId.split('|').map((item) => {
+                [Op.or]: filter.contact.split('|').map((item) => {
                   return { ['Id']: Utils.uuid(item) };
                 }),
               },
             }
           : null,
-        required: filter.contactId ? true : null,
+        required: filter.contact ? true : null,
       },
 
       {
@@ -287,77 +270,77 @@ module.exports = class JobsDBApi {
 
       {
         model: db.estimates,
-        as: 'estimateId',
-        through: filter.estimateId
+        as: 'estimate',
+        through: filter.estimate
           ? {
               where: {
-                [Op.or]: filter.estimateId.split('|').map((item) => {
+                [Op.or]: filter.estimate.split('|').map((item) => {
                   return { ['Id']: Utils.uuid(item) };
                 }),
               },
             }
           : null,
-        required: filter.estimateId ? true : null,
+        required: filter.estimate ? true : null,
       },
 
       {
         model: db.appointments,
-        as: 'appointmentId',
-        through: filter.appointmentId
+        as: 'appointment',
+        through: filter.appointment
           ? {
               where: {
-                [Op.or]: filter.appointmentId.split('|').map((item) => {
+                [Op.or]: filter.appointment.split('|').map((item) => {
                   return { ['Id']: Utils.uuid(item) };
                 }),
               },
             }
           : null,
-        required: filter.appointmentId ? true : null,
+        required: filter.appointment ? true : null,
       },
 
       {
         model: db.images,
-        as: 'imageId',
-        through: filter.imageId
+        as: 'image',
+        through: filter.image
           ? {
               where: {
-                [Op.or]: filter.imageId.split('|').map((item) => {
+                [Op.or]: filter.image.split('|').map((item) => {
                   return { ['Id']: Utils.uuid(item) };
                 }),
               },
             }
           : null,
-        required: filter.imageId ? true : null,
+        required: filter.image ? true : null,
       },
 
       {
         model: db.documents,
-        as: 'documentId',
-        through: filter.documentId
+        as: 'document',
+        through: filter.document
           ? {
               where: {
-                [Op.or]: filter.documentId.split('|').map((item) => {
+                [Op.or]: filter.document.split('|').map((item) => {
                   return { ['Id']: Utils.uuid(item) };
                 }),
               },
             }
           : null,
-        required: filter.documentId ? true : null,
+        required: filter.document ? true : null,
       },
 
       {
         model: db.invoices,
-        as: 'invoiceId',
-        through: filter.invoiceId
+        as: 'invoice',
+        through: filter.invoice
           ? {
               where: {
-                [Op.or]: filter.invoiceId.split('|').map((item) => {
+                [Op.or]: filter.invoice.split('|').map((item) => {
                   return { ['Id']: Utils.uuid(item) };
                 }),
               },
             }
           : null,
-        required: filter.invoiceId ? true : null,
+        required: filter.invoice ? true : null,
       },
     ];
 
@@ -406,17 +389,6 @@ module.exports = class JobsDBApi {
         where = {
           ...where,
           status: filter.status,
-        };
-      }
-
-      if (filter.createdBy) {
-        var listItems = filter.createdBy.split('|').map((item) => {
-          return Utils.uuid(item);
-        });
-
-        where = {
-          ...where,
-          createdById: { [Op.or]: listItems },
         };
       }
 

@@ -42,10 +42,6 @@ module.exports = class UsersDBApi {
       { transaction },
     );
 
-    await users.setCreatedBy(data.data.createdBy || null, {
-      transaction,
-    });
-
     await users.setRoleId(data.data.roleId || [], {
       transaction,
     });
@@ -157,10 +153,6 @@ module.exports = class UsersDBApi {
       { transaction },
     );
 
-    await users.setCreatedBy(data.createdBy || null, {
-      transaction,
-    });
-
     await users.setRoleId(data.roleId || [], {
       transaction,
     });
@@ -211,43 +203,11 @@ module.exports = class UsersDBApi {
 
     const output = users.get({ plain: true });
 
-    output.contacts_createdBy = await users.getContacts_createdBy({
-      transaction,
-    });
-
-    output.appointments_createdBy = await users.getAppointments_createdBy({
-      transaction,
-    });
-
-    output.jobs_createdBy = await users.getJobs_createdBy({
-      transaction,
-    });
-
-    output.trades_createdBy = await users.getTrades_createdBy({
-      transaction,
-    });
-
-    output.documents_createdBy = await users.getDocuments_createdBy({
-      transaction,
-    });
-
-    output.images_createdBy = await users.getImages_createdBy({
-      transaction,
-    });
-
-    output.invoices_createdBy = await users.getInvoices_createdBy({
-      transaction,
-    });
-
     output.avatar = await users.getAvatar({
       transaction,
     });
 
     output.roleId = await users.getRoleId({
-      transaction,
-    });
-
-    output.createdBy = await users.getCreatedBy({
       transaction,
     });
 
@@ -266,11 +226,6 @@ module.exports = class UsersDBApi {
     const transaction = (options && options.transaction) || undefined;
     let where = {};
     let include = [
-      {
-        model: db.users,
-        as: 'createdBy',
-      },
-
       {
         model: db.roles,
         as: 'roleId',
@@ -442,17 +397,6 @@ module.exports = class UsersDBApi {
         where = {
           ...where,
           emailVerified: filter.emailVerified,
-        };
-      }
-
-      if (filter.createdBy) {
-        var listItems = filter.createdBy.split('|').map((item) => {
-          return Utils.uuid(item);
-        });
-
-        where = {
-          ...where,
-          createdById: { [Op.or]: listItems },
         };
       }
 

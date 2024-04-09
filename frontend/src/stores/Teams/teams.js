@@ -11,9 +11,9 @@ export const useTeamsStore = defineStore('teams', {
       typeNotification: 'warn',
     },
 
-            searchResultUserId: [],
+            searchResultUser: [],
 
-            searchResultTeamId: [],
+            searchResultTeam: [],
 
   }),
   actions: {
@@ -65,37 +65,37 @@ export const useTeamsStore = defineStore('teams', {
       }
     },
 
-            async searchUserId(val) {
+            async searchUser(val) {
               try {
                 if (val) {
                   const result = await axios(
                     `/users/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setUserId(result.data);
+                  this.setUser(result.data);
                 } else {
                   const result = await axios(`/users/autocomplete?limit=100`);
-                  this.setUserId(result.data);
+                  this.setUser(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setUserId([]);
+                this.setUser([]);
               }
             },
 
-            async searchTeamId(val) {
+            async searchTeam(val) {
               try {
                 if (val) {
                   const result = await axios(
                     `/teams/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setTeamId(result.data);
+                  this.setTeam(result.data);
                 } else {
                   const result = await axios(`/teams/autocomplete?limit=100`);
-                  this.setTeamId(result.data);
+                  this.setTeam(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setTeamId([]);
+                this.setTeam([]);
               }
             },
 
@@ -118,12 +118,12 @@ export const useTeamsStore = defineStore('teams', {
       this.notify.textNotification = ''
     },
 
-        setUserId(payload) {
-            this.searchResultUserId = payload
+        setUser(payload) {
+            this.searchResultUser = payload
         },
 
-        setTeamId(payload) {
-            this.searchResultTeamId = payload
+        setTeam(payload) {
+            this.searchResultTeam = payload
         },
 
   }

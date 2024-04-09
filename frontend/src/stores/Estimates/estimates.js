@@ -11,9 +11,9 @@ export const useEstimatesStore = defineStore('estimates', {
       typeNotification: 'warn',
     },
 
-            searchResultJobId: [],
+            searchResultJob: [],
 
-            searchResultTemplateId: [],
+            searchResultTemplate: [],
 
   }),
   actions: {
@@ -65,37 +65,37 @@ export const useEstimatesStore = defineStore('estimates', {
       }
     },
 
-            async searchJobId(val) {
+            async searchJob(val) {
               try {
                 if (val) {
                   const result = await axios(
                     `/jobs/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setJobId(result.data);
+                  this.setJob(result.data);
                 } else {
                   const result = await axios(`/jobs/autocomplete?limit=100`);
-                  this.setJobId(result.data);
+                  this.setJob(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setJobId([]);
+                this.setJob([]);
               }
             },
 
-            async searchTemplateId(val) {
+            async searchTemplate(val) {
               try {
                 if (val) {
                   const result = await axios(
                     `/templates/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setTemplateId(result.data);
+                  this.setTemplate(result.data);
                 } else {
                   const result = await axios(`/templates/autocomplete?limit=100`);
-                  this.setTemplateId(result.data);
+                  this.setTemplate(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setTemplateId([]);
+                this.setTemplate([]);
               }
             },
 
@@ -118,12 +118,12 @@ export const useEstimatesStore = defineStore('estimates', {
       this.notify.textNotification = ''
     },
 
-        setJobId(payload) {
-            this.searchResultJobId = payload
+        setJob(payload) {
+            this.searchResultJob = payload
         },
 
-        setTemplateId(payload) {
-            this.searchResultTemplateId = payload
+        setTemplate(payload) {
+            this.searchResultTemplate = payload
         },
 
   }

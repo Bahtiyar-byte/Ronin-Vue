@@ -34,8 +34,7 @@ const items = computed(() => tradesStore.data)
 
 const headers = [
 
-{ text: 'Name', value: 'name'},
-{ text: 'Created', value: 'createdBy'},]
+{ text: 'Name', value: 'name'},]
 const isModalActive = ref(false)
 
 const isModalDangerActive = ref(false)
@@ -155,11 +154,6 @@ const sort = (title) => {
         @click="sort('name')"
       >Name</th>
 
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'createdBy' && props.sortDirection]"
-        @click="sort('createdBy')"
-      >Created</th>
-
         <th />
       </tr>
     </thead>
@@ -176,10 +170,6 @@ const sort = (title) => {
 
               <td data-label="name">
                 {{ client.name }}
-              </td>
-
-              <td data-label="createdBy">
-                {{ dataFormatter.usersOneListFormatter(client.createdBy) }}
               </td>
 
         <td class="before:hidden lg:w-1 whitespace-nowrap">

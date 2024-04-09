@@ -23,41 +23,61 @@ const Invoices = db.invoices;
 
 const ContactsData = [
   {
-    name: 'Carl Gauss (Karl Friedrich Gauss)',
+    name: 'Andreas Vesalius',
 
-    email: 'estrella@fay-ruecker.co',
+    email: 'merilyn.hartmann@armstrong.net',
 
-    phone: '366.834.9395',
+    phone: '(870) 977-7964',
 
-    adress: 'Like a red-headed stepchild',
+    adress: 'Got depression, Smith and Wessen',
 
-    firstName: "Goin' hog huntin'",
+    firstName: 'Come on now',
 
-    lastName: 'Yup',
+    lastName: 'That goddamn Datamate',
 
-    stage: 'Lead',
-
-    // type code here for "relation_many" field
+    stage: 'Prospect',
 
     // type code here for "relation_many" field
 
-    // type code here for "relation_one" field
+    // type code here for "relation_many" field
 
     // type code here for "relation_many" field
   },
 
   {
-    name: 'Comte de Buffon',
+    name: 'Karl Landsteiner',
 
-    email: 'grazyna@crist.biz',
+    email: 'bobby@wolff.info',
 
-    phone: '161-621-8011 x91220',
+    phone: '(115) 727-6462',
 
-    adress: 'Got depression, Smith and Wessen',
+    adress: 'Like a red-headed stepchild',
 
-    firstName: 'That damn gimble',
+    firstName: "That's messed up",
 
-    lastName: "It's around here somewhere",
+    lastName: 'I got that scurvy',
+
+    stage: 'Prospect',
+
+    // type code here for "relation_many" field
+
+    // type code here for "relation_many" field
+
+    // type code here for "relation_many" field
+  },
+
+  {
+    name: 'Linus Pauling',
+
+    email: 'kareem@aufderhar-grimes.net',
+
+    phone: '530-441-0011',
+
+    adress: 'That damn gimble',
+
+    firstName: "Goin' hog huntin'",
+
+    lastName: 'My boss gonna fire me',
 
     stage: 'Customer',
 
@@ -65,55 +85,27 @@ const ContactsData = [
 
     // type code here for "relation_many" field
 
-    // type code here for "relation_one" field
-
     // type code here for "relation_many" field
   },
 
   {
-    name: 'Gustav Kirchhoff',
+    name: 'Robert Koch',
 
-    email: 'angelika_green@hessel.com',
+    email: 'kai_ondricka@blick-runolfsdottir.io',
 
-    phone: '1-901-395-1193 x5141',
+    phone: '475.202.5963 x380',
 
-    adress: 'Come on now',
+    adress: 'I got that scurvy',
 
-    firstName: 'Contact the tower',
+    firstName: 'Always the last one to the party',
 
-    lastName: "It's around here somewhere",
+    lastName: "That's messed up",
 
     stage: 'Prospect',
 
     // type code here for "relation_many" field
 
     // type code here for "relation_many" field
-
-    // type code here for "relation_one" field
-
-    // type code here for "relation_many" field
-  },
-
-  {
-    name: 'Jean Piaget',
-
-    email: 'marybeth.monahan@sipes.biz',
-
-    phone: '(430) 666-7249 x988',
-
-    adress: 'I want my damn cart back',
-
-    firstName: 'Reminds me of my old girlfriend Olga Goodntight',
-
-    lastName: "Goin' hog huntin'",
-
-    stage: 'Prospect',
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_one" field
 
     // type code here for "relation_many" field
   },
@@ -121,7 +113,7 @@ const ContactsData = [
 
 const AppointmentsData = [
   {
-    date: new Date('2023-04-23'),
+    date: new Date('2023-09-12'),
 
     scheduled: true,
 
@@ -131,15 +123,11 @@ const AppointmentsData = [
 
     // type code here for "relation_many" field
 
-    // type code here for "relation_many" field
-
-    // type code here for "relation_one" field
-
-    name: 'Willard Libby',
+    name: 'Noam Chomsky',
   },
 
   {
-    date: new Date('2023-08-16'),
+    date: new Date('2024-03-05'),
 
     scheduled: true,
 
@@ -149,15 +137,25 @@ const AppointmentsData = [
 
     // type code here for "relation_many" field
 
-    // type code here for "relation_many" field
-
-    // type code here for "relation_one" field
-
-    name: 'Marie Curie',
+    name: 'Robert Koch',
   },
 
   {
-    date: new Date('2024-01-23'),
+    date: new Date('2023-10-25'),
+
+    scheduled: true,
+
+    // type code here for "relation_many" field
+
+    // type code here for "relation_many" field
+
+    // type code here for "relation_many" field
+
+    name: 'Gustav Kirchhoff',
+  },
+
+  {
+    date: new Date('2023-11-04'),
 
     scheduled: false,
 
@@ -167,46 +165,48 @@ const AppointmentsData = [
 
     // type code here for "relation_many" field
 
-    // type code here for "relation_many" field
-
-    // type code here for "relation_one" field
-
-    name: 'Richard Feynman',
-  },
-
-  {
-    date: new Date('2023-12-31'),
-
-    scheduled: false,
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_one" field
-
-    name: 'Euclid',
+    name: 'Theodosius Dobzhansky',
   },
 ];
 
 const JobsData = [
   {
-    name: 'Emil Kraepelin',
+    name: 'Alfred Kinsey',
 
     // type code here for "relation_many" field
 
-    category: 'Residential',
+    category: 'Property Management',
+
+    type: 'New',
+
+    status: 'Completed',
+
+    // type code here for "relation_many" field
+
+    // type code here for "relation_many" field
+
+    // type code here for "relation_many" field
+
+    // type code here for "relation_many" field
+
+    // type code here for "relation_many" field
+
+    // type code here for "relation_many" field
+
+    // type code here for "relation_many" field
+  },
+
+  {
+    name: 'Claude Bernard',
+
+    // type code here for "relation_many" field
+
+    category: 'Property Management',
 
     type: 'Retail',
 
     status: 'Invoiced',
 
-    // type code here for "relation_one" field
-
     // type code here for "relation_many" field
 
     // type code here for "relation_many" field
@@ -223,73 +223,41 @@ const JobsData = [
   },
 
   {
-    name: 'Gustav Kirchhoff',
+    name: 'Carl Linnaeus',
 
     // type code here for "relation_many" field
 
     category: 'Commercial',
-
-    type: 'Warranty',
-
-    status: 'Quoted',
-
-    // type code here for "relation_one" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-  },
-
-  {
-    name: 'Alfred Wegener',
-
-    // type code here for "relation_many" field
-
-    category: 'Commercial',
-
-    type: 'Retail',
-
-    status: 'Active',
-
-    // type code here for "relation_one" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-  },
-
-  {
-    name: 'Max Born',
-
-    // type code here for "relation_many" field
-
-    category: 'Residential',
 
     type: 'Service',
 
     status: 'Quoted',
 
-    // type code here for "relation_one" field
+    // type code here for "relation_many" field
+
+    // type code here for "relation_many" field
+
+    // type code here for "relation_many" field
+
+    // type code here for "relation_many" field
+
+    // type code here for "relation_many" field
+
+    // type code here for "relation_many" field
+
+    // type code here for "relation_many" field
+  },
+
+  {
+    name: 'Isaac Newton',
+
+    // type code here for "relation_many" field
+
+    category: 'Residential',
+
+    type: 'New',
+
+    status: 'Active',
 
     // type code here for "relation_many" field
 
@@ -313,7 +281,7 @@ const EstimatesData = [
 
     // type code here for "relation_many" field
 
-    status: 'Sent',
+    status: 'Approved',
 
     name: 'Archimedes',
   },
@@ -323,9 +291,9 @@ const EstimatesData = [
 
     // type code here for "relation_many" field
 
-    status: 'Rejected',
+    status: 'Sent',
 
-    name: 'Karl Landsteiner',
+    name: 'Sigmund Freud',
   },
 
   {
@@ -335,7 +303,7 @@ const EstimatesData = [
 
     status: 'Approved',
 
-    name: 'Nicolaus Copernicus',
+    name: 'J. Robert Oppenheimer',
   },
 
   {
@@ -343,35 +311,27 @@ const EstimatesData = [
 
     // type code here for "relation_many" field
 
-    status: 'Sent',
+    status: 'Draft',
 
-    name: 'Heike Kamerlingh Onnes',
+    name: 'Frederick Sanger',
   },
 ];
 
 const TradesData = [
   {
-    name: 'Jean Baptiste Lamarck',
-
-    // type code here for "relation_one" field
+    name: 'Jean Piaget',
   },
 
   {
-    name: 'Albert Einstein',
-
-    // type code here for "relation_one" field
+    name: 'Karl Landsteiner',
   },
 
   {
-    name: 'Paul Ehrlich',
-
-    // type code here for "relation_one" field
+    name: 'Christiaan Huygens',
   },
 
   {
-    name: 'Stephen Hawking',
-
-    // type code here for "relation_one" field
+    name: 'Arthur Eddington',
   },
 ];
 
@@ -379,133 +339,89 @@ const TemplatesData = [
   {
     // type code here for "relation_many" field
 
-    materialCost: 85.59,
+    materialCost: 38.36,
 
-    laborCost: 70.35,
+    laborCost: 20.47,
 
-    markup: 18.31,
+    markup: 47.23,
 
-    profitMargin: 40.24,
+    profitMargin: 52.64,
 
-    name: 'Max von Laue',
+    name: 'Louis Victor de Broglie',
 
-    totalPrice: 90.93,
+    totalPrice: 41.93,
 
     unitOfMeasurement: 'SQ',
 
-    description: 'That damn Bill Stull',
+    description: 'Let me tell ya',
   },
 
   {
     // type code here for "relation_many" field
 
-    materialCost: 35.78,
+    materialCost: 25.89,
 
-    laborCost: 53.95,
+    laborCost: 41.88,
 
-    markup: 38.88,
+    markup: 19.46,
 
-    profitMargin: 19.44,
+    profitMargin: 39.89,
 
-    name: 'John Dalton',
+    name: 'Enrico Fermi',
 
-    totalPrice: 13.79,
-
-    unitOfMeasurement: 'SQ',
-
-    description: 'That damn gimble',
-  },
-
-  {
-    // type code here for "relation_many" field
-
-    materialCost: 91.51,
-
-    laborCost: 63.76,
-
-    markup: 84.45,
-
-    profitMargin: 40.66,
-
-    name: 'Thomas Hunt Morgan',
-
-    totalPrice: 12.55,
+    totalPrice: 92.67,
 
     unitOfMeasurement: 'LF',
 
-    description: "How 'bout them Cowboys",
+    description: 'Turd gone wrong',
   },
 
   {
     // type code here for "relation_many" field
 
-    materialCost: 66.56,
+    materialCost: 52.01,
 
-    laborCost: 90.74,
+    laborCost: 56.31,
 
-    markup: 70.71,
+    markup: 78.41,
 
-    profitMargin: 75.15,
+    profitMargin: 84.73,
 
-    name: 'George Gaylord Simpson',
+    name: 'Claude Bernard',
 
-    totalPrice: 14.51,
+    totalPrice: 84.49,
 
     unitOfMeasurement: 'SQ',
 
-    description: 'My buddy Harlen',
+    description: "I'm washing my hands of it",
+  },
+
+  {
+    // type code here for "relation_many" field
+
+    materialCost: 63.02,
+
+    laborCost: 91.17,
+
+    markup: 49.75,
+
+    profitMargin: 25.16,
+
+    name: 'Konrad Lorenz',
+
+    totalPrice: 55.07,
+
+    unitOfMeasurement: 'SQ',
+
+    description: 'Got depression, Smith and Wessen',
   },
 ];
 
 const DocumentsData = [
   {
-    // type code here for "relation_one" field
-
     // type code here for "relation_many" field
 
-    name: 'Dmitri Mendeleev',
-
-    url: 'I want my damn cart back',
-  },
-
-  {
-    // type code here for "relation_one" field
-
-    // type code here for "relation_many" field
-
-    name: 'John Dalton',
-
-    url: 'Texas!',
-  },
-
-  {
-    // type code here for "relation_one" field
-
-    // type code here for "relation_many" field
-
-    name: 'Charles Darwin',
-
-    url: 'That damn diabetes',
-  },
-
-  {
-    // type code here for "relation_one" field
-
-    // type code here for "relation_many" field
-
-    name: 'Stephen Hawking',
-
-    url: 'That damn gimble',
-  },
-];
-
-const ImagesData = [
-  {
-    // type code here for "relation_many" field
-
-    // type code here for "relation_one" field
-
-    name: 'William Herschel',
+    name: 'Gertrude Belle Elion',
 
     url: 'No one tells me shit',
   },
@@ -513,19 +429,49 @@ const ImagesData = [
   {
     // type code here for "relation_many" field
 
-    // type code here for "relation_one" field
+    name: 'Sigmund Freud',
 
-    name: 'Robert Koch',
-
-    url: 'That damn gimble',
+    url: "I'm washing my hands of it",
   },
 
   {
     // type code here for "relation_many" field
 
-    // type code here for "relation_one" field
+    name: 'Max Born',
 
-    name: 'Carl Linnaeus',
+    url: 'Contact the tower',
+  },
+
+  {
+    // type code here for "relation_many" field
+
+    name: 'Justus Liebig',
+
+    url: 'Got depression, Smith and Wessen',
+  },
+];
+
+const ImagesData = [
+  {
+    // type code here for "relation_many" field
+
+    name: 'John von Neumann',
+
+    url: "How 'bout them Cowboys",
+  },
+
+  {
+    // type code here for "relation_many" field
+
+    name: 'Ludwig Boltzmann',
+
+    url: 'No one tells me shit',
+  },
+
+  {
+    // type code here for "relation_many" field
+
+    name: 'Max Delbruck',
 
     url: "Y'all never listen to me",
   },
@@ -533,17 +479,15 @@ const ImagesData = [
   {
     // type code here for "relation_many" field
 
-    // type code here for "relation_one" field
+    name: 'Ludwig Boltzmann',
 
-    name: 'Albrecht von Haller',
-
-    url: "Goin' hog huntin'",
+    url: 'Contact the tower',
   },
 ];
 
 const TeamsData = [
   {
-    name: 'Joseph J. Thomson',
+    name: 'Frederick Gowland Hopkins',
 
     // type code here for "relation_many" field
 
@@ -551,7 +495,7 @@ const TeamsData = [
   },
 
   {
-    name: 'Louis Victor de Broglie',
+    name: 'Justus Liebig',
 
     // type code here for "relation_many" field
 
@@ -559,7 +503,7 @@ const TeamsData = [
   },
 
   {
-    name: 'Francis Galton',
+    name: 'Christiaan Huygens',
 
     // type code here for "relation_many" field
 
@@ -567,7 +511,7 @@ const TeamsData = [
   },
 
   {
-    name: 'Euclid',
+    name: 'Sheldon Glashow',
 
     // type code here for "relation_many" field
 
@@ -579,8 +523,6 @@ const InvoicesData = [
   {
     // type code here for "relation_many" field
 
-    // type code here for "relation_one" field
-
     // type code here for "relation_many" field
 
     // type code here for "relation_one" field
@@ -591,19 +533,15 @@ const InvoicesData = [
   {
     // type code here for "relation_many" field
 
-    // type code here for "relation_one" field
-
     // type code here for "relation_many" field
 
     // type code here for "relation_one" field
 
-    number: 2,
+    number: 7,
   },
 
   {
     // type code here for "relation_many" field
-
-    // type code here for "relation_one" field
 
     // type code here for "relation_many" field
 
@@ -615,113 +553,17 @@ const InvoicesData = [
   {
     // type code here for "relation_many" field
 
-    // type code here for "relation_one" field
-
     // type code here for "relation_many" field
 
     // type code here for "relation_one" field
 
-    number: 2,
+    number: 4,
   },
 ];
 
 // Similar logic for "relation_many"
 
-async function associateUserWithUser() {
-  const relatedUser0 = await Users.findOne({
-    offset: Math.floor(Math.random() * (await Users.count())),
-  });
-  const User0 = await Users.findOne({
-    order: [['id', 'ASC']],
-    offset: 0,
-  });
-  if (User0?.setUser) {
-    await User0.setUser(relatedUser0);
-  }
-
-  const relatedUser1 = await Users.findOne({
-    offset: Math.floor(Math.random() * (await Users.count())),
-  });
-  const User1 = await Users.findOne({
-    order: [['id', 'ASC']],
-    offset: 1,
-  });
-  if (User1?.setUser) {
-    await User1.setUser(relatedUser1);
-  }
-
-  const relatedUser2 = await Users.findOne({
-    offset: Math.floor(Math.random() * (await Users.count())),
-  });
-  const User2 = await Users.findOne({
-    order: [['id', 'ASC']],
-    offset: 2,
-  });
-  if (User2?.setUser) {
-    await User2.setUser(relatedUser2);
-  }
-
-  const relatedUser3 = await Users.findOne({
-    offset: Math.floor(Math.random() * (await Users.count())),
-  });
-  const User3 = await Users.findOne({
-    order: [['id', 'ASC']],
-    offset: 3,
-  });
-  if (User3?.setUser) {
-    await User3.setUser(relatedUser3);
-  }
-}
-
 // Similar logic for "relation_many"
-
-// Similar logic for "relation_many"
-
-async function associateContactWithUser() {
-  const relatedUser0 = await Users.findOne({
-    offset: Math.floor(Math.random() * (await Users.count())),
-  });
-  const Contact0 = await Contacts.findOne({
-    order: [['id', 'ASC']],
-    offset: 0,
-  });
-  if (Contact0?.setUser) {
-    await Contact0.setUser(relatedUser0);
-  }
-
-  const relatedUser1 = await Users.findOne({
-    offset: Math.floor(Math.random() * (await Users.count())),
-  });
-  const Contact1 = await Contacts.findOne({
-    order: [['id', 'ASC']],
-    offset: 1,
-  });
-  if (Contact1?.setUser) {
-    await Contact1.setUser(relatedUser1);
-  }
-
-  const relatedUser2 = await Users.findOne({
-    offset: Math.floor(Math.random() * (await Users.count())),
-  });
-  const Contact2 = await Contacts.findOne({
-    order: [['id', 'ASC']],
-    offset: 2,
-  });
-  if (Contact2?.setUser) {
-    await Contact2.setUser(relatedUser2);
-  }
-
-  const relatedUser3 = await Users.findOne({
-    offset: Math.floor(Math.random() * (await Users.count())),
-  });
-  const Contact3 = await Contacts.findOne({
-    order: [['id', 'ASC']],
-    offset: 3,
-  });
-  if (Contact3?.setUser) {
-    await Contact3.setUser(relatedUser3);
-  }
-}
 
 // Similar logic for "relation_many"
 
@@ -733,99 +575,7 @@ async function associateContactWithUser() {
 
 // Similar logic for "relation_many"
 
-async function associateAppointmentWithUser() {
-  const relatedUser0 = await Users.findOne({
-    offset: Math.floor(Math.random() * (await Users.count())),
-  });
-  const Appointment0 = await Appointments.findOne({
-    order: [['id', 'ASC']],
-    offset: 0,
-  });
-  if (Appointment0?.setUser) {
-    await Appointment0.setUser(relatedUser0);
-  }
-
-  const relatedUser1 = await Users.findOne({
-    offset: Math.floor(Math.random() * (await Users.count())),
-  });
-  const Appointment1 = await Appointments.findOne({
-    order: [['id', 'ASC']],
-    offset: 1,
-  });
-  if (Appointment1?.setUser) {
-    await Appointment1.setUser(relatedUser1);
-  }
-
-  const relatedUser2 = await Users.findOne({
-    offset: Math.floor(Math.random() * (await Users.count())),
-  });
-  const Appointment2 = await Appointments.findOne({
-    order: [['id', 'ASC']],
-    offset: 2,
-  });
-  if (Appointment2?.setUser) {
-    await Appointment2.setUser(relatedUser2);
-  }
-
-  const relatedUser3 = await Users.findOne({
-    offset: Math.floor(Math.random() * (await Users.count())),
-  });
-  const Appointment3 = await Appointments.findOne({
-    order: [['id', 'ASC']],
-    offset: 3,
-  });
-  if (Appointment3?.setUser) {
-    await Appointment3.setUser(relatedUser3);
-  }
-}
-
 // Similar logic for "relation_many"
-
-async function associateJobWithUser() {
-  const relatedUser0 = await Users.findOne({
-    offset: Math.floor(Math.random() * (await Users.count())),
-  });
-  const Job0 = await Jobs.findOne({
-    order: [['id', 'ASC']],
-    offset: 0,
-  });
-  if (Job0?.setUser) {
-    await Job0.setUser(relatedUser0);
-  }
-
-  const relatedUser1 = await Users.findOne({
-    offset: Math.floor(Math.random() * (await Users.count())),
-  });
-  const Job1 = await Jobs.findOne({
-    order: [['id', 'ASC']],
-    offset: 1,
-  });
-  if (Job1?.setUser) {
-    await Job1.setUser(relatedUser1);
-  }
-
-  const relatedUser2 = await Users.findOne({
-    offset: Math.floor(Math.random() * (await Users.count())),
-  });
-  const Job2 = await Jobs.findOne({
-    order: [['id', 'ASC']],
-    offset: 2,
-  });
-  if (Job2?.setUser) {
-    await Job2.setUser(relatedUser2);
-  }
-
-  const relatedUser3 = await Users.findOne({
-    offset: Math.floor(Math.random() * (await Users.count())),
-  });
-  const Job3 = await Jobs.findOne({
-    order: [['id', 'ASC']],
-    offset: 3,
-  });
-  if (Job3?.setUser) {
-    await Job3.setUser(relatedUser3);
-  }
-}
 
 // Similar logic for "relation_many"
 
@@ -889,149 +639,9 @@ async function associateEstimateWithJob() {
 
 // Similar logic for "relation_many"
 
-async function associateTradeWithUser() {
-  const relatedUser0 = await Users.findOne({
-    offset: Math.floor(Math.random() * (await Users.count())),
-  });
-  const Trade0 = await Trades.findOne({
-    order: [['id', 'ASC']],
-    offset: 0,
-  });
-  if (Trade0?.setUser) {
-    await Trade0.setUser(relatedUser0);
-  }
-
-  const relatedUser1 = await Users.findOne({
-    offset: Math.floor(Math.random() * (await Users.count())),
-  });
-  const Trade1 = await Trades.findOne({
-    order: [['id', 'ASC']],
-    offset: 1,
-  });
-  if (Trade1?.setUser) {
-    await Trade1.setUser(relatedUser1);
-  }
-
-  const relatedUser2 = await Users.findOne({
-    offset: Math.floor(Math.random() * (await Users.count())),
-  });
-  const Trade2 = await Trades.findOne({
-    order: [['id', 'ASC']],
-    offset: 2,
-  });
-  if (Trade2?.setUser) {
-    await Trade2.setUser(relatedUser2);
-  }
-
-  const relatedUser3 = await Users.findOne({
-    offset: Math.floor(Math.random() * (await Users.count())),
-  });
-  const Trade3 = await Trades.findOne({
-    order: [['id', 'ASC']],
-    offset: 3,
-  });
-  if (Trade3?.setUser) {
-    await Trade3.setUser(relatedUser3);
-  }
-}
-
-// Similar logic for "relation_many"
-
-async function associateDocumentWithUser() {
-  const relatedUser0 = await Users.findOne({
-    offset: Math.floor(Math.random() * (await Users.count())),
-  });
-  const Document0 = await Documents.findOne({
-    order: [['id', 'ASC']],
-    offset: 0,
-  });
-  if (Document0?.setUser) {
-    await Document0.setUser(relatedUser0);
-  }
-
-  const relatedUser1 = await Users.findOne({
-    offset: Math.floor(Math.random() * (await Users.count())),
-  });
-  const Document1 = await Documents.findOne({
-    order: [['id', 'ASC']],
-    offset: 1,
-  });
-  if (Document1?.setUser) {
-    await Document1.setUser(relatedUser1);
-  }
-
-  const relatedUser2 = await Users.findOne({
-    offset: Math.floor(Math.random() * (await Users.count())),
-  });
-  const Document2 = await Documents.findOne({
-    order: [['id', 'ASC']],
-    offset: 2,
-  });
-  if (Document2?.setUser) {
-    await Document2.setUser(relatedUser2);
-  }
-
-  const relatedUser3 = await Users.findOne({
-    offset: Math.floor(Math.random() * (await Users.count())),
-  });
-  const Document3 = await Documents.findOne({
-    order: [['id', 'ASC']],
-    offset: 3,
-  });
-  if (Document3?.setUser) {
-    await Document3.setUser(relatedUser3);
-  }
-}
-
 // Similar logic for "relation_many"
 
 // Similar logic for "relation_many"
-
-async function associateImageWithUser() {
-  const relatedUser0 = await Users.findOne({
-    offset: Math.floor(Math.random() * (await Users.count())),
-  });
-  const Image0 = await Images.findOne({
-    order: [['id', 'ASC']],
-    offset: 0,
-  });
-  if (Image0?.setUser) {
-    await Image0.setUser(relatedUser0);
-  }
-
-  const relatedUser1 = await Users.findOne({
-    offset: Math.floor(Math.random() * (await Users.count())),
-  });
-  const Image1 = await Images.findOne({
-    order: [['id', 'ASC']],
-    offset: 1,
-  });
-  if (Image1?.setUser) {
-    await Image1.setUser(relatedUser1);
-  }
-
-  const relatedUser2 = await Users.findOne({
-    offset: Math.floor(Math.random() * (await Users.count())),
-  });
-  const Image2 = await Images.findOne({
-    order: [['id', 'ASC']],
-    offset: 2,
-  });
-  if (Image2?.setUser) {
-    await Image2.setUser(relatedUser2);
-  }
-
-  const relatedUser3 = await Users.findOne({
-    offset: Math.floor(Math.random() * (await Users.count())),
-  });
-  const Image3 = await Images.findOne({
-    order: [['id', 'ASC']],
-    offset: 3,
-  });
-  if (Image3?.setUser) {
-    await Image3.setUser(relatedUser3);
-  }
-}
 
 // Similar logic for "relation_many"
 
@@ -1039,51 +649,7 @@ async function associateImageWithUser() {
 
 // Similar logic for "relation_many"
 
-async function associateInvoiceWithUser() {
-  const relatedUser0 = await Users.findOne({
-    offset: Math.floor(Math.random() * (await Users.count())),
-  });
-  const Invoice0 = await Invoices.findOne({
-    order: [['id', 'ASC']],
-    offset: 0,
-  });
-  if (Invoice0?.setUser) {
-    await Invoice0.setUser(relatedUser0);
-  }
-
-  const relatedUser1 = await Users.findOne({
-    offset: Math.floor(Math.random() * (await Users.count())),
-  });
-  const Invoice1 = await Invoices.findOne({
-    order: [['id', 'ASC']],
-    offset: 1,
-  });
-  if (Invoice1?.setUser) {
-    await Invoice1.setUser(relatedUser1);
-  }
-
-  const relatedUser2 = await Users.findOne({
-    offset: Math.floor(Math.random() * (await Users.count())),
-  });
-  const Invoice2 = await Invoices.findOne({
-    order: [['id', 'ASC']],
-    offset: 2,
-  });
-  if (Invoice2?.setUser) {
-    await Invoice2.setUser(relatedUser2);
-  }
-
-  const relatedUser3 = await Users.findOne({
-    offset: Math.floor(Math.random() * (await Users.count())),
-  });
-  const Invoice3 = await Invoices.findOne({
-    order: [['id', 'ASC']],
-    offset: 3,
-  });
-  if (Invoice3?.setUser) {
-    await Invoice3.setUser(relatedUser3);
-  }
-}
+// Similar logic for "relation_many"
 
 // Similar logic for "relation_many"
 
@@ -1158,13 +724,7 @@ module.exports = {
     await Promise.all([
       // Similar logic for "relation_many"
 
-      await associateUserWithUser(),
-
       // Similar logic for "relation_many"
-
-      // Similar logic for "relation_many"
-
-      await associateContactWithUser(),
 
       // Similar logic for "relation_many"
 
@@ -1176,11 +736,7 @@ module.exports = {
 
       // Similar logic for "relation_many"
 
-      await associateAppointmentWithUser(),
-
       // Similar logic for "relation_many"
-
-      await associateJobWithUser(),
 
       // Similar logic for "relation_many"
 
@@ -1200,17 +756,9 @@ module.exports = {
 
       // Similar logic for "relation_many"
 
-      await associateTradeWithUser(),
-
-      // Similar logic for "relation_many"
-
-      await associateDocumentWithUser(),
-
       // Similar logic for "relation_many"
 
       // Similar logic for "relation_many"
-
-      await associateImageWithUser(),
 
       // Similar logic for "relation_many"
 
@@ -1218,7 +766,7 @@ module.exports = {
 
       // Similar logic for "relation_many"
 
-      await associateInvoiceWithUser(),
+      // Similar logic for "relation_many"
 
       // Similar logic for "relation_many"
 

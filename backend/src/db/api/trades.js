@@ -23,10 +23,6 @@ module.exports = class TradesDBApi {
       { transaction },
     );
 
-    await trades.setCreatedBy(data.createdBy || null, {
-      transaction,
-    });
-
     return trades;
   }
 
@@ -67,10 +63,6 @@ module.exports = class TradesDBApi {
       { transaction },
     );
 
-    await trades.setCreatedBy(data.createdBy || null, {
-      transaction,
-    });
-
     return trades;
   }
 
@@ -107,10 +99,6 @@ module.exports = class TradesDBApi {
 
     const output = trades.get({ plain: true });
 
-    output.createdBy = await trades.getCreatedBy({
-      transaction,
-    });
-
     return output;
   }
 
@@ -125,12 +113,7 @@ module.exports = class TradesDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [
-      {
-        model: db.users,
-        as: 'createdBy',
-      },
-    ];
+    let include = [];
 
     if (filter) {
       if (filter.id) {
@@ -156,17 +139,6 @@ module.exports = class TradesDBApi {
         where = {
           ...where,
           active: filter.active === true || filter.active === 'true',
-        };
-      }
-
-      if (filter.createdBy) {
-        var listItems = filter.createdBy.split('|').map((item) => {
-          return Utils.uuid(item);
-        });
-
-        where = {
-          ...where,
-          createdById: { [Op.or]: listItems },
         };
       }
 

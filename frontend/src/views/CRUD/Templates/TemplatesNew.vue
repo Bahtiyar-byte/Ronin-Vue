@@ -22,11 +22,11 @@ const router = useRouter();
 const notification = computed(() => templatesStore.notify)
 const titleStack = ref(['Admin', 'Templates'])
 
-        const optionsTradeId = computed(() => templatesStore.searchResultTradeId);
+        const optionsTrade = computed(() => templatesStore.searchResultTrade);
 
 const form = reactive({
 
-      tradeId: [],
+      trade: [],
 
       materialCost: '',
 
@@ -48,14 +48,14 @@ const form = reactive({
 
 onBeforeMount(async () => {
 
-  await searchTradeId();
+  await searchTrade();
 
 })
 
 const submit = async () => {
   try {
 
-            form.tradeId = form.tradeId.map(item => item.id);
+            form.trade = form.trade.map(item => item.id);
 
             form.unitOfMeasurement = form.unitOfMeasurement.label;
 
@@ -68,7 +68,7 @@ const submit = async () => {
 
 const reset = () => {
 
-        form.tradeId = [];
+        form.trade = [];
 
         form.materialCost = '';
 
@@ -92,8 +92,8 @@ const cancel = () => {
   router.push('/users')
 }
 
-    async function searchTradeId(val) {
-      await templatesStore.searchTradeId(val);
+    async function searchTrade(val) {
+      await templatesStore.searchTrade(val);
     }
 
 watch(() => templatesStore.notify.showNotification, (newValue, oldValue) => {
@@ -124,10 +124,10 @@ watch(() => templatesStore.notify.showNotification, (newValue, oldValue) => {
         label="Trade"
       >
         <v-select
-          v-model="form.tradeId"
-          :options="optionsTradeId"
+          v-model="form.trade"
+          :options="optionsTrade"
           multiple
-          @input="searchTradeId($event.target.value)"
+          @input="searchTrade($event.target.value)"
         />
     </FormField>
 

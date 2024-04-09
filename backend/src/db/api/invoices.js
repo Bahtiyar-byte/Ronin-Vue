@@ -23,19 +23,15 @@ module.exports = class InvoicesDBApi {
       { transaction },
     );
 
-    await invoices.setCreatedBy(data.createdBy || null, {
-      transaction,
-    });
-
     await invoices.setDocument(data.document || null, {
       transaction,
     });
 
-    await invoices.setJobId(data.jobId || [], {
+    await invoices.setJob(data.job || [], {
       transaction,
     });
 
-    await invoices.setEstimateId(data.estimateId || [], {
+    await invoices.setEstimate(data.estimate || [], {
       transaction,
     });
 
@@ -81,19 +77,15 @@ module.exports = class InvoicesDBApi {
       { transaction },
     );
 
-    await invoices.setCreatedBy(data.createdBy || null, {
-      transaction,
-    });
-
     await invoices.setDocument(data.document || null, {
       transaction,
     });
 
-    await invoices.setJobId(data.jobId || [], {
+    await invoices.setJob(data.job || [], {
       transaction,
     });
 
-    await invoices.setEstimateId(data.estimateId || [], {
+    await invoices.setEstimate(data.estimate || [], {
       transaction,
     });
 
@@ -133,15 +125,11 @@ module.exports = class InvoicesDBApi {
 
     const output = invoices.get({ plain: true });
 
-    output.jobId = await invoices.getJobId({
+    output.job = await invoices.getJob({
       transaction,
     });
 
-    output.createdBy = await invoices.getCreatedBy({
-      transaction,
-    });
-
-    output.estimateId = await invoices.getEstimateId({
+    output.estimate = await invoices.getEstimate({
       transaction,
     });
 
@@ -165,43 +153,38 @@ module.exports = class InvoicesDBApi {
     let where = {};
     let include = [
       {
-        model: db.users,
-        as: 'createdBy',
-      },
-
-      {
         model: db.documents,
         as: 'document',
       },
 
       {
         model: db.jobs,
-        as: 'jobId',
-        through: filter.jobId
+        as: 'job',
+        through: filter.job
           ? {
               where: {
-                [Op.or]: filter.jobId.split('|').map((item) => {
+                [Op.or]: filter.job.split('|').map((item) => {
                   return { ['Id']: Utils.uuid(item) };
                 }),
               },
             }
           : null,
-        required: filter.jobId ? true : null,
+        required: filter.job ? true : null,
       },
 
       {
         model: db.estimates,
-        as: 'estimateId',
-        through: filter.estimateId
+        as: 'estimate',
+        through: filter.estimate
           ? {
               where: {
-                [Op.or]: filter.estimateId.split('|').map((item) => {
+                [Op.or]: filter.estimate.split('|').map((item) => {
                   return { ['Id']: Utils.uuid(item) };
                 }),
               },
             }
           : null,
-        required: filter.estimateId ? true : null,
+        required: filter.estimate ? true : null,
       },
     ];
 
@@ -246,17 +229,6 @@ module.exports = class InvoicesDBApi {
         where = {
           ...where,
           active: filter.active === true || filter.active === 'true',
-        };
-      }
-
-      if (filter.createdBy) {
-        var listItems = filter.createdBy.split('|').map((item) => {
-          return Utils.uuid(item);
-        });
-
-        where = {
-          ...where,
-          createdById: { [Op.or]: listItems },
         };
       }
 

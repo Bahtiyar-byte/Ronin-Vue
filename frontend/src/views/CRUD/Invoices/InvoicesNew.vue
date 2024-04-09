@@ -22,21 +22,17 @@ const router = useRouter();
 const notification = computed(() => invoicesStore.notify)
 const titleStack = ref(['Admin', 'Invoices'])
 
-        const optionsJobId = computed(() => invoicesStore.searchResultJobId);
+        const optionsJob = computed(() => invoicesStore.searchResultJob);
 
-        const optionsCreatedBy = computed(() => invoicesStore.searchResultCreatedBy);
-
-        const optionsEstimateId = computed(() => invoicesStore.searchResultEstimateId);
+        const optionsEstimate = computed(() => invoicesStore.searchResultEstimate);
 
         const optionsDocument = computed(() => invoicesStore.searchResultDocument);
 
 const form = reactive({
 
-      jobId: [],
+      job: [],
 
-      createdBy: '',
-
-      estimateId: [],
+      estimate: [],
 
       document: '',
 
@@ -46,11 +42,9 @@ const form = reactive({
 
 onBeforeMount(async () => {
 
-  await searchJobId();
+  await searchJob();
 
-  await searchCreatedBy();
-
-  await searchEstimateId();
+  await searchEstimate();
 
   await searchDocument();
 
@@ -59,11 +53,9 @@ onBeforeMount(async () => {
 const submit = async () => {
   try {
 
-            form.jobId = form.jobId.map(item => item.id);
+            form.job = form.job.map(item => item.id);
 
-            form.createdBy = form.createdBy.id;
-
-            form.estimateId = form.estimateId.map(item => item.id);
+            form.estimate = form.estimate.map(item => item.id);
 
             form.document = form.document.id;
 
@@ -76,11 +68,9 @@ const submit = async () => {
 
 const reset = () => {
 
-        form.jobId = [];
+        form.job = [];
 
-        form.createdBy = '';
-
-        form.estimateId = [];
+        form.estimate = [];
 
         form.document = '';
 
@@ -92,16 +82,12 @@ const cancel = () => {
   router.push('/users')
 }
 
-    async function searchJobId(val) {
-      await invoicesStore.searchJobId(val);
+    async function searchJob(val) {
+      await invoicesStore.searchJob(val);
     }
 
-    async function searchCreatedBy(val) {
-      await invoicesStore.searchCreatedBy(val);
-    }
-
-    async function searchEstimateId(val) {
-      await invoicesStore.searchEstimateId(val);
+    async function searchEstimate(val) {
+      await invoicesStore.searchEstimate(val);
     }
 
     async function searchDocument(val) {
@@ -136,31 +122,21 @@ watch(() => invoicesStore.notify.showNotification, (newValue, oldValue) => {
         label="Job"
       >
         <v-select
-          v-model="form.jobId"
-          :options="optionsJobId"
+          v-model="form.job"
+          :options="optionsJob"
           multiple
-          @input="searchJobId($event.target.value)"
+          @input="searchJob($event.target.value)"
         />
     </FormField>
-
-  <FormField
-      label="Created"
-    >
-        <v-select
-          v-model="form.createdBy"
-          :options="optionsCreatedBy"
-          @input="searchCreatedBy($event.target.value)"
-        />
-  </FormField>
 
     <FormField
         label="Estimate"
       >
         <v-select
-          v-model="form.estimateId"
-          :options="optionsEstimateId"
+          v-model="form.estimate"
+          :options="optionsEstimate"
           multiple
-          @input="searchEstimateId($event.target.value)"
+          @input="searchEstimate($event.target.value)"
         />
     </FormField>
 

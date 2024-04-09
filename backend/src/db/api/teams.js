@@ -23,11 +23,11 @@ module.exports = class TeamsDBApi {
       { transaction },
     );
 
-    await teams.setUserId(data.userId || [], {
+    await teams.setUser(data.user || [], {
       transaction,
     });
 
-    await teams.setTeamId(data.teamId || [], {
+    await teams.setTeam(data.team || [], {
       transaction,
     });
 
@@ -71,11 +71,11 @@ module.exports = class TeamsDBApi {
       { transaction },
     );
 
-    await teams.setUserId(data.userId || [], {
+    await teams.setUser(data.user || [], {
       transaction,
     });
 
-    await teams.setTeamId(data.teamId || [], {
+    await teams.setTeam(data.team || [], {
       transaction,
     });
 
@@ -115,11 +115,11 @@ module.exports = class TeamsDBApi {
 
     const output = teams.get({ plain: true });
 
-    output.userId = await teams.getUserId({
+    output.user = await teams.getUser({
       transaction,
     });
 
-    output.teamId = await teams.getTeamId({
+    output.team = await teams.getTeam({
       transaction,
     });
 
@@ -140,32 +140,32 @@ module.exports = class TeamsDBApi {
     let include = [
       {
         model: db.users,
-        as: 'userId',
-        through: filter.userId
+        as: 'user',
+        through: filter.user
           ? {
               where: {
-                [Op.or]: filter.userId.split('|').map((item) => {
+                [Op.or]: filter.user.split('|').map((item) => {
                   return { ['Id']: Utils.uuid(item) };
                 }),
               },
             }
           : null,
-        required: filter.userId ? true : null,
+        required: filter.user ? true : null,
       },
 
       {
         model: db.teams,
-        as: 'teamId',
-        through: filter.teamId
+        as: 'team',
+        through: filter.team
           ? {
               where: {
-                [Op.or]: filter.teamId.split('|').map((item) => {
+                [Op.or]: filter.team.split('|').map((item) => {
                   return { ['Id']: Utils.uuid(item) };
                 }),
               },
             }
           : null,
-        required: filter.teamId ? true : null,
+        required: filter.team ? true : null,
       },
     ];
 

@@ -24,9 +24,9 @@ const estimatesStore = useEstimatesStore()
 const titleStack = ref(['Admin', 'Estimates'])
 const notification = computed(() => estimatesStore.notify)
 
-        const optionsJobId = computed(() => estimatesStore.searchResultJobId);
+        const optionsJob = computed(() => estimatesStore.searchResultJob);
 
-        const optionsTemplateId = computed(() => estimatesStore.searchResultTemplateId);
+        const optionsTemplate = computed(() => estimatesStore.searchResultTemplate);
 
       const optionsStatus = [{id: 0, label: 'Draft'},{id: 1, label: 'Sent'},{id: 2, label: 'Approved'},{id: 3, label: 'Rejected'},]
 
@@ -34,9 +34,9 @@ const estimatesItem = computed(() => estimatesStore.data);
 
 const form = reactive({
 
-      jobId: '',
+      job: '',
 
-      templateId: [],
+      template: [],
 
       status: '',
 
@@ -47,9 +47,9 @@ const form = reactive({
 const submit = async () => {
   try {
 
-            form.jobId = form.jobId?.id;
+            form.job = form.job?.id;
 
-            form.templateId = form.templateId.map(item => item.id);
+            form.template = form.template.map(item => item.id);
 
             form.status = form.status.label;
 
@@ -63,9 +63,9 @@ const submit = async () => {
 onBeforeMount(async () => {
   try {
 
-  await searchJobId();
+  await searchJob();
 
-  await searchTemplateId();
+  await searchTemplate();
 
     await estimatesStore.fetch(route.params.id)
     formatData();
@@ -75,19 +75,19 @@ onBeforeMount(async () => {
   }
 })
 
-    async function searchJobId(val) {
-      await estimatesStore.searchJobId(val);
+    async function searchJob(val) {
+      await estimatesStore.searchJob(val);
     }
 
-    async function searchTemplateId(val) {
-      await estimatesStore.searchTemplateId(val);
+    async function searchTemplate(val) {
+      await estimatesStore.searchTemplate(val);
     }
 
 const formatData = () => {
 
-    form.jobId = dataFormatter.jobsOneListFormatterEdit(estimatesItem.value.jobId)
+    form.job = dataFormatter.jobsOneListFormatterEdit(estimatesItem.value.job)
 
-    form.templateId = dataFormatter.templatesManyListFormatterEdit(estimatesItem.value.templateId)
+    form.template = dataFormatter.templatesManyListFormatterEdit(estimatesItem.value.template)
 
     form.status = optionsStatus.find(el => el.label === estimatesItem.value.status)
 
@@ -131,9 +131,9 @@ const cancel = () => {
       label="Job"
     >
       <v-select
-        v-model="form.jobId"
-        :options="optionsJobId"
-        @input="searchJobId($event.target.value)"
+        v-model="form.job"
+        :options="optionsJob"
+        @input="searchJob($event.target.value)"
       />
   </FormField>
 
@@ -141,10 +141,10 @@ const cancel = () => {
         label="Template"
       >
         <v-select
-          v-model="form.templateId"
-          :options="optionsTemplateId"
+          v-model="form.template"
+          :options="optionsTemplate"
           multiple
-          @input="searchTemplateId($event.target.value)"
+          @input="searchTemplate($event.target.value)"
         />
     </FormField>
 

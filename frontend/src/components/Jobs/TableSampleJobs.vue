@@ -35,18 +35,17 @@ const items = computed(() => jobsStore.data)
 const headers = [
 
 { text: 'Name', value: 'name'},
-{ text: 'Contact', value: 'contactId'},
+{ text: 'Contact', value: 'contact'},
 { text: 'Category', value: 'category'},
 { text: 'Type', value: 'type'},
 { text: 'Status', value: 'status'},
-{ text: 'Created', value: 'createdBy'},
 { text: 'Assigned User', value: 'assignedUser'},
 { text: 'Assigned Team', value: 'assignedTeam'},
-{ text: 'Estimate', value: 'estimateId'},
-{ text: 'Appointment', value: 'appointmentId'},
-{ text: 'Image', value: 'imageId'},
-{ text: 'Document', value: 'documentId'},
-{ text: 'Invoice', value: 'invoiceId'},]
+{ text: 'Estimate', value: 'estimate'},
+{ text: 'Appointment', value: 'appointment'},
+{ text: 'Image', value: 'image'},
+{ text: 'Document', value: 'document'},
+{ text: 'Invoice', value: 'invoice'},]
 const isModalActive = ref(false)
 
 const isModalDangerActive = ref(false)
@@ -167,8 +166,8 @@ const sort = (title) => {
       >Name</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'contactId' && props.sortDirection]"
-        @click="sort('contactId')"
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'contact' && props.sortDirection]"
+        @click="sort('contact')"
       >Contact</th>
 
       <th
@@ -187,11 +186,6 @@ const sort = (title) => {
       >Status</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'createdBy' && props.sortDirection]"
-        @click="sort('createdBy')"
-      >Created</th>
-
-      <th
         :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'assignedUser' && props.sortDirection]"
         @click="sort('assignedUser')"
       >Assigned User</th>
@@ -202,28 +196,28 @@ const sort = (title) => {
       >Assigned Team</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'estimateId' && props.sortDirection]"
-        @click="sort('estimateId')"
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'estimate' && props.sortDirection]"
+        @click="sort('estimate')"
       >Estimate</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'appointmentId' && props.sortDirection]"
-        @click="sort('appointmentId')"
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'appointment' && props.sortDirection]"
+        @click="sort('appointment')"
       >Appointment</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'imageId' && props.sortDirection]"
-        @click="sort('imageId')"
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'image' && props.sortDirection]"
+        @click="sort('image')"
       >Image</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'documentId' && props.sortDirection]"
-        @click="sort('documentId')"
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'document' && props.sortDirection]"
+        @click="sort('document')"
       >Document</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'invoiceId' && props.sortDirection]"
-        @click="sort('invoiceId')"
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'invoice' && props.sortDirection]"
+        @click="sort('invoice')"
       >Invoice</th>
 
         <th />
@@ -244,10 +238,10 @@ const sort = (title) => {
                 {{ client.name }}
               </td>
 
-              <td data-label="contactId">
+              <td data-label="contact">
                   <span
-                    v-for="(i, idx) in dataFormatter.contactsManyListFormatter(client.contactId)"
-                    :key="idx + client.contactId"
+                    v-for="(i, idx) in dataFormatter.contactsManyListFormatter(client.contact)"
+                    :key="idx + client.contact"
                     class="block"
                   >
                       {{ i }}
@@ -264,10 +258,6 @@ const sort = (title) => {
 
               <td data-label="status">
                 {{ client.status }}
-              </td>
-
-              <td data-label="createdBy">
-                {{ dataFormatter.usersOneListFormatter(client.createdBy) }}
               </td>
 
               <td data-label="assignedUser">
@@ -290,50 +280,50 @@ const sort = (title) => {
                   </span>
               </td>  
 
-              <td data-label="estimateId">
+              <td data-label="estimate">
                   <span
-                    v-for="(i, idx) in dataFormatter.estimatesManyListFormatter(client.estimateId)"
-                    :key="idx + client.estimateId"
+                    v-for="(i, idx) in dataFormatter.estimatesManyListFormatter(client.estimate)"
+                    :key="idx + client.estimate"
                     class="block"
                   >
                       {{ i }}
                   </span>
               </td>  
 
-              <td data-label="appointmentId">
+              <td data-label="appointment">
                   <span
-                    v-for="(i, idx) in dataFormatter.appointmentsManyListFormatter(client.appointmentId)"
-                    :key="idx + client.appointmentId"
+                    v-for="(i, idx) in dataFormatter.appointmentsManyListFormatter(client.appointment)"
+                    :key="idx + client.appointment"
                     class="block"
                   >
                       {{ i }}
                   </span>
               </td>  
 
-              <td data-label="imageId">
+              <td data-label="image">
                   <span
-                    v-for="(i, idx) in dataFormatter.imagesManyListFormatter(client.imageId)"
-                    :key="idx + client.imageId"
+                    v-for="(i, idx) in dataFormatter.imagesManyListFormatter(client.image)"
+                    :key="idx + client.image"
                     class="block"
                   >
                       {{ i }}
                   </span>
               </td>  
 
-              <td data-label="documentId">
+              <td data-label="document">
                   <span
-                    v-for="(i, idx) in dataFormatter.documentsManyListFormatter(client.documentId)"
-                    :key="idx + client.documentId"
+                    v-for="(i, idx) in dataFormatter.documentsManyListFormatter(client.document)"
+                    :key="idx + client.document"
                     class="block"
                   >
                       {{ i }}
                   </span>
               </td>  
 
-              <td data-label="invoiceId">
+              <td data-label="invoice">
                   <span
-                    v-for="(i, idx) in dataFormatter.invoicesManyListFormatter(client.invoiceId)"
-                    :key="idx + client.invoiceId"
+                    v-for="(i, idx) in dataFormatter.invoicesManyListFormatter(client.invoice)"
+                    :key="idx + client.invoice"
                     class="block"
                   >
                       {{ i }}

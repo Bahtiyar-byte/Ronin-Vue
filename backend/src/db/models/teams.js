@@ -33,21 +33,21 @@ module.exports = function (sequelize, DataTypes) {
 
   teams.associate = (db) => {
     db.teams.belongsToMany(db.users, {
-      as: 'userId',
+      as: 'user',
       foreignKey: {
-        name: 'teams_userIdId',
+        name: 'teams_userId',
       },
       constraints: false,
-      through: 'teamsUserIdUsers',
+      through: 'teamsUserUsers',
     });
 
     db.teams.belongsToMany(db.teams, {
-      as: 'teamId',
+      as: 'team',
       foreignKey: {
-        name: 'teams_teamIdId',
+        name: 'teams_teamId',
       },
       constraints: false,
-      through: 'teamsTeamIdTeams',
+      through: 'teamsTeamTeams',
     });
 
     /// loop through entities and it's fields, and if ref === current e[name] and create relation has many on parent entity

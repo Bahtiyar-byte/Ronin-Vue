@@ -39,12 +39,12 @@ module.exports = function (sequelize, DataTypes) {
 
   estimates.associate = (db) => {
     db.estimates.belongsToMany(db.templates, {
-      as: 'templateId',
+      as: 'template',
       foreignKey: {
-        name: 'estimates_templateIdId',
+        name: 'estimates_templateId',
       },
       constraints: false,
-      through: 'estimatesTemplateIdTemplates',
+      through: 'estimatesTemplateTemplates',
     });
 
     /// loop through entities and it's fields, and if ref === current e[name] and create relation has many on parent entity
@@ -52,9 +52,9 @@ module.exports = function (sequelize, DataTypes) {
     //end loop
 
     db.estimates.belongsTo(db.jobs, {
-      as: 'jobId',
+      as: 'job',
       foreignKey: {
-        name: 'jobIdId',
+        name: 'jobId',
       },
       constraints: false,
     });

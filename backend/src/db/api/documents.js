@@ -24,11 +24,7 @@ module.exports = class DocumentsDBApi {
       { transaction },
     );
 
-    await documents.setCreatedBy(data.createdBy || null, {
-      transaction,
-    });
-
-    await documents.setJobId(data.jobId || [], {
+    await documents.setJob(data.job || [], {
       transaction,
     });
 
@@ -76,11 +72,7 @@ module.exports = class DocumentsDBApi {
       { transaction },
     );
 
-    await documents.setCreatedBy(data.createdBy || null, {
-      transaction,
-    });
-
-    await documents.setJobId(data.jobId || [], {
+    await documents.setJob(data.job || [], {
       transaction,
     });
 
@@ -124,11 +116,7 @@ module.exports = class DocumentsDBApi {
       transaction,
     });
 
-    output.createdBy = await documents.getCreatedBy({
-      transaction,
-    });
-
-    output.jobId = await documents.getJobId({
+    output.job = await documents.getJob({
       transaction,
     });
 
@@ -148,23 +136,18 @@ module.exports = class DocumentsDBApi {
     let where = {};
     let include = [
       {
-        model: db.users,
-        as: 'createdBy',
-      },
-
-      {
         model: db.jobs,
-        as: 'jobId',
-        through: filter.jobId
+        as: 'job',
+        through: filter.job
           ? {
               where: {
-                [Op.or]: filter.jobId.split('|').map((item) => {
+                [Op.or]: filter.job.split('|').map((item) => {
                   return { ['Id']: Utils.uuid(item) };
                 }),
               },
             }
           : null,
-        required: filter.jobId ? true : null,
+        required: filter.job ? true : null,
       },
     ];
 
@@ -199,17 +182,6 @@ module.exports = class DocumentsDBApi {
         where = {
           ...where,
           active: filter.active === true || filter.active === 'true',
-        };
-      }
-
-      if (filter.createdBy) {
-        var listItems = filter.createdBy.split('|').map((item) => {
-          return Utils.uuid(item);
-        });
-
-        where = {
-          ...where,
-          createdById: { [Op.or]: listItems },
         };
       }
 

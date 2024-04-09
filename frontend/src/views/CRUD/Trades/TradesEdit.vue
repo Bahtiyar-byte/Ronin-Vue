@@ -24,22 +24,16 @@ const tradesStore = useTradesStore()
 const titleStack = ref(['Admin', 'Trades'])
 const notification = computed(() => tradesStore.notify)
 
-        const optionsCreatedBy = computed(() => tradesStore.searchResultCreatedBy);
-
 const tradesItem = computed(() => tradesStore.data);
 
 const form = reactive({
 
     name: '',
 
-      createdBy: '',
-
 })
 
 const submit = async () => {
   try {
-
-            form.createdBy = form.createdBy?.id;
 
     await tradesStore.edit({id: route.params.id, data: {...form} })
     router.push('/trades');
@@ -51,8 +45,6 @@ const submit = async () => {
 onBeforeMount(async () => {
   try {
 
-  await searchCreatedBy();
-
     await tradesStore.fetch(route.params.id)
     formatData();
   } catch (e) {
@@ -61,15 +53,9 @@ onBeforeMount(async () => {
   }
 })
 
-    async function searchCreatedBy(val) {
-      await tradesStore.searchCreatedBy(val);
-    }
-
 const formatData = () => {
 
     form.name = tradesItem.value.name
-
-    form.createdBy = dataFormatter.usersOneListFormatterEdit(tradesItem.value.createdBy)
 
 }
 
@@ -113,16 +99,6 @@ const cancel = () => {
         placeholder="Your Name"
         />
     </FormField>
-
-  <FormField
-      label="Created"
-    >
-      <v-select
-        v-model="form.createdBy"
-        :options="optionsCreatedBy"
-        @input="searchCreatedBy($event.target.value)"
-      />
-  </FormField>
 
     <BaseDivider />
 

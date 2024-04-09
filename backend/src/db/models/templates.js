@@ -63,12 +63,12 @@ module.exports = function (sequelize, DataTypes) {
 
   templates.associate = (db) => {
     db.templates.belongsToMany(db.trades, {
-      as: 'tradeId',
+      as: 'trade',
       foreignKey: {
-        name: 'templates_tradeIdId',
+        name: 'templates_tradeId',
       },
       constraints: false,
-      through: 'templatesTradeIdTrades',
+      through: 'templatesTradeTrades',
     });
 
     /// loop through entities and it's fields, and if ref === current e[name] and create relation has many on parent entity

@@ -11,15 +11,11 @@ export const useAppointmentsStore = defineStore('appointments', {
       typeNotification: 'warn',
     },
 
-            searchResultUserId: [],
+            searchResultContact: [],
 
-            searchResultContactId: [],
+            searchResultJob: [],
 
-            searchResultJobId: [],
-
-            searchResultEstimateId: [],
-
-            searchResultCreatedBy: [],
+            searchResultEstimate: [],
 
   }),
   actions: {
@@ -71,88 +67,54 @@ export const useAppointmentsStore = defineStore('appointments', {
       }
     },
 
-            async searchUserId(val) {
-              try {
-                if (val) {
-                  const result = await axios(
-                    `/users/autocomplete?query=${val}&limit=100`,
-                  );
-                  this.setUserId(result.data);
-                } else {
-                  const result = await axios(`/users/autocomplete?limit=100`);
-                  this.setUserId(result.data);
-                }
-              } catch (e) {
-                this.showNotification(e, 'error')
-                this.setUserId([]);
-              }
-            },
-
-            async searchContactId(val) {
+            async searchContact(val) {
               try {
                 if (val) {
                   const result = await axios(
                     `/contacts/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setContactId(result.data);
+                  this.setContact(result.data);
                 } else {
                   const result = await axios(`/contacts/autocomplete?limit=100`);
-                  this.setContactId(result.data);
+                  this.setContact(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setContactId([]);
+                this.setContact([]);
               }
             },
 
-            async searchJobId(val) {
+            async searchJob(val) {
               try {
                 if (val) {
                   const result = await axios(
                     `/jobs/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setJobId(result.data);
+                  this.setJob(result.data);
                 } else {
                   const result = await axios(`/jobs/autocomplete?limit=100`);
-                  this.setJobId(result.data);
+                  this.setJob(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setJobId([]);
+                this.setJob([]);
               }
             },
 
-            async searchEstimateId(val) {
+            async searchEstimate(val) {
               try {
                 if (val) {
                   const result = await axios(
                     `/estimates/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setEstimateId(result.data);
+                  this.setEstimate(result.data);
                 } else {
                   const result = await axios(`/estimates/autocomplete?limit=100`);
-                  this.setEstimateId(result.data);
+                  this.setEstimate(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setEstimateId([]);
-              }
-            },
-
-            async searchCreatedBy(val) {
-              try {
-                if (val) {
-                  const result = await axios(
-                    `/users/autocomplete?query=${val}&limit=100`,
-                  );
-                  this.setCreatedBy(result.data);
-                } else {
-                  const result = await axios(`/users/autocomplete?limit=100`);
-                  this.setCreatedBy(result.data);
-                }
-              } catch (e) {
-                this.showNotification(e, 'error')
-                this.setCreatedBy([]);
+                this.setEstimate([]);
               }
             },
 
@@ -175,24 +137,16 @@ export const useAppointmentsStore = defineStore('appointments', {
       this.notify.textNotification = ''
     },
 
-        setUserId(payload) {
-            this.searchResultUserId = payload
+        setContact(payload) {
+            this.searchResultContact = payload
         },
 
-        setContactId(payload) {
-            this.searchResultContactId = payload
+        setJob(payload) {
+            this.searchResultJob = payload
         },
 
-        setJobId(payload) {
-            this.searchResultJobId = payload
-        },
-
-        setEstimateId(payload) {
-            this.searchResultEstimateId = payload
-        },
-
-        setCreatedBy(payload) {
-            this.searchResultCreatedBy = payload
+        setEstimate(payload) {
+            this.searchResultEstimate = payload
         },
 
   }

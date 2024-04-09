@@ -11,9 +11,7 @@ export const useDocumentsStore = defineStore('documents', {
       typeNotification: 'warn',
     },
 
-            searchResultCreatedBy: [],
-
-            searchResultJobId: [],
+            searchResultJob: [],
 
   }),
   actions: {
@@ -65,37 +63,20 @@ export const useDocumentsStore = defineStore('documents', {
       }
     },
 
-            async searchCreatedBy(val) {
-              try {
-                if (val) {
-                  const result = await axios(
-                    `/users/autocomplete?query=${val}&limit=100`,
-                  );
-                  this.setCreatedBy(result.data);
-                } else {
-                  const result = await axios(`/users/autocomplete?limit=100`);
-                  this.setCreatedBy(result.data);
-                }
-              } catch (e) {
-                this.showNotification(e, 'error')
-                this.setCreatedBy([]);
-              }
-            },
-
-            async searchJobId(val) {
+            async searchJob(val) {
               try {
                 if (val) {
                   const result = await axios(
                     `/jobs/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setJobId(result.data);
+                  this.setJob(result.data);
                 } else {
                   const result = await axios(`/jobs/autocomplete?limit=100`);
-                  this.setJobId(result.data);
+                  this.setJob(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setJobId([]);
+                this.setJob([]);
               }
             },
 
@@ -118,12 +99,8 @@ export const useDocumentsStore = defineStore('documents', {
       this.notify.textNotification = ''
     },
 
-        setCreatedBy(payload) {
-            this.searchResultCreatedBy = payload
-        },
-
-        setJobId(payload) {
-            this.searchResultJobId = payload
+        setJob(payload) {
+            this.searchResultJob = payload
         },
 
   }

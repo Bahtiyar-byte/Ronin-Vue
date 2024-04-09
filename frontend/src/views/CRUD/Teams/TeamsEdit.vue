@@ -24,9 +24,9 @@ const teamsStore = useTeamsStore()
 const titleStack = ref(['Admin', 'Teams'])
 const notification = computed(() => teamsStore.notify)
 
-        const optionsUserId = computed(() => teamsStore.searchResultUserId);
+        const optionsUser = computed(() => teamsStore.searchResultUser);
 
-        const optionsTeamId = computed(() => teamsStore.searchResultTeamId);
+        const optionsTeam = computed(() => teamsStore.searchResultTeam);
 
 const teamsItem = computed(() => teamsStore.data);
 
@@ -34,18 +34,18 @@ const form = reactive({
 
     name: '',
 
-      userId: [],
+      user: [],
 
-      teamId: [],
+      team: [],
 
 })
 
 const submit = async () => {
   try {
 
-            form.userId = form.userId.map(item => item.id);
+            form.user = form.user.map(item => item.id);
 
-            form.teamId = form.teamId.map(item => item.id);
+            form.team = form.team.map(item => item.id);
 
     await teamsStore.edit({id: route.params.id, data: {...form} })
     router.push('/teams');
@@ -57,9 +57,9 @@ const submit = async () => {
 onBeforeMount(async () => {
   try {
 
-  await searchUserId();
+  await searchUser();
 
-  await searchTeamId();
+  await searchTeam();
 
     await teamsStore.fetch(route.params.id)
     formatData();
@@ -69,21 +69,21 @@ onBeforeMount(async () => {
   }
 })
 
-    async function searchUserId(val) {
-      await teamsStore.searchUserId(val);
+    async function searchUser(val) {
+      await teamsStore.searchUser(val);
     }
 
-    async function searchTeamId(val) {
-      await teamsStore.searchTeamId(val);
+    async function searchTeam(val) {
+      await teamsStore.searchTeam(val);
     }
 
 const formatData = () => {
 
     form.name = teamsItem.value.name
 
-    form.userId = dataFormatter.usersManyListFormatterEdit(teamsItem.value.userId)
+    form.user = dataFormatter.usersManyListFormatterEdit(teamsItem.value.user)
 
-    form.teamId = dataFormatter.teamsManyListFormatterEdit(teamsItem.value.teamId)
+    form.team = dataFormatter.teamsManyListFormatterEdit(teamsItem.value.team)
 
 }
 
@@ -132,10 +132,10 @@ const cancel = () => {
         label="User"
       >
         <v-select
-          v-model="form.userId"
-          :options="optionsUserId"
+          v-model="form.user"
+          :options="optionsUser"
           multiple
-          @input="searchUserId($event.target.value)"
+          @input="searchUser($event.target.value)"
         />
     </FormField>
 
@@ -143,10 +143,10 @@ const cancel = () => {
         label="Team"
       >
         <v-select
-          v-model="form.teamId"
-          :options="optionsTeamId"
+          v-model="form.team"
+          :options="optionsTeam"
           multiple
-          @input="searchTeamId($event.target.value)"
+          @input="searchTeam($event.target.value)"
         />
     </FormField>
 

@@ -24,7 +24,7 @@ const templatesStore = useTemplatesStore()
 const titleStack = ref(['Admin', 'Templates'])
 const notification = computed(() => templatesStore.notify)
 
-        const optionsTradeId = computed(() => templatesStore.searchResultTradeId);
+        const optionsTrade = computed(() => templatesStore.searchResultTrade);
 
       const optionsUnitOfMeasurement = [{id: 0, label: 'SQ'},{id: 1, label: 'LF'},]
 
@@ -32,7 +32,7 @@ const templatesItem = computed(() => templatesStore.data);
 
 const form = reactive({
 
-      tradeId: [],
+      trade: [],
 
     materialCost: '',
 
@@ -55,7 +55,7 @@ const form = reactive({
 const submit = async () => {
   try {
 
-            form.tradeId = form.tradeId.map(item => item.id);
+            form.trade = form.trade.map(item => item.id);
 
             form.unitOfMeasurement = form.unitOfMeasurement.label;
 
@@ -69,7 +69,7 @@ const submit = async () => {
 onBeforeMount(async () => {
   try {
 
-  await searchTradeId();
+  await searchTrade();
 
     await templatesStore.fetch(route.params.id)
     formatData();
@@ -79,13 +79,13 @@ onBeforeMount(async () => {
   }
 })
 
-    async function searchTradeId(val) {
-      await templatesStore.searchTradeId(val);
+    async function searchTrade(val) {
+      await templatesStore.searchTrade(val);
     }
 
 const formatData = () => {
 
-    form.tradeId = dataFormatter.tradesManyListFormatterEdit(templatesItem.value.tradeId)
+    form.trade = dataFormatter.tradesManyListFormatterEdit(templatesItem.value.trade)
 
     form.materialCost = templatesItem.value.materialCost
 
@@ -141,10 +141,10 @@ const cancel = () => {
         label="Trade"
       >
         <v-select
-          v-model="form.tradeId"
-          :options="optionsTradeId"
+          v-model="form.trade"
+          :options="optionsTrade"
           multiple
-          @input="searchTradeId($event.target.value)"
+          @input="searchTrade($event.target.value)"
         />
     </FormField>
 

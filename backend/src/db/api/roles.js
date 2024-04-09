@@ -24,7 +24,7 @@ module.exports = class RolesDBApi {
       { transaction },
     );
 
-    await roles.setUserId(data.userId || [], {
+    await roles.setUser(data.user || [], {
       transaction,
     });
 
@@ -70,7 +70,7 @@ module.exports = class RolesDBApi {
       { transaction },
     );
 
-    await roles.setUserId(data.userId || [], {
+    await roles.setUser(data.user || [], {
       transaction,
     });
 
@@ -110,7 +110,7 @@ module.exports = class RolesDBApi {
 
     const output = roles.get({ plain: true });
 
-    output.userId = await roles.getUserId({
+    output.user = await roles.getUser({
       transaction,
     });
 
@@ -131,17 +131,17 @@ module.exports = class RolesDBApi {
     let include = [
       {
         model: db.users,
-        as: 'userId',
-        through: filter.userId
+        as: 'user',
+        through: filter.user
           ? {
               where: {
-                [Op.or]: filter.userId.split('|').map((item) => {
+                [Op.or]: filter.user.split('|').map((item) => {
                   return { ['Id']: Utils.uuid(item) };
                 }),
               },
             }
           : null,
-        required: filter.userId ? true : null,
+        required: filter.user ? true : null,
       },
     ];
 

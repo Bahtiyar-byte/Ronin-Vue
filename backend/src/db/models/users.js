@@ -97,71 +97,7 @@ module.exports = function (sequelize, DataTypes) {
 
     /// loop through entities and it's fields, and if ref === current e[name] and create relation has many on parent entity
 
-    db.users.hasMany(db.contacts, {
-      as: 'contacts_createdBy',
-      foreignKey: {
-        name: 'createdById',
-      },
-      constraints: false,
-    });
-
-    db.users.hasMany(db.appointments, {
-      as: 'appointments_createdBy',
-      foreignKey: {
-        name: 'createdById',
-      },
-      constraints: false,
-    });
-
-    db.users.hasMany(db.jobs, {
-      as: 'jobs_createdBy',
-      foreignKey: {
-        name: 'createdById',
-      },
-      constraints: false,
-    });
-
-    db.users.hasMany(db.trades, {
-      as: 'trades_createdBy',
-      foreignKey: {
-        name: 'createdById',
-      },
-      constraints: false,
-    });
-
-    db.users.hasMany(db.documents, {
-      as: 'documents_createdBy',
-      foreignKey: {
-        name: 'createdById',
-      },
-      constraints: false,
-    });
-
-    db.users.hasMany(db.images, {
-      as: 'images_createdBy',
-      foreignKey: {
-        name: 'createdById',
-      },
-      constraints: false,
-    });
-
-    db.users.hasMany(db.invoices, {
-      as: 'invoices_createdBy',
-      foreignKey: {
-        name: 'createdById',
-      },
-      constraints: false,
-    });
-
     //end loop
-
-    db.users.belongsTo(db.users, {
-      as: 'createdBy',
-      foreignKey: {
-        name: 'createdById',
-      },
-      constraints: false,
-    });
 
     db.users.hasMany(db.file, {
       as: 'avatar',

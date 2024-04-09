@@ -22,15 +22,11 @@ const router = useRouter();
 const notification = computed(() => imagesStore.notify)
 const titleStack = ref(['Admin', 'Images'])
 
-        const optionsJobId = computed(() => imagesStore.searchResultJobId);
-
-        const optionsCreatedBy = computed(() => imagesStore.searchResultCreatedBy);
+        const optionsJob = computed(() => imagesStore.searchResultJob);
 
 const form = reactive({
 
-      jobId: [],
-
-      createdBy: '',
+      job: [],
 
       name: '',
 
@@ -40,18 +36,14 @@ const form = reactive({
 
 onBeforeMount(async () => {
 
-  await searchJobId();
-
-  await searchCreatedBy();
+  await searchJob();
 
 })
 
 const submit = async () => {
   try {
 
-            form.jobId = form.jobId.map(item => item.id);
-
-            form.createdBy = form.createdBy.id;
+            form.job = form.job.map(item => item.id);
 
     await imagesStore.newItem({ ...form })
     router.push('/images');
@@ -62,9 +54,7 @@ const submit = async () => {
 
 const reset = () => {
 
-        form.jobId = [];
-
-        form.createdBy = '';
+        form.job = [];
 
         form.name = '';
 
@@ -76,12 +66,8 @@ const cancel = () => {
   router.push('/users')
 }
 
-    async function searchJobId(val) {
-      await imagesStore.searchJobId(val);
-    }
-
-    async function searchCreatedBy(val) {
-      await imagesStore.searchCreatedBy(val);
+    async function searchJob(val) {
+      await imagesStore.searchJob(val);
     }
 
 watch(() => imagesStore.notify.showNotification, (newValue, oldValue) => {
@@ -112,22 +98,12 @@ watch(() => imagesStore.notify.showNotification, (newValue, oldValue) => {
         label="Job"
       >
         <v-select
-          v-model="form.jobId"
-          :options="optionsJobId"
+          v-model="form.job"
+          :options="optionsJob"
           multiple
-          @input="searchJobId($event.target.value)"
+          @input="searchJob($event.target.value)"
         />
     </FormField>
-
-  <FormField
-      label="Created"
-    >
-        <v-select
-          v-model="form.createdBy"
-          :options="optionsCreatedBy"
-          @input="searchCreatedBy($event.target.value)"
-        />
-  </FormField>
 
     <FormField
       label="Name"

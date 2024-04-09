@@ -24,11 +24,7 @@ module.exports = class ImagesDBApi {
       { transaction },
     );
 
-    await images.setCreatedBy(data.createdBy || null, {
-      transaction,
-    });
-
-    await images.setJobId(data.jobId || [], {
+    await images.setJob(data.job || [], {
       transaction,
     });
 
@@ -74,11 +70,7 @@ module.exports = class ImagesDBApi {
       { transaction },
     );
 
-    await images.setCreatedBy(data.createdBy || null, {
-      transaction,
-    });
-
-    await images.setJobId(data.jobId || [], {
+    await images.setJob(data.job || [], {
       transaction,
     });
 
@@ -118,11 +110,7 @@ module.exports = class ImagesDBApi {
 
     const output = images.get({ plain: true });
 
-    output.jobId = await images.getJobId({
-      transaction,
-    });
-
-    output.createdBy = await images.getCreatedBy({
+    output.job = await images.getJob({
       transaction,
     });
 
@@ -142,23 +130,18 @@ module.exports = class ImagesDBApi {
     let where = {};
     let include = [
       {
-        model: db.users,
-        as: 'createdBy',
-      },
-
-      {
         model: db.jobs,
-        as: 'jobId',
-        through: filter.jobId
+        as: 'job',
+        through: filter.job
           ? {
               where: {
-                [Op.or]: filter.jobId.split('|').map((item) => {
+                [Op.or]: filter.job.split('|').map((item) => {
                   return { ['Id']: Utils.uuid(item) };
                 }),
               },
             }
           : null,
-        required: filter.jobId ? true : null,
+        required: filter.job ? true : null,
       },
     ];
 
@@ -193,17 +176,6 @@ module.exports = class ImagesDBApi {
         where = {
           ...where,
           active: filter.active === true || filter.active === 'true',
-        };
-      }
-
-      if (filter.createdBy) {
-        var listItems = filter.createdBy.split('|').map((item) => {
-          return Utils.uuid(item);
-        });
-
-        where = {
-          ...where,
-          createdById: { [Op.or]: listItems },
         };
       }
 

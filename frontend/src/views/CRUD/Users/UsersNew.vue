@@ -24,8 +24,6 @@ const titleStack = ref(['Admin', 'Users'])
 
         const optionsRoleId = computed(() => usersStore.searchResultRoleId);
 
-        const optionsCreatedBy = computed(() => usersStore.searchResultCreatedBy);
-
 const form = reactive({
 
       firstName: '',
@@ -44,15 +42,11 @@ const form = reactive({
 
       name: '',
 
-      createdBy: '',
-
 })
 
 onBeforeMount(async () => {
 
   await searchRoleId();
-
-  await searchCreatedBy();
 
 })
 
@@ -60,8 +54,6 @@ const submit = async () => {
   try {
 
             form.roleId = form.roleId.map(item => item.id);
-
-            form.createdBy = form.createdBy.id;
 
     await usersStore.newItem({ ...form })
     router.push('/users');
@@ -88,8 +80,6 @@ const reset = () => {
 
         form.name = '';
 
-        form.createdBy = '';
-
 }
 
 const cancel = () => {
@@ -98,10 +88,6 @@ const cancel = () => {
 
     async function searchRoleId(val) {
       await usersStore.searchRoleId(val);
-    }
-
-    async function searchCreatedBy(val) {
-      await usersStore.searchCreatedBy(val);
     }
 
 watch(() => usersStore.notify.showNotification, (newValue, oldValue) => {
@@ -198,16 +184,6 @@ watch(() => usersStore.notify.showNotification, (newValue, oldValue) => {
         placeholder="Your Name"
       />
     </FormField>
-
-  <FormField
-      label="Created "
-    >
-        <v-select
-          v-model="form.createdBy"
-          :options="optionsCreatedBy"
-          @input="searchCreatedBy($event.target.value)"
-        />
-  </FormField>
 
     <BaseDivider />
 

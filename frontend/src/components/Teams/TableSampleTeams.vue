@@ -35,8 +35,8 @@ const items = computed(() => teamsStore.data)
 const headers = [
 
 { text: 'Name', value: 'name'},
-{ text: 'User', value: 'userId'},
-{ text: 'Team', value: 'teamId'},]
+{ text: 'User', value: 'user'},
+{ text: 'Team', value: 'team'},]
 const isModalActive = ref(false)
 
 const isModalDangerActive = ref(false)
@@ -157,13 +157,13 @@ const sort = (title) => {
       >Name</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'userId' && props.sortDirection]"
-        @click="sort('userId')"
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'user' && props.sortDirection]"
+        @click="sort('user')"
       >User</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'teamId' && props.sortDirection]"
-        @click="sort('teamId')"
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'team' && props.sortDirection]"
+        @click="sort('team')"
       >Team</th>
 
         <th />
@@ -184,20 +184,20 @@ const sort = (title) => {
                 {{ client.name }}
               </td>
 
-              <td data-label="userId">
+              <td data-label="user">
                   <span
-                    v-for="(i, idx) in dataFormatter.usersManyListFormatter(client.userId)"
-                    :key="idx + client.userId"
+                    v-for="(i, idx) in dataFormatter.usersManyListFormatter(client.user)"
+                    :key="idx + client.user"
                     class="block"
                   >
                       {{ i }}
                   </span>
               </td>  
 
-              <td data-label="teamId">
+              <td data-label="team">
                   <span
-                    v-for="(i, idx) in dataFormatter.teamsManyListFormatter(client.teamId)"
-                    :key="idx + client.teamId"
+                    v-for="(i, idx) in dataFormatter.teamsManyListFormatter(client.team)"
+                    :key="idx + client.team"
                     class="block"
                   >
                       {{ i }}

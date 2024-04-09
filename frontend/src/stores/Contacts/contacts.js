@@ -11,13 +11,11 @@ export const useContactsStore = defineStore('contacts', {
       typeNotification: 'warn',
     },
 
-            searchResultJobId: [],
+            searchResultJob: [],
 
-            searchResultEstimateId: [],
+            searchResultEstimate: [],
 
-            searchResultCreatedBy: [],
-
-            searchResultAppointmentId: [],
+            searchResultAppointment: [],
 
   }),
   actions: {
@@ -69,71 +67,54 @@ export const useContactsStore = defineStore('contacts', {
       }
     },
 
-            async searchJobId(val) {
+            async searchJob(val) {
               try {
                 if (val) {
                   const result = await axios(
                     `/jobs/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setJobId(result.data);
+                  this.setJob(result.data);
                 } else {
                   const result = await axios(`/jobs/autocomplete?limit=100`);
-                  this.setJobId(result.data);
+                  this.setJob(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setJobId([]);
+                this.setJob([]);
               }
             },
 
-            async searchEstimateId(val) {
+            async searchEstimate(val) {
               try {
                 if (val) {
                   const result = await axios(
                     `/estimates/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setEstimateId(result.data);
+                  this.setEstimate(result.data);
                 } else {
                   const result = await axios(`/estimates/autocomplete?limit=100`);
-                  this.setEstimateId(result.data);
+                  this.setEstimate(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setEstimateId([]);
+                this.setEstimate([]);
               }
             },
 
-            async searchCreatedBy(val) {
-              try {
-                if (val) {
-                  const result = await axios(
-                    `/users/autocomplete?query=${val}&limit=100`,
-                  );
-                  this.setCreatedBy(result.data);
-                } else {
-                  const result = await axios(`/users/autocomplete?limit=100`);
-                  this.setCreatedBy(result.data);
-                }
-              } catch (e) {
-                this.showNotification(e, 'error')
-                this.setCreatedBy([]);
-              }
-            },
-
-            async searchAppointmentId(val) {
+            async searchAppointment(val) {
               try {
                 if (val) {
                   const result = await axios(
                     `/appointments/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setAppointmentId(result.data);
+                  this.setAppointment(result.data);
                 } else {
                   const result = await axios(`/appointments/autocomplete?limit=100`);
-                  this.setAppointmentId(result.data);
+                  this.setAppointment(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setAppointmentId([]);
+                this.setAppointment([]);
               }
             },
 
@@ -156,20 +137,16 @@ export const useContactsStore = defineStore('contacts', {
       this.notify.textNotification = ''
     },
 
-        setJobId(payload) {
-            this.searchResultJobId = payload
+        setJob(payload) {
+            this.searchResultJob = payload
         },
 
-        setEstimateId(payload) {
-            this.searchResultEstimateId = payload
+        setEstimate(payload) {
+            this.searchResultEstimate = payload
         },
 
-        setCreatedBy(payload) {
-            this.searchResultCreatedBy = payload
-        },
-
-        setAppointmentId(payload) {
-            this.searchResultAppointmentId = payload
+        setAppointment(payload) {
+            this.searchResultAppointment = payload
         },
 
   }

@@ -34,7 +34,7 @@ const items = computed(() => templatesStore.data)
 
 const headers = [
 
-{ text: 'Trade', value: 'tradeId'},
+{ text: 'Trade', value: 'trade'},
 { text: 'Material Cost', value: 'materialCost'},
 { text: 'Labor Cost', value: 'laborCost'},
 { text: 'Markup', value: 'markup'},
@@ -158,8 +158,8 @@ const sort = (title) => {
       <th v-if="checkable" />
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'tradeId' && props.sortDirection]"
-        @click="sort('tradeId')"
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'trade' && props.sortDirection]"
+        @click="sort('trade')"
       >Trade</th>
 
       <th
@@ -216,10 +216,10 @@ const sort = (title) => {
           @checked="checked($event, client)"
         />
 
-              <td data-label="tradeId">
+              <td data-label="trade">
                   <span
-                    v-for="(i, idx) in dataFormatter.tradesManyListFormatter(client.tradeId)"
-                    :key="idx + client.tradeId"
+                    v-for="(i, idx) in dataFormatter.tradesManyListFormatter(client.trade)"
+                    :key="idx + client.trade"
                     class="block"
                   >
                       {{ i }}
