@@ -7,9 +7,17 @@ services:
     stdin_open: true # docker run -i
     tty: true        # docker run -t
     ports:
-      - "3333:3000"
+      - "3000:3000"
     environment:
-      FRONTEND_SERVER_PORT: "3333"
+      FRONTEND_SERVER_PORT: "3000"
+    volumes:
+      - ./../frontend/src:/usr/src/app/src
+      - ./../frontend/public:/usr/src/app/public
+      - ./../frontend/index.html:/usr/src/app/index.html
+      - ./../frontend/tailwind.config.js:/usr/src/app/tailwind.config.js
+      - ./../frontend/vite.config.js:/usr/src/app/vite.config.js
+      - ./../frontend/postcss.config.js:/usr/src/app/postcss.config.js
+      - ./../frontend/package.json:/usr/src/app/package.json
   db:
     image: postgres
     volumes:
@@ -31,6 +39,7 @@ services:
      - "8080:8080"
     depends_on:
      - "db"
+    restart: "always"
 
     command: ["bash", "./start-backend.sh"]
 
