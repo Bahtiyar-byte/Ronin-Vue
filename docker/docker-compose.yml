@@ -1,5 +1,4 @@
 
-
 version: "3.9"
 services:
   web:
@@ -8,7 +7,9 @@ services:
     stdin_open: true # docker run -i
     tty: true        # docker run -t
     ports:
-      - "3000:3000"
+      - "3333:3000"
+    environment:
+      FRONTEND_SERVER_PORT: "3333"
   db:
     image: postgres
     volumes:
@@ -17,7 +18,7 @@ services:
       - POSTGRES_HOST_AUTH_METHOD=trust
       - POSTGRES_DB=db_ronin
     ports:
-      - "5432:5432"
+      - "5444:5432"
   backend:
     image: backend
     volumes:
@@ -31,5 +32,5 @@ services:
     depends_on:
      - "db"
 
-    command: ["bash", "./wait-for-it.sh", "db:5432", "--timeout=0", "--strict", "--", "bash", "./start-backend.sh"]
+    command: ["bash", "./start-backend.sh"]
 
