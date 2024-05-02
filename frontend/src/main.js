@@ -58,8 +58,7 @@ const defaultDocumentTitle = 'Ronin was created by Flatlogic generator.'
 
 /* Collapse mobile aside menu on route change */
 router.beforeEach(() => {
-  layoutStore.asideMobileToggle(false)
-  layoutStore.asideLgToggle(false)
+  layoutStore.asideToggle(false)
 })
 
 router.afterEach(to => {

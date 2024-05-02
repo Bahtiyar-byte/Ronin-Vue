@@ -56,7 +56,7 @@ const submit = async () => {
             form.roleId = form.roleId.map(item => item.id);
 
     await usersStore.edit({id: form.id, data: {...form} })
-    let currentUser = await authStore.findMe();
+    const currentUser = await authStore.findMe();
     authStore.setUser(currentUser);
     router.push('/users');
   } catch (e) {

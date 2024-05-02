@@ -30,8 +30,8 @@ const notification = computed(() => authStore.notify)
 const router = useRouter()
 
 const submit = () => {
-  let email = form.email;
-  let password = form.pass;
+  const email = form.email;
+  const password = form.pass;
   authStore.register({email, password})
 }
 

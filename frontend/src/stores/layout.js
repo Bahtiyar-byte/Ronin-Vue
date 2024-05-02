@@ -6,22 +6,17 @@ export const useLayoutStore = defineStore('layout', {
     isFullScreen: true,
 
     /* Aside */
-    isAsideMobileExpanded: false,
-    isAsideLgActive: false,
+    isAsideExpanded: false,
   }),
   actions: {
-    asideMobileToggle (payload = null) {
-      const isShow = payload !== null ? payload : !this.isAsideMobileExpanded
+    asideToggle (payload = null) {
+      // const isShow = payload !== null ? payload : !this.isAsideExpanded
 
-      document.getElementById('app').classList[isShow ? 'add' : 'remove']('ml-60', 'lg:ml-0')
+      // document.getElementById('app').classList[isShow ? 'add' : 'remove']('ml-60', 'lg:ml-0')
+      //
+      // document.documentElement.classList[isShow ? 'add' : 'remove']('m-clipped')
 
-      document.documentElement.classList[isShow ? 'add' : 'remove']('m-clipped')
-
-      this.isAsideMobileExpanded = isShow
-    },
-
-    asideLgToggle (payload = null) {
-      this.isAsideLgActive = payload !== null ? payload : !this.isAsideLgActive
+      this.isAsideExpanded = payload !== null ? payload : !this.isAsideExpanded
     },
 
     fullScreenToggle (payload) {

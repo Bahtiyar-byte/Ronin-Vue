@@ -11,7 +11,7 @@ import FormControl from '@/components/FormControl.vue'
 import BaseDivider from '@/components/BaseDivider.vue'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseButtons from '@/components/BaseButtons.vue'
-import JustboilLogo from '@/components/JustboilLogo.vue'
+// import JustboilLogo from '@/components/JustboilLogo.vue'
 import {
   mdiGoogle ,
   mdiFacebook,
@@ -29,8 +29,8 @@ const authStore = useAuthStore()
 const notification = computed(() => authStore.notify)
 
 const submit = () => {
-  let email = form.login;
-  let password = form.pass;
+  const email = form.login;
+  const password = form.pass;
   authStore.loginUser({email, password})
 }
 
@@ -57,7 +57,7 @@ watch(() => notification.value.showNotification, (newValue, oldValue) => {
       form
       @submit.prevent="submit"
     >
-      <JustboilLogo class="mx-auto"/>
+<!--      <JustboilLogo class="mx-auto"/>-->
 
       <h2 class="text-center mb-8 font-bold text-xl text-gray-700">Log in</h2>
 

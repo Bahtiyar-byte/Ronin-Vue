@@ -27,17 +27,21 @@ const overlayClick = () => {
 </script>
 
 <template>
-  <NavBar />
-  <AsideMenu :menu="menu" />
-  <HelperComponent/>
-  <RouterView />
-  <FooterBar />
-  <notifications
-    position="bottom center"
-  />
-  <OverlayLayer
-    v-show="isAsideLgActive"
-    z-index="z-30"
-    @overlay-click="overlayClick"
-  />
+  <v-app>
+    <NavBar />
+    <!--  <AsideMenu :menu="menu" />-->
+    <HelperComponent/>
+    <v-main>
+      <RouterView />
+      <FooterBar />
+    </v-main>
+    <notifications
+      position="bottom center"
+    />
+    <OverlayLayer
+      v-show="isAsideLgActive"
+      z-index="z-30"
+      @overlay-click="overlayClick"
+    />
+  </v-app>
 </template>

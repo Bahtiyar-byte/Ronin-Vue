@@ -34,7 +34,7 @@ export const useAuthStore = defineStore('auth', {
     async doInit() {
       try {
         let currentUser = null;
-        let token = localStorage.getItem('token');
+        const token = localStorage.getItem('token');
         if (token) {
           currentUser = await this.findMe();
         }
@@ -163,7 +163,7 @@ export const useAuthStore = defineStore('auth', {
       }
     },
     receiveToken(token) {
-      let user = decode(token);
+      const user = decode(token);
       this.loginSuccess()
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));

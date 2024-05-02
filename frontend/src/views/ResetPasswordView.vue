@@ -26,8 +26,8 @@ const router = useRouter()
 const route = useRoute();
 
 const submit = () => {
-  let password = form.password;
-  let token = route.query.token;
+  const password = form.password;
+  const token = route.query.token;
   authStore.resetPassword({password, token})
 }
 

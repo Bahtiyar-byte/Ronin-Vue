@@ -3,7 +3,9 @@ html {
 }
 
 body {
-  @apply pt-14 xl:pl-60 h-full;
+  @apply pt-14 h-full;
+
+  /* xl:pl-60 */
 }
 
 #app {
@@ -25,8 +27,4 @@ li.stack-item:not(:last-child):after {
 
 .full-screen body {
   @apply p-0;
-}
-
-.main-navbar, .app-sidebar-brand {
-  box-shadow: 0px -1px 40px rgba(112, 144, 176, 0.2);
 }
