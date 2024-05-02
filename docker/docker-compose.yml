@@ -1,5 +1,3 @@
-
-
 version: "3.9"
 services:
   web:
@@ -9,6 +7,18 @@ services:
     tty: true        # docker run -t
     ports:
       - "3000:3000"
+    environment:
+      FRONTEND_SERVER_PORT: "3000"
+    volumes:
+      - ./../frontend/src:/usr/src/app/src
+      - ./../frontend/public:/usr/src/app/public
+      - ./../frontend/index.html:/usr/src/app/index.html
+      - ./../frontend/tailwind.config.js:/usr/src/app/tailwind.config.js
+      - ./../frontend/vite.config.js:/usr/src/app/vite.config.js
+      - ./../frontend/postcss.config.js:/usr/src/app/postcss.config.js
+      - ./../frontend/package.json:/usr/src/app/package.json
+    networks:
+      - ronin-vue
   db:
     image: postgres
     volumes:
@@ -17,7 +27,9 @@ services:
       - POSTGRES_HOST_AUTH_METHOD=trust
       - POSTGRES_DB=db_ronin
     ports:
-      - "5432:5432"
+      - "5444:5432"
+    networks:
+      - ronin-vue
   backend:
     image: backend
     volumes:
@@ -30,6 +42,11 @@ services:
      - "8080:8080"
     depends_on:
      - "db"
+    # restart: "always"
+    networks:
+      - ronin-vue
 
-    command: ["bash", "./wait-for-it.sh", "db:5432", "--timeout=0", "--strict", "--", "bash", "./start-backend.sh"]
+    command: ["bash", "./start-backend.sh"]
 
+networks:
+  ronin-vue:
