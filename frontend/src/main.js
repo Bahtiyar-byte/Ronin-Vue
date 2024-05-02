@@ -25,9 +25,20 @@ if (token) {
 /* Init Pinia */
 const pinia = createPinia()
 
+// Vuetify
+import 'vuetify/styles'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
+
+const vuetify = createVuetify({
+  components,
+  directives,
+})
+
 /* Create Vue app */
 const app = createApp(App);
-app.use(router).use(pinia).use(Notifications).mount('#app')
+app.use(router).use(pinia).use(Notifications).use(vuetify).mount('#app')
 
 app.component('v-select', vSelect);
 
