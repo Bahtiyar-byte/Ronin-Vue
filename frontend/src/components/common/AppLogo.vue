@@ -18,17 +18,14 @@ const to = ref(props?.to ?? { name: 'Dashboard' });
 </script>
 
 <template>
-  <div>
-    <router-link v-if="to" :to="to">
-      <v-img
-        :src="logo"
-        width="100"
-      />
-    </router-link>
-    <v-img v-else
+  <router-link v-if="to" :to="to">
+    <v-img
       :src="logo"
-       width="100"
+      width="100"
     />
-  </div>
-
+  </router-link>
+  <v-img v-else
+    :src="logo"
+     width="100"
+  />
 </template>

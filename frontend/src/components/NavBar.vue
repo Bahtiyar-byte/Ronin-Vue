@@ -15,11 +15,13 @@ import {
 } from '@mdi/js'
 import NavBarItem from '@/components/NavBarItem.vue'
 import AppLogo from "@/components/common/AppLogo.vue";
-// import NavBarItemLabel from '@/components/NavBarItemLabel.vue'
-// import NavBarMenu from '@/components/NavBarMenu.vue'
-// import BaseDivider from '@/components/BaseDivider.vue'
-// import UserAvatar from '@/components/UserAvatar.vue'
+import NavBarItemLabel from '@/components/NavBarItemLabel.vue'
+import NavBarMenu from '@/components/NavBarMenu.vue'
+import BaseDivider from '@/components/BaseDivider.vue'
+import UserAvatar from '@/components/UserAvatar.vue'
 // import BaseIcon from '@/components/BaseIcon.vue'
+
+const dropdownActive = ref(false);
 
 const authStore = useAuthStore()
 
@@ -40,22 +42,21 @@ const menuToggle = () => layoutStore.asideToggle()
 //   layoutStore.asideLgToggle(true)
 // }
 
-const isMenuNavBarActive = ref(false)
-
 const logout = () => {
   authStore.logoutUser()
 }
 </script>
 
 <template>
+<!--  <VAppBar></VAppBar>-->
   <v-app-bar
     tag="nav"
     v-show="isNavBarVisible"
     class="main-navbar top-0 right-0 fixed flex bg-white h-14 z-30 w-screen transition-position ease-in-out lg:w-auto lg:items-stretch"
-    :class="{'!left-60': isAsideExpanded, 'left-0': !isAsideExpanded}"
+    :class="{/*'!left-60': isAsideExpanded, */'left-0': !isAsideExpanded}"
     height="auto"
   >
-    <div class="flex-1 items-stretch flex h-14">
+    <div class="flex-1 items-stretch justify-between flex h-14">
       <NavBarItem>
         <v-btn
           variant="plain"
@@ -66,76 +67,51 @@ const logout = () => {
 
         <AppLogo />
       </NavBarItem>
+
+      <NavBarMenu v-model="dropdownActive">
+        <NavBarItemLabel
+          :label="currentUser?.firstName || 'Admin'"
+          class-name="line-clamp-2 max-w-[150px]"
+        >
+          <UserAvatar v-if="!currentUser?.avatar?.length"
+                      class="w-10 h-10 md:mr-6"
+          />
+          <img v-else
+               class="rounded-full w-6 h-6 mr-3 inline-flex"
+               :src="currentUser.avatar[0].publicUrl"
+               :alt="currentUser.avatar[0].name"
+          />
+        </NavBarItemLabel>
+      </NavBarMenu>
     </div>
 
+    <template v-if="dropdownActive" #extension>
+      <div
+        class="text-sm border-b border-gray-100 lg:border-b-0 lg:border-gray-200 lg:border-t lg:bg-white lg:absolute
+          lg:top-0 lg:right-0 lg:max-w-[320px] min-w-[170px] lg:z-20 lg:shadow-md lg:rounded-b lg:dark:bg-gray-800
+          dark:border-gray-700"
+      >
+        <NavBarItem :to="{ name: 'Profile' }">
+          <NavBarItemLabel
+            icon="mdi-account"
+            label="My Profile"
+            is-v-icon
+          />
+        </NavBarItem>
+
+        <BaseDivider nav-bar />
+        <NavBarItem
+          @click="logout"
+        >
+          <NavBarItemLabel
+            icon="mdi-logout"
+            label="Log Out"
+            is-v-icon
+          />
+        </NavBarItem>
+      </div>
+    </template>
     </v-app-bar>
 
-              <!--    <div class="flex-1 items-stretch flex h-14">-->
-<!--      <NavBarItem-->
-<!--        type="flex lg:hidden"-->
-<!--       -->
-<!--      >-->
-<!--        -->
-<!--      </NavBarItem>-->
-<!--      <NavBarItem-->
-<!--        type="hidden lg:flex xl:hidden"-->
-<!--        @click.prevent="menuOpenLg"-->
-<!--      >-->
-<!--        <BaseIcon-->
-<!--          :path="mdiMenu"-->
-<!--          size="24"-->
-<!--        />-->
-<!--      </NavBarItem>-->
-<!--    </div>-->
-<!--    <div class="flex-none items-stretch flex h-14 lg:hidden">-->
-<!--      <NavBarItem @click.prevent="menuNavBarToggle">-->
-<!--        <BaseIcon-->
-<!--          :path="menuNavBarToggleIcon"-->
-<!--          size="24"-->
-<!--        />-->
-<!--      </NavBarItem>-->
-<!--    </div>-->
-<!--    <div-->
-<!--      class="absolute w-screen top-14 left-0 bg-white shadow-->
-<!--        lg:w-auto lg:items-stretch lg:flex lg:grow lg:static lg:border-b-0 lg:overflow-visible lg:shadow-none dark:bg-gray-900"-->
-<!--      :class="[isMenuNavBarActive ? 'block' : 'hidden']"-->
-<!--    >-->
-<!--      <div-->
-<!--        class="max-h-screen-menu lg:overflow-visible lg:flex lg:items-stretch lg:justify-end lg:ml-auto"-->
-<!--      >-->
 
-<!--        <NavBarMenu has-divider>-->
-<!--          <NavBarItemLabel :label="currentUser?.firstName || 'Admin'">-->
-<!--            <UserAvatar v-if="!currentUser?.avatar?.length"-->
-<!--                        class="w-10 h-10 md:mr-6"-->
-<!--            />-->
-<!--            <img v-else-->
-<!--                 class="rounded-full w-6 h-6 mr-3 inline-flex"-->
-<!--                 :src="currentUser.avatar[0].publicUrl"-->
-<!--                 :alt="currentUser.avatar[0].name"-->
-<!--            />-->
-<!--          </NavBarItemLabel>-->
-
-<!--          <template #dropdown>-->
-<!--            <NavBarItem to="/profile">-->
-<!--              <NavBarItemLabel-->
-<!--                :icon="mdiAccount"-->
-<!--                label="My Profile"-->
-<!--              />-->
-<!--            </NavBarItem>-->
-
-<!--            <BaseDivider nav-bar />-->
-<!--            <NavBarItem-->
-<!--              @click="logout"-->
-<!--            >-->
-<!--              <NavBarItemLabel-->
-<!--                :icon="mdiLogout"-->
-<!--                label="Log Out"-->
-<!--              />-->
-<!--            </NavBarItem>-->
-<!--          </template>-->
-<!--        </NavBarMenu>-->
-
-<!--      </div>-->
-<!--    </div>-->
 </template>
