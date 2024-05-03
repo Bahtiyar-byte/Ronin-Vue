@@ -56,7 +56,7 @@ const upload = async event => {
   if (!files || !files.length) {
     return;
   }
-  let data = files[0];
+  const data = files[0];
   const extension = extractExtensionFrom(data.name);
 
 

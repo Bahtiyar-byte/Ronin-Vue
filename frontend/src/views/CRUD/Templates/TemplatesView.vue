@@ -38,7 +38,7 @@ const generateQuery = () => {
   query.value = '?';
   filters.value.forEach((f) => {
     if (f.filter && f.filter.title) {
-      let {filter, value, from, to} = f;
+      const {filter, value, from, to} = f;
       filter.number
         ? (query.value += `${filter.title}Range[]=${from}&${filter.title}Range=${to}&`)
         : (query.value += `${filter.title}=${value}&`);

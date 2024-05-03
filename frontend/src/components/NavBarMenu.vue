@@ -5,8 +5,12 @@ import { mdiChevronUp, mdiChevronDown } from '@mdi/js'
 import NavBarItem from '@/components/NavBarItem.vue'
 import BaseIcon from '@/components/BaseIcon.vue'
 
-defineProps({
+const props = defineProps({
   hasDivider: {
+    type: Boolean,
+    default: false
+  },
+  modelValue: {
     type: Boolean,
     default: false
   }
@@ -14,19 +18,24 @@ defineProps({
 
 const styleStore = useStyleStore()
 
-const isDropdownActive = ref(false)
+const emit = defineEmits(['update:modelValue']);
 
-const toggleDropdownIcon = computed(() => isDropdownActive.value ? mdiChevronUp : mdiChevronDown)
+const isDropdownActive = computed({
+  get: () => props.modelValue,
+  set: (val) => emit('update:modelValue', val)
+});
+
+const toggleDropdownIcon = computed(() => isDropdownActive.value ? mdiChevronUp : mdiChevronDown);
 
 const toggle = () => {
-  isDropdownActive.value = !isDropdownActive.value
+  isDropdownActive.value = !isDropdownActive.value;
 }
 
-const root = ref(null)
+const root = ref(null);
 
 const forceClose = event => {
   if (!root.value.$el.contains(event.target)) {
-    isDropdownActive.value = false
+    isDropdownActive.value = false;
   }
 }
 
@@ -38,6 +47,7 @@ onBeforeUnmount(() => {
   window.removeEventListener('click', forceClose)
 })
 </script>
+
 
 <template>
   <NavBarItem
@@ -60,6 +70,7 @@ onBeforeUnmount(() => {
       />
     </a>
     <div
+      v-if="$slots.dropdown"
       class="text-sm border-b border-gray-100 lg:border-b-0 lg:border-gray-200 lg:border-t lg:bg-white lg:absolute
           lg:top-full lg:left-0 lg:min-w-full lg:z-20 lg:shadow-md lg:rounded-b lg:dark:bg-gray-800
           dark:border-gray-700"

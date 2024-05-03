@@ -24,7 +24,7 @@ const notification = computed(() => authStore.notify)
 const router = useRouter()
 
 const submit = async () => {
-  let email = form.email;
+  const email = form.email;
   await authStore.forgotPassword(email)
 }
 

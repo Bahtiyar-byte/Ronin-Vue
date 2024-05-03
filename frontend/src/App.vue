@@ -24,20 +24,28 @@ onBeforeMount(async () => {
 const overlayClick = () => {
   layoutStore.asideLgToggle(false)
 }
+
+const isAsideExpanded = computed(() => layoutStore.isAsideExpanded)
 </script>
 
 <template>
-  <NavBar />
-  <AsideMenu :menu="menu" />
-  <HelperComponent/>
-  <RouterView />
-  <FooterBar />
-  <notifications
-    position="bottom center"
-  />
-  <OverlayLayer
-    v-show="isAsideLgActive"
-    z-index="z-30"
-    @overlay-click="overlayClick"
-  />
+  <v-app app>
+    <NavBar />
+    <AsideMenu :menu="menu" />
+    <HelperComponent/>
+    <v-main app
+    >
+<!--      :class="{ 'translate-x-60': isAsideExpanded }"-->
+      <RouterView />
+      <FooterBar />
+    </v-main>
+    <notifications
+      position="bottom center"
+    />
+    <OverlayLayer
+      v-show="isAsideLgActive"
+      z-index="z-30"
+      @overlay-click="overlayClick"
+    />
+  </v-app>
 </template>
