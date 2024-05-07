@@ -8,8 +8,8 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "@mdi/font": "^7.0.96",
-    "@mdi/js": "^6.4.95",
+    "@mdi/font": "^7.4.47",
+    "@mdi/js": "^7.4.47",
     "@tinymce/tinymce-vue": "^4",
     "axios": "^0.27.0",
     "chart.js": "^3.6.0",

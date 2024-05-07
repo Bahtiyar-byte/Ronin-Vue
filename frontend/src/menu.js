@@ -1,5 +1,5 @@
 import {
-  mdiDesktopMac,
+  mdiMonitorDashboard,
   // mdiSquareEditOutline,
   // mdiTable,
   // mdiLock,
@@ -18,7 +18,7 @@ export default [
       {
         to: { name: 'Dashboard' },
         label: 'Dashboard',
-        icon: 'mdi-monitor-dashboard',
+        icon: mdiMonitorDashboard,
       },
     ],
   },
