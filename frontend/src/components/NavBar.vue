@@ -4,10 +4,10 @@ import { useAuthStore } from '@/stores/auth.js'
 import { useLayoutStore } from '@/stores/layout.js'
 import {
   // mdiForwardburger,
-  // mdiBackburger,
+  mdiBackburger,
   // mdiClose,
   // mdiDotsVertical,
-  // mdiMenu,
+  mdiMenu,
   // mdiAccount,
   // mdiCogOutline,
   // mdiEmail,
@@ -33,7 +33,7 @@ const isNavBarVisible = computed(() => !layoutStore.isFullScreen)
 
 const isAsideExpanded = computed(() => layoutStore.isAsideExpanded)
 
-const menuToggleIcon = computed(() => isAsideExpanded.value ? `mdi-backburger` : `mdi-menu`)
+const menuToggleIcon = computed(() => isAsideExpanded.value ? mdiBackburger : mdiMenu)
 const menuToggleTitle = computed(() => isAsideExpanded.value ? `Hide menu` : `Show menu`)
 
 const menuToggle = () => layoutStore.asideToggle()

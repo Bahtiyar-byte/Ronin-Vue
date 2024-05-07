@@ -1,17 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { RouterLink } from 'vue-router'
+import { RouteLocationRaw } from 'vue-router';
 
 import logo from "@/assets/tailwind.jpg";
 
-defineOptions({
-  inheritAttrs: false,
-})
-
-const props = defineProps({
-  // @ts-expect-error There are some props inside
-  ...RouterLink.props,
-})
+const props = defineProps<{
+  to: RouteLocationRaw;
+}>();
 
 const to = ref(props?.to ?? { name: 'Dashboard' });
 

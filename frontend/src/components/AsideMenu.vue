@@ -57,13 +57,7 @@ const isAsideExpanded = computed(() => layoutStore.isAsideExpanded)
 
             {{ menuItem.label }}
           </v-list-item-title>
-
-
-          {{ console.log(menuItem) }}
         </v-list-item>
-
-
-<!--        :value="title"-->
       </template>
     </v-list>
 

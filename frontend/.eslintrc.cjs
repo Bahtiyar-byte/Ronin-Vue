@@ -19,4 +19,7 @@ module.exports = {
     'vue',
     '@typescript-eslint',
   ],
+  rules: {
+    "@typescript-eslint/no-unused-vars": ["error", { "ignoreRestSiblings": true }]
+  },
 }
