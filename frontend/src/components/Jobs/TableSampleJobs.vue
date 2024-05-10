@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useJobsStore } from "@/stores/Jobs/jobs";
 import { mdiEye, mdiTrashCan } from '@mdi/js'
@@ -7,18 +7,28 @@ import TableCheckboxCell from '@/components/TableCheckboxCell.vue'
 import BaseLevel from '@/components/BaseLevel.vue'
 import BaseButtons from '@/components/BaseButtons.vue'
 import BaseButton from '@/components/BaseButton.vue'
-import UserAvatar from '@/components/UserAvatar.vue'
+// import UserAvatar from '@/components/UserAvatar.vue'
 import dataFormatter from '@/helpers/dataFormatter';
 import { useRouter } from 'vue-router';
 import FormControl from '@/components/FormControl.vue';
+import TableHeader from "@/types/table/TableHeader";
+import IEntity from "@/types/common/IEntity";
+import { headerExists } from "@/helpers/tables";
 
 const $router = useRouter();
 
-const props = defineProps({
-  checkable: Boolean,
-  sortTitle: String,
-  sortDirection: String
-})
+const props = withDefaults(defineProps<{
+  checkable: boolean,
+  sortTitle: string,
+  sortDirection: string,
+  showAction: boolean,
+  propsHeaders?: TableHeader[],
+}>(), {
+  checkable: false,
+  sortTitle: '',
+  sortDirection: '',
+  showAction: true,
+});
 
 const emit = defineEmits(['sort']);
 /* Fetch data */
@@ -32,8 +42,7 @@ const deleteItem = () => {
 
 const items = computed(() => jobsStore.data)
 
-const headers = [
-
+const headers: TableHeader[] = props.propsHeaders ?? [
 { text: 'Name', value: 'name'},
 { text: 'Contact', value: 'contact'},
 { text: 'Category', value: 'category'},
@@ -46,17 +55,18 @@ const headers = [
 { text: 'Image', value: 'image'},
 { text: 'Document', value: 'document'},
 { text: 'Invoice', value: 'invoice'},]
+
 const isModalActive = ref(false)
 
 const isModalDangerActive = ref(false)
 
-const currentId = ref(0);
+const currentId = ref<string>('');
 
 const perPage = ref(10)
 
 const currentPage = ref(0)
 
-const checkedRows = ref([])
+const checkedRows = ref<IEntity[]>([]);
 
 const itemsPaginated = computed(
   () => items.value && items.value.length && items.value.slice(perPage.value * currentPage.value, perPage.value * (currentPage.value + 1))
@@ -76,8 +86,8 @@ const pagesList = computed(() => {
   return pagesList
 })
 
-const remove = (arr, cb) => {
-  const newArr = []
+const remove = (arr: IEntity[], cb: (item: IEntity) => boolean): IEntity[] => {
+  const newArr: IEntity[] = [];
 
   arr.forEach(item => {
     if (!cb(item)) {
@@ -85,23 +95,23 @@ const remove = (arr, cb) => {
     }
   })
 
-  return newArr
+  return newArr;
 }
 
-const checked = (isChecked, client) => {
+const checked = (isChecked: boolean, client: IEntity) => {
   if (isChecked) {
     checkedRows.value.push(client)
   } else {
-    checkedRows.value = remove(checkedRows.value, row => row.id === client.id)
+    checkedRows.value = remove(checkedRows.value, (row: IEntity) => row.id === client.id)
   }
 }
 
-const showModal = (client) => {
+const showModal = (client: IEntity) => {
   currentId.value = client.id
   isModalDangerActive.value = true
 }
 
-const sort = (title) => {
+const sort = (title: string) => {
   let sortTitle = title;
   let sortDirection = '';
   if (props.sortTitle !== title) {
@@ -126,7 +136,7 @@ const sort = (title) => {
   >
     <ul
       v-for="item in headers"
-      :key="item"
+      :key="item.text"
     >
       <li>{{ item.text }}</li>
     </ul>
@@ -160,67 +170,15 @@ const sort = (title) => {
       <tr>
       <th v-if="checkable" />
 
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'name' && props.sortDirection]"
-        @click="sort('name')"
-      >Name</th>
+        <th v-for="header in headers"
+          :key="`table-sample-jobs-header-${header.value}`"
+          :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === header.value && props.sortDirection]"
+          @click="sort(header.value)"
+        >
+          {{ header.text }}
+        </th>
 
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'contact' && props.sortDirection]"
-        @click="sort('contact')"
-      >Contact</th>
-
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'category' && props.sortDirection]"
-        @click="sort('category')"
-      >Category</th>
-
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'type' && props.sortDirection]"
-        @click="sort('type')"
-      >Type</th>
-
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'status' && props.sortDirection]"
-        @click="sort('status')"
-      >Status</th>
-
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'assignedUser' && props.sortDirection]"
-        @click="sort('assignedUser')"
-      >Assigned User</th>
-
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'assignedTeam' && props.sortDirection]"
-        @click="sort('assignedTeam')"
-      >Assigned Team</th>
-
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'estimate' && props.sortDirection]"
-        @click="sort('estimate')"
-      >Estimate</th>
-
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'appointment' && props.sortDirection]"
-        @click="sort('appointment')"
-      >Appointment</th>
-
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'image' && props.sortDirection]"
-        @click="sort('image')"
-      >Image</th>
-
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'document' && props.sortDirection]"
-        @click="sort('document')"
-      >Document</th>
-
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'invoice' && props.sortDirection]"
-        @click="sort('invoice')"
-      >Invoice</th>
-
-        <th />
+        <th v-if="showAction" />
       </tr>
     </thead>
     <tbody>
@@ -234,103 +192,103 @@ const sort = (title) => {
           @checked="checked($event, client)"
         />
 
-              <td data-label="name">
-                {{ client.name }}
-              </td>
+        <td v-if="headerExists('name', headers)" data-label="name">
+          {{ client.name }}
+        </td>
 
-              <td data-label="contact">
-                  <span
-                    v-for="(i, idx) in dataFormatter.contactsManyListFormatter(client.contact)"
-                    :key="idx + client.contact"
-                    class="block"
-                  >
-                      {{ i }}
-                  </span>
-              </td>  
+        <td v-if="headerExists('contact', headers)" data-label="contact">
+            <span
+              v-for="(i, idx) in dataFormatter.contactsManyListFormatter(client.contact)"
+              :key="idx + client.contact"
+              class="block"
+            >
+                {{ i }}
+            </span>
+        </td>
 
-              <td data-label="category">
-                {{ client.category }}
-              </td>
+        <td v-if="headerExists('category', headers)" data-label="category">
+          {{ client.category }}
+        </td>
 
-              <td data-label="type">
-                {{ client.type }}
-              </td>
+        <td v-if="headerExists('type', headers)" data-label="type">
+          {{ client.type }}
+        </td>
 
-              <td data-label="status">
-                {{ client.status }}
-              </td>
+        <td v-if="headerExists('status', headers)" data-label="status">
+          {{ client.status }}
+        </td>
 
-              <td data-label="assignedUser">
-                  <span
-                    v-for="(i, idx) in dataFormatter.usersManyListFormatter(client.assignedUser)"
-                    :key="idx + client.assignedUser"
-                    class="block"
-                  >
-                      {{ i }}
-                  </span>
-              </td>  
+        <td v-if="headerExists('assignedUser', headers)" data-label="assignedUser">
+            <span
+              v-for="(i, idx) in dataFormatter.usersManyListFormatter(client.assignedUser)"
+              :key="idx + client.assignedUser"
+              class="block"
+            >
+                {{ i }}
+            </span>
+        </td>
 
-              <td data-label="assignedTeam">
-                  <span
-                    v-for="(i, idx) in dataFormatter.teamsManyListFormatter(client.assignedTeam)"
-                    :key="idx + client.assignedTeam"
-                    class="block"
-                  >
-                      {{ i }}
-                  </span>
-              </td>  
+        <td v-if="headerExists('assignedTeam', headers)" data-label="assignedTeam">
+            <span
+              v-for="(i, idx) in dataFormatter.teamsManyListFormatter(client.assignedTeam)"
+              :key="idx + client.assignedTeam"
+              class="block"
+            >
+                {{ i }}
+            </span>
+        </td>
 
-              <td data-label="estimate">
-                  <span
-                    v-for="(i, idx) in dataFormatter.estimatesManyListFormatter(client.estimate)"
-                    :key="idx + client.estimate"
-                    class="block"
-                  >
-                      {{ i }}
-                  </span>
-              </td>  
+        <td v-if="headerExists('estimate', headers)" data-label="estimate">
+            <span
+              v-for="(i, idx) in dataFormatter.estimatesManyListFormatter(client.estimate)"
+              :key="idx + client.estimate"
+              class="block"
+            >
+                {{ i }}
+            </span>
+        </td>
 
-              <td data-label="appointment">
-                  <span
-                    v-for="(i, idx) in dataFormatter.appointmentsManyListFormatter(client.appointment)"
-                    :key="idx + client.appointment"
-                    class="block"
-                  >
-                      {{ i }}
-                  </span>
-              </td>  
+        <td v-if="headerExists('appointment', headers)" data-label="appointment">
+            <span
+              v-for="(i, idx) in dataFormatter.appointmentsManyListFormatter(client.appointment)"
+              :key="idx + client.appointment"
+              class="block"
+            >
+                {{ i }}
+            </span>
+        </td>
 
-              <td data-label="image">
-                  <span
-                    v-for="(i, idx) in dataFormatter.imagesManyListFormatter(client.image)"
-                    :key="idx + client.image"
-                    class="block"
-                  >
-                      {{ i }}
-                  </span>
-              </td>  
+        <td v-if="headerExists('image', headers)" data-label="image">
+            <span
+              v-for="(i, idx) in dataFormatter.imagesManyListFormatter(client.image)"
+              :key="idx + client.image"
+              class="block"
+            >
+                {{ i }}
+            </span>
+        </td>
 
-              <td data-label="document">
-                  <span
-                    v-for="(i, idx) in dataFormatter.documentsManyListFormatter(client.document)"
-                    :key="idx + client.document"
-                    class="block"
-                  >
-                      {{ i }}
-                  </span>
-              </td>  
+        <td v-if="headerExists('document', headers)" data-label="document">
+            <span
+              v-for="(i, idx) in dataFormatter.documentsManyListFormatter(client.document)"
+              :key="idx + client.document"
+              class="block"
+            >
+                {{ i }}
+            </span>
+        </td>
 
-              <td data-label="invoice">
-                  <span
-                    v-for="(i, idx) in dataFormatter.invoicesManyListFormatter(client.invoice)"
-                    :key="idx + client.invoice"
-                    class="block"
-                  >
-                      {{ i }}
-                  </span>
-              </td>  
+        <td v-if="headerExists('invoice', headers)" data-label="invoice">
+            <span
+              v-for="(i, idx) in dataFormatter.invoicesManyListFormatter(client.invoice)"
+              :key="idx + client.invoice"
+              class="block"
+            >
+                {{ i }}
+            </span>
+        </td>
 
-        <td class="before:hidden lg:w-1 whitespace-nowrap">
+        <td class="before:hidden lg:w-1 whitespace-nowrap" v-if="showAction">
           <BaseButtons
             type="justify-start lg:justify-end"
             no-wrap

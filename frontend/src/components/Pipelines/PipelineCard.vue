@@ -26,7 +26,7 @@ const cardProps = computed(() => {
                   :icon="pipeline.icon"
           />
 
-          <v-chip class="mt-2">{{ pipeline.amount }}</v-chip>
+          <v-chip class="mt-3">{{ pipeline.amount }}</v-chip>
         </router-link>
       </div>
     </v-card-text>
