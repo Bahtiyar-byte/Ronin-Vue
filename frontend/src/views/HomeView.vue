@@ -15,6 +15,7 @@ import SectionMain from '@/components/SectionMain.vue'
 // import CardBoxWidget from '@/components/CardBoxWidget.vue'
 import CurrentPipeline from "@/components/Pipelines/PipelineCard.vue";
 import PipelineDisplayItem from "@/types/pipiline/PipelineDisplayItem";
+import ActiveJobsTable from "@/components/Jobs/common/ActiveJobsTable.vue";
 
 // const titleStack = ref(['Admin', 'Dashboard'])
 
@@ -76,6 +77,14 @@ onMounted(() => {
 <template>
   <SectionMain>
     <CurrentPipeline :pipeline-items="currentPipelineItems" title="Current pipeline" />
+  </SectionMain>
+
+  <SectionMain class="mb-4">
+    <v-row>
+      <v-col class="pt-0" cols="12" md="4">
+        <ActiveJobsTable title="Active jobs" />
+      </v-col>
+    </v-row>
   </SectionMain>
 
 <!--  <SectionTitleBar :title-stack="titleStack" />-->
