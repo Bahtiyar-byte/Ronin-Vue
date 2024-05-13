@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import axios from 'axios';
 import {
@@ -16,10 +16,12 @@ import SectionMain from '@/components/SectionMain.vue'
 import CurrentPipeline from "@/components/Pipelines/PipelineCard.vue";
 import PipelineDisplayItem from "@/types/pipiline/PipelineDisplayItem";
 import ActiveJobsTable from "@/components/Jobs/common/ActiveJobsTable.vue";
+import AppTools from "@/components/common/tools/AppTools.vue";
+import { RouteLocationRaw } from "vue-router";
 
 // const titleStack = ref(['Admin', 'Dashboard'])
 
-const currentPipelineItems = ref([]);
+const currentPipelineItems = ref<PipelineDisplayItem[]>([]);
 
 onMounted(() => {
   const fetchData = async () => {
@@ -72,6 +74,29 @@ onMounted(() => {
   fetchData();
 })
 
+interface InfoPanelItem
+{
+  to: RouteLocationRaw;
+  title: string;
+  icon: string;
+}
+
+const createActions = ref<InfoPanelItem[]>([
+  {
+    to: { name: 'NewUsers' },
+    title: 'User',
+    icon: mdiAccount,
+  }
+]);
+
+const companyInfoItems = ref<InfoPanelItem[]>([
+  {
+    to: { name: 'Users' },
+    title: 'Users',
+    icon: mdiAccount,
+  }
+]);
+
 </script>
 
 <template>
@@ -83,6 +108,39 @@ onMounted(() => {
     <v-row>
       <v-col class="pt-0" cols="12" md="4">
         <ActiveJobsTable title="Active jobs" />
+      </v-col>
+
+      <v-col class="pt-0" cols="12" md="4">
+        <AppTools title="Tools" />
+      </v-col>
+
+      <v-col class="pt-0" cols="12" md="4">
+        <v-card title="Create">
+          <v-card-text>
+            <v-btn
+              v-for="(createAction, key) in createActions"
+              :key="`dashboard-create-panel-${key}`"
+              :to="createAction.to"
+              :prepend-icon="createAction.icon"
+              :text="createAction.title"
+            />
+          </v-card-text>
+        </v-card>
+
+
+        <v-card class="mt-6"
+                title="Company info"
+        >
+          <v-card-text>
+            <v-btn
+              v-for="(infoItem, key) in companyInfoItems"
+              :key="`dashboard-info-panel-${key}`"
+              :to="infoItem.to"
+              :prepend-icon="infoItem.icon"
+              :text="infoItem.title"
+            />
+          </v-card-text>
+        </v-card>
       </v-col>
     </v-row>
   </SectionMain>
