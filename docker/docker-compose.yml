@@ -35,6 +35,9 @@ services:
     volumes:
     - ./wait-for-it.sh:/usr/src/app/wait-for-it.sh
     - ./start-backend.sh:/usr/src/app/start-backend.sh
+    - ./../backend/src:/usr/src/app/src
+    - ./../backend/package.json:/usr/src/app/package.json
+    - ./../backend/.prettierrc:/usr/src/app/.prettierrc
     build: ../backend
     environment:
      - DEV_DB_HOST=db
@@ -47,6 +50,20 @@ services:
       - ronin-vue
 
     command: ["bash", "./start-backend.sh"]
+
+  pgadmin:
+    image: elestio/pgadmin:latest
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_LISTEN_PORT: 8080
+    ports:
+      - "8085:8080"
+    volumes:
+      - "./servers.json:/pgadmin4/servers.json"
+    networks:
+      - ronin-vue
 
 networks:
   ronin-vue:

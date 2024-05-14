@@ -1,18 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import axios from 'axios';
-import {
-  mdiAccount,
-  mdiSendCheck,
-  mdiBriefcase,
-  mdiCalendarCheck,
-  mdiInvoiceCheck,
-} from '@mdi/js'
 
 import SectionMain from '@/components/SectionMain.vue'
-// import SectionTitleBar from '@/components/SectionTitleBar.vue'
-// import SectionHeroBar from '@/components/SectionHeroBar.vue'
-// import CardBoxWidget from '@/components/CardBoxWidget.vue'
 import CurrentPipeline from "@/components/Pipelines/PipelineCard.vue";
 import PipelineDisplayItem from "@/types/pipiline/PipelineDisplayItem";
 import ActiveJobsTable from "@/components/Jobs/common/ActiveJobsTable.vue";
@@ -25,50 +15,68 @@ const currentPipelineItems = ref<PipelineDisplayItem[]>([]);
 
 onMounted(() => {
   const fetchData = async () => {
-    const { data: { count: users } } = await axios.get('/users/count');
-    // const { data: { count: contacts } } = await axios.get('/contacts/count');
-    const { data: { count: appointments } } = await axios.get('/appointments/count');
-    const { data: { count: jobs } } = await axios.get('/jobs/count');
-    const { data: { count: estimates } } = await axios.get('/estimates/count');
-    // const { data: { count: trades } } = await axios.get('/trades/count');
-    // const { data: { count: templates } } = await axios.get('/templates/count');
-    // const { data: { count: documents } } = await axios.get('/documents/count');
-    // const { data: { count: images } } = await axios.get('/images/count');
-    // const { data: { count: roles } } = await axios.get('/roles/count');
-    // const { data: { count: teams } } = await axios.get('/teams/count');
-    const { data: { count: invoices } } = await axios.get('/invoices/count');
+    const { data: { count: leadContacts } } = await axios.get('/contacts/count', {
+      params: {
+        stage: ['Lead'],
+      }
+    });
+
+    const { data: { count: prospectContacts } } = await axios.get('/contacts/count', {
+      params: {
+        stage: ['Prospect'],
+      }
+    });
+
+    const { data: { count: approvedJobs } } = await axios.get('/jobs/count', {
+      params: {
+        status: ['Approved'],
+      }
+    });
+
+    const { data: { count: completedJobs } } = await axios.get('/jobs/count', {
+      params: {
+        status: ['Completed'],
+      }
+    });
+
+    const { data: { count: invoicedJobs } } = await axios.get('/jobs/count', {
+      params: {
+        status: ['Invoiced'],
+      }
+    });
 
     const items = [];
     items.push(new PipelineDisplayItem(
-      'Users',
-      users,
-      { name: 'Users' },
-      mdiAccount
+      'Leads',
+      leadContacts,
+      { name: 'Contacts', query: { stage: 'Lead' } },
+      'contact_emergency'
     ));
     items.push(new PipelineDisplayItem(
-      'Appointments',
-      appointments,
-      { name: 'Appointments' },
-      mdiSendCheck
+      'Prospects',
+      prospectContacts,
+      { name: 'Contacts' },
+      'contact_mail'
     ));
     items.push(new PipelineDisplayItem(
-      'Jobs',
-      jobs,
+      'Approved',
+      approvedJobs,
       { name: 'Jobs' },
-      mdiBriefcase
+      'next_week'
     ));
     items.push(new PipelineDisplayItem(
-      'Estimates',
-      estimates,
-      { name: 'Estimates' },
-      mdiCalendarCheck
+      'Completed',
+      completedJobs,
+      { name: 'Jobs' },
+      'work_alert'
     ));
     items.push(new PipelineDisplayItem(
       'Invoices',
-      invoices,
-      { name: 'Invoices' },
-      mdiInvoiceCheck,
+      invoicedJobs,
+      { name: 'Jobs' },
+      'request_quote',
     ));
+
     currentPipelineItems.value = items;
   };
   fetchData();
@@ -78,14 +86,14 @@ interface InfoPanelItem
 {
   to: RouteLocationRaw;
   title: string;
-  icon: string;
+  icon?: string;
 }
 
 const createActions = ref<InfoPanelItem[]>([
   {
     to: { name: 'NewUsers' },
     title: 'User',
-    icon: mdiAccount,
+    // icon: mdiAccount,
   }
 ]);
 
@@ -93,7 +101,7 @@ const companyInfoItems = ref<InfoPanelItem[]>([
   {
     to: { name: 'Users' },
     title: 'Users',
-    icon: mdiAccount,
+    // icon: mdiAccount,
   }
 ]);
 

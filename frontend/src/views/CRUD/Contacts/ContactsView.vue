@@ -22,9 +22,15 @@ const notification = computed(() => contactsStore.notify)
 const titleStack = ref(['Admin', 'Contacts'])
 
 const filters = ref([]);
-const filtersList = [{label: 'Name', title: 'name'},{label: 'Email', title: 'email'},{label: 'Phone', title: 'phone'},{label: 'Adress', title: 'adress'},{label: 'First Name', title: 'firstName'},{label: 'Last Name', title: 'lastName'},
-
-          ];
+const filtersList = [
+  {label: 'Name', title: 'name'},
+  {label: 'Email', title: 'email'},
+  {label: 'Phone', title: 'phone'},
+  {label: 'Adress', title: 'adress'},
+  {label: 'First Name', title: 'firstName'},
+  {label: 'Last Name', title: 'lastName'},
+  {label: 'Stage', title: 'stage'},
+];
 const showFilters = ref(false);
 
 const query = ref('');

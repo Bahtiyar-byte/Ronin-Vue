@@ -11,11 +11,11 @@ export const useContactsStore = defineStore('contacts', {
       typeNotification: 'warn',
     },
 
-            searchResultJob: [],
+    searchResultJob: [],
 
-            searchResultEstimate: [],
+    searchResultEstimate: [],
 
-            searchResultAppointment: [],
+    searchResultAppointment: [],
 
   }),
   actions: {
@@ -57,7 +57,7 @@ export const useContactsStore = defineStore('contacts', {
       this.startLoading();
       try {
         const result = await axios.put(`/contacts/${payload.id}`, {id: payload.id, data: payload.data})
-        // 
+        //
         this.showNotification('Contacts has been updated', 'success');
         this.getData(result.data)
       } catch (e) {
