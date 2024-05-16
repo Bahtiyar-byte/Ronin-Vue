@@ -1,24 +1,27 @@
 version: "3.9"
 services:
-  web:
-    image: frontend
-    build: ../frontend
-    stdin_open: true # docker run -i
-    tty: true        # docker run -t
-    ports:
-      - "3000:3000"
-    environment:
-      FRONTEND_SERVER_PORT: "3000"
-    volumes:
-      - ./../frontend/src:/usr/src/app/src
-      - ./../frontend/public:/usr/src/app/public
-      - ./../frontend/index.html:/usr/src/app/index.html
-      - ./../frontend/tailwind.config.js:/usr/src/app/tailwind.config.js
-      - ./../frontend/vite.config.js:/usr/src/app/vite.config.js
-      - ./../frontend/postcss.config.js:/usr/src/app/postcss.config.js
-      - ./../frontend/package.json:/usr/src/app/package.json
-    networks:
-      - ronin-vue
+#  web:
+#    image: frontend
+#    build:
+#      context: ../frontend
+#      dockerfile: dev.Dockerfile
+#    stdin_open: true # docker run -i
+#    tty: true        # docker run -t
+#    ports:
+#      - "5173:5173"
+#    environment:
+#      FRONTEND_SERVER_PORT: "5173"
+#    volumes:
+#      - ./../frontend/src:/app/src
+#      - ./../frontend/public:/app/public
+#      - ./../frontend/index.html:/app/index.html
+##      - ./../frontend/tailwind.config.js:/usr/src/app/tailwind.config.js
+#      - ./../frontend/vite.config.js:/app/vite.config.js
+##      - ./../frontend/postcss.config.js:/usr/src/app/postcss.config.js
+#      - ./../frontend/package.json:/app/package.json
+#      - ./../frontend/pnpm-lock.yaml:/app/pnpm-lock.yaml
+#    networks:
+#      - ronin-vue
   db:
     image: postgres
     volumes:
@@ -67,3 +70,4 @@ services:
 
 networks:
   ronin-vue:
+    driver: bridge

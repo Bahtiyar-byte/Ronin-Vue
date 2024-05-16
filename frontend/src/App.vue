@@ -1,51 +1,26 @@
-<script setup>
-import { computed, onBeforeMount } from 'vue'
-import { RouterView } from 'vue-router'
-import { useLayoutStore } from '@/stores/layout.js'
-import menu from '@/menu.js'
-import NavBar from '@/components/NavBar.vue'
-import AsideMenu from '@/components/AsideMenu.vue'
-import FooterBar from '@/components/FooterBar.vue'
-import OverlayLayer from '@/components/OverlayLayer.vue'
-import { useAuthStore } from '@/stores/auth';
-import HelperComponent from '@/components/HelperComponent.vue';
+<script setup lang="ts">
+import { useTheme } from 'vuetify'
+import ScrollToTop from '@core/components/ScrollToTop.vue'
+import initCore from '@core/initCore'
+import { initConfigStore, useConfigStore } from '@core/stores/config'
+import { hexToRgb } from '@layouts/utils'
 
-const layoutStore = useLayoutStore()
+const { global } = useTheme()
 
+// ℹ️ Sync current theme with initial loader theme
+initCore()
+initConfigStore()
 
-const isAsideLgActive = computed(() => layoutStore.isAsideLgActive)
-
-const authStore = useAuthStore();
-
-onBeforeMount(async () => {
-  await authStore.doInit();
-})
-
-const overlayClick = () => {
-  layoutStore.asideLgToggle(false)
-}
-
-const isAsideExpanded = computed(() => layoutStore.isAsideExpanded)
+const configStore = useConfigStore()
 </script>
 
 <template>
-  <v-app app>
-    <NavBar />
-    <AsideMenu :menu="menu" />
-    <HelperComponent/>
-    <v-main app
-    >
-<!--      :class="{ 'translate-x-60': isAsideExpanded }"-->
+  <VLocaleProvider :rtl="configStore.isAppRTL">
+    <!-- ℹ️ This is required to set the background color of active nav link based on currently active global theme's primary -->
+    <VApp :style="`--v-global-theme-primary: ${hexToRgb(global.current.value.colors.primary)}`">
       <RouterView />
-      <FooterBar />
-    </v-main>
-    <notifications
-      position="bottom center"
-    />
-    <OverlayLayer
-      v-show="isAsideLgActive"
-      z-index="z-30"
-      @overlay-click="overlayClick"
-    />
-  </v-app>
+
+      <ScrollToTop />
+    </VApp>
+  </VLocaleProvider>
 </template>
