@@ -1,7 +1,13 @@
 <script setup lang="ts">
+import { watch } from 'vue'
 import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 import { toTypedSchema } from '@vee-validate/yup'
+import type LocalLoginRequest from '@/types/auth/LocalLoginRequest'
+import { useAuth } from '@/composables/useAuth'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 definePage({
   meta: {
@@ -33,12 +39,45 @@ const [password, passwordAttrs] = defineField('password', {
 
 const [remember] = defineField('remember')
 
-const onSubmit = handleSubmit(async (values: {
-  email: string
-  password: string
-  remember?: boolean | undefined
-}) => {
-  console.log(values)
+const loading = ref(false)
+const { login } = useAuth()
+const errorText = ref('')
+
+const onSubmit = handleSubmit(async (formValues: LocalLoginRequest) => {
+  const { data, isFetching, response } = await login(formValues)
+
+  watch(data, (newVal: any) => {
+    useCookie('accessToken').value = newVal.toString()
+    router.push({ name: 'root' })
+  })
+
+  watch(isFetching, newVal => {
+    loading.value = newVal
+  })
+
+  watch(response, async (newVal: Response | null) => {
+    if (newVal === null) {
+      errorText.value = 'Unknown error occurred on login attempt'
+
+      return
+    } else if (newVal.ok || newVal.body === null) {
+      return
+    }
+
+    const reader = newVal.body.getReader()
+    const decoder = new TextDecoder()
+    let result = ''
+
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done)
+        break
+      result += decoder.decode(value, { stream: true })
+    }
+
+    result += decoder.decode()
+    errorText.value = result
+  })
 })
 
 const isPasswordVisible = ref(false)
@@ -50,8 +89,19 @@ const isPasswordVisible = ref(false)
       class="w-[100%] max-w-[400px] mx-5"
       title="Login page"
     >
-      <VForm @submit.prevent="onSubmit">
+      <VForm
+        :disabled="loading"
+        @submit.prevent="onSubmit"
+      >
         <VCardText class="!pt-0">
+          <VAlert
+            v-show="errorText.length"
+            type="error"
+            title="Error occurred"
+            :text="errorText"
+            class="mb-4"
+          />
+
           <VCol
             cols="12"
             class="!px-0 !pt-0"
@@ -87,12 +137,9 @@ const isPasswordVisible = ref(false)
               v-model="remember"
               label="Remember me"
             />
-            <a
-              class="text-primary ms-2 mb-1"
-              href="#"
-            >
+            <RouterLink :to="{ name: 'root' }">
               Forgot Password?
-            </a>
+            </RouterLink>
           </div>
         </VCardText>
         <VCardActions class="mx-2">
@@ -100,6 +147,7 @@ const isPasswordVisible = ref(false)
             class="w-full"
             variant="tonal"
             type="submit"
+            :loading="loading"
           >
             Login
           </VBtn>

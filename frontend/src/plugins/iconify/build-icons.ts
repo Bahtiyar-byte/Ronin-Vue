@@ -92,6 +92,7 @@ const sources: BundleScriptConfig = {
       icons: [
         'eye-off',
         'eye',
+        'alert-circle',
       ],
     },
     {

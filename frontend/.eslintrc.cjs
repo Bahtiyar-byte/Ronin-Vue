@@ -227,6 +227,7 @@ module.exports = {
       // Ignore files
       '\.eslintrc\.cjs',
     ],
+    '@stylistic/ts/brace-style': 'off',
   },
   settings: {
     'import/resolver': {
