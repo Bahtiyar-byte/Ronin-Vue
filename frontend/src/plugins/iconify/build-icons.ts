@@ -86,7 +86,14 @@ const sources: BundleScriptConfig = {
     // 'json/gg.json',
 
     // Iconify JSON file (@iconify/json is a package name, /json/ is directory where files are, then filename)
-    require.resolve('@iconify-json/tabler/icons.json'),
+    // require.resolve('@iconify-json/tabler/icons.json'),
+    {
+      filename: require.resolve('@iconify-json/tabler/icons.json'),
+      icons: [
+        'eye-off',
+        'eye',
+      ],
+    },
     {
       filename: require.resolve('@iconify-json/mdi/icons.json'),
       icons: [
