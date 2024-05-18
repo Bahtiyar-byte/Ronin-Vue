@@ -30,6 +30,7 @@ module.exports = {
   ],
   ignorePatterns: ['src/plugins/iconify/*.js', 'node_modules', 'dist', '*.d.ts', 'vendor'],
   rules: {
+    'curly': ['error', 'multi-line'],
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
 

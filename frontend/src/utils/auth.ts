@@ -1,20 +1,3 @@
-import { useRouter } from 'vue-router';
-
-export const redirectToLoginPageIfNotAuthenticated = (): void => {
-    const router = useRouter();
-    const accessToken = useCookie('accessToken').value;
-
-    // Проверяем, аутентифицирован ли пользователь
-    if ((accessToken == void(0) || accessToken.length === 0) && router.currentRoute.value.name !== 'login') {
-        router.push({
-            name: 'login',
-            state: {
-                withoutToken: true,
-            }
-        });
-    }
-};
-
 /**
  *
  * @param router Vue router instance

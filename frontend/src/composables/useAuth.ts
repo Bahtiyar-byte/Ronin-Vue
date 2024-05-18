@@ -1,5 +1,6 @@
 import { useApi } from './useApi'
 import type LocalLoginRequest from '@/types/auth/LocalLoginRequest'
+import type User from '@/types/users/User'
 
 export const useAuth = () => {
   const login = async (req: LocalLoginRequest) => {
@@ -18,7 +19,22 @@ export const useAuth = () => {
     }
   }
 
+  const me = async () => {
+    const {
+      data,
+      isFetching,
+      error,
+    } = useApi('auth/me').get().json<User>()
+
+    return {
+      data,
+      isFetching,
+      error,
+    }
+  }
+
   return {
     login,
+    me,
   }
 }

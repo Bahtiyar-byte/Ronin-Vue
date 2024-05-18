@@ -477,7 +477,6 @@ declare module 'vue' {
     readonly reactiveOmit: UnwrapRef<typeof import('@vueuse/core')['reactiveOmit']>
     readonly reactivePick: UnwrapRef<typeof import('@vueuse/core')['reactivePick']>
     readonly readonly: UnwrapRef<typeof import('vue')['readonly']>
-    readonly redirectToLoginPageIfNotAuthenticated: UnwrapRef<typeof import('./src/utils/auth')['redirectToLoginPageIfNotAuthenticated']>
     readonly ref: UnwrapRef<typeof import('vue')['ref']>
     readonly refAutoReset: UnwrapRef<typeof import('@vueuse/core')['refAutoReset']>
     readonly refDebounced: UnwrapRef<typeof import('@vueuse/core')['refDebounced']>
@@ -825,7 +824,6 @@ declare module '@vue/runtime-core' {
     readonly reactiveOmit: UnwrapRef<typeof import('@vueuse/core')['reactiveOmit']>
     readonly reactivePick: UnwrapRef<typeof import('@vueuse/core')['reactivePick']>
     readonly readonly: UnwrapRef<typeof import('vue')['readonly']>
-    readonly redirectToLoginPageIfNotAuthenticated: UnwrapRef<typeof import('./src/utils/auth')['redirectToLoginPageIfNotAuthenticated']>
     readonly ref: UnwrapRef<typeof import('vue')['ref']>
     readonly refAutoReset: UnwrapRef<typeof import('@vueuse/core')['refAutoReset']>
     readonly refDebounced: UnwrapRef<typeof import('@vueuse/core')['refDebounced']>

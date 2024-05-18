@@ -1,3 +1,9 @@
+<script setup lang="ts">
+import { useCurrentUserStore } from '@/@core/stores/auth/currentUser'
+
+const user = useCurrentUserStore().user
+</script>
+
 <template>
   <div>
     <VCard
@@ -6,6 +12,8 @@
     >
       <VCardText>All the best for your new project.</VCardText>
       <VCardText>
+        {{ JSON.stringify(user) }}<br>
+
         Please make sure to read our <a
           href="https://demos.pixinvent.com/vuexy-vuejs-admin-template/documentation/"
           target="_blank"
