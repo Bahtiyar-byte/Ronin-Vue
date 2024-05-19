@@ -8,15 +8,23 @@ export const useCurrentUserStore = defineStore('currentUser', {
   }),
   actions: {
     async fetchUser() {
-      const { data, error } = await useAuth().me()
+      const { data, response } = await useAuth().me()
 
       watch(data, (newVal: User | null) => {
         this.user = newVal
       })
 
-      watch(error, newVal => {
-        console.log(newVal)
+      watch(response, (newVal: Response | null) => {
+        if (newVal === null) {
+          return
+        }
+
+        if (newVal.status > 400) {
+          useCookie('accessToken').value = null
+        }
       })
+
+      return { response }
     },
     setUser(user: User) {
       this.user = user

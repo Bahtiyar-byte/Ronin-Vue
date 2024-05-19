@@ -70,8 +70,9 @@ const onSubmit = handleSubmit(async (formValues: LocalLoginRequest) => {
 
     while (true) {
       const { done, value } = await reader.read()
-      if (done)
+      if (done) {
         break
+      }
       result += decoder.decode(value, { stream: true })
     }
 

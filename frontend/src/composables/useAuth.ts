@@ -24,12 +24,14 @@ export const useAuth = () => {
       data,
       isFetching,
       error,
+      response,
     } = useApi('auth/me').get().json<User>()
 
     return {
       data,
       isFetching,
       error,
+      response,
     }
   }
 

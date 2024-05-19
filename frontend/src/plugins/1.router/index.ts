@@ -33,19 +33,31 @@ const router = createRouter({
 
 router.beforeEach(async to => {
   const accessToken = useCookie('accessToken').value
+  const isAuthRoute = to.fullPath.includes('/auth/')
+  const isAuthenticated = accessToken !== null && accessToken !== undefined
 
-  if (!~to.fullPath.indexOf('/auth/') && (accessToken === null || accessToken === undefined)) {
+  if (!isAuthRoute && !isAuthenticated) {
     return { name: 'auth-login' }
   }
 
   const userStore = useCurrentUserStore()
 
   if (!userStore.user) {
-    try {
-      await userStore.fetchUser()
-    } catch (error) {
-      return { name: 'auth-login' }
-    }
+    const { response } = await userStore.fetchUser()
+
+    watch(response, (newVal: Response | null) => {
+      if (newVal === null) {
+        return
+      }
+
+      if (newVal.status > 400) {
+        router.replace({ name: 'auth-login' })
+      }
+    })
+  }
+
+  if (isAuthRoute && isAuthenticated) {
+    return { name: 'root' }
   }
 })
 
