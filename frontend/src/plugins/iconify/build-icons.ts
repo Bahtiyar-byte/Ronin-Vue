@@ -102,6 +102,8 @@ const sources: BundleScriptConfig = {
         'x',
         'circle-dot',
         'minus',
+        'user',
+        'logout',
       ],
     },
     {

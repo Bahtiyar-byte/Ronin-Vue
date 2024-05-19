@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { useCurrentUserStore } from '@/@core/stores/auth/currentUser'
 
-const user = useCurrentUserStore().user
 </script>
 
 <template>

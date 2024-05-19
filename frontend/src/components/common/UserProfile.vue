@@ -1,5 +1,22 @@
 <script setup lang="ts">
 import avatar1 from '@images/avatars/avatar-1.png'
+import { useCurrentUserStore } from '@/@core/stores/auth/currentUser'
+
+const user = useCurrentUserStore().user
+
+const userName = computed(() => {
+  if (!user) {
+    return ''
+  }
+
+  const { name, firstName, lastName } = user
+
+  if (name) {
+    return name
+  }
+
+  return [firstName, lastName].filter(Boolean).join(' ')
+})
 </script>
 
 <template>
@@ -47,16 +64,21 @@ import avatar1 from '@images/avatars/avatar-1.png'
               </VListItemAction>
             </template>
 
-            <VListItemTitle class="font-weight-semibold">
-              John Doe
+            <VListItemTitle
+              v-if="userName.length"
+              class="font-weight-semibold"
+            >
+              {{ userName }}
             </VListItemTitle>
-            <VListItemSubtitle>Admin</VListItemSubtitle>
+            <VListItemSubtitle>
+              <a :href="`mailto:${user?.email}`">{{ user?.email }}</a>
+            </VListItemSubtitle>
           </VListItem>
 
           <VDivider class="my-2" />
 
           <!-- 👉 Profile -->
-          <VListItem link>
+          <VListItem :to="{ name: 'profile' }">
             <template #prepend>
               <VIcon
                 class="me-2"
@@ -68,50 +90,11 @@ import avatar1 from '@images/avatars/avatar-1.png'
             <VListItemTitle>Profile</VListItemTitle>
           </VListItem>
 
-          <!-- 👉 Settings -->
-          <VListItem link>
-            <template #prepend>
-              <VIcon
-                class="me-2"
-                icon="tabler-settings"
-                size="22"
-              />
-            </template>
-
-            <VListItemTitle>Settings</VListItemTitle>
-          </VListItem>
-
-          <!-- 👉 Pricing -->
-          <VListItem link>
-            <template #prepend>
-              <VIcon
-                class="me-2"
-                icon="tabler-currency-dollar"
-                size="22"
-              />
-            </template>
-
-            <VListItemTitle>Pricing</VListItemTitle>
-          </VListItem>
-
-          <!-- 👉 FAQ -->
-          <VListItem link>
-            <template #prepend>
-              <VIcon
-                class="me-2"
-                icon="tabler-help"
-                size="22"
-              />
-            </template>
-
-            <VListItemTitle>FAQ</VListItemTitle>
-          </VListItem>
-
           <!-- Divider -->
           <VDivider class="my-2" />
 
           <!-- 👉 Logout -->
-          <VListItem to="/login">
+          <VListItem :to="{ name: 'auth-login' }">
             <template #prepend>
               <VIcon
                 class="me-2"
