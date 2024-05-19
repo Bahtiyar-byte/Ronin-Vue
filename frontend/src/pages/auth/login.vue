@@ -3,9 +3,9 @@ import { watch } from 'vue'
 import { useForm } from 'vee-validate'
 import * as yup from 'yup'
 import { toTypedSchema } from '@vee-validate/yup'
+import { useRouter } from 'vue-router'
 import type LocalLoginRequest from '@/types/auth/LocalLoginRequest'
 import { useAuth } from '@/composables/useAuth'
-import { useRouter } from 'vue-router'
 
 const router = useRouter()
 

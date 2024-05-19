@@ -58,6 +58,9 @@ dependencies:
   '@vueuse/math':
     specifier: 10.9.0
     version: 10.9.0(vue@3.4.21)
+  '@webzlodimir/vue-avatar':
+    specifier: ^0.0.8
+    version: 0.0.8
   apexcharts:
     specifier: 3.46.0
     version: 3.46.0
@@ -2694,6 +2697,10 @@ packages:
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
+
+  /@webzlodimir/vue-avatar@0.0.8:
+    resolution: {integrity: sha512-4UAMDMpzakYKwJt5POj/6QUcDQT3TbIGcbR2Aq3JdcuA1T/VBvhKbHhccoTdE6FgUomk7PaWDTIcgWiRSO1cJA==}
+    dev: false
 
   /@xmldom/xmldom@0.8.10:
     resolution: {integrity: sha512-2WALfTl4xo2SkGCYRt6rDTFfk9R1czmBvUQy12gK2KuRKIpWEhcbbzy8EZXtz/jkRqHX8bFEc6FC1HjX4TUWYw==}
