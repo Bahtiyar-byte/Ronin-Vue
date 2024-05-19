@@ -7,7 +7,7 @@ export const layoutConfig: LayoutConfig = {
     title: 'my-layout',
     logo: h('img', { src: '/src/assets/logo.svg' }),
     contentWidth: ContentWidth.Boxed,
-    contentLayoutNav: AppContentLayoutNav.Vertical,
+    contentLayoutNav: AppContentLayoutNav.Horizontal,
     overlayNavFromBreakpoint: breakpointsVuetify.md,
 
     // isRTL: false,
@@ -17,7 +17,7 @@ export const layoutConfig: LayoutConfig = {
     iconRenderer: h('div'),
   },
   navbar: {
-    type: NavbarType.Sticky,
+    type: NavbarType.Static,
     navbarBlur: true,
   },
   footer: {
@@ -28,7 +28,7 @@ export const layoutConfig: LayoutConfig = {
     defaultNavItemIconProps: { icon: 'tabler-circle' },
   },
   horizontalNav: {
-    type: HorizontalNavType.Sticky,
+    type: HorizontalNavType.Static,
     transition: 'none',
     popoverOffset: 0,
   },

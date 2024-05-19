@@ -41,7 +41,7 @@ export const { themeConfig, layoutConfig } = defineThemeConfig({
     iconRenderer: VIcon,
   },
   navbar: {
-    type: NavbarType.Sticky,
+    type: NavbarType.Static,
     navbarBlur: true,
   },
   footer: { type: FooterType.Static },
@@ -51,7 +51,7 @@ export const { themeConfig, layoutConfig } = defineThemeConfig({
     isVerticalNavSemiDark: false,
   },
   horizontalNav: {
-    type: 'sticky',
+    type: NavbarType.Static,
     transition: 'slide-y-reverse-transition',
     popoverOffset: 6,
   },
