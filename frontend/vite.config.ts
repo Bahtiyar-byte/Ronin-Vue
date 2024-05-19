@@ -11,8 +11,13 @@ import Layouts from 'vite-plugin-vue-layouts'
 import vuetify from 'vite-plugin-vuetify'
 import svgLoader from 'vite-svg-loader'
 
+// import tailwindcss from 'tailwindcss'
+
 // https://vitejs.dev/config/
 export default defineConfig({
+  css: {
+    postcss: './postcss.config.cjs',
+  },
   plugins: [
     // Docs: https://github.com/posva/unplugin-vue-router
     // ℹ️ This plugin should be placed before vue plugin
@@ -54,8 +59,9 @@ export default defineConfig({
       resolvers: [
         componentName => {
           // Auto import `VueApexCharts`
-          if (componentName === 'VueApexCharts')
+          if (componentName === 'VueApexCharts') {
             return { name: 'default', from: 'vue3-apexcharts', as: 'VueApexCharts' }
+          }
         },
       ],
     }),
