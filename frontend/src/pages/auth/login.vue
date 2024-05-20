@@ -6,6 +6,7 @@ import { toTypedSchema } from '@vee-validate/yup'
 import { useRouter } from 'vue-router'
 import type LocalLoginRequest from '@/types/auth/LocalLoginRequest'
 import { useAuth } from '@/composables/useAuth'
+import {getResponseText} from "@/utils/api";
 
 const router = useRouter()
 
@@ -64,20 +65,7 @@ const onSubmit = handleSubmit(async (formValues: LocalLoginRequest) => {
       return
     }
 
-    const reader = newVal.body.getReader()
-    const decoder = new TextDecoder()
-    let result = ''
-
-    while (true) {
-      const { done, value } = await reader.read()
-      if (done) {
-        break
-      }
-      result += decoder.decode(value, { stream: true })
-    }
-
-    result += decoder.decode()
-    errorText.value = result
+    errorText.value = await getResponseText(newVal)
   })
 })
 

@@ -12,3 +12,25 @@ export const $api = ofetch.create({
     }
   },
 })
+
+export const getResponseText = async (res: Response): Promise<string> => {
+  if (res.body === null) {
+    return ''
+  }
+
+  const reader = res.body.getReader()
+  const decoder = new TextDecoder()
+  let result = ''
+
+  while (true) {
+    const { done, value } = await reader.read()
+    if (done) {
+      break
+    }
+    result += decoder.decode(value, { stream: true })
+  }
+
+  result += decoder.decode()
+
+  return result
+}

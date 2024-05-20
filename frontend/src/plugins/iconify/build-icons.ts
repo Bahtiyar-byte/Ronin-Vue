@@ -104,6 +104,7 @@ const sources: BundleScriptConfig = {
         'minus',
         'user',
         'logout',
+        'arrow-up',
       ],
     },
     {
