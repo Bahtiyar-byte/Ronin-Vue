@@ -120,6 +120,19 @@ const sources: BundleScriptConfig = {
       ],
     },
     {
+      filename: require.resolve('@iconify-json/ic/icons.json'),
+      icons: [
+        'outline-next-week',
+      ],
+    },
+    {
+      filename: require.resolve('@iconify-json/material-symbols/icons.json'),
+      icons: [
+        'work-alert-outline',
+        'request-quote-outline',
+      ],
+    },
+    {
       filename: require.resolve('@iconify-json/fa/icons.json'),
       icons: [
         'circle',

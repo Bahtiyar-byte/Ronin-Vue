@@ -1,12 +1,12 @@
 import { useApi } from './useApi'
 import type CountResponse from '@/types/common/CountRequestTypes'
 
-export const useContacts = () => {
+export const useJobs = () => {
   const count = async (params: object) => {
     const url = computed(() => {
       const qParams = new URLSearchParams(params as Record<string, string>)
 
-      return `/contacts/count?${qParams.toString()}`
+      return `/jobs/count?${qParams.toString()}`
     })
 
     const {

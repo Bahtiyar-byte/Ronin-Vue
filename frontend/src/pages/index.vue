@@ -1,20 +1,27 @@
 <script setup lang="ts">
-import { ref, onMounted, watch, watchEffect } from 'vue'
+import { onMounted, ref, watch, watchEffect } from 'vue'
+import type { LocationQueryRaw } from 'vue-router'
+import type { FetchCountFunction } from '@/types/common/CountRequestTypes'
+
 import PipelineCard from '@/components/common/pipelines/PipelineCard.vue'
 import PipelineDisplayItem from '@/types/pipiline/PipelineDisplayItem'
 import { useContacts } from '@/composables/useContacts'
+import { useJobs } from '@/composables/useJobs'
 
 const currentPipelineItems = ref<PipelineDisplayItem[]>([])
 const { count: contactsCount } = useContacts()
+const { count: jobsCount } = useJobs()
 
 const currentPipelineCounts = ref({
   leadContacts: 0,
   prospectContacts: 0,
+  approvedJobs: 0,
+  completedJobs: 0,
+  invoicedJobs: 0,
 })
 
-// Функция для обновления pipeline counts
-const updatePipelineCount = async (stage: string, key: keyof typeof currentPipelineCounts.value) => {
-  const { data } = await contactsCount({ stage })
+const updatePipelineCount = async (fetchCount: FetchCountFunction, params: object, key: keyof typeof currentPipelineCounts.value) => {
+  const { data } = await fetchCount(params)
 
   watch(data, newValue => {
     if (newValue === null) {
@@ -28,32 +35,35 @@ const updatePipelineCount = async (stage: string, key: keyof typeof currentPipel
   })
 }
 
+const createPipelineItem = (title: string, countKey: keyof typeof currentPipelineCounts.value, routeQuery: LocationQueryRaw, icon: string) => {
+  return new PipelineDisplayItem(
+    title,
+    currentPipelineCounts.value[countKey],
+    routeQuery,
+    icon,
+  )
+}
+
 onMounted(() => {
   const fetchData = async () => {
-    await updatePipelineCount('Lead', 'leadContacts')
-    await updatePipelineCount('Prospect', 'prospectContacts')
+    await updatePipelineCount(contactsCount, { stage: 'Lead' }, 'leadContacts')
+    await updatePipelineCount(contactsCount, { stage: 'Prospect' }, 'prospectContacts')
+    await updatePipelineCount(jobsCount, { status: 'Approved' }, 'approvedJobs')
+    await updatePipelineCount(jobsCount, { status: 'Completed' }, 'completedJobs')
+    await updatePipelineCount(jobsCount, { status: 'Invoiced' }, 'invoicedJobs')
   }
 
   fetchData()
 })
 
 watchEffect(() => {
-  const items = []
-
-  items.push(new PipelineDisplayItem(
-    'Leads',
-    currentPipelineCounts.value.leadContacts,
-    { name: 'root', query: { stage: 'Lead' } },
-    'mdi-account-filter-outline',
-  ))
-  items.push(new PipelineDisplayItem(
-    'Prospects',
-    currentPipelineCounts.value.prospectContacts,
-    { name: 'root', query: { stage: 'Prospect' } },
-    'mdi-sale-outline',
-  ))
-
-  currentPipelineItems.value = items
+  currentPipelineItems.value = [
+    createPipelineItem('Leads', 'leadContacts', { name: 'root', query: { stage: 'Lead' } }, 'mdi-account-filter-outline'),
+    createPipelineItem('Prospects', 'prospectContacts', { name: 'root', query: { stage: 'Prospect' } }, 'mdi-sale-outline'),
+    createPipelineItem('Approved', 'approvedJobs', { name: 'root', query: { status: 'Approved' } }, 'ic-outline-next-week'),
+    createPipelineItem('Completed', 'completedJobs', { name: 'root', query: { status: 'Completed' } }, 'material-symbols-work-alert-outline'),
+    createPipelineItem('Invoiced', 'invoicedJobs', { name: 'root', query: { status: 'Invoiced' } }, 'material-symbols-request-quote-outline'),
+  ]
 })
 </script>
 

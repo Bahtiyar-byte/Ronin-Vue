@@ -33,7 +33,7 @@ const cardProps = computed(() => {
             class="mt-2 text-4xl"
           />
 
-          <VChip class="mt-2">
+          <VChip class="mt-3">
             {{ pipeline.amount }}
           </VChip>
         </RouterLink>
