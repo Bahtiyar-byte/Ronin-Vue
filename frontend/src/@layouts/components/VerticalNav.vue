@@ -28,10 +28,13 @@ provide(injectionKeyIsVerticalNavHovered, isHovered)
 const configStore = useLayoutConfigStore()
 
 const resolveNavItemComponent = (item: NavLink | NavSectionTitle | NavGroup): unknown => {
-  if ('heading' in item)
+  if ('heading' in item) {
     return VerticalNavSectionTitle
-  if ('children' in item)
+  }
+
+  if ('children' in item) {
     return VerticalNavGroup
+  }
 
   return VerticalNavLink
 }
@@ -74,7 +77,7 @@ const hideTitleAndIcon = configStore.isVerticalNavMini(isHovered)
     <div class="nav-header">
       <slot name="nav-header">
         <RouterLink
-          to="/"
+          :to="{ name: 'root' }"
           class="app-logo app-title-wrapper"
         >
           <VNodeRenderer :nodes="layoutConfig.app.logo" />

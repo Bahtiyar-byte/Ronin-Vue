@@ -73,7 +73,7 @@ const sources: BundleScriptConfig = {
   ],
 
   icons: [
-    // 'mdi:home',
+    // 'mdi:leads-outline',
     // 'mdi:account',
     // 'mdi:login',
     // 'mdi:logout',
@@ -105,6 +105,8 @@ const sources: BundleScriptConfig = {
         'user',
         'logout',
         'arrow-up',
+        'smart-home',
+        'heart-filled',
       ],
     },
     {
@@ -113,6 +115,8 @@ const sources: BundleScriptConfig = {
         'close-circle',
         'language-javascript',
         'language-typescript',
+        'account-filter-outline',
+        'sale-outline',
       ],
     },
     {

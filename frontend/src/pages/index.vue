@@ -1,29 +1,68 @@
 <script setup lang="ts">
+import { ref, onMounted, watch, watchEffect } from 'vue'
+import PipelineCard from '@/components/common/pipelines/PipelineCard.vue'
+import PipelineDisplayItem from '@/types/pipiline/PipelineDisplayItem'
+import { useContacts } from '@/composables/useContacts'
 
+const currentPipelineItems = ref<PipelineDisplayItem[]>([])
+const { count: contactsCount } = useContacts()
+
+const currentPipelineCounts = ref({
+  leadContacts: 0,
+  prospectContacts: 0,
+})
+
+// Функция для обновления pipeline counts
+const updatePipelineCount = async (stage: string, key: keyof typeof currentPipelineCounts.value) => {
+  const { data } = await contactsCount({ stage })
+
+  watch(data, newValue => {
+    if (newValue === null) {
+      return
+    }
+
+    currentPipelineCounts.value = {
+      ...currentPipelineCounts.value,
+      [key]: newValue.count,
+    }
+  })
+}
+
+onMounted(() => {
+  const fetchData = async () => {
+    await updatePipelineCount('Lead', 'leadContacts')
+    await updatePipelineCount('Prospect', 'prospectContacts')
+  }
+
+  fetchData()
+})
+
+watchEffect(() => {
+  const items = []
+
+  items.push(new PipelineDisplayItem(
+    'Leads',
+    currentPipelineCounts.value.leadContacts,
+    { name: 'root', query: { stage: 'Lead' } },
+    'mdi-account-filter-outline',
+  ))
+  items.push(new PipelineDisplayItem(
+    'Prospects',
+    currentPipelineCounts.value.prospectContacts,
+    { name: 'root', query: { stage: 'Prospect' } },
+    'mdi-sale-outline',
+  ))
+
+  currentPipelineItems.value = items
+})
 </script>
 
 <template>
   <div>
-    <VCard
+    <PipelineCard
       class="mb-6"
-      title="Kick start your project 🚀"
-    >
-      <VCardText>All the best for your new project.</VCardText>
-      <VCardText>
-        Please make sure to read our <a
-          href="https://demos.pixinvent.com/vuexy-vuejs-admin-template/documentation/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="text-decoration-none"
-        >
-          Template Documentation
-        </a> to understand where to go from here and how to use our template.
-      </VCardText>
-    </VCard>
-
-    <VCard title="Want to integrate JWT? 🔒">
-      <VCardText>We carefully crafted JWT flow so you can implement JWT with ease and with minimum efforts.</VCardText>
-      <VCardText>Please read our  JWT Documentation to get more out of JWT authentication.</VCardText>
-    </VCard>
+      title="Current pipeline"
+      :pipeline-items="currentPipelineItems"
+    />
   </div>
 </template>
