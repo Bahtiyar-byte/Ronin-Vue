@@ -134,7 +134,7 @@ const isPasswordVisible = ref(false)
         <VCardActions class="mx-2">
           <VBtn
             class="w-full"
-            variant="tonal"
+            variant="elevated"
             type="submit"
             :loading="loading"
           >

@@ -46,6 +46,7 @@ declare module 'vue' {
     ErrorHeader: typeof import('./src/components/ErrorHeader.vue')['default']
     GeneralTab: typeof import('./src/components/profile/tabs/GeneralTab.vue')['default']
     I18n: typeof import('./src/@core/components/I18n.vue')['default']
+    ItemsManage: typeof import('./src/components/common/CRUD/ItemsManage.vue')['default']
     MoreBtn: typeof import('./src/@core/components/MoreBtn.vue')['default']
     Notifications: typeof import('./src/@core/components/Notifications.vue')['default']
     PaymentProvidersDialog: typeof import('./src/components/dialogs/PaymentProvidersDialog.vue')['default']

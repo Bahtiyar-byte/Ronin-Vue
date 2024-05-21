@@ -21,6 +21,12 @@ dependencies:
   '@iconify-json/fa':
     specifier: 1.1.8
     version: 1.1.8
+  '@iconify-json/ic':
+    specifier: ^1.1.17
+    version: 1.1.17
+  '@iconify-json/material-symbols':
+    specifier: ^1.1.80
+    version: 1.1.80
   '@iconify-json/tabler':
     specifier: 1.1.106
     version: 1.1.106
@@ -1130,6 +1136,18 @@ packages:
 
   /@iconify-json/fa@1.1.8:
     resolution: {integrity: sha512-he23ZsuDxA6Hx7rnrEpSJnmu7t7RtG/SbrENZhMSPiZ4bNRGHjyPZimtOy10k2/nfwNsW57ECDsO5eK0BkcoMg==}
+    dependencies:
+      '@iconify/types': 2.0.0
+    dev: false
+
+  /@iconify-json/ic@1.1.17:
+    resolution: {integrity: sha512-EvAjZzVESmN36zlyefylePUNaU2BQ3eRKVZ6KQSQ2bG01ppoZaiFZRri74VTyvp5Mlv2yn68ux1fgCoT+etGmA==}
+    dependencies:
+      '@iconify/types': 2.0.0
+    dev: false
+
+  /@iconify-json/material-symbols@1.1.80:
+    resolution: {integrity: sha512-JrDMmWeHxFFMp3BBSsjvDvSiYzJ0qdYmHAQYWY/L5fxVZcIoeoQvtQR0wM1iJN4UDIsnHwbpJQ/sqZ/cvph6sw==}
     dependencies:
       '@iconify/types': 2.0.0
     dev: false

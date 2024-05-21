@@ -107,6 +107,7 @@ const sources: BundleScriptConfig = {
         'arrow-up',
         'smart-home',
         'heart-filled',
+        'settings',
       ],
     },
     {
@@ -117,6 +118,7 @@ const sources: BundleScriptConfig = {
         'language-typescript',
         'account-filter-outline',
         'sale-outline',
+        'account-box-outline',
       ],
     },
     {
