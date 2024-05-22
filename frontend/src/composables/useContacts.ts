@@ -24,7 +24,12 @@ export const useContacts = () => {
     }
   }
 
+  const getList = async () => {
+
+  }
+
   return {
     count,
+    getList,
   }
 }
