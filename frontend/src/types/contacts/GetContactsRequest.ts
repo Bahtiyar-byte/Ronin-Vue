@@ -1,6 +1,7 @@
-import type { GetListRequest } from '@/types/common/GetListRequestTypes'
+import type { GetListRequest, GetListResponse } from '@/types/common/GetListRequestTypes'
+import type Contact from '@/types/contacts/Contact'
 
-export default interface GetContactsRequest extends GetListRequest
+export interface GetContactsRequest extends GetListRequest
 {
   id?: string
   name?: string
@@ -13,4 +14,9 @@ export default interface GetContactsRequest extends GetListRequest
   stage?: string
   createdAtRange?: string[]
   countOnly?: boolean
+}
+
+export interface GetContactsResponse extends GetListResponse
+{
+  rows: Contact[]
 }

@@ -1,12 +1,29 @@
 <script setup lang="ts">
-import { defineProps } from 'vue'
+import type { BreadcrumbsItem } from '@/types/breadcrumbs/BreadcrumbsItem'
 
-const props = defineProps<{
+defineProps<{
   itemsTitle: string
+  breadcrumbs?: BreadcrumbsItem[]
 }>()
 </script>
 
 <template>
+  <VContainer class="!py-0">
+    <VRow class="flex-col">
+      <VCol>
+        <h1 class="font-semibold text-2xl px-1">
+          {{ itemsTitle }}
+        </h1>
+
+        <VBreadcrumbs
+          v-if="breadcrumbs"
+          :items="breadcrumbs"
+          class="!pl-0"
+        />
+      </VCol>
+    </VRow>
+  </VContainer>
+
   <VCard>
     <VContainer>
       <VRow>
@@ -34,10 +51,7 @@ const props = defineProps<{
     </VContainer>
   </VCard>
 
-  <VCard
-    class="mt-6"
-    :title="itemsTitle"
-  >
+  <VCard class="mt-6">
     <VCardText>
       <slot name="table" />
     </VCardText>
