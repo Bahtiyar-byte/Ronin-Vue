@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, watch, watchEffect } from 'vue'
-import type { LocationQueryRaw } from 'vue-router'
+import type { RouteLocationRaw } from 'vue-router'
 import type { FetchCountFunction } from '@/types/common/CountRequestTypes'
 
 import PipelineCard from '@/components/common/pipelines/PipelineCard.vue'
@@ -35,7 +35,7 @@ const updatePipelineCount = async (fetchCount: FetchCountFunction, params: objec
   })
 }
 
-const createPipelineItem = (title: string, countKey: keyof typeof currentPipelineCounts.value, routeQuery: LocationQueryRaw, icon: string) => {
+const createPipelineItem = (title: string, countKey: keyof typeof currentPipelineCounts.value, routeQuery: RouteLocationRaw, icon: string) => {
   return new PipelineDisplayItem(
     title,
     currentPipelineCounts.value[countKey],
@@ -58,8 +58,8 @@ onMounted(() => {
 
 watchEffect(() => {
   currentPipelineItems.value = [
-    createPipelineItem('Leads', 'leadContacts', { name: 'root', query: { stage: 'Lead' } }, 'mdi-account-filter-outline'),
-    createPipelineItem('Prospects', 'prospectContacts', { name: 'root', query: { stage: 'Prospect' } }, 'mdi-sale-outline'),
+    createPipelineItem('Leads', 'leadContacts', { name: 'contacts', query: { stage: 'Lead' } }, 'mdi-account-filter-outline'),
+    createPipelineItem('Prospects', 'prospectContacts', { name: 'contacts', query: { stage: 'Prospect' } }, 'mdi-sale-outline'),
     createPipelineItem('Approved', 'approvedJobs', { name: 'root', query: { status: 'Approved' } }, 'ic-outline-next-week'),
     createPipelineItem('Completed', 'completedJobs', { name: 'root', query: { status: 'Completed' } }, 'material-symbols-work-alert-outline'),
     createPipelineItem('Invoiced', 'invoicedJobs', { name: 'root', query: { status: 'Invoiced' } }, 'material-symbols-request-quote-outline'),

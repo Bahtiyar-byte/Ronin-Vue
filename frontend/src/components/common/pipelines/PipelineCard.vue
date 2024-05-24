@@ -8,7 +8,7 @@ const props = defineProps<{
 }>()
 
 const cardProps = computed(() => {
-  const { pipelineItems, ...otherProps } = props
+  const { pipelineItems: __pipelineItems, ...otherProps } = props
 
   return otherProps
 })

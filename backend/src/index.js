@@ -39,6 +39,8 @@ const teamsRoutes = require('./routes/teams');
 
 const invoicesRoutes = require('./routes/invoices');
 
+const filtersRoutes = require('./routes/custom/filters');
+
 const options = {
   definition: {
     openapi: '3.0.0',
@@ -155,6 +157,12 @@ app.use(
   '/api/roles',
   passport.authenticate('jwt', { session: false }),
   rolesRoutes,
+);
+
+app.use(
+    '/api/filters',
+    passport.authenticate('jwt', { session: false }),
+    filtersRoutes,
 );
 
 app.use(
