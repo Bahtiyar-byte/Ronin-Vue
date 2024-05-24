@@ -4,9 +4,9 @@ import ItemsManage from '@/components/common/CRUD/ItemsManage.vue'
 import { useContacts } from '@/composables/useContacts'
 import type { SortItem } from '@core/types'
 import type Contact from '@/types/contacts/Contact'
+import type { CheckboxFilterItem, FilterItem } from '@/types/filters/interfaces'
 
-// const searchQuery = ref('')
-const items = ref<Contact[]>([]) // Ваши данные для таблицы
+const items = ref<Contact[]>([])
 const { getList } = useContacts()
 
 const pagination = ref({
@@ -24,12 +24,24 @@ const headers = ref([
   { title: 'Stage', key: 'stage' },
 ])
 
+const filterValues = ref<{ [key: string]: string | string[] }>({})
+
+const filters = ref<(FilterItem | CheckboxFilterItem)[]>([
+  { type: 'text', key: 'name', label: 'Name' },
+  { type: 'text', key: 'email', label: 'Email' },
+  { type: 'text', key: 'phone', label: 'Phone' },
+  { type: 'checkbox', key: 'stage', label: 'Stage', options: [] },
+])
+
+const isLoading = ref(false)
+
 const fetchData = async () => {
   const requestParams = {
     limit: pagination.value.itemsPerPage,
     offset: (pagination.value.page - 1) * pagination.value.itemsPerPage,
     sortBy: '',
     sortDesc: '',
+    ...filterValues.value,
   }
 
   const [_sortBy] = sortBy.value
@@ -38,7 +50,11 @@ const fetchData = async () => {
     requestParams.sortDesc = (_sortBy?.order ?? 'desc') as string
   }
 
-  const { data } = await getList(requestParams)
+  const { data, isFetching } = await getList(requestParams)
+
+  watch(isFetching, newVal => {
+    isLoading.value = newVal
+  }, { immediate: true })
 
   watch(data, newVal => {
     if (newVal === null) {
@@ -54,10 +70,17 @@ const fetchData = async () => {
   })
 }
 
+const onApplyFilters = (newFilterValues: { [key: string]: string | string[] }) => {
+  filterValues.value = newFilterValues
+  fetchData()
+}
+
 watch([() => pagination.value.page, () => pagination.value.itemsPerPage, sortBy], fetchData, { immediate: true })
 
+const selectedItems = ref<[]>()
+
 const deleteSelected = async () => {
-  alert('Currently no deletion implemented :(')
+  alert(`You are trying to delete contacts: ${selectedItems.value?.join(', ')}`)
 }
 </script>
 
@@ -75,6 +98,14 @@ const deleteSelected = async () => {
       },
     ]"
   >
+    <template #filters>
+      <FiltersList
+        :filters="filters"
+        :on-apply="onApplyFilters"
+        class="flex gap-2"
+      />
+    </template>
+
     <template #additional-actions>
       <VListItem
         base-color="error"
@@ -92,12 +123,15 @@ const deleteSelected = async () => {
 
     <template #table>
       <VDataTable
+        v-model="selectedItems"
         v-model:page="pagination.page"
         v-model:items-per-page="pagination.itemsPerPage"
         v-model:sort-by="sortBy"
         :items="items"
         :headers="headers"
         :server-items-length="pagination.totalItems"
+        :loading="isLoading"
+        show-select
       />
     </template>
   </ItemsManage>

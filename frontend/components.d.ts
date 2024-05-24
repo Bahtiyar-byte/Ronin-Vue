@@ -44,6 +44,7 @@ declare module 'vue' {
     DropZone: typeof import('./src/@core/components/DropZone.vue')['default']
     EnableOneTimePasswordDialog: typeof import('./src/components/dialogs/EnableOneTimePasswordDialog.vue')['default']
     ErrorHeader: typeof import('./src/components/ErrorHeader.vue')['default']
+    FiltersList: typeof import('./src/components/common/filters/FiltersList.vue')['default']
     GeneralTab: typeof import('./src/components/profile/tabs/GeneralTab.vue')['default']
     I18n: typeof import('./src/@core/components/I18n.vue')['default']
     ItemsManage: typeof import('./src/components/common/CRUD/ItemsManage.vue')['default']

@@ -108,6 +108,7 @@ const sources: BundleScriptConfig = {
         'smart-home',
         'heart-filled',
         'settings',
+        'circle-x',
       ],
     },
     {
