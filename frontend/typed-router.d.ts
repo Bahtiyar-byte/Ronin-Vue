@@ -43,6 +43,7 @@ declare module 'vue-router/auto/routes' {
     '$error': RouteRecordInfo<'$error', '/:error(.*)', { error: ParamValue<true> }, { error: ParamValue<false> }>,
     'auth-login': RouteRecordInfo<'auth-login', '/auth/login', Record<never, never>, Record<never, never>>,
     'contacts': RouteRecordInfo<'contacts', '/contacts', Record<never, never>, Record<never, never>>,
+    'contacts-update': RouteRecordInfo<'contacts-update', '/contacts/update', Record<never, never>, Record<never, never>>,
     'profile': RouteRecordInfo<'profile', '/profile', Record<never, never>, Record<never, never>>,
   }
 }

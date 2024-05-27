@@ -6,7 +6,7 @@ import { toTypedSchema } from '@vee-validate/yup'
 import { useRouter } from 'vue-router'
 import type LocalLoginRequest from '@/types/auth/LocalLoginRequest'
 import { useAuth } from '@/composables/useAuth'
-import {getResponseText} from "@/utils/api";
+import { getResponseText } from '@/utils/api'
 
 const router = useRouter()
 

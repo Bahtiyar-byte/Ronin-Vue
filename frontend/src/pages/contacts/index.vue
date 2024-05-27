@@ -116,7 +116,7 @@ const deleteSelected = async () => {
     </template>
 
     <template #buttons>
-      <VBtn :to="{ name: 'root' }">
+      <VBtn :to="{ name: 'contacts-update' }">
         Create
       </VBtn>
     </template>
