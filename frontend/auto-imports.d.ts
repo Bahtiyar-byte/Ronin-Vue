@@ -56,6 +56,7 @@ declare global {
   const getCurrentScope: typeof import('vue')['getCurrentScope']
   const getResponseText: typeof import('./src/utils/api')['getResponseText']
   const h: typeof import('vue')['h']
+  const hasKey: typeof import('./src/@core/utils/helpers')['hasKey']
   const ignorableWatch: typeof import('@vueuse/core')['ignorableWatch']
   const inject: typeof import('vue')['inject']
   const injectLocal: typeof import('@vueuse/core')['injectLocal']
@@ -423,6 +424,7 @@ declare module 'vue' {
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
     readonly getResponseText: UnwrapRef<typeof import('./src/utils/api')['getResponseText']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
+    readonly hasKey: UnwrapRef<typeof import('./src/@core/utils/helpers')['hasKey']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
     readonly injectLocal: UnwrapRef<typeof import('@vueuse/core')['injectLocal']>
@@ -774,6 +776,7 @@ declare module '@vue/runtime-core' {
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
     readonly getResponseText: UnwrapRef<typeof import('./src/utils/api')['getResponseText']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
+    readonly hasKey: UnwrapRef<typeof import('./src/@core/utils/helpers')['hasKey']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
     readonly injectLocal: UnwrapRef<typeof import('@vueuse/core')['injectLocal']>

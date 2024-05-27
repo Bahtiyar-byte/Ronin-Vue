@@ -22,6 +22,7 @@ const headers = ref([
   { title: 'Email', key: 'email' },
   { title: 'Phone', key: 'phone', sortable: false },
   { title: 'Stage', key: 'stage' },
+  { title: 'Actions', key: 'actions', sortable: false },
 ])
 
 const filterValues = ref<{ [key: string]: string | string[] }>({})
@@ -132,7 +133,15 @@ const deleteSelected = async () => {
         :server-items-length="pagination.totalItems"
         :loading="isLoading"
         show-select
-      />
+      >
+        <template #item.actions="{ item }">
+          <VBtn
+            :to="{ name: 'contacts-update', query: { id: item.id } }"
+            icon="mdi-pencil"
+            title="Edit"
+          />
+        </template>
+      </VDataTable>
     </template>
   </ItemsManage>
 </template>

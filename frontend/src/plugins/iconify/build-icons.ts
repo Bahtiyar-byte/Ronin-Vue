@@ -120,6 +120,7 @@ const sources: BundleScriptConfig = {
         'account-filter-outline',
         'sale-outline',
         'account-box-outline',
+        'pencil',
       ],
     },
     {

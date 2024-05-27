@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/yup'
 import * as yup from 'yup'
@@ -28,17 +28,27 @@ const validationSchema = computed(() =>
   toTypedSchema(
     yup.object().shape(
       props.fields.reduce((acc, field) => {
-        acc[field.name] = field.rules
+        if (field.rules !== undefined) {
+          acc[field.name] = field.rules
+        }
 
         return acc
-      }, {} as Record<string, yup.Schema<any>>),
+      }, {} as Record<string, yup.Schema>),
     ),
   ),
 )
 
-const { errors, handleSubmit, defineField } = useForm({
+const { errors, handleSubmit, defineField, setFieldValue } = useForm({
   validationSchema,
 })
+
+watch(props.fields, newFields => {
+  newFields.forEach((field: FormField) => {
+    console.log(field.name, field.value)
+
+    setFieldValue(field.name, field.value)
+  })
+}, { deep: true })
 
 const fieldAttrs = ref<Record<string, any>>({})
 
@@ -52,9 +62,7 @@ onMounted(() => {
 })
 
 const getComponentType = (type: string) => {
-  if (type === 'input') {
-    return AppTextField
-  } else if (type === 'select') {
+  if (type === 'select') {
     return AppSelect
   }
 

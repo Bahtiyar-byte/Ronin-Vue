@@ -1,6 +1,7 @@
 import { useApi } from './useApi'
 import type CountResponse from '@/types/common/CountRequestTypes'
 import type { GetContactsRequest, GetContactsResponse } from '@/types/contacts/GetContactsRequest'
+import type Contact from '@/types/contacts/Contact'
 
 export const useContacts = () => {
   const count = async (params: object) => {
@@ -47,8 +48,23 @@ export const useContacts = () => {
     }
   }
 
+  const getById = async (id: string) => {
+    const {
+      data,
+      isFetching,
+      error,
+    } = useApi(`/contacts/${id}`).get().json<Contact>()
+
+    return {
+      data,
+      isFetching,
+      error,
+    }
+  }
+
   return {
     count,
     getList,
+    getById,
   }
 }
