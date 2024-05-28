@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
+import { debounce } from 'lodash'
 import ItemsManage from '@/components/common/CRUD/ItemsManage.vue'
 import { useContacts } from '@/composables/useContacts'
 import type { SortItem } from '@core/types'
 import type Contact from '@/types/contacts/Contact'
-import type { CheckboxFilterItem, FilterItem } from '@/types/filters/interfaces'
+import type { CheckboxFilterItem } from '@/types/filters/interfaces'
 
 const items = ref<Contact[]>([])
 const { getList } = useContacts()
@@ -25,16 +26,12 @@ const headers = ref([
   { title: 'Actions', key: 'actions', sortable: false },
 ])
 
-const filterValues = ref<{ [key: string]: string | string[] }>({})
-
-const filters = ref<(FilterItem | CheckboxFilterItem)[]>([
-  { type: 'text', key: 'name', label: 'Name' },
-  { type: 'text', key: 'email', label: 'Email' },
-  { type: 'text', key: 'phone', label: 'Phone' },
-  { type: 'checkbox', key: 'stage', label: 'Stage', options: [] },
+const filters = ref<(CheckboxFilterItem)[]>([
+  { type: 'checkbox', key: 'stage', label: 'Stage', options: ['Lead', 'Prospect', 'Customer'], value: [] },
 ])
 
 const isLoading = ref(false)
+const searchQuery = ref<string>('')
 
 const fetchData = async () => {
   const requestParams = {
@@ -42,7 +39,8 @@ const fetchData = async () => {
     offset: (pagination.value.page - 1) * pagination.value.itemsPerPage,
     sortBy: '',
     sortDesc: '',
-    ...filterValues.value,
+    ...Object.fromEntries(filters.value.map(filter => [filter.key, filter.value])),
+    searchQuery: searchQuery.value,
   }
 
   const [_sortBy] = sortBy.value
@@ -71,23 +69,26 @@ const fetchData = async () => {
   })
 }
 
-const onApplyFilters = (newFilterValues: { [key: string]: string | string[] }) => {
-  filterValues.value = newFilterValues
-  fetchData()
-}
+const debouncedFetchData = debounce(fetchData, 400)
 
-watch([() => pagination.value.page, () => pagination.value.itemsPerPage, sortBy], fetchData, { immediate: true })
+watch([
+  () => pagination.value.page,
+  () => pagination.value.itemsPerPage,
+  () => JSON.stringify(filters.value.map(filter => filter.value)),
+  sortBy,
+  searchQuery,
+], debouncedFetchData, { immediate: true })
 
 const selectedItems = ref<[]>()
-
-const deleteSelected = async () => {
-  alert(`You are trying to delete contacts: ${selectedItems.value?.join(', ')}`)
-}
 </script>
 
 <template>
   <ItemsManage
+    v-model:items-per-page="pagination.itemsPerPage"
+    v-model:search-query="searchQuery"
+    v-model:filters="filters"
     items-title="Contacts"
+    :search-settings="{ placeholder: 'Search contacts' }"
     :breadcrumbs="[
       {
         title: 'Home',
@@ -102,42 +103,40 @@ const deleteSelected = async () => {
     <template #filters>
       <FiltersList
         :filters="filters"
-        :on-apply="onApplyFilters"
         class="flex gap-2"
       />
     </template>
 
-    <template #additional-actions>
-      <VListItem
-        base-color="error"
-        @click="deleteSelected"
-      >
-        Delete Selected
-      </VListItem>
-    </template>
-
     <template #buttons>
-      <VBtn :to="{ name: 'contacts-update' }">
-        Create
+      <VBtn
+        :to="{ name: 'contacts-update' }"
+        prepend-icon="tabler-plus"
+      >
+        Create contact
       </VBtn>
     </template>
 
     <template #table>
       <VDataTable
         v-model="selectedItems"
-        v-model:page="pagination.page"
-        v-model:items-per-page="pagination.itemsPerPage"
         v-model:sort-by="sortBy"
         :items="items"
         :headers="headers"
-        :server-items-length="pagination.totalItems"
         :loading="isLoading"
         show-select
       >
+        <template #bottom>
+          <TablePagination
+            v-model:page="pagination.page"
+            :items-per-page="pagination.itemsPerPage"
+            :total-items="pagination.totalItems"
+          />
+        </template>
+
         <template #item.actions="{ item }">
           <VBtn
             :to="{ name: 'contacts-update', query: { id: item.id } }"
-            icon="mdi-pencil"
+            icon="tabler-edit"
             title="Edit"
           />
         </template>

@@ -99,6 +99,9 @@ const sources: BundleScriptConfig = {
         'circle',
         'chevron-down',
         'chevron-right',
+        'chevrons-right',
+        'chevron-left',
+        'chevrons-left',
         'x',
         'circle-dot',
         'minus',
@@ -109,6 +112,8 @@ const sources: BundleScriptConfig = {
         'heart-filled',
         'settings',
         'circle-x',
+        'plus',
+        'edit',
       ],
     },
     {
@@ -120,7 +125,6 @@ const sources: BundleScriptConfig = {
         'account-filter-outline',
         'sale-outline',
         'account-box-outline',
-        'pencil',
       ],
     },
     {

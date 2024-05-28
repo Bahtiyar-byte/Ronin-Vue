@@ -2,15 +2,13 @@ export interface FilterItem {
   type: 'text' | 'checkbox'
   key: string
   label: string
-}
-
-export interface TextFilterItem extends FilterItem {
-  type: 'text'
+  value?: string | string[]
 }
 
 export interface CheckboxFilterItem extends FilterItem {
   type: 'checkbox'
-  options: Array<{
+  multiple?: boolean
+  options: string[] | Array<{
     label: string
     value: string
     disabled?: boolean
