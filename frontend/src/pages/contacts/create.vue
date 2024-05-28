@@ -7,6 +7,7 @@ import { hasKey } from '@core/utils/helpers'
 
 import ItemUpdate from '@/components/common/CRUD/ItemUpdate.vue'
 import type FormField from '@/types/forms/FormField'
+import type FormFieldsGroup from '@/types/forms/FormFieldsGroup'
 import type Contact from '@/types/contacts/Contact'
 
 const { getById: getContactById } = useContacts()
@@ -21,31 +22,36 @@ const breadcrumbs = ref([
   { title: 'New contact', disabled: true },
 ])
 
-const formFields = ref<FormField[]>([
+const formFields = ref<Array<FormField | FormFieldsGroup>>([
   {
-    type: 'input',
-    name: 'name',
-    label: 'Name',
-    value: '',
-    rules: yup.string().required('Name is required'),
-  },
-  {
-    type: 'input',
-    name: 'email',
-    label: 'Email',
-    value: '',
-    rules: yup.string().email('Invalid email').required('Email is required'),
-  },
-  {
-    type: 'select',
-    name: 'stage',
-    label: 'Stage',
-    value: '',
-    variants: [
-      { value: 'Lead', title: 'Lead' },
-      { value: 'Prospect', title: 'Prospect' },
+    title: 'General',
+    fields: [
+      {
+        type: 'input',
+        name: 'name',
+        label: 'Name',
+        value: '',
+        rules: yup.string().required('Name is required'),
+      },
+      {
+        type: 'input',
+        name: 'email',
+        label: 'Email',
+        value: '',
+        rules: yup.string().email('Invalid email').required('Email is required'),
+      },
+      {
+        type: 'select',
+        name: 'stage',
+        label: 'Stage',
+        value: '',
+        variants: [
+          { value: 'Lead', title: 'Lead' },
+          { value: 'Prospect', title: 'Prospect' },
+        ],
+        rules: yup.string().required('Stage is required'),
+      },
     ],
-    rules: yup.string().required('Stage is required'),
   },
 ])
 
@@ -58,7 +64,14 @@ const fetchContactData = async (id: string) => {
     }
 
     formFields.value.forEach(field => {
-      if (hasKey(contact, field.name)) {
+      if ('fields' in field) {
+        // Если поле является группой, обрабатываем вложенные поля
+        field.fields.forEach(subField => {
+          if (hasKey(contact, subField.name)) {
+            subField.value = contact[subField.name] as string
+          }
+        })
+      } else if (hasKey(contact, field.name)) {
         field.value = contact[field.name] as string
       }
     })
