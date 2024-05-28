@@ -39,8 +39,11 @@ const fetchData = async () => {
     offset: (pagination.value.page - 1) * pagination.value.itemsPerPage,
     sortBy: '',
     sortDesc: '',
-    ...Object.fromEntries(filters.value.map(filter => [filter.key, filter.value])),
-    searchQuery: searchQuery.value,
+    ...Object.fromEntries(filters.value.map(filter => [filter.key, filter?.value ?? ''])),
+    q: searchQuery?.value ?? '',
+
+    // ToDo: Remove this after implement search by 'q' on backend
+    name: searchQuery?.value ?? '',
   }
 
   const [_sortBy] = sortBy.value

@@ -61,6 +61,7 @@ const itemsPerPageOptions = [
           <AppTextField
             v-model="searchQuery"
             :placeholder="searchSettings.placeholder"
+            clearable
           />
         </div>
 
