@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { onBeforeMount, ref, watch } from 'vue'
 import * as yup from 'yup'
 import { useRoute } from 'vue-router'
 import { useContacts } from '@/composables/useContacts'
@@ -7,11 +7,19 @@ import { hasKey } from '@core/utils/helpers'
 
 import ItemUpdate from '@/components/common/CRUD/ItemUpdate.vue'
 import type FormField from '@/types/forms/FormField'
+import type Contact from '@/types/contacts/Contact'
 
 const { getById: getContactById } = useContacts()
 const route = useRoute()
 
-const pageTitle = ref('Update Contact')
+const isUpdateMode = ref(false)
+const pageTitle = ref('Create Contact')
+
+const breadcrumbs = ref([
+  { title: 'Home', to: { name: 'root' } },
+  { title: 'Contacts', to: { name: 'contacts' } },
+  { title: 'New contact', disabled: true },
+])
 
 const formFields = ref<FormField[]>([
   {
@@ -44,22 +52,26 @@ const formFields = ref<FormField[]>([
 const fetchContactData = async (id: string) => {
   const { data } = await getContactById(id)
 
-  watch(data, newVal => {
-    if (newVal === null) {
+  watch(data, (contact: Contact | null) => {
+    if (contact === null) {
       return
     }
 
     formFields.value.forEach(field => {
-      if (hasKey(newVal, field.name)) {
-        field.value = newVal[field.name] as string
+      if (hasKey(contact, field.name)) {
+        field.value = contact[field.name] as string
       }
     })
+
+    pageTitle.value = `Update ${contact.name}`
+    breadcrumbs.value[2] = { title: `Update ${contact.name}`, disabled: true }
   })
 }
 
 onBeforeMount(async () => {
-  const contactId = route.query.id as string
+  const contactId = route.params.id as string
   if (contactId) {
+    isUpdateMode.value = true
     await fetchContactData(contactId)
   }
 })
@@ -72,20 +84,7 @@ const submitForm = (values: Record<string, any>) => {
 <template>
   <ItemUpdate
     :title="pageTitle"
-    :breadcrumbs="[
-      {
-        title: 'Home',
-        to: { name: 'root' },
-      },
-      {
-        title: 'Contacts',
-        to: { name: 'contacts' },
-      },
-      {
-        title: 'New contact',
-        disabled: true,
-      },
-    ]"
+    :breadcrumbs="breadcrumbs"
     :fields="formFields"
     :submit-handler="submitForm"
   />

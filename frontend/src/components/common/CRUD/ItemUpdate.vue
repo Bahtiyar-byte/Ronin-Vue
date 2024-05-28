@@ -43,11 +43,7 @@ const { errors, handleSubmit, defineField, setFieldValue } = useForm({
 })
 
 watch(props.fields, newFields => {
-  newFields.forEach((field: FormField) => {
-    console.log(field.name, field.value)
-
-    setFieldValue(field.name, field.value)
-  })
+  newFields.forEach((field: FormField) => setFieldValue(field.name, field.value))
 }, { deep: true })
 
 const fieldAttrs = ref<Record<string, any>>({})

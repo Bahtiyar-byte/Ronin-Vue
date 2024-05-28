@@ -112,7 +112,7 @@ const selectedItems = ref<[]>()
 
     <template #buttons>
       <VBtn
-        :to="{ name: 'contacts-update' }"
+        :to="{ name: 'contacts-create' }"
         prepend-icon="tabler-plus"
       >
         Create contact
@@ -138,7 +138,7 @@ const selectedItems = ref<[]>()
 
         <template #item.actions="{ item }">
           <VBtn
-            :to="{ name: 'contacts-update', query: { id: item.id } }"
+            :to="{ name: 'contacts-update-id', params: { id: item.id } }"
             icon="tabler-edit"
             title="Edit"
           />
