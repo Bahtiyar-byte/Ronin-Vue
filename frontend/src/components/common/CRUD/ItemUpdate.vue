@@ -13,7 +13,7 @@ const props = defineProps<{
   title: string
   breadcrumbs: BreadcrumbsItem[]
   fields: Array<FormField | FormFieldsGroup>
-  submitHandler: (values: Record<string, any>) => void
+  submitHandler: (values: Record<string, any>) => Promise<void>
 }>()
 
 const formData = ref(
@@ -89,7 +89,7 @@ onMounted(() => {
 })
 
 const onSubmit = handleSubmit(async (values: Record<string, any>) => {
-  props.submitHandler(values)
+  await props.submitHandler(values)
 })
 </script>
 

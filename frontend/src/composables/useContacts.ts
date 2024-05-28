@@ -62,9 +62,44 @@ export const useContacts = () => {
     }
   }
 
+  const create = async (contact: Contact) => {
+    const {
+      data,
+      isFetching,
+      error,
+    } = useApi('/contacts/').post({
+      data: contact,
+    }).json<boolean>()
+
+    return {
+      data,
+      isFetching,
+      error,
+    }
+  }
+
+  const update = async (contact: Contact) => {
+    const {
+      data,
+      isFetching,
+      error,
+    } = useApi(`/contacts/${contact.id}`).put({
+      id: contact.id,
+      data: contact,
+    }).json<boolean>()
+
+    return {
+      data,
+      isFetching,
+      error,
+    }
+  }
+
   return {
     count,
     getList,
     getById,
+    create,
+    update,
   }
 }

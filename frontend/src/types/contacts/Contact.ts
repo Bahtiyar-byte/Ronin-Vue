@@ -1,5 +1,5 @@
 export default interface Contact {
-  id: string
+  id?: string // Undefined if new contact creation
   name: string
   email: string
   phone: string

@@ -10,7 +10,7 @@ import type FormField from '@/types/forms/FormField'
 import type FormFieldsGroup from '@/types/forms/FormFieldsGroup'
 import type Contact from '@/types/contacts/Contact'
 
-const { getById: getContactById } = useContacts()
+const { create: createContact, getById: getContactById, update: updateContact } = useContacts()
 const route = useRoute()
 
 const isUpdateMode = ref(false)
@@ -21,6 +21,8 @@ const breadcrumbs = ref([
   { title: 'Contacts', to: { name: 'contacts' } },
   { title: 'New contact', disabled: true },
 ])
+
+const contactRef = ref<Contact>()
 
 const formFields = ref<Array<FormField | FormFieldsGroup>>([
   {
@@ -63,6 +65,7 @@ const fetchContactData = async (id: string) => {
       return
     }
 
+    contactRef.value = contact
     formFields.value.forEach(field => {
       if ('fields' in field) {
         // Если поле является группой, обрабатываем вложенные поля
@@ -89,8 +92,19 @@ onBeforeMount(async () => {
   }
 })
 
-const submitForm = (values: Record<string, any>) => {
-  console.log('Form submitted with values:', values)
+const submitForm = async (values: Record<string, any>) => {
+  const _contactData = {
+    ...contactRef.value,
+    ...values,
+  } as Contact
+
+  const action = _contactData.id ? updateContact : createContact
+
+  const { data } = await action(_contactData)
+
+  watch(data, newVal => {
+    console.log(newVal)
+  })
 }
 </script>
 
