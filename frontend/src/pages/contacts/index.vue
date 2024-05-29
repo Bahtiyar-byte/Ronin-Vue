@@ -137,11 +137,25 @@ const selectedItems = ref<[]>()
         </template>
 
         <template #item.actions="{ item }">
-          <VBtn
+          <IconBtn
+            :to="{ name: 'contacts-details-id', params: { id: item.id } }"
+            title="View"
+          >
+            <VIcon icon="tabler-eye" />
+          </IconBtn>
+          <IconBtn
             :to="{ name: 'contacts-update-id', params: { id: item.id } }"
-            icon="tabler-edit"
             title="Edit"
-          />
+          >
+            <VIcon icon="tabler-edit" />
+          </IconBtn>
+          <IconBtn
+            @click="(e: any) => {
+              console.log(e)
+            }"
+          >
+            <VIcon icon="tabler-trash" />
+          </IconBtn>
         </template>
       </VDataTable>
     </template>

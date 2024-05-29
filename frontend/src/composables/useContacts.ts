@@ -95,11 +95,26 @@ export const useContacts = () => {
     }
   }
 
+  const deleteContact = async (contact: Contact) => {
+    const {
+      data,
+      isFetching,
+      error,
+    } = useApi(`/contacts/${contact.id}`).delete().json<boolean>()
+
+    return {
+      data,
+      isFetching,
+      error,
+    }
+  }
+
   return {
     count,
     getList,
     getById,
     create,
     update,
+    deleteContact,
   }
 }

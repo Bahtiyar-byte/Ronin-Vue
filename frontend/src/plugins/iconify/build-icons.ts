@@ -114,6 +114,9 @@ const sources: BundleScriptConfig = {
         'circle-x',
         'plus',
         'edit',
+        'trash',
+        'activity',
+        // 'layers-linked',
       ],
     },
     {
@@ -131,6 +134,12 @@ const sources: BundleScriptConfig = {
       filename: require.resolve('@iconify-json/ic/icons.json'),
       icons: [
         'outline-next-week',
+      ],
+    },
+    {
+      filename: require.resolve('@iconify-json/ph/icons.json'),
+      icons: [
+        'link-light',
       ],
     },
     {
