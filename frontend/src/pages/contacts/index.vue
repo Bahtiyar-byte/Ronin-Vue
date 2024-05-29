@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import * as Vue from 'vue'
 import { debounce } from 'lodash'
 import ItemsManage from '@/components/common/CRUD/ItemsManage.vue'
 import { useContacts } from '@/composables/useContacts'
@@ -7,8 +7,10 @@ import type { SortItem } from '@core/types'
 import type Contact from '@/types/contacts/Contact'
 import type { CheckboxFilterItem } from '@/types/filters/interfaces'
 
+const { ref, watch } = Vue
+
 const items = ref<Contact[]>([])
-const { getList } = useContacts()
+const { getList, deleteContact } = useContacts()
 
 const pagination = ref({
   page: 1,
@@ -83,6 +85,10 @@ watch([
 ], debouncedFetchData, { immediate: true })
 
 const selectedItems = ref<[]>()
+
+const handleOtemDeletion = async (contact: Contact) => {
+  console.log(Vue, contact)
+}
 </script>
 
 <template>
@@ -149,11 +155,7 @@ const selectedItems = ref<[]>()
           >
             <VIcon icon="tabler-edit" />
           </IconBtn>
-          <IconBtn
-            @click="(e: any) => {
-              console.log(e)
-            }"
-          >
+          <IconBtn @click="() => handleOtemDeletion(item)">
             <VIcon icon="tabler-trash" />
           </IconBtn>
         </template>

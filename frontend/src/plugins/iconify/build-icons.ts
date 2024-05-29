@@ -117,6 +117,7 @@ const sources: BundleScriptConfig = {
         'trash',
         'activity',
         'users',
+        'files',
       ],
     },
     {
