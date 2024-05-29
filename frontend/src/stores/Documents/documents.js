@@ -11,7 +11,9 @@ export const useDocumentsStore = defineStore('documents', {
       typeNotification: 'warn',
     },
 
-            searchResultJob: [],
+            searchResultJobId: [],
+
+            searchResultCreatedBy: [],
 
   }),
   actions: {
@@ -63,20 +65,37 @@ export const useDocumentsStore = defineStore('documents', {
       }
     },
 
-            async searchJob(val) {
+            async searchJobId(val) {
               try {
                 if (val) {
                   const result = await axios(
                     `/jobs/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setJob(result.data);
+                  this.setJobId(result.data);
                 } else {
                   const result = await axios(`/jobs/autocomplete?limit=100`);
-                  this.setJob(result.data);
+                  this.setJobId(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setJob([]);
+                this.setJobId([]);
+              }
+            },
+
+            async searchCreatedBy(val) {
+              try {
+                if (val) {
+                  const result = await axios(
+                    `/users/autocomplete?query=${val}&limit=100`,
+                  );
+                  this.setCreatedBy(result.data);
+                } else {
+                  const result = await axios(`/users/autocomplete?limit=100`);
+                  this.setCreatedBy(result.data);
+                }
+              } catch (e) {
+                this.showNotification(e, 'error')
+                this.setCreatedBy([]);
               }
             },
 
@@ -99,8 +118,12 @@ export const useDocumentsStore = defineStore('documents', {
       this.notify.textNotification = ''
     },
 
-        setJob(payload) {
-            this.searchResultJob = payload
+        setJobId(payload) {
+            this.searchResultJobId = payload
+        },
+
+        setCreatedBy(payload) {
+            this.searchResultCreatedBy = payload
         },
 
   }

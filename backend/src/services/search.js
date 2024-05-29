@@ -41,40 +41,60 @@ module.exports = class SearchService {
         throw new ValidationError('iam.errors.searchQueryRequired');
       }
       const tableColumns = {
-        users: ['firstName', 'lastName', 'phoneNumber', 'email', 'name'],
+        contacts: [
+          'firstName',
 
-        contacts: ['name', 'email', 'phone', 'adress', 'firstName', 'lastName'],
+          'lastName',
 
-        appointments: ['name'],
+          'email',
 
-        jobs: ['name'],
+          'phone',
 
-        estimates: ['name'],
+          'company',
 
-        trades: ['name'],
+          'crossReference',
+        ],
+
+        addresses: ['street', 'suite_apt_unit', 'city', 'zip', 'country'],
+
+        jobs: ['Name', 'description'],
+
+        estimates: ['description', 'additionalNotes'],
 
         templates: ['name', 'description'],
 
-        documents: ['name', 'url'],
+        users: ['firstName', 'lastName', 'phoneNumber', 'email', 'userName'],
 
-        images: ['name', 'url'],
+        invoices: ['invoiceNumber'],
 
-        teams: ['name'],
+        orders: ['orderNumber'],
+
+        images: ['name'],
+
+        documents: ['name'],
+
+        emails: ['toAddress', 'fromAddress', 'subject', 'body'],
+
+        chats: ['message'],
+
+        appointments: ['subject', 'description', 'location'],
+
+        tasks: ['subject', 'description'],
+
+        contracts: ['name', 'body'],
+
+        amendments: ['description'],
       };
       const columnsInt = {
-        templates: [
-          'materialCost',
+        estimates: ['price'],
 
-          'laborCost',
+        invoices: ['approvedJobValue', 'invoicedAmount', 'balanceAmount'],
 
-          'markup',
+        orders: ['totalAmount'],
 
-          'profitMargin',
+        contracts: ['amount'],
 
-          'totalPrice',
-        ],
-
-        invoices: ['number'],
+        amendments: ['amount'],
       };
 
       let allFoundRecords = [];

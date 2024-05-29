@@ -11,11 +11,15 @@ export const useAppointmentsStore = defineStore('appointments', {
       typeNotification: 'warn',
     },
 
-            searchResultContact: [],
+            searchResultAssignedUserId: [],
 
-            searchResultJob: [],
+            searchResultContactId: [],
 
-            searchResultEstimate: [],
+            searchResultJobId: [],
+
+            searchResultCreatedBy: [],
+
+            searchResultUpdatedBy: [],
 
   }),
   actions: {
@@ -67,54 +71,88 @@ export const useAppointmentsStore = defineStore('appointments', {
       }
     },
 
-            async searchContact(val) {
+            async searchAssignedUserId(val) {
+              try {
+                if (val) {
+                  const result = await axios(
+                    `/users/autocomplete?query=${val}&limit=100`,
+                  );
+                  this.setAssignedUserId(result.data);
+                } else {
+                  const result = await axios(`/users/autocomplete?limit=100`);
+                  this.setAssignedUserId(result.data);
+                }
+              } catch (e) {
+                this.showNotification(e, 'error')
+                this.setAssignedUserId([]);
+              }
+            },
+
+            async searchContactId(val) {
               try {
                 if (val) {
                   const result = await axios(
                     `/contacts/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setContact(result.data);
+                  this.setContactId(result.data);
                 } else {
                   const result = await axios(`/contacts/autocomplete?limit=100`);
-                  this.setContact(result.data);
+                  this.setContactId(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setContact([]);
+                this.setContactId([]);
               }
             },
 
-            async searchJob(val) {
+            async searchJobId(val) {
               try {
                 if (val) {
                   const result = await axios(
                     `/jobs/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setJob(result.data);
+                  this.setJobId(result.data);
                 } else {
                   const result = await axios(`/jobs/autocomplete?limit=100`);
-                  this.setJob(result.data);
+                  this.setJobId(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setJob([]);
+                this.setJobId([]);
               }
             },
 
-            async searchEstimate(val) {
+            async searchCreatedBy(val) {
               try {
                 if (val) {
                   const result = await axios(
-                    `/estimates/autocomplete?query=${val}&limit=100`,
+                    `/users/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setEstimate(result.data);
+                  this.setCreatedBy(result.data);
                 } else {
-                  const result = await axios(`/estimates/autocomplete?limit=100`);
-                  this.setEstimate(result.data);
+                  const result = await axios(`/users/autocomplete?limit=100`);
+                  this.setCreatedBy(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setEstimate([]);
+                this.setCreatedBy([]);
+              }
+            },
+
+            async searchUpdatedBy(val) {
+              try {
+                if (val) {
+                  const result = await axios(
+                    `/users/autocomplete?query=${val}&limit=100`,
+                  );
+                  this.setUpdatedBy(result.data);
+                } else {
+                  const result = await axios(`/users/autocomplete?limit=100`);
+                  this.setUpdatedBy(result.data);
+                }
+              } catch (e) {
+                this.showNotification(e, 'error')
+                this.setUpdatedBy([]);
               }
             },
 
@@ -137,16 +175,24 @@ export const useAppointmentsStore = defineStore('appointments', {
       this.notify.textNotification = ''
     },
 
-        setContact(payload) {
-            this.searchResultContact = payload
+        setAssignedUserId(payload) {
+            this.searchResultAssignedUserId = payload
         },
 
-        setJob(payload) {
-            this.searchResultJob = payload
+        setContactId(payload) {
+            this.searchResultContactId = payload
         },
 
-        setEstimate(payload) {
-            this.searchResultEstimate = payload
+        setJobId(payload) {
+            this.searchResultJobId = payload
+        },
+
+        setCreatedBy(payload) {
+            this.searchResultCreatedBy = payload
+        },
+
+        setUpdatedBy(payload) {
+            this.searchResultUpdatedBy = payload
         },
 
   }

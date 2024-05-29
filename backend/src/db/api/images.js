@@ -16,7 +16,6 @@ module.exports = class ImagesDBApi {
         id: data.id || undefined,
 
         name: data.name || null,
-        url: data.url || null,
         importHash: data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
@@ -24,7 +23,19 @@ module.exports = class ImagesDBApi {
       { transaction },
     );
 
-    await images.setJob(data.job || [], {
+    await images.setJobId(data.jobId || null, {
+      transaction,
+    });
+
+    await images.setUserId(data.userId || null, {
+      transaction,
+    });
+
+    await images.setDocumentId(data.documentId || null, {
+      transaction,
+    });
+
+    await images.setCreatedBy(data.createdBy || null, {
       transaction,
     });
 
@@ -40,7 +51,6 @@ module.exports = class ImagesDBApi {
       id: item.id || undefined,
 
       name: item.name || null,
-      url: item.url || null,
       importHash: item.importHash || null,
       createdById: currentUser.id,
       updatedById: currentUser.id,
@@ -64,14 +74,50 @@ module.exports = class ImagesDBApi {
     await images.update(
       {
         name: data.name || null,
-        url: data.url || null,
         updatedById: currentUser.id,
       },
       { transaction },
     );
 
-    await images.setJob(data.job || [], {
+    await images.setJobId(data.jobId || null, {
       transaction,
+    });
+
+    await images.setUserId(data.userId || null, {
+      transaction,
+    });
+
+    await images.setDocumentId(data.documentId || null, {
+      transaction,
+    });
+
+    await images.setCreatedBy(data.createdBy || null, {
+      transaction,
+    });
+
+    return images;
+  }
+
+  static async deleteByIds(ids, options) {
+    const currentUser = (options && options.currentUser) || { id: null };
+    const transaction = (options && options.transaction) || undefined;
+
+    const images = await db.images.findAll({
+      where: {
+        id: {
+          [Op.in]: ids,
+        },
+      },
+      transaction,
+    });
+
+    await db.sequelize.transaction(async (transaction) => {
+      for (const record of images) {
+        await record.update({ deletedBy: currentUser.id }, { transaction });
+      }
+      for (const record of images) {
+        await record.destroy({ transaction });
+      }
     });
 
     return images;
@@ -110,7 +156,23 @@ module.exports = class ImagesDBApi {
 
     const output = images.get({ plain: true });
 
-    output.job = await images.getJob({
+    output.users_imageId = await images.getUsers_imageId({
+      transaction,
+    });
+
+    output.jobId = await images.getJobId({
+      transaction,
+    });
+
+    output.userId = await images.getUserId({
+      transaction,
+    });
+
+    output.documentId = await images.getDocumentId({
+      transaction,
+    });
+
+    output.createdBy = await images.getCreatedBy({
       transaction,
     });
 
@@ -131,17 +193,22 @@ module.exports = class ImagesDBApi {
     let include = [
       {
         model: db.jobs,
-        as: 'job',
-        through: filter.job
-          ? {
-              where: {
-                [Op.or]: filter.job.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.job ? true : null,
+        as: 'jobId',
+      },
+
+      {
+        model: db.users,
+        as: 'userId',
+      },
+
+      {
+        model: db.documents,
+        as: 'documentId',
+      },
+
+      {
+        model: db.users,
+        as: 'createdBy',
       },
     ];
 
@@ -160,13 +227,6 @@ module.exports = class ImagesDBApi {
         };
       }
 
-      if (filter.url) {
-        where = {
-          ...where,
-          [Op.and]: Utils.ilike('images', 'url', filter.url),
-        };
-      }
-
       if (
         filter.active === true ||
         filter.active === 'true' ||
@@ -176,6 +236,50 @@ module.exports = class ImagesDBApi {
         where = {
           ...where,
           active: filter.active === true || filter.active === 'true',
+        };
+      }
+
+      if (filter.jobId) {
+        var listItems = filter.jobId.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
+        where = {
+          ...where,
+          jobIdId: { [Op.or]: listItems },
+        };
+      }
+
+      if (filter.userId) {
+        var listItems = filter.userId.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
+        where = {
+          ...where,
+          userIdId: { [Op.or]: listItems },
+        };
+      }
+
+      if (filter.documentId) {
+        var listItems = filter.documentId.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
+        where = {
+          ...where,
+          documentIdId: { [Op.or]: listItems },
+        };
+      }
+
+      if (filter.createdBy) {
+        var listItems = filter.createdBy.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
+        where = {
+          ...where,
+          createdById: { [Op.or]: listItems },
         };
       }
 
@@ -248,21 +352,21 @@ module.exports = class ImagesDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('images', 'url', query),
+          Utils.ilike('images', 'id', query),
         ],
       };
     }
 
     const records = await db.images.findAll({
-      attributes: ['id', 'url'],
+      attributes: ['id', 'id'],
       where,
       limit: limit ? Number(limit) : undefined,
-      orderBy: [['url', 'ASC']],
+      orderBy: [['id', 'ASC']],
     });
 
     return records.map((record) => ({
       id: record.id,
-      label: record.url,
+      label: record.id,
     }));
   }
 };

@@ -15,29 +15,45 @@ const authRoutes = require('./routes/auth');
 const fileRoutes = require('./routes/file');
 const searchRoutes = require('./routes/search');
 
-const usersRoutes = require('./routes/users');
+const openaiRoutes = require('./routes/openai');
 
 const contactsRoutes = require('./routes/contacts');
 
-const appointmentsRoutes = require('./routes/appointments');
+const addressesRoutes = require('./routes/addresses');
 
 const jobsRoutes = require('./routes/jobs');
 
 const estimatesRoutes = require('./routes/estimates');
 
-const tradesRoutes = require('./routes/trades');
-
 const templatesRoutes = require('./routes/templates');
 
-const documentsRoutes = require('./routes/documents');
+const tradesRoutes = require('./routes/trades');
+
+const usersRoutes = require('./routes/users');
+
+const invoicesRoutes = require('./routes/invoices');
+
+const ordersRoutes = require('./routes/orders');
 
 const imagesRoutes = require('./routes/images');
 
+const documentsRoutes = require('./routes/documents');
+
+const emailsRoutes = require('./routes/emails');
+
+const chatsRoutes = require('./routes/chats');
+
+const appointmentsRoutes = require('./routes/appointments');
+
+const tasksRoutes = require('./routes/tasks');
+
+const contractsRoutes = require('./routes/contracts');
+
+const amendmentsRoutes = require('./routes/amendments');
+
 const rolesRoutes = require('./routes/roles');
 
-const teamsRoutes = require('./routes/teams');
-
-const invoicesRoutes = require('./routes/invoices');
+const permissionsRoutes = require('./routes/permissions');
 
 const options = {
   definition: {
@@ -98,21 +114,15 @@ app.use('/api/file', fileRoutes);
 app.enable('trust proxy');
 
 app.use(
-  '/api/users',
-  passport.authenticate('jwt', { session: false }),
-  usersRoutes,
-);
-
-app.use(
   '/api/contacts',
   passport.authenticate('jwt', { session: false }),
   contactsRoutes,
 );
 
 app.use(
-  '/api/appointments',
+  '/api/addresses',
   passport.authenticate('jwt', { session: false }),
-  appointmentsRoutes,
+  addressesRoutes,
 );
 
 app.use(
@@ -128,21 +138,33 @@ app.use(
 );
 
 app.use(
-  '/api/trades',
-  passport.authenticate('jwt', { session: false }),
-  tradesRoutes,
-);
-
-app.use(
   '/api/templates',
   passport.authenticate('jwt', { session: false }),
   templatesRoutes,
 );
 
 app.use(
-  '/api/documents',
+  '/api/trades',
   passport.authenticate('jwt', { session: false }),
-  documentsRoutes,
+  tradesRoutes,
+);
+
+app.use(
+  '/api/users',
+  passport.authenticate('jwt', { session: false }),
+  usersRoutes,
+);
+
+app.use(
+  '/api/invoices',
+  passport.authenticate('jwt', { session: false }),
+  invoicesRoutes,
+);
+
+app.use(
+  '/api/orders',
+  passport.authenticate('jwt', { session: false }),
+  ordersRoutes,
 );
 
 app.use(
@@ -152,21 +174,63 @@ app.use(
 );
 
 app.use(
+  '/api/documents',
+  passport.authenticate('jwt', { session: false }),
+  documentsRoutes,
+);
+
+app.use(
+  '/api/emails',
+  passport.authenticate('jwt', { session: false }),
+  emailsRoutes,
+);
+
+app.use(
+  '/api/chats',
+  passport.authenticate('jwt', { session: false }),
+  chatsRoutes,
+);
+
+app.use(
+  '/api/appointments',
+  passport.authenticate('jwt', { session: false }),
+  appointmentsRoutes,
+);
+
+app.use(
+  '/api/tasks',
+  passport.authenticate('jwt', { session: false }),
+  tasksRoutes,
+);
+
+app.use(
+  '/api/contracts',
+  passport.authenticate('jwt', { session: false }),
+  contractsRoutes,
+);
+
+app.use(
+  '/api/amendments',
+  passport.authenticate('jwt', { session: false }),
+  amendmentsRoutes,
+);
+
+app.use(
   '/api/roles',
   passport.authenticate('jwt', { session: false }),
   rolesRoutes,
 );
 
 app.use(
-  '/api/teams',
+  '/api/permissions',
   passport.authenticate('jwt', { session: false }),
-  teamsRoutes,
+  permissionsRoutes,
 );
 
 app.use(
-  '/api/invoices',
+  '/api/openai',
   passport.authenticate('jwt', { session: false }),
-  invoicesRoutes,
+  openaiRoutes,
 );
 
 app.use(

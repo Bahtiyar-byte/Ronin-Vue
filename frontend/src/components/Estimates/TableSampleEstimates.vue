@@ -34,10 +34,14 @@ const items = computed(() => estimatesStore.data)
 
 const headers = [
 
-{ text: 'Job', value: 'job'},
-{ text: 'Template', value: 'template'},
-{ text: 'Status', value: 'status'},
-{ text: 'Name', value: 'name'},]
+{ text: 'Description', value: 'description'},
+{ text: 'Additional Notes', value: 'additionalNotes'},
+{ text: 'Price', value: 'price'},
+{ text: 'Job Id', value: 'jobId'},
+{ text: 'Contact Id', value: 'contactId'},
+{ text: 'Template ', value: 'templateId'},
+{ text: 'Created By', value: 'createdBy'},
+{ text: 'Updated By', value: 'updatedBy'},]
 const isModalActive = ref(false)
 
 const isModalDangerActive = ref(false)
@@ -153,24 +157,44 @@ const sort = (title) => {
       <th v-if="checkable" />
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'job' && props.sortDirection]"
-        @click="sort('job')"
-      >Job</th>
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'description' && props.sortDirection]"
+        @click="sort('description')"
+      >Description</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'template' && props.sortDirection]"
-        @click="sort('template')"
-      >Template</th>
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'additionalNotes' && props.sortDirection]"
+        @click="sort('additionalNotes')"
+      >Additional Notes</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'status' && props.sortDirection]"
-        @click="sort('status')"
-      >Status</th>
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'price' && props.sortDirection]"
+        @click="sort('price')"
+      >Price</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'name' && props.sortDirection]"
-        @click="sort('name')"
-      >Name</th>
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'jobId' && props.sortDirection]"
+        @click="sort('jobId')"
+      >Job Id</th>
+
+      <th
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'contactId' && props.sortDirection]"
+        @click="sort('contactId')"
+      >Contact Id</th>
+
+      <th
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'templateId' && props.sortDirection]"
+        @click="sort('templateId')"
+      >Template </th>
+
+      <th
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'createdBy' && props.sortDirection]"
+        @click="sort('createdBy')"
+      >Created By</th>
+
+      <th
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'updatedBy' && props.sortDirection]"
+        @click="sort('updatedBy')"
+      >Updated By</th>
 
         <th />
       </tr>
@@ -186,26 +210,36 @@ const sort = (title) => {
           @checked="checked($event, client)"
         />
 
-              <td data-label="job">
-                {{ dataFormatter.jobsOneListFormatter(client.job) }}
+              <td data-label="description">
+                {{ client.description }}
               </td>
 
-              <td data-label="template">
-                  <span
-                    v-for="(i, idx) in dataFormatter.templatesManyListFormatter(client.template)"
-                    :key="idx + client.template"
-                    class="block"
-                  >
-                      {{ i }}
-                  </span>
-              </td>  
-
-              <td data-label="status">
-                {{ client.status }}
+              <td data-label="additionalNotes">
+                {{ client.additionalNotes }}
               </td>
 
-              <td data-label="name">
-                {{ client.name }}
+              <td data-label="price">
+                {{ client.price }}
+              </td>
+
+              <td data-label="jobId">
+                {{ dataFormatter.jobsOneListFormatter(client.jobId) }}
+              </td>
+
+              <td data-label="contactId">
+                {{ dataFormatter.contactsOneListFormatter(client.contactId) }}
+              </td>
+
+              <td data-label="templateId">
+                {{ dataFormatter.templatesOneListFormatter(client.templateId) }}
+              </td>
+
+              <td data-label="createdBy">
+                {{ dataFormatter.usersOneListFormatter(client.createdBy) }}
+              </td>
+
+              <td data-label="updatedBy">
+                {{ dataFormatter.usersOneListFormatter(client.updatedBy) }}
               </td>
 
         <td class="before:hidden lg:w-1 whitespace-nowrap">

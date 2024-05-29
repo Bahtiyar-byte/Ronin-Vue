@@ -24,16 +24,20 @@ const tradesStore = useTradesStore()
 const titleStack = ref(['Admin', 'Trades'])
 const notification = computed(() => tradesStore.notify)
 
+      const optionsName = [{id: 0, label: 'Ventilation'},{id: 1, label: 'Vent Install'},{id: 2, label: 'TPO'},{id: 3, label: 'Tile'},{id: 4, label: 'Soffit/Fascia'},{id: 5, label: 'Slate'},{id: 6, label: 'Skylight'},{id: 7, label: 'Silicone'},{id: 8, label: 'Siding'},{id: 9, label: 'Shingles'},{id: 10, label: 'Service Repairs'},{id: 11, label: 'Service Callback'},{id: 12, label: 'Painting'},{id: 13, label: 'Metal'},{id: 14, label: 'Gutters'},{id: 15, label: 'Gutter Guards'},{id: 16, label: 'Gutter Cleaning'},{id: 17, label: 'Flat Roof'},{id: 18, label: 'Aluminum/Flashing'},{id: 19, label: 'Fascia'},{id: 20, label: 'EPDM'},{id: 21, label: 'Downspouts'},{id: 22, label: 'Chimney Cap'},{id: 23, label: 'Box Gutters'},{id: 24, label: 'Pressure Washing'},]
+
 const tradesItem = computed(() => tradesStore.data);
 
 const form = reactive({
 
-    name: '',
+      Name: '',
 
 })
 
 const submit = async () => {
   try {
+
+            form.Name = form.Name.label;
 
     await tradesStore.edit({id: route.params.id, data: {...form} })
     router.push('/trades');
@@ -55,7 +59,7 @@ onBeforeMount(async () => {
 
 const formatData = () => {
 
-    form.name = tradesItem.value.name
+    form.Name = optionsName.find(el => el.label === tradesItem.value.Name)
 
 }
 
@@ -91,13 +95,11 @@ const cancel = () => {
       @submit.prevent="submit"
     >
 
-    <FormField
-      label="Name"
-    >
+    <FormField label="Name">
       <FormControl
-        v-model="form.name"
-        placeholder="Your Name"
-        />
+        v-model="form.Name"
+        :options="optionsName"
+      />
     </FormField>
 
     <BaseDivider />

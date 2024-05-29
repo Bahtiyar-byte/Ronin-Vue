@@ -14,14 +14,8 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
       },
 
-      name: {
+      Name: {
         type: DataTypes.TEXT,
-      },
-
-      category: {
-        type: DataTypes.ENUM,
-
-        values: ['Commercial', 'Property Management', 'Residential'],
       },
 
       type: {
@@ -44,10 +38,40 @@ module.exports = function (sequelize, DataTypes) {
         ],
       },
 
+      category: {
+        type: DataTypes.ENUM,
+
+        values: ['Commercial ', 'Residential', 'Property Management'],
+      },
+
       status: {
         type: DataTypes.ENUM,
 
-        values: ['Quoted', 'Approved', 'Active', 'Completed', 'Invoiced'],
+        values: [
+          'Quoted',
+
+          'Approved',
+
+          'Active',
+
+          'Completed',
+
+          'Invoiced',
+
+          'Closed',
+        ],
+      },
+
+      startDate: {
+        type: DataTypes.DATE,
+      },
+
+      endDate: {
+        type: DataTypes.DATE,
+      },
+
+      description: {
+        type: DataTypes.TEXT,
       },
 
       importHash: {
@@ -64,89 +88,145 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   jobs.associate = (db) => {
-    db.jobs.belongsToMany(db.contacts, {
-      as: 'contact',
-      foreignKey: {
-        name: 'jobs_contactId',
-      },
-      constraints: false,
-      through: 'jobsContactContacts',
-    });
-
-    db.jobs.belongsToMany(db.users, {
-      as: 'assignedUser',
-      foreignKey: {
-        name: 'jobs_assignedUserId',
-      },
-      constraints: false,
-      through: 'jobsAssignedUserUsers',
-    });
-
-    db.jobs.belongsToMany(db.teams, {
-      as: 'assignedTeam',
-      foreignKey: {
-        name: 'jobs_assignedTeamId',
-      },
-      constraints: false,
-      through: 'jobsAssignedTeamTeams',
-    });
-
-    db.jobs.belongsToMany(db.estimates, {
-      as: 'estimate',
-      foreignKey: {
-        name: 'jobs_estimateId',
-      },
-      constraints: false,
-      through: 'jobsEstimateEstimates',
-    });
-
-    db.jobs.belongsToMany(db.appointments, {
-      as: 'appointment',
-      foreignKey: {
-        name: 'jobs_appointmentId',
-      },
-      constraints: false,
-      through: 'jobsAppointmentAppointments',
-    });
-
-    db.jobs.belongsToMany(db.images, {
-      as: 'image',
-      foreignKey: {
-        name: 'jobs_imageId',
-      },
-      constraints: false,
-      through: 'jobsImageImages',
-    });
-
-    db.jobs.belongsToMany(db.documents, {
-      as: 'document',
-      foreignKey: {
-        name: 'jobs_documentId',
-      },
-      constraints: false,
-      through: 'jobsDocumentDocuments',
-    });
-
-    db.jobs.belongsToMany(db.invoices, {
-      as: 'invoice',
-      foreignKey: {
-        name: 'jobs_invoiceId',
-      },
-      constraints: false,
-      through: 'jobsInvoiceInvoices',
-    });
-
     /// loop through entities and it's fields, and if ref === current e[name] and create relation has many on parent entity
 
-    db.jobs.hasMany(db.estimates, {
-      as: 'estimates_job',
+    db.jobs.hasMany(db.addresses, {
+      as: 'addresses_jobId',
       foreignKey: {
-        name: 'jobId',
+        name: 'jobIdId',
+      },
+      constraints: false,
+    });
+
+    db.jobs.hasMany(db.estimates, {
+      as: 'estimates_jobId',
+      foreignKey: {
+        name: 'jobIdId',
+      },
+      constraints: false,
+    });
+
+    db.jobs.hasMany(db.invoices, {
+      as: 'invoices_jobId',
+      foreignKey: {
+        name: 'jobIdId',
+      },
+      constraints: false,
+    });
+
+    db.jobs.hasMany(db.orders, {
+      as: 'orders_jobId',
+      foreignKey: {
+        name: 'jobIdId',
+      },
+      constraints: false,
+    });
+
+    db.jobs.hasMany(db.images, {
+      as: 'images_jobId',
+      foreignKey: {
+        name: 'jobIdId',
+      },
+      constraints: false,
+    });
+
+    db.jobs.hasMany(db.documents, {
+      as: 'documents_jobId',
+      foreignKey: {
+        name: 'jobIdId',
+      },
+      constraints: false,
+    });
+
+    db.jobs.hasMany(db.emails, {
+      as: 'emails_jobId',
+      foreignKey: {
+        name: 'jobIdId',
+      },
+      constraints: false,
+    });
+
+    db.jobs.hasMany(db.chats, {
+      as: 'chats_jobId',
+      foreignKey: {
+        name: 'jobIdId',
+      },
+      constraints: false,
+    });
+
+    db.jobs.hasMany(db.appointments, {
+      as: 'appointments_jobId',
+      foreignKey: {
+        name: 'jobIdId',
+      },
+      constraints: false,
+    });
+
+    db.jobs.hasMany(db.tasks, {
+      as: 'tasks_jobId',
+      foreignKey: {
+        name: 'jobIdId',
+      },
+      constraints: false,
+    });
+
+    db.jobs.hasMany(db.contracts, {
+      as: 'contracts_jobId',
+      foreignKey: {
+        name: 'jobIdId',
+      },
+      constraints: false,
+    });
+
+    db.jobs.hasMany(db.amendments, {
+      as: 'amendments_jobId',
+      foreignKey: {
+        name: 'jobIdId',
       },
       constraints: false,
     });
 
     //end loop
+
+    db.jobs.belongsTo(db.contacts, {
+      as: 'contactId',
+      foreignKey: {
+        name: 'contactIdId',
+      },
+      constraints: false,
+    });
+
+    db.jobs.belongsTo(db.orders, {
+      as: 'orderId',
+      foreignKey: {
+        name: 'orderIdId',
+      },
+      constraints: false,
+    });
+
+    db.jobs.belongsTo(db.users, {
+      as: 'assignedUserId',
+      foreignKey: {
+        name: 'assignedUserIdId',
+      },
+      constraints: false,
+    });
+
+    db.jobs.belongsTo(db.users, {
+      as: 'createdBy',
+      foreignKey: {
+        name: 'createdById',
+      },
+      constraints: false,
+    });
+
+    db.jobs.belongsTo(db.users, {
+      as: 'updatedBy',
+      foreignKey: {
+        name: 'updatedById',
+      },
+      constraints: false,
+    });
 
     db.jobs.belongsTo(db.users, {
       as: 'createdBy',

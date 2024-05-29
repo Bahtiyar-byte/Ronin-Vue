@@ -34,9 +34,11 @@ const items = computed(() => documentsStore.data)
 
 const headers = [
 
-{ text: 'Job', value: 'job'},
+{ text: 'Job ', value: 'jobId'},
 { text: 'Name', value: 'name'},
-{ text: 'Url', value: 'url'},]
+{ text: 'Active', value: 'active'},
+{ text: 'File Type', value: 'fileType'},
+{ text: 'Created By', value: 'createdBy'},]
 const isModalActive = ref(false)
 
 const isModalDangerActive = ref(false)
@@ -152,9 +154,9 @@ const sort = (title) => {
       <th v-if="checkable" />
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'job' && props.sortDirection]"
-        @click="sort('job')"
-      >Job</th>
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'jobId' && props.sortDirection]"
+        @click="sort('jobId')"
+      >Job </th>
 
       <th
         :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'name' && props.sortDirection]"
@@ -162,9 +164,19 @@ const sort = (title) => {
       >Name</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'url' && props.sortDirection]"
-        @click="sort('url')"
-      >Url</th>
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'active' && props.sortDirection]"
+        @click="sort('active')"
+      >Active</th>
+
+      <th
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'fileType' && props.sortDirection]"
+        @click="sort('fileType')"
+      >File Type</th>
+
+      <th
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'createdBy' && props.sortDirection]"
+        @click="sort('createdBy')"
+      >Created By</th>
 
         <th />
       </tr>
@@ -180,22 +192,31 @@ const sort = (title) => {
           @checked="checked($event, client)"
         />
 
-              <td data-label="job">
-                  <span
-                    v-for="(i, idx) in dataFormatter.jobsManyListFormatter(client.job)"
-                    :key="idx + client.job"
-                    class="block"
-                  >
-                      {{ i }}
-                  </span>
-              </td>  
+              <td data-label="jobId">
+                {{ dataFormatter.jobsOneListFormatter(client.jobId) }}
+              </td>
 
               <td data-label="name">
                 {{ client.name }}
               </td>
 
-              <td data-label="url">
-                {{ client.url }}
+              <td data-label="active">
+                {{ dataFormatter.booleanFormatter(client.active) }}
+              </td>                                                      
+
+              <td data-label="fileType">
+                  <a
+                    v-for="(i, idx) in dataFormatter.filesFormatter(client.fileType)"
+                    :href="i.publicUrl"
+                    :key="idx + i.publicUrl"
+                    class="file"
+                  >
+                    {{ i.name }}
+                  </a>              
+              </td>   
+
+              <td data-label="createdBy">
+                {{ dataFormatter.usersOneListFormatter(client.createdBy) }}
               </td>
 
         <td class="before:hidden lg:w-1 whitespace-nowrap">

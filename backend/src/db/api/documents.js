@@ -16,7 +16,8 @@ module.exports = class DocumentsDBApi {
         id: data.id || undefined,
 
         name: data.name || null,
-        url: data.url || null,
+        active: data.active || false,
+
         importHash: data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
@@ -24,9 +25,23 @@ module.exports = class DocumentsDBApi {
       { transaction },
     );
 
-    await documents.setJob(data.job || [], {
+    await documents.setJobId(data.jobId || null, {
       transaction,
     });
+
+    await documents.setCreatedBy(data.createdBy || null, {
+      transaction,
+    });
+
+    await FileDBApi.replaceRelationFiles(
+      {
+        belongsTo: db.documents.getTableName(),
+        belongsToColumn: 'fileType',
+        belongsToId: documents.id,
+      },
+      data.fileType,
+      options,
+    );
 
     return documents;
   }
@@ -40,7 +55,8 @@ module.exports = class DocumentsDBApi {
       id: item.id || undefined,
 
       name: item.name || null,
-      url: item.url || null,
+      active: item.active || false,
+
       importHash: item.importHash || null,
       createdById: currentUser.id,
       updatedById: currentUser.id,
@@ -54,6 +70,18 @@ module.exports = class DocumentsDBApi {
 
     // For each item created, replace relation files
 
+    for (let i = 0; i < documents.length; i++) {
+      await FileDBApi.replaceRelationFiles(
+        {
+          belongsTo: db.documents.getTableName(),
+          belongsToColumn: 'fileType',
+          belongsToId: documents[i].id,
+        },
+        data[i].fileType,
+        options,
+      );
+    }
+
     return documents;
   }
 
@@ -66,14 +94,54 @@ module.exports = class DocumentsDBApi {
     await documents.update(
       {
         name: data.name || null,
-        url: data.url || null,
+        active: data.active || false,
+
         updatedById: currentUser.id,
       },
       { transaction },
     );
 
-    await documents.setJob(data.job || [], {
+    await documents.setJobId(data.jobId || null, {
       transaction,
+    });
+
+    await documents.setCreatedBy(data.createdBy || null, {
+      transaction,
+    });
+
+    await FileDBApi.replaceRelationFiles(
+      {
+        belongsTo: db.documents.getTableName(),
+        belongsToColumn: 'fileType',
+        belongsToId: documents.id,
+      },
+      data.fileType,
+      options,
+    );
+
+    return documents;
+  }
+
+  static async deleteByIds(ids, options) {
+    const currentUser = (options && options.currentUser) || { id: null };
+    const transaction = (options && options.transaction) || undefined;
+
+    const documents = await db.documents.findAll({
+      where: {
+        id: {
+          [Op.in]: ids,
+        },
+      },
+      transaction,
+    });
+
+    await db.sequelize.transaction(async (transaction) => {
+      for (const record of documents) {
+        await record.update({ deletedBy: currentUser.id }, { transaction });
+      }
+      for (const record of documents) {
+        await record.destroy({ transaction });
+      }
     });
 
     return documents;
@@ -112,11 +180,19 @@ module.exports = class DocumentsDBApi {
 
     const output = documents.get({ plain: true });
 
-    output.invoices_document = await documents.getInvoices_document({
+    output.images_documentId = await documents.getImages_documentId({
       transaction,
     });
 
-    output.job = await documents.getJob({
+    output.jobId = await documents.getJobId({
+      transaction,
+    });
+
+    output.fileType = await documents.getFileType({
+      transaction,
+    });
+
+    output.createdBy = await documents.getCreatedBy({
       transaction,
     });
 
@@ -137,17 +213,17 @@ module.exports = class DocumentsDBApi {
     let include = [
       {
         model: db.jobs,
-        as: 'job',
-        through: filter.job
-          ? {
-              where: {
-                [Op.or]: filter.job.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.job ? true : null,
+        as: 'jobId',
+      },
+
+      {
+        model: db.users,
+        as: 'createdBy',
+      },
+
+      {
+        model: db.file,
+        as: 'fileType',
       },
     ];
 
@@ -166,13 +242,6 @@ module.exports = class DocumentsDBApi {
         };
       }
 
-      if (filter.url) {
-        where = {
-          ...where,
-          [Op.and]: Utils.ilike('documents', 'url', filter.url),
-        };
-      }
-
       if (
         filter.active === true ||
         filter.active === 'true' ||
@@ -182,6 +251,35 @@ module.exports = class DocumentsDBApi {
         where = {
           ...where,
           active: filter.active === true || filter.active === 'true',
+        };
+      }
+
+      if (filter.active) {
+        where = {
+          ...where,
+          active: filter.active,
+        };
+      }
+
+      if (filter.jobId) {
+        var listItems = filter.jobId.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
+        where = {
+          ...where,
+          jobIdId: { [Op.or]: listItems },
+        };
+      }
+
+      if (filter.createdBy) {
+        var listItems = filter.createdBy.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
+        where = {
+          ...where,
+          createdById: { [Op.or]: listItems },
         };
       }
 
@@ -254,21 +352,21 @@ module.exports = class DocumentsDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('documents', 'url', query),
+          Utils.ilike('documents', 'id', query),
         ],
       };
     }
 
     const records = await db.documents.findAll({
-      attributes: ['id', 'url'],
+      attributes: ['id', 'id'],
       where,
       limit: limit ? Number(limit) : undefined,
-      orderBy: [['url', 'ASC']],
+      orderBy: [['id', 'ASC']],
     });
 
     return records.map((record) => ({
       id: record.id,
-      label: record.url,
+      label: record.id,
     }));
   }
 };

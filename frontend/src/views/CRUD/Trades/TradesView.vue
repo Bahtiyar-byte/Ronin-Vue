@@ -22,7 +22,7 @@ const notification = computed(() => tradesStore.notify)
 const titleStack = ref(['Admin', 'Trades'])
 
 const filters = ref([]);
-const filtersList = [{label: 'Name', title: 'name'},
+const filtersList = [
 
           ];
 const showFilters = ref(false);

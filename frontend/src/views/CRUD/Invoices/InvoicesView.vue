@@ -22,10 +22,10 @@ const notification = computed(() => invoicesStore.notify)
 const titleStack = ref(['Admin', 'Invoices'])
 
 const filters = ref([]);
-const filtersList = [
-          {label: 'Number', title: 'number', number: 'true'},
+const filtersList = [{label: 'Invoice Number', title: 'invoiceNumber'},
 
-          {label: 'Document', title: 'document'},];
+          {label: 'Approved Job Value', title: 'approvedJobValue', number: 'true'},{label: 'Invoiced Amount', title: 'invoicedAmount', number: 'true'},{label: 'Balance Amount', title: 'balanceAmount', number: 'true'},
+          {label: 'Job ', title: 'jobId'},{label: 'Created By', title: 'createdBy'},{label: 'Updated By', title: 'updatedBy'},];
 const showFilters = ref(false);
 
 const query = ref('');

@@ -15,8 +15,9 @@ module.exports = class EstimatesDBApi {
       {
         id: data.id || undefined,
 
-        status: data.status || null,
-        name: data.name || null,
+        description: data.description || null,
+        additionalNotes: data.additionalNotes || null,
+        price: data.price || null,
         importHash: data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
@@ -24,11 +25,23 @@ module.exports = class EstimatesDBApi {
       { transaction },
     );
 
-    await estimates.setJob(data.job || null, {
+    await estimates.setJobId(data.jobId || null, {
       transaction,
     });
 
-    await estimates.setTemplate(data.template || [], {
+    await estimates.setContactId(data.contactId || null, {
+      transaction,
+    });
+
+    await estimates.setTemplateId(data.templateId || null, {
+      transaction,
+    });
+
+    await estimates.setCreatedBy(data.createdBy || null, {
+      transaction,
+    });
+
+    await estimates.setUpdatedBy(data.updatedBy || null, {
       transaction,
     });
 
@@ -43,8 +56,9 @@ module.exports = class EstimatesDBApi {
     const estimatesData = data.map((item, index) => ({
       id: item.id || undefined,
 
-      status: item.status || null,
-      name: item.name || null,
+      description: item.description || null,
+      additionalNotes: item.additionalNotes || null,
+      price: item.price || null,
       importHash: item.importHash || null,
       createdById: currentUser.id,
       updatedById: currentUser.id,
@@ -69,19 +83,57 @@ module.exports = class EstimatesDBApi {
 
     await estimates.update(
       {
-        status: data.status || null,
-        name: data.name || null,
+        description: data.description || null,
+        additionalNotes: data.additionalNotes || null,
+        price: data.price || null,
         updatedById: currentUser.id,
       },
       { transaction },
     );
 
-    await estimates.setJob(data.job || null, {
+    await estimates.setJobId(data.jobId || null, {
       transaction,
     });
 
-    await estimates.setTemplate(data.template || [], {
+    await estimates.setContactId(data.contactId || null, {
       transaction,
+    });
+
+    await estimates.setTemplateId(data.templateId || null, {
+      transaction,
+    });
+
+    await estimates.setCreatedBy(data.createdBy || null, {
+      transaction,
+    });
+
+    await estimates.setUpdatedBy(data.updatedBy || null, {
+      transaction,
+    });
+
+    return estimates;
+  }
+
+  static async deleteByIds(ids, options) {
+    const currentUser = (options && options.currentUser) || { id: null };
+    const transaction = (options && options.transaction) || undefined;
+
+    const estimates = await db.estimates.findAll({
+      where: {
+        id: {
+          [Op.in]: ids,
+        },
+      },
+      transaction,
+    });
+
+    await db.sequelize.transaction(async (transaction) => {
+      for (const record of estimates) {
+        await record.update({ deletedBy: currentUser.id }, { transaction });
+      }
+      for (const record of estimates) {
+        await record.destroy({ transaction });
+      }
     });
 
     return estimates;
@@ -120,11 +172,27 @@ module.exports = class EstimatesDBApi {
 
     const output = estimates.get({ plain: true });
 
-    output.job = await estimates.getJob({
+    output.orders_estimateId = await estimates.getOrders_estimateId({
       transaction,
     });
 
-    output.template = await estimates.getTemplate({
+    output.jobId = await estimates.getJobId({
+      transaction,
+    });
+
+    output.contactId = await estimates.getContactId({
+      transaction,
+    });
+
+    output.templateId = await estimates.getTemplateId({
+      transaction,
+    });
+
+    output.createdBy = await estimates.getCreatedBy({
+      transaction,
+    });
+
+    output.updatedBy = await estimates.getUpdatedBy({
       transaction,
     });
 
@@ -145,22 +213,27 @@ module.exports = class EstimatesDBApi {
     let include = [
       {
         model: db.jobs,
-        as: 'job',
+        as: 'jobId',
+      },
+
+      {
+        model: db.contacts,
+        as: 'contactId',
       },
 
       {
         model: db.templates,
-        as: 'template',
-        through: filter.template
-          ? {
-              where: {
-                [Op.or]: filter.template.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.template ? true : null,
+        as: 'templateId',
+      },
+
+      {
+        model: db.users,
+        as: 'createdBy',
+      },
+
+      {
+        model: db.users,
+        as: 'updatedBy',
       },
     ];
 
@@ -172,11 +245,46 @@ module.exports = class EstimatesDBApi {
         };
       }
 
-      if (filter.name) {
+      if (filter.description) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('estimates', 'name', filter.name),
+          [Op.and]: Utils.ilike('estimates', 'description', filter.description),
         };
+      }
+
+      if (filter.additionalNotes) {
+        where = {
+          ...where,
+          [Op.and]: Utils.ilike(
+            'estimates',
+            'additionalNotes',
+            filter.additionalNotes,
+          ),
+        };
+      }
+
+      if (filter.priceRange) {
+        const [start, end] = filter.priceRange;
+
+        if (start !== undefined && start !== null && start !== '') {
+          where = {
+            ...where,
+            price: {
+              ...where.price,
+              [Op.gte]: start,
+            },
+          };
+        }
+
+        if (end !== undefined && end !== null && end !== '') {
+          where = {
+            ...where,
+            price: {
+              ...where.price,
+              [Op.lte]: end,
+            },
+          };
+        }
       }
 
       if (
@@ -191,21 +299,58 @@ module.exports = class EstimatesDBApi {
         };
       }
 
-      if (filter.status) {
-        where = {
-          ...where,
-          status: filter.status,
-        };
-      }
-
-      if (filter.job) {
-        var listItems = filter.job.split('|').map((item) => {
+      if (filter.jobId) {
+        var listItems = filter.jobId.split('|').map((item) => {
           return Utils.uuid(item);
         });
 
         where = {
           ...where,
-          jobId: { [Op.or]: listItems },
+          jobIdId: { [Op.or]: listItems },
+        };
+      }
+
+      if (filter.contactId) {
+        var listItems = filter.contactId.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
+        where = {
+          ...where,
+          contactIdId: { [Op.or]: listItems },
+        };
+      }
+
+      if (filter.templateId) {
+        var listItems = filter.templateId.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
+        where = {
+          ...where,
+          templateIdId: { [Op.or]: listItems },
+        };
+      }
+
+      if (filter.createdBy) {
+        var listItems = filter.createdBy.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
+        where = {
+          ...where,
+          createdById: { [Op.or]: listItems },
+        };
+      }
+
+      if (filter.updatedBy) {
+        var listItems = filter.updatedBy.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
+        where = {
+          ...where,
+          updatedById: { [Op.or]: listItems },
         };
       }
 
@@ -278,21 +423,21 @@ module.exports = class EstimatesDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('estimates', 'name', query),
+          Utils.ilike('estimates', 'id', query),
         ],
       };
     }
 
     const records = await db.estimates.findAll({
-      attributes: ['id', 'name'],
+      attributes: ['id', 'id'],
       where,
       limit: limit ? Number(limit) : undefined,
-      orderBy: [['name', 'ASC']],
+      orderBy: [['id', 'ASC']],
     });
 
     return records.map((record) => ({
       id: record.id,
-      label: record.name,
+      label: record.id,
     }));
   }
 };

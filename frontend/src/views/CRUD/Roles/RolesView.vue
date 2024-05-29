@@ -22,7 +22,7 @@ const notification = computed(() => rolesStore.notify)
 const titleStack = ref(['Admin', 'Roles'])
 
 const filters = ref([]);
-const filtersList = [{label: 'Name', title: 'name'},{label: 'Permissions', title: 'permissions'},
+const filtersList = [{label: 'Name', title: 'name'},
 
           ];
 const showFilters = ref(false);

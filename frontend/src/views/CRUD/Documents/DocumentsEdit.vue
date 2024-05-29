@@ -24,24 +24,32 @@ const documentsStore = useDocumentsStore()
 const titleStack = ref(['Admin', 'Documents'])
 const notification = computed(() => documentsStore.notify)
 
-        const optionsJob = computed(() => documentsStore.searchResultJob);
+        const optionsJobId = computed(() => documentsStore.searchResultJobId);
+
+        const optionsCreatedBy = computed(() => documentsStore.searchResultCreatedBy);
 
 const documentsItem = computed(() => documentsStore.data);
 
 const form = reactive({
 
-      job: [],
+      jobId: '',
 
     name: '',
 
-    url: '',
+      active: false,
+
+      fileType: [],
+
+      createdBy: '',
 
 })
 
 const submit = async () => {
   try {
 
-            form.job = form.job.map(item => item.id);
+            form.jobId = form.jobId?.id;
+
+            form.createdBy = form.createdBy?.id;
 
     await documentsStore.edit({id: route.params.id, data: {...form} })
     router.push('/documents');
@@ -53,7 +61,9 @@ const submit = async () => {
 onBeforeMount(async () => {
   try {
 
-  await searchJob();
+  await searchJobId();
+
+  await searchCreatedBy();
 
     await documentsStore.fetch(route.params.id)
     formatData();
@@ -63,17 +73,23 @@ onBeforeMount(async () => {
   }
 })
 
-    async function searchJob(val) {
-      await documentsStore.searchJob(val);
+    async function searchJobId(val) {
+      await documentsStore.searchJobId(val);
+    }
+
+    async function searchCreatedBy(val) {
+      await documentsStore.searchCreatedBy(val);
     }
 
 const formatData = () => {
 
-    form.job = dataFormatter.jobsManyListFormatterEdit(documentsItem.value.job)
+    form.jobId = dataFormatter.jobsOneListFormatterEdit(documentsItem.value.jobId)
 
     form.name = documentsItem.value.name
 
-    form.url = documentsItem.value.url
+    form.fileType = documentsItem.value.fileType
+
+    form.createdBy = dataFormatter.usersOneListFormatterEdit(documentsItem.value.createdBy)
 
 }
 
@@ -109,16 +125,15 @@ const cancel = () => {
       @submit.prevent="submit"
     >
 
-    <FormField
-        label="Job"
-      >
-        <v-select
-          v-model="form.job"
-          :options="optionsJob"
-          multiple
-          @input="searchJob($event.target.value)"
-        />
-    </FormField>
+  <FormField
+      label="Job "
+    >
+      <v-select
+        v-model="form.jobId"
+        :options="optionsJobId"
+        @input="searchJobId($event.target.value)"
+      />
+  </FormField>
 
     <FormField
       label="Name"
@@ -129,14 +144,30 @@ const cancel = () => {
         />
     </FormField>
 
-    <FormField
-      label="Url"
-    >
-      <FormControl
-        v-model="form.url"
-        placeholder="Your Url"
-        />
+    <FormField label="Active">
+      <FormCheckRadioPicker
+        v-model="form.active"
+        name="sample-switch"
+        type="switch"
+        :options="{ active: form.active ? 'Enabled' : 'Disabled' }"
+      />
     </FormField>
+
+      <FormField
+        label="File Type"
+      >
+        <FormFilePicker v-model="form.fileType" url="documents/fileType"/>
+      </FormField>
+
+  <FormField
+      label="Created By"
+    >
+      <v-select
+        v-model="form.createdBy"
+        :options="optionsCreatedBy"
+        @input="searchCreatedBy($event.target.value)"
+      />
+  </FormField>
 
     <BaseDivider />
 

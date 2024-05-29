@@ -15,10 +15,12 @@ module.exports = class AppointmentsDBApi {
       {
         id: data.id || undefined,
 
-        date: data.date || null,
-        scheduled: data.scheduled || false,
-
-        name: data.name || null,
+        subject: data.subject || null,
+        startTime: data.startTime || null,
+        endTime: data.endTime || null,
+        description: data.description || null,
+        location: data.location || null,
+        reminder: data.reminder || null,
         importHash: data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
@@ -26,15 +28,23 @@ module.exports = class AppointmentsDBApi {
       { transaction },
     );
 
-    await appointments.setContact(data.contact || [], {
+    await appointments.setAssignedUserId(data.assignedUserId || null, {
       transaction,
     });
 
-    await appointments.setJob(data.job || [], {
+    await appointments.setContactId(data.contactId || null, {
       transaction,
     });
 
-    await appointments.setEstimate(data.estimate || [], {
+    await appointments.setJobId(data.jobId || null, {
+      transaction,
+    });
+
+    await appointments.setCreatedBy(data.createdBy || null, {
+      transaction,
+    });
+
+    await appointments.setUpdatedBy(data.updatedBy || null, {
       transaction,
     });
 
@@ -49,10 +59,12 @@ module.exports = class AppointmentsDBApi {
     const appointmentsData = data.map((item, index) => ({
       id: item.id || undefined,
 
-      date: item.date || null,
-      scheduled: item.scheduled || false,
-
-      name: item.name || null,
+      subject: item.subject || null,
+      startTime: item.startTime || null,
+      endTime: item.endTime || null,
+      description: item.description || null,
+      location: item.location || null,
+      reminder: item.reminder || null,
       importHash: item.importHash || null,
       createdById: currentUser.id,
       updatedById: currentUser.id,
@@ -81,25 +93,60 @@ module.exports = class AppointmentsDBApi {
 
     await appointments.update(
       {
-        date: data.date || null,
-        scheduled: data.scheduled || false,
-
-        name: data.name || null,
+        subject: data.subject || null,
+        startTime: data.startTime || null,
+        endTime: data.endTime || null,
+        description: data.description || null,
+        location: data.location || null,
+        reminder: data.reminder || null,
         updatedById: currentUser.id,
       },
       { transaction },
     );
 
-    await appointments.setContact(data.contact || [], {
+    await appointments.setAssignedUserId(data.assignedUserId || null, {
       transaction,
     });
 
-    await appointments.setJob(data.job || [], {
+    await appointments.setContactId(data.contactId || null, {
       transaction,
     });
 
-    await appointments.setEstimate(data.estimate || [], {
+    await appointments.setJobId(data.jobId || null, {
       transaction,
+    });
+
+    await appointments.setCreatedBy(data.createdBy || null, {
+      transaction,
+    });
+
+    await appointments.setUpdatedBy(data.updatedBy || null, {
+      transaction,
+    });
+
+    return appointments;
+  }
+
+  static async deleteByIds(ids, options) {
+    const currentUser = (options && options.currentUser) || { id: null };
+    const transaction = (options && options.transaction) || undefined;
+
+    const appointments = await db.appointments.findAll({
+      where: {
+        id: {
+          [Op.in]: ids,
+        },
+      },
+      transaction,
+    });
+
+    await db.sequelize.transaction(async (transaction) => {
+      for (const record of appointments) {
+        await record.update({ deletedBy: currentUser.id }, { transaction });
+      }
+      for (const record of appointments) {
+        await record.destroy({ transaction });
+      }
     });
 
     return appointments;
@@ -141,15 +188,27 @@ module.exports = class AppointmentsDBApi {
 
     const output = appointments.get({ plain: true });
 
-    output.contact = await appointments.getContact({
+    output.tasks_appointmentId = await appointments.getTasks_appointmentId({
       transaction,
     });
 
-    output.job = await appointments.getJob({
+    output.assignedUserId = await appointments.getAssignedUserId({
       transaction,
     });
 
-    output.estimate = await appointments.getEstimate({
+    output.contactId = await appointments.getContactId({
+      transaction,
+    });
+
+    output.jobId = await appointments.getJobId({
+      transaction,
+    });
+
+    output.createdBy = await appointments.getCreatedBy({
+      transaction,
+    });
+
+    output.updatedBy = await appointments.getUpdatedBy({
       transaction,
     });
 
@@ -169,48 +228,28 @@ module.exports = class AppointmentsDBApi {
     let where = {};
     let include = [
       {
+        model: db.users,
+        as: 'assignedUserId',
+      },
+
+      {
         model: db.contacts,
-        as: 'contact',
-        through: filter.contact
-          ? {
-              where: {
-                [Op.or]: filter.contact.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.contact ? true : null,
+        as: 'contactId',
       },
 
       {
         model: db.jobs,
-        as: 'job',
-        through: filter.job
-          ? {
-              where: {
-                [Op.or]: filter.job.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.job ? true : null,
+        as: 'jobId',
       },
 
       {
-        model: db.estimates,
-        as: 'estimate',
-        through: filter.estimate
-          ? {
-              where: {
-                [Op.or]: filter.estimate.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.estimate ? true : null,
+        model: db.users,
+        as: 'createdBy',
+      },
+
+      {
+        model: db.users,
+        as: 'updatedBy',
       },
     ];
 
@@ -222,21 +261,39 @@ module.exports = class AppointmentsDBApi {
         };
       }
 
-      if (filter.name) {
+      if (filter.subject) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('appointments', 'name', filter.name),
+          [Op.and]: Utils.ilike('appointments', 'subject', filter.subject),
         };
       }
 
-      if (filter.dateRange) {
-        const [start, end] = filter.dateRange;
+      if (filter.description) {
+        where = {
+          ...where,
+          [Op.and]: Utils.ilike(
+            'appointments',
+            'description',
+            filter.description,
+          ),
+        };
+      }
+
+      if (filter.location) {
+        where = {
+          ...where,
+          [Op.and]: Utils.ilike('appointments', 'location', filter.location),
+        };
+      }
+
+      if (filter.startTimeRange) {
+        const [start, end] = filter.startTimeRange;
 
         if (start !== undefined && start !== null && start !== '') {
           where = {
             ...where,
-            date: {
-              ...where.date,
+            startTime: {
+              ...where.startTime,
               [Op.gte]: start,
             },
           };
@@ -245,8 +302,56 @@ module.exports = class AppointmentsDBApi {
         if (end !== undefined && end !== null && end !== '') {
           where = {
             ...where,
-            date: {
-              ...where.date,
+            startTime: {
+              ...where.startTime,
+              [Op.lte]: end,
+            },
+          };
+        }
+      }
+
+      if (filter.endTimeRange) {
+        const [start, end] = filter.endTimeRange;
+
+        if (start !== undefined && start !== null && start !== '') {
+          where = {
+            ...where,
+            endTime: {
+              ...where.endTime,
+              [Op.gte]: start,
+            },
+          };
+        }
+
+        if (end !== undefined && end !== null && end !== '') {
+          where = {
+            ...where,
+            endTime: {
+              ...where.endTime,
+              [Op.lte]: end,
+            },
+          };
+        }
+      }
+
+      if (filter.reminderRange) {
+        const [start, end] = filter.reminderRange;
+
+        if (start !== undefined && start !== null && start !== '') {
+          where = {
+            ...where,
+            reminder: {
+              ...where.reminder,
+              [Op.gte]: start,
+            },
+          };
+        }
+
+        if (end !== undefined && end !== null && end !== '') {
+          where = {
+            ...where,
+            reminder: {
+              ...where.reminder,
               [Op.lte]: end,
             },
           };
@@ -265,10 +370,58 @@ module.exports = class AppointmentsDBApi {
         };
       }
 
-      if (filter.scheduled) {
+      if (filter.assignedUserId) {
+        var listItems = filter.assignedUserId.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
         where = {
           ...where,
-          scheduled: filter.scheduled,
+          assignedUserIdId: { [Op.or]: listItems },
+        };
+      }
+
+      if (filter.contactId) {
+        var listItems = filter.contactId.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
+        where = {
+          ...where,
+          contactIdId: { [Op.or]: listItems },
+        };
+      }
+
+      if (filter.jobId) {
+        var listItems = filter.jobId.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
+        where = {
+          ...where,
+          jobIdId: { [Op.or]: listItems },
+        };
+      }
+
+      if (filter.createdBy) {
+        var listItems = filter.createdBy.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
+        where = {
+          ...where,
+          createdById: { [Op.or]: listItems },
+        };
+      }
+
+      if (filter.updatedBy) {
+        var listItems = filter.updatedBy.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
+        where = {
+          ...where,
+          updatedById: { [Op.or]: listItems },
         };
       }
 
@@ -341,21 +494,21 @@ module.exports = class AppointmentsDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('appointments', 'name', query),
+          Utils.ilike('appointments', 'id', query),
         ],
       };
     }
 
     const records = await db.appointments.findAll({
-      attributes: ['id', 'name'],
+      attributes: ['id', 'id'],
       where,
       limit: limit ? Number(limit) : undefined,
-      orderBy: [['name', 'ASC']],
+      orderBy: [['id', 'ASC']],
     });
 
     return records.map((record) => ({
       id: record.id,
-      label: record.name,
+      label: record.id,
     }));
   }
 };

@@ -11,7 +11,11 @@ export const useTemplatesStore = defineStore('templates', {
       typeNotification: 'warn',
     },
 
-            searchResultTrade: [],
+            searchResultTradeId: [],
+
+            searchResultCreatedBy: [],
+
+            searchResultUpdatedBy: [],
 
   }),
   actions: {
@@ -63,20 +67,54 @@ export const useTemplatesStore = defineStore('templates', {
       }
     },
 
-            async searchTrade(val) {
+            async searchTradeId(val) {
               try {
                 if (val) {
                   const result = await axios(
                     `/trades/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setTrade(result.data);
+                  this.setTradeId(result.data);
                 } else {
                   const result = await axios(`/trades/autocomplete?limit=100`);
-                  this.setTrade(result.data);
+                  this.setTradeId(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setTrade([]);
+                this.setTradeId([]);
+              }
+            },
+
+            async searchCreatedBy(val) {
+              try {
+                if (val) {
+                  const result = await axios(
+                    `/users/autocomplete?query=${val}&limit=100`,
+                  );
+                  this.setCreatedBy(result.data);
+                } else {
+                  const result = await axios(`/users/autocomplete?limit=100`);
+                  this.setCreatedBy(result.data);
+                }
+              } catch (e) {
+                this.showNotification(e, 'error')
+                this.setCreatedBy([]);
+              }
+            },
+
+            async searchUpdatedBy(val) {
+              try {
+                if (val) {
+                  const result = await axios(
+                    `/users/autocomplete?query=${val}&limit=100`,
+                  );
+                  this.setUpdatedBy(result.data);
+                } else {
+                  const result = await axios(`/users/autocomplete?limit=100`);
+                  this.setUpdatedBy(result.data);
+                }
+              } catch (e) {
+                this.showNotification(e, 'error')
+                this.setUpdatedBy([]);
               }
             },
 
@@ -99,8 +137,16 @@ export const useTemplatesStore = defineStore('templates', {
       this.notify.textNotification = ''
     },
 
-        setTrade(payload) {
-            this.searchResultTrade = payload
+        setTradeId(payload) {
+            this.searchResultTradeId = payload
+        },
+
+        setCreatedBy(payload) {
+            this.searchResultCreatedBy = payload
+        },
+
+        setUpdatedBy(payload) {
+            this.searchResultUpdatedBy = payload
         },
 
   }

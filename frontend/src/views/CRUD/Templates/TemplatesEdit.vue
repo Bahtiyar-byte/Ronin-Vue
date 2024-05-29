@@ -24,40 +24,36 @@ const templatesStore = useTemplatesStore()
 const titleStack = ref(['Admin', 'Templates'])
 const notification = computed(() => templatesStore.notify)
 
-        const optionsTrade = computed(() => templatesStore.searchResultTrade);
+        const optionsTradeId = computed(() => templatesStore.searchResultTradeId);
 
-      const optionsUnitOfMeasurement = [{id: 0, label: 'SQ'},{id: 1, label: 'LF'},]
+        const optionsCreatedBy = computed(() => templatesStore.searchResultCreatedBy);
+
+        const optionsUpdatedBy = computed(() => templatesStore.searchResultUpdatedBy);
 
 const templatesItem = computed(() => templatesStore.data);
 
 const form = reactive({
 
-      trade: [],
-
-    materialCost: '',
-
-    laborCost: '',
-
-    markup: '',
-
-    profitMargin: '',
-
     name: '',
 
-    totalPrice: '',
+    description: [''],
 
-      unitOfMeasurement: '',
+      tradeId: '',
 
-    description: '',
+      createdBy: '',
+
+      updatedBy: '',
 
 })
 
 const submit = async () => {
   try {
 
-            form.trade = form.trade.map(item => item.id);
+            form.tradeId = form.tradeId?.id;
 
-            form.unitOfMeasurement = form.unitOfMeasurement.label;
+            form.createdBy = form.createdBy?.id;
+
+            form.updatedBy = form.updatedBy?.id;
 
     await templatesStore.edit({id: route.params.id, data: {...form} })
     router.push('/templates');
@@ -69,7 +65,11 @@ const submit = async () => {
 onBeforeMount(async () => {
   try {
 
-  await searchTrade();
+  await searchTradeId();
+
+  await searchCreatedBy();
+
+  await searchUpdatedBy();
 
     await templatesStore.fetch(route.params.id)
     formatData();
@@ -79,29 +79,29 @@ onBeforeMount(async () => {
   }
 })
 
-    async function searchTrade(val) {
-      await templatesStore.searchTrade(val);
+    async function searchTradeId(val) {
+      await templatesStore.searchTradeId(val);
+    }
+
+    async function searchCreatedBy(val) {
+      await templatesStore.searchCreatedBy(val);
+    }
+
+    async function searchUpdatedBy(val) {
+      await templatesStore.searchUpdatedBy(val);
     }
 
 const formatData = () => {
 
-    form.trade = dataFormatter.tradesManyListFormatterEdit(templatesItem.value.trade)
-
-    form.materialCost = templatesItem.value.materialCost
-
-    form.laborCost = templatesItem.value.laborCost
-
-    form.markup = templatesItem.value.markup
-
-    form.profitMargin = templatesItem.value.profitMargin
-
     form.name = templatesItem.value.name
 
-    form.totalPrice = templatesItem.value.totalPrice
-
-    form.unitOfMeasurement = optionsUnitOfMeasurement.find(el => el.label === templatesItem.value.unitOfMeasurement)
-
     form.description = templatesItem.value.description
+
+    form.tradeId = dataFormatter.tradesOneListFormatterEdit(templatesItem.value.tradeId)
+
+    form.createdBy = dataFormatter.usersOneListFormatterEdit(templatesItem.value.createdBy)
+
+    form.updatedBy = dataFormatter.usersOneListFormatterEdit(templatesItem.value.updatedBy)
 
 }
 
@@ -138,57 +138,6 @@ const cancel = () => {
     >
 
     <FormField
-        label="Trade"
-      >
-        <v-select
-          v-model="form.trade"
-          :options="optionsTrade"
-          multiple
-          @input="searchTrade($event.target.value)"
-        />
-    </FormField>
-
-    <FormField
-      label="Material Cost"
-    >
-      <FormControl
-        type="number"
-        v-model="form.materialCost"
-        placeholder="Your Material Cost"
-      />
-    </FormField>
-
-    <FormField
-      label="Labor Cost"
-    >
-      <FormControl
-        type="number"
-        v-model="form.laborCost"
-        placeholder="Your Labor Cost"
-      />
-    </FormField>
-
-    <FormField
-      label="Markup"
-    >
-      <FormControl
-        type="number"
-        v-model="form.markup"
-        placeholder="Your Markup"
-      />
-    </FormField>
-
-    <FormField
-      label="Profit Margin"
-    >
-      <FormControl
-        type="number"
-        v-model="form.profitMargin"
-        placeholder="Your Profit Margin"
-      />
-    </FormField>
-
-    <FormField
       label="Name"
     >
       <FormControl
@@ -198,30 +147,44 @@ const cancel = () => {
     </FormField>
 
     <FormField
-      label="Total Price"
-    >
-      <FormControl
-        type="number"
-        v-model="form.totalPrice"
-        placeholder="Your Total Price"
-      />
-    </FormField>
-
-    <FormField label="Unit Of Measurement">
-      <FormControl
-        v-model="form.unitOfMeasurement"
-        :options="optionsUnitOfMeasurement"
-      />
-    </FormField>
-
-    <FormField
       label="Description"
     >
       <FormControl
         v-model="form.description"
+        type="textarea"
         placeholder="Your Description"
         />
     </FormField>
+
+  <FormField
+      label="Trade"
+    >
+      <v-select
+        v-model="form.tradeId"
+        :options="optionsTradeId"
+        @input="searchTradeId($event.target.value)"
+      />
+  </FormField>
+
+  <FormField
+      label="Created By"
+    >
+      <v-select
+        v-model="form.createdBy"
+        :options="optionsCreatedBy"
+        @input="searchCreatedBy($event.target.value)"
+      />
+  </FormField>
+
+  <FormField
+      label="Updated By"
+    >
+      <v-select
+        v-model="form.updatedBy"
+        :options="optionsUpdatedBy"
+        @input="searchUpdatedBy($event.target.value)"
+      />
+  </FormField>
 
     <BaseDivider />
 

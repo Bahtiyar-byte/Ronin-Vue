@@ -22,9 +22,10 @@ const notification = computed(() => estimatesStore.notify)
 const titleStack = ref(['Admin', 'Estimates'])
 
 const filters = ref([]);
-const filtersList = [{label: 'Name', title: 'name'},
+const filtersList = [{label: 'Description', title: 'description'},{label: 'Additional Notes', title: 'additionalNotes'},
 
-          {label: 'Job', title: 'job'},];
+          {label: 'Price', title: 'price', number: 'true'},
+          {label: 'Job Id', title: 'jobId'},{label: 'Contact Id', title: 'contactId'},{label: 'Template ', title: 'templateId'},{label: 'Created By', title: 'createdBy'},{label: 'Updated By', title: 'updatedBy'},];
 const showFilters = ref(false);
 
 const query = ref('');

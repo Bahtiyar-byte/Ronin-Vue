@@ -14,8 +14,60 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
       },
 
-      name: {
-        type: DataTypes.TEXT,
+      Name: {
+        type: DataTypes.ENUM,
+
+        values: [
+          'Ventilation',
+
+          'Vent Install',
+
+          'TPO',
+
+          'Tile',
+
+          'Soffit/Fascia',
+
+          'Slate',
+
+          'Skylight',
+
+          'Silicone',
+
+          'Siding',
+
+          'Shingles',
+
+          'Service Repairs',
+
+          'Service Callback',
+
+          'Painting',
+
+          'Metal',
+
+          'Gutters',
+
+          'Gutter Guards',
+
+          'Gutter Cleaning',
+
+          'Flat Roof',
+
+          'Aluminum/Flashing',
+
+          'Fascia',
+
+          'EPDM',
+
+          'Downspouts',
+
+          'Chimney Cap',
+
+          'Box Gutters',
+
+          'Pressure Washing',
+        ],
       },
 
       importHash: {
@@ -33,6 +85,14 @@ module.exports = function (sequelize, DataTypes) {
 
   trades.associate = (db) => {
     /// loop through entities and it's fields, and if ref === current e[name] and create relation has many on parent entity
+
+    db.trades.hasMany(db.templates, {
+      as: 'templates_tradeId',
+      foreignKey: {
+        name: 'tradeIdId',
+      },
+      constraints: false,
+    });
 
     //end loop
 

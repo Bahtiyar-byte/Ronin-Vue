@@ -24,7 +24,7 @@ const rolesStore = useRolesStore()
 const titleStack = ref(['Admin', 'Roles'])
 const notification = computed(() => rolesStore.notify)
 
-        const optionsUser = computed(() => rolesStore.searchResultUser);
+        const optionsPermissions = computed(() => rolesStore.searchResultPermissions);
 
 const rolesItem = computed(() => rolesStore.data);
 
@@ -32,16 +32,14 @@ const form = reactive({
 
     name: '',
 
-    permissions: '',
-
-      user: [],
+      permissions: [],
 
 })
 
 const submit = async () => {
   try {
 
-            form.user = form.user.map(item => item.id);
+            form.permissions = form.permissions.map(item => item.id);
 
     await rolesStore.edit({id: route.params.id, data: {...form} })
     router.push('/roles');
@@ -53,7 +51,7 @@ const submit = async () => {
 onBeforeMount(async () => {
   try {
 
-  await searchUser();
+  await searchPermissions();
 
     await rolesStore.fetch(route.params.id)
     formatData();
@@ -63,17 +61,15 @@ onBeforeMount(async () => {
   }
 })
 
-    async function searchUser(val) {
-      await rolesStore.searchUser(val);
+    async function searchPermissions(val) {
+      await rolesStore.searchPermissions(val);
     }
 
 const formatData = () => {
 
     form.name = rolesItem.value.name
 
-    form.permissions = rolesItem.value.permissions
-
-    form.user = dataFormatter.usersManyListFormatterEdit(rolesItem.value.user)
+    form.permissions = dataFormatter.permissionsManyListFormatterEdit(rolesItem.value.permissions)
 
 }
 
@@ -119,22 +115,13 @@ const cancel = () => {
     </FormField>
 
     <FormField
-      label="Permissions"
-    >
-      <FormControl
-        v-model="form.permissions"
-        placeholder="Your Permissions"
-        />
-    </FormField>
-
-    <FormField
-        label="User"
+        label="Permissions"
       >
         <v-select
-          v-model="form.user"
-          :options="optionsUser"
+          v-model="form.permissions"
+          :options="optionsPermissions"
           multiple
-          @input="searchUser($event.target.value)"
+          @input="searchPermissions($event.target.value)"
         />
     </FormField>
 

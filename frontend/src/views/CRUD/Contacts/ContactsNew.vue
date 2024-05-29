@@ -22,56 +22,60 @@ const router = useRouter();
 const notification = computed(() => contactsStore.notify)
 const titleStack = ref(['Admin', 'Contacts'])
 
-        const optionsJob = computed(() => contactsStore.searchResultJob);
+        const optionsAssignedUserId = computed(() => contactsStore.searchResultAssignedUserId);
 
-        const optionsEstimate = computed(() => contactsStore.searchResultEstimate);
+        const optionsCreatedBy = computed(() => contactsStore.searchResultCreatedBy);
 
-        const optionsAppointment = computed(() => contactsStore.searchResultAppointment);
+        const optionsUpdatedBy = computed(() => contactsStore.searchResultUpdatedBy);
 
 const form = reactive({
-
-      name: '',
-
-      email: '',
-
-      phone: '',
-
-      adress: '',
 
       firstName: '',
 
       lastName: '',
 
-      stage: false,
+      email: '',
 
-      job: [],
+      phone: '',
 
-      estimate: [],
+      company: '',
 
-      appointment: [],
+      status: false,
+
+      source: false,
+
+      crossReference: '',
+
+      assignedUserId: '',
+
+      createdBy: '',
+
+      updatedBy: '',
 
 })
 
 onBeforeMount(async () => {
 
-  await searchJob();
+  await searchAssignedUserId();
 
-  await searchEstimate();
+  await searchCreatedBy();
 
-  await searchAppointment();
+  await searchUpdatedBy();
 
 })
 
 const submit = async () => {
   try {
 
-            form.stage = form.stage.label;
+            form.status = form.status.label;
 
-            form.job = form.job.map(item => item.id);
+            form.source = form.source.label;
 
-            form.estimate = form.estimate.map(item => item.id);
+            form.assignedUserId = form.assignedUserId.id;
 
-            form.appointment = form.appointment.map(item => item.id);
+            form.createdBy = form.createdBy.id;
+
+            form.updatedBy = form.updatedBy.id;
 
     await contactsStore.newItem({ ...form })
     router.push('/contacts');
@@ -82,25 +86,27 @@ const submit = async () => {
 
 const reset = () => {
 
-        form.name = '';
+        form.firstName = '';
+
+        form.lastName = '';
 
         form.email = '';
 
         form.phone = '';
 
-        form.adress = '';
+        form.company = '';
 
-        form.firstName = '';
+        form.status = false;
 
-        form.lastName = '';
+        form.source = false;
 
-        form.stage = false;
+        form.crossReference = '';
 
-        form.job = [];
+        form.assignedUserId = '';
 
-        form.estimate = [];
+        form.createdBy = '';
 
-        form.appointment = [];
+        form.updatedBy = '';
 
 }
 
@@ -108,16 +114,16 @@ const cancel = () => {
   router.push('/users')
 }
 
-    async function searchJob(val) {
-      await contactsStore.searchJob(val);
+    async function searchAssignedUserId(val) {
+      await contactsStore.searchAssignedUserId(val);
     }
 
-    async function searchEstimate(val) {
-      await contactsStore.searchEstimate(val);
+    async function searchCreatedBy(val) {
+      await contactsStore.searchCreatedBy(val);
     }
 
-    async function searchAppointment(val) {
-      await contactsStore.searchAppointment(val);
+    async function searchUpdatedBy(val) {
+      await contactsStore.searchUpdatedBy(val);
     }
 
 watch(() => contactsStore.notify.showNotification, (newValue, oldValue) => {
@@ -145,11 +151,20 @@ watch(() => contactsStore.notify.showNotification, (newValue, oldValue) => {
     >
 
     <FormField
-      label="Name"
+      label="First Name"
     >
       <FormControl
-        v-model="form.name"
-        placeholder="Your Name"
+        v-model="form.firstName"
+        placeholder="Your First Name"
+      />
+    </FormField>
+
+    <FormField
+      label="Last Name"
+    >
+      <FormControl
+        v-model="form.lastName"
+        placeholder="Your Last Name"
       />
     </FormField>
 
@@ -172,35 +187,17 @@ watch(() => contactsStore.notify.showNotification, (newValue, oldValue) => {
     </FormField>
 
     <FormField
-      label="Adress"
+      label="Company"
     >
       <FormControl
-        v-model="form.adress"
-        placeholder="Your Adress"
+        v-model="form.company"
+        placeholder="Your Company"
       />
     </FormField>
 
-    <FormField
-      label="First Name"
-    >
+    <FormField label="Status">
       <FormControl
-        v-model="form.firstName"
-        placeholder="Your First Name"
-      />
-    </FormField>
-
-    <FormField
-      label="Last Name"
-    >
-      <FormControl
-        v-model="form.lastName"
-        placeholder="Your Last Name"
-      />
-    </FormField>
-
-    <FormField label="Stage">
-      <FormControl
-        v-model="form.stage"
+        v-model="form.status"
         :options="[{id: 0, label: 'Lead'},
                     {id: 1, label: 'Prospect'},
                     {id: 2, label: 'Customer'},
@@ -208,38 +205,55 @@ watch(() => contactsStore.notify.showNotification, (newValue, oldValue) => {
       />
     </FormField>
 
-    <FormField
-        label="Job"
-      >
-        <v-select
-          v-model="form.job"
-          :options="optionsJob"
-          multiple
-          @input="searchJob($event.target.value)"
-        />
+    <FormField label="Source">
+      <FormControl
+        v-model="form.source"
+        :options="[{id: 0, label: 'Google Ads'},
+                    {id: 1, label: 'Facebook'},
+                    {id: 2, label: 'Website'},
+                    {id: 3, label: 'Other'},
+                    ]"
+      />
     </FormField>
 
     <FormField
-        label="Estimate"
-      >
-        <v-select
-          v-model="form.estimate"
-          :options="optionsEstimate"
-          multiple
-          @input="searchEstimate($event.target.value)"
-        />
+      label="Cross Reference"
+    >
+      <FormControl
+        v-model="form.crossReference"
+        placeholder="Your Cross Reference"
+      />
     </FormField>
 
-    <FormField
-        label="Appointment"
-      >
+  <FormField
+      label="Assigned To"
+    >
         <v-select
-          v-model="form.appointment"
-          :options="optionsAppointment"
-          multiple
-          @input="searchAppointment($event.target.value)"
+          v-model="form.assignedUserId"
+          :options="optionsAssignedUserId"
+          @input="searchAssignedUserId($event.target.value)"
         />
-    </FormField>
+  </FormField>
+
+  <FormField
+      label="Created By"
+    >
+        <v-select
+          v-model="form.createdBy"
+          :options="optionsCreatedBy"
+          @input="searchCreatedBy($event.target.value)"
+        />
+  </FormField>
+
+  <FormField
+      label="Updated By"
+    >
+        <v-select
+          v-model="form.updatedBy"
+          :options="optionsUpdatedBy"
+          @input="searchUpdatedBy($event.target.value)"
+        />
+  </FormField>
 
     <BaseDivider />
 

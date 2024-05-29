@@ -24,82 +24,70 @@ const jobsStore = useJobsStore()
 const titleStack = ref(['Admin', 'Jobs'])
 const notification = computed(() => jobsStore.notify)
 
-        const optionsContact = computed(() => jobsStore.searchResultContact);
-
-      const optionsCategory = [{id: 0, label: 'Commercial'},{id: 1, label: 'Property Management'},{id: 2, label: 'Residential'},]
-
       const optionsType = [{id: 0, label: 'New'},{id: 1, label: 'Repair'},{id: 2, label: 'Service'},{id: 3, label: 'Inspection'},{id: 4, label: 'Insurance'},{id: 5, label: 'Retail'},{id: 6, label: 'Warranty'},]
 
-      const optionsStatus = [{id: 0, label: 'Quoted'},{id: 1, label: 'Approved'},{id: 2, label: 'Active'},{id: 3, label: 'Completed'},{id: 4, label: 'Invoiced'},]
+      const optionsCategory = [{id: 0, label: 'Commercial '},{id: 1, label: 'Residential'},{id: 2, label: 'Property Management'},]
 
-        const optionsAssignedUser = computed(() => jobsStore.searchResultAssignedUser);
+      const optionsStatus = [{id: 0, label: 'Quoted'},{id: 1, label: 'Approved'},{id: 2, label: 'Active'},{id: 3, label: 'Completed'},{id: 4, label: 'Invoiced'},{id: 5, label: 'Closed'},]
 
-        const optionsAssignedTeam = computed(() => jobsStore.searchResultAssignedTeam);
+        const optionsContactId = computed(() => jobsStore.searchResultContactId);
 
-        const optionsEstimate = computed(() => jobsStore.searchResultEstimate);
+        const optionsOrderId = computed(() => jobsStore.searchResultOrderId);
 
-        const optionsAppointment = computed(() => jobsStore.searchResultAppointment);
+        const optionsAssignedUserId = computed(() => jobsStore.searchResultAssignedUserId);
 
-        const optionsImage = computed(() => jobsStore.searchResultImage);
+        const optionsCreatedBy = computed(() => jobsStore.searchResultCreatedBy);
 
-        const optionsDocument = computed(() => jobsStore.searchResultDocument);
-
-        const optionsInvoice = computed(() => jobsStore.searchResultInvoice);
+        const optionsUpdatedBy = computed(() => jobsStore.searchResultUpdatedBy);
 
 const jobsItem = computed(() => jobsStore.data);
 
 const form = reactive({
 
-    name: '',
-
-      contact: [],
-
-      category: '',
+    Name: '',
 
       type: '',
 
+      category: '',
+
       status: '',
 
-      assignedUser: [],
+      startDate: '',
 
-      assignedTeam: [],
+      endDate: '',
 
-      estimate: [],
+    description: [''],
 
-      appointment: [],
+      contactId: '',
 
-      image: [],
+      orderId: '',
 
-      document: [],
+      assignedUserId: '',
 
-      invoice: [],
+      createdBy: '',
+
+      updatedBy: '',
 
 })
 
 const submit = async () => {
   try {
 
-            form.contact = form.contact.map(item => item.id);
+            form.type = form.type.label;
 
             form.category = form.category.label;
 
-            form.type = form.type.label;
-
             form.status = form.status.label;
 
-            form.assignedUser = form.assignedUser.map(item => item.id);
+            form.contactId = form.contactId?.id;
 
-            form.assignedTeam = form.assignedTeam.map(item => item.id);
+            form.orderId = form.orderId?.id;
 
-            form.estimate = form.estimate.map(item => item.id);
+            form.assignedUserId = form.assignedUserId?.id;
 
-            form.appointment = form.appointment.map(item => item.id);
+            form.createdBy = form.createdBy?.id;
 
-            form.image = form.image.map(item => item.id);
-
-            form.document = form.document.map(item => item.id);
-
-            form.invoice = form.invoice.map(item => item.id);
+            form.updatedBy = form.updatedBy?.id;
 
     await jobsStore.edit({id: route.params.id, data: {...form} })
     router.push('/jobs');
@@ -111,21 +99,15 @@ const submit = async () => {
 onBeforeMount(async () => {
   try {
 
-  await searchContact();
+  await searchContactId();
 
-  await searchAssignedUser();
+  await searchOrderId();
 
-  await searchAssignedTeam();
+  await searchAssignedUserId();
 
-  await searchEstimate();
+  await searchCreatedBy();
 
-  await searchAppointment();
-
-  await searchImage();
-
-  await searchDocument();
-
-  await searchInvoice();
+  await searchUpdatedBy();
 
     await jobsStore.fetch(route.params.id)
     formatData();
@@ -135,63 +117,51 @@ onBeforeMount(async () => {
   }
 })
 
-    async function searchContact(val) {
-      await jobsStore.searchContact(val);
+    async function searchContactId(val) {
+      await jobsStore.searchContactId(val);
     }
 
-    async function searchAssignedUser(val) {
-      await jobsStore.searchAssignedUser(val);
+    async function searchOrderId(val) {
+      await jobsStore.searchOrderId(val);
     }
 
-    async function searchAssignedTeam(val) {
-      await jobsStore.searchAssignedTeam(val);
+    async function searchAssignedUserId(val) {
+      await jobsStore.searchAssignedUserId(val);
     }
 
-    async function searchEstimate(val) {
-      await jobsStore.searchEstimate(val);
+    async function searchCreatedBy(val) {
+      await jobsStore.searchCreatedBy(val);
     }
 
-    async function searchAppointment(val) {
-      await jobsStore.searchAppointment(val);
-    }
-
-    async function searchImage(val) {
-      await jobsStore.searchImage(val);
-    }
-
-    async function searchDocument(val) {
-      await jobsStore.searchDocument(val);
-    }
-
-    async function searchInvoice(val) {
-      await jobsStore.searchInvoice(val);
+    async function searchUpdatedBy(val) {
+      await jobsStore.searchUpdatedBy(val);
     }
 
 const formatData = () => {
 
-    form.name = jobsItem.value.name
-
-    form.contact = dataFormatter.contactsManyListFormatterEdit(jobsItem.value.contact)
-
-    form.category = optionsCategory.find(el => el.label === jobsItem.value.category)
+    form.Name = jobsItem.value.Name
 
     form.type = optionsType.find(el => el.label === jobsItem.value.type)
 
+    form.category = optionsCategory.find(el => el.label === jobsItem.value.category)
+
     form.status = optionsStatus.find(el => el.label === jobsItem.value.status)
 
-    form.assignedUser = dataFormatter.usersManyListFormatterEdit(jobsItem.value.assignedUser)
+    form.startDate = dataFormatter.dateTimeFormatter(jobsItem.value.startDate)
 
-    form.assignedTeam = dataFormatter.teamsManyListFormatterEdit(jobsItem.value.assignedTeam)
+    form.endDate = dataFormatter.dateTimeFormatter(jobsItem.value.endDate)
 
-    form.estimate = dataFormatter.estimatesManyListFormatterEdit(jobsItem.value.estimate)
+    form.description = jobsItem.value.description
 
-    form.appointment = dataFormatter.appointmentsManyListFormatterEdit(jobsItem.value.appointment)
+    form.contactId = dataFormatter.contactsOneListFormatterEdit(jobsItem.value.contactId)
 
-    form.image = dataFormatter.imagesManyListFormatterEdit(jobsItem.value.image)
+    form.orderId = dataFormatter.ordersOneListFormatterEdit(jobsItem.value.orderId)
 
-    form.document = dataFormatter.documentsManyListFormatterEdit(jobsItem.value.document)
+    form.assignedUserId = dataFormatter.usersOneListFormatterEdit(jobsItem.value.assignedUserId)
 
-    form.invoice = dataFormatter.invoicesManyListFormatterEdit(jobsItem.value.invoice)
+    form.createdBy = dataFormatter.usersOneListFormatterEdit(jobsItem.value.createdBy)
+
+    form.updatedBy = dataFormatter.usersOneListFormatterEdit(jobsItem.value.updatedBy)
 
 }
 
@@ -231,33 +201,22 @@ const cancel = () => {
       label="Name"
     >
       <FormControl
-        v-model="form.name"
+        v-model="form.Name"
         placeholder="Your Name"
         />
-    </FormField>
-
-    <FormField
-        label="Contact"
-      >
-        <v-select
-          v-model="form.contact"
-          :options="optionsContact"
-          multiple
-          @input="searchContact($event.target.value)"
-        />
-    </FormField>
-
-    <FormField label="Category">
-      <FormControl
-        v-model="form.category"
-        :options="optionsCategory"
-      />
     </FormField>
 
     <FormField label="Type">
       <FormControl
         v-model="form.type"
         :options="optionsType"
+      />
+    </FormField>
+
+    <FormField label="Category">
+      <FormControl
+        v-model="form.category"
+        :options="optionsCategory"
       />
     </FormField>
 
@@ -269,81 +228,84 @@ const cancel = () => {
     </FormField>
 
     <FormField
-        label="Assigned User"
-      >
-        <v-select
-          v-model="form.assignedUser"
-          :options="optionsAssignedUser"
-          multiple
-          @input="searchAssignedUser($event.target.value)"
-        />
+      label="Start Date"
+    >
+      <FormControl
+        type="datetime-local"
+        v-model="form.startDate"
+        placeholder="Your Start Date"
+      />
     </FormField>
 
     <FormField
-        label="Assigned Team"
-      >
-        <v-select
-          v-model="form.assignedTeam"
-          :options="optionsAssignedTeam"
-          multiple
-          @input="searchAssignedTeam($event.target.value)"
-        />
+      label="End Date"
+    >
+      <FormControl
+        type="datetime-local"
+        v-model="form.endDate"
+        placeholder="Your End Date"
+      />
     </FormField>
 
     <FormField
-        label="Estimate"
-      >
-        <v-select
-          v-model="form.estimate"
-          :options="optionsEstimate"
-          multiple
-          @input="searchEstimate($event.target.value)"
+      label="Description"
+    >
+      <FormControl
+        v-model="form.description"
+        type="textarea"
+        placeholder="Your Description"
         />
     </FormField>
 
-    <FormField
-        label="Appointment"
-      >
-        <v-select
-          v-model="form.appointment"
-          :options="optionsAppointment"
-          multiple
-          @input="searchAppointment($event.target.value)"
-        />
-    </FormField>
+  <FormField
+      label="Contact "
+    >
+      <v-select
+        v-model="form.contactId"
+        :options="optionsContactId"
+        @input="searchContactId($event.target.value)"
+      />
+  </FormField>
 
-    <FormField
-        label="Image"
-      >
-        <v-select
-          v-model="form.image"
-          :options="optionsImage"
-          multiple
-          @input="searchImage($event.target.value)"
-        />
-    </FormField>
+  <FormField
+      label="Order "
+    >
+      <v-select
+        v-model="form.orderId"
+        :options="optionsOrderId"
+        @input="searchOrderId($event.target.value)"
+      />
+  </FormField>
 
-    <FormField
-        label="Document"
-      >
-        <v-select
-          v-model="form.document"
-          :options="optionsDocument"
-          multiple
-          @input="searchDocument($event.target.value)"
-        />
-    </FormField>
+  <FormField
+      label="Assigned User "
+    >
+      <v-select
+        v-model="form.assignedUserId"
+        :options="optionsAssignedUserId"
+        @input="searchAssignedUserId($event.target.value)"
+      />
+  </FormField>
 
-    <FormField
-        label="Invoice"
-      >
-        <v-select
-          v-model="form.invoice"
-          :options="optionsInvoice"
-          multiple
-          @input="searchInvoice($event.target.value)"
-        />
-    </FormField>
+  <FormField
+      label="Created By"
+    >
+      <v-select
+        v-model="form.createdBy"
+        :options="optionsCreatedBy"
+        @input="searchCreatedBy($event.target.value)"
+      />
+  </FormField>
+
+  <FormField
+      label="Updated By"
+    >
+      <v-select
+        v-model="form.updatedBy"
+        :options="optionsUpdatedBy"
+        @input="searchUpdatedBy($event.target.value)"
+      />
+  </FormField>
 
     <BaseDivider />
 

@@ -18,10 +18,6 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.TEXT,
       },
 
-      url: {
-        type: DataTypes.TEXT,
-      },
-
       importHash: {
         type: DataTypes.STRING(255),
         allowNull: true,
@@ -36,18 +32,49 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   images.associate = (db) => {
-    db.images.belongsToMany(db.jobs, {
-      as: 'job',
-      foreignKey: {
-        name: 'images_jobId',
-      },
-      constraints: false,
-      through: 'imagesJobJobs',
-    });
-
     /// loop through entities and it's fields, and if ref === current e[name] and create relation has many on parent entity
 
+    db.images.hasMany(db.users, {
+      as: 'users_imageId',
+      foreignKey: {
+        name: 'imageIdId',
+      },
+      constraints: false,
+    });
+
     //end loop
+
+    db.images.belongsTo(db.jobs, {
+      as: 'jobId',
+      foreignKey: {
+        name: 'jobIdId',
+      },
+      constraints: false,
+    });
+
+    db.images.belongsTo(db.users, {
+      as: 'userId',
+      foreignKey: {
+        name: 'userIdId',
+      },
+      constraints: false,
+    });
+
+    db.images.belongsTo(db.documents, {
+      as: 'documentId',
+      foreignKey: {
+        name: 'documentIdId',
+      },
+      constraints: false,
+    });
+
+    db.images.belongsTo(db.users, {
+      as: 'createdBy',
+      foreignKey: {
+        name: 'createdById',
+      },
+      constraints: false,
+    });
 
     db.images.belongsTo(db.users, {
       as: 'createdBy',

@@ -22,38 +22,62 @@ const router = useRouter();
 const notification = computed(() => estimatesStore.notify)
 const titleStack = ref(['Admin', 'Estimates'])
 
-        const optionsJob = computed(() => estimatesStore.searchResultJob);
+        const optionsJobId = computed(() => estimatesStore.searchResultJobId);
 
-        const optionsTemplate = computed(() => estimatesStore.searchResultTemplate);
+        const optionsContactId = computed(() => estimatesStore.searchResultContactId);
+
+        const optionsTemplateId = computed(() => estimatesStore.searchResultTemplateId);
+
+        const optionsCreatedBy = computed(() => estimatesStore.searchResultCreatedBy);
+
+        const optionsUpdatedBy = computed(() => estimatesStore.searchResultUpdatedBy);
 
 const form = reactive({
 
-      job: '',
+    description: '',
 
-      template: [],
+    additionalNotes: '',
 
-      status: false,
+      price: '',
 
-      name: '',
+      jobId: '',
+
+      contactId: '',
+
+      templateId: '',
+
+      createdBy: '',
+
+      updatedBy: '',
 
 })
 
 onBeforeMount(async () => {
 
-  await searchJob();
+  await searchJobId();
 
-  await searchTemplate();
+  await searchContactId();
+
+  await searchTemplateId();
+
+  await searchCreatedBy();
+
+  await searchUpdatedBy();
 
 })
 
 const submit = async () => {
   try {
 
-            form.job = form.job.id;
+            form.jobId = form.jobId.id;
 
-            form.template = form.template.map(item => item.id);
+            form.contactId = form.contactId.id;
 
-            form.status = form.status.label;
+            form.templateId = form.templateId.id;
+
+            form.createdBy = form.createdBy.id;
+
+            form.updatedBy = form.updatedBy.id;
 
     await estimatesStore.newItem({ ...form })
     router.push('/estimates');
@@ -64,13 +88,21 @@ const submit = async () => {
 
 const reset = () => {
 
-        form.job = '';
+      form.description = '';
 
-        form.template = [];
+      form.additionalNotes = '';
 
-        form.status = false;
+        form.price = '';
 
-        form.name = '';
+        form.jobId = '';
+
+        form.contactId = '';
+
+        form.templateId = '';
+
+        form.createdBy = '';
+
+        form.updatedBy = '';
 
 }
 
@@ -78,12 +110,24 @@ const cancel = () => {
   router.push('/users')
 }
 
-    async function searchJob(val) {
-      await estimatesStore.searchJob(val);
+    async function searchJobId(val) {
+      await estimatesStore.searchJobId(val);
     }
 
-    async function searchTemplate(val) {
-      await estimatesStore.searchTemplate(val);
+    async function searchContactId(val) {
+      await estimatesStore.searchContactId(val);
+    }
+
+    async function searchTemplateId(val) {
+      await estimatesStore.searchTemplateId(val);
+    }
+
+    async function searchCreatedBy(val) {
+      await estimatesStore.searchCreatedBy(val);
+    }
+
+    async function searchUpdatedBy(val) {
+      await estimatesStore.searchUpdatedBy(val);
     }
 
 watch(() => estimatesStore.notify.showNotification, (newValue, oldValue) => {
@@ -110,46 +154,82 @@ watch(() => estimatesStore.notify.showNotification, (newValue, oldValue) => {
       @submit.prevent="submit"
     >
 
+    <FormField
+      label="Description"
+    >
+      <FormControl
+        v-model="form.description"
+        type="textarea"
+        placeholder="Your Description"
+        />
+    </FormField>
+
+    <label class="block font-bold mb-2 text-pavitra-700 text-sm">Additional Notes</label>
+    <Editor
+      api-key="s0bs8snu2u6qo8skn5r3kurkerhbaagpsgm9cdkbxnbo8nj4"
+      cloudChannel="6"
+      v-model="form.additionalNotes"
+      />
+
+    <FormField
+      label="Price"
+    >
+      <FormControl
+        type="number"
+        v-model="form.price"
+        placeholder="Your Price"
+      />
+    </FormField>
+
   <FormField
-      label="Job"
+      label="Job Id"
     >
         <v-select
-          v-model="form.job"
-          :options="optionsJob"
-          @input="searchJob($event.target.value)"
+          v-model="form.jobId"
+          :options="optionsJobId"
+          @input="searchJobId($event.target.value)"
         />
   </FormField>
 
-    <FormField
-        label="Template"
-      >
-        <v-select
-          v-model="form.template"
-          :options="optionsTemplate"
-          multiple
-          @input="searchTemplate($event.target.value)"
-        />
-    </FormField>
-
-    <FormField label="Status">
-      <FormControl
-        v-model="form.status"
-        :options="[{id: 0, label: 'Draft'},
-                    {id: 1, label: 'Sent'},
-                    {id: 2, label: 'Approved'},
-                    {id: 3, label: 'Rejected'},
-                    ]"
-      />
-    </FormField>
-
-    <FormField
-      label="Name"
+  <FormField
+      label="Contact Id"
     >
-      <FormControl
-        v-model="form.name"
-        placeholder="Your Name"
-      />
-    </FormField>
+        <v-select
+          v-model="form.contactId"
+          :options="optionsContactId"
+          @input="searchContactId($event.target.value)"
+        />
+  </FormField>
+
+  <FormField
+      label="Template "
+    >
+        <v-select
+          v-model="form.templateId"
+          :options="optionsTemplateId"
+          @input="searchTemplateId($event.target.value)"
+        />
+  </FormField>
+
+  <FormField
+      label="Created By"
+    >
+        <v-select
+          v-model="form.createdBy"
+          :options="optionsCreatedBy"
+          @input="searchCreatedBy($event.target.value)"
+        />
+  </FormField>
+
+  <FormField
+      label="Updated By"
+    >
+        <v-select
+          v-model="form.updatedBy"
+          :options="optionsUpdatedBy"
+          @input="searchUpdatedBy($event.target.value)"
+        />
+  </FormField>
 
     <BaseDivider />
 

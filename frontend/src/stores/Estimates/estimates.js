@@ -11,9 +11,15 @@ export const useEstimatesStore = defineStore('estimates', {
       typeNotification: 'warn',
     },
 
-            searchResultJob: [],
+            searchResultJobId: [],
 
-            searchResultTemplate: [],
+            searchResultContactId: [],
+
+            searchResultTemplateId: [],
+
+            searchResultCreatedBy: [],
+
+            searchResultUpdatedBy: [],
 
   }),
   actions: {
@@ -65,37 +71,88 @@ export const useEstimatesStore = defineStore('estimates', {
       }
     },
 
-            async searchJob(val) {
+            async searchJobId(val) {
               try {
                 if (val) {
                   const result = await axios(
                     `/jobs/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setJob(result.data);
+                  this.setJobId(result.data);
                 } else {
                   const result = await axios(`/jobs/autocomplete?limit=100`);
-                  this.setJob(result.data);
+                  this.setJobId(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setJob([]);
+                this.setJobId([]);
               }
             },
 
-            async searchTemplate(val) {
+            async searchContactId(val) {
+              try {
+                if (val) {
+                  const result = await axios(
+                    `/contacts/autocomplete?query=${val}&limit=100`,
+                  );
+                  this.setContactId(result.data);
+                } else {
+                  const result = await axios(`/contacts/autocomplete?limit=100`);
+                  this.setContactId(result.data);
+                }
+              } catch (e) {
+                this.showNotification(e, 'error')
+                this.setContactId([]);
+              }
+            },
+
+            async searchTemplateId(val) {
               try {
                 if (val) {
                   const result = await axios(
                     `/templates/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setTemplate(result.data);
+                  this.setTemplateId(result.data);
                 } else {
                   const result = await axios(`/templates/autocomplete?limit=100`);
-                  this.setTemplate(result.data);
+                  this.setTemplateId(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setTemplate([]);
+                this.setTemplateId([]);
+              }
+            },
+
+            async searchCreatedBy(val) {
+              try {
+                if (val) {
+                  const result = await axios(
+                    `/users/autocomplete?query=${val}&limit=100`,
+                  );
+                  this.setCreatedBy(result.data);
+                } else {
+                  const result = await axios(`/users/autocomplete?limit=100`);
+                  this.setCreatedBy(result.data);
+                }
+              } catch (e) {
+                this.showNotification(e, 'error')
+                this.setCreatedBy([]);
+              }
+            },
+
+            async searchUpdatedBy(val) {
+              try {
+                if (val) {
+                  const result = await axios(
+                    `/users/autocomplete?query=${val}&limit=100`,
+                  );
+                  this.setUpdatedBy(result.data);
+                } else {
+                  const result = await axios(`/users/autocomplete?limit=100`);
+                  this.setUpdatedBy(result.data);
+                }
+              } catch (e) {
+                this.showNotification(e, 'error')
+                this.setUpdatedBy([]);
               }
             },
 
@@ -118,12 +175,24 @@ export const useEstimatesStore = defineStore('estimates', {
       this.notify.textNotification = ''
     },
 
-        setJob(payload) {
-            this.searchResultJob = payload
+        setJobId(payload) {
+            this.searchResultJobId = payload
         },
 
-        setTemplate(payload) {
-            this.searchResultTemplate = payload
+        setContactId(payload) {
+            this.searchResultContactId = payload
+        },
+
+        setTemplateId(payload) {
+            this.searchResultTemplateId = payload
+        },
+
+        setCreatedBy(payload) {
+            this.searchResultCreatedBy = payload
+        },
+
+        setUpdatedBy(payload) {
+            this.searchResultUpdatedBy = payload
         },
 
   }

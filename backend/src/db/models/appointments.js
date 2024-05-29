@@ -14,19 +14,28 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
       },
 
-      date: {
+      subject: {
+        type: DataTypes.TEXT,
+      },
+
+      startTime: {
         type: DataTypes.DATE,
       },
 
-      scheduled: {
-        type: DataTypes.BOOLEAN,
-
-        allowNull: false,
-        defaultValue: false,
+      endTime: {
+        type: DataTypes.DATE,
       },
 
-      name: {
+      description: {
         type: DataTypes.TEXT,
+      },
+
+      location: {
+        type: DataTypes.TEXT,
+      },
+
+      reminder: {
+        type: DataTypes.DATE,
       },
 
       importHash: {
@@ -43,36 +52,57 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   appointments.associate = (db) => {
-    db.appointments.belongsToMany(db.contacts, {
-      as: 'contact',
-      foreignKey: {
-        name: 'appointments_contactId',
-      },
-      constraints: false,
-      through: 'appointmentsContactContacts',
-    });
-
-    db.appointments.belongsToMany(db.jobs, {
-      as: 'job',
-      foreignKey: {
-        name: 'appointments_jobId',
-      },
-      constraints: false,
-      through: 'appointmentsJobJobs',
-    });
-
-    db.appointments.belongsToMany(db.estimates, {
-      as: 'estimate',
-      foreignKey: {
-        name: 'appointments_estimateId',
-      },
-      constraints: false,
-      through: 'appointmentsEstimateEstimates',
-    });
-
     /// loop through entities and it's fields, and if ref === current e[name] and create relation has many on parent entity
 
+    db.appointments.hasMany(db.tasks, {
+      as: 'tasks_appointmentId',
+      foreignKey: {
+        name: 'appointmentIdId',
+      },
+      constraints: false,
+    });
+
     //end loop
+
+    db.appointments.belongsTo(db.users, {
+      as: 'assignedUserId',
+      foreignKey: {
+        name: 'assignedUserIdId',
+      },
+      constraints: false,
+    });
+
+    db.appointments.belongsTo(db.contacts, {
+      as: 'contactId',
+      foreignKey: {
+        name: 'contactIdId',
+      },
+      constraints: false,
+    });
+
+    db.appointments.belongsTo(db.jobs, {
+      as: 'jobId',
+      foreignKey: {
+        name: 'jobIdId',
+      },
+      constraints: false,
+    });
+
+    db.appointments.belongsTo(db.users, {
+      as: 'createdBy',
+      foreignKey: {
+        name: 'createdById',
+      },
+      constraints: false,
+    });
+
+    db.appointments.belongsTo(db.users, {
+      as: 'updatedBy',
+      foreignKey: {
+        name: 'updatedById',
+      },
+      constraints: false,
+    });
 
     db.appointments.belongsTo(db.users, {
       as: 'createdBy',

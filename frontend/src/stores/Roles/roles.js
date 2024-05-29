@@ -11,7 +11,7 @@ export const useRolesStore = defineStore('roles', {
       typeNotification: 'warn',
     },
 
-            searchResultUser: [],
+            searchResultPermissions: [],
 
   }),
   actions: {
@@ -63,20 +63,20 @@ export const useRolesStore = defineStore('roles', {
       }
     },
 
-            async searchUser(val) {
+            async searchPermissions(val) {
               try {
                 if (val) {
                   const result = await axios(
-                    `/users/autocomplete?query=${val}&limit=100`,
+                    `/permissions/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setUser(result.data);
+                  this.setPermissions(result.data);
                 } else {
-                  const result = await axios(`/users/autocomplete?limit=100`);
-                  this.setUser(result.data);
+                  const result = await axios(`/permissions/autocomplete?limit=100`);
+                  this.setPermissions(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setUser([]);
+                this.setPermissions([]);
               }
             },
 
@@ -99,8 +99,8 @@ export const useRolesStore = defineStore('roles', {
       this.notify.textNotification = ''
     },
 
-        setUser(payload) {
-            this.searchResultUser = payload
+        setPermissions(payload) {
+            this.searchResultPermissions = payload
         },
 
   }

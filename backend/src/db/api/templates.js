@@ -15,13 +15,7 @@ module.exports = class TemplatesDBApi {
       {
         id: data.id || undefined,
 
-        materialCost: data.materialCost || null,
-        laborCost: data.laborCost || null,
-        markup: data.markup || null,
-        profitMargin: data.profitMargin || null,
         name: data.name || null,
-        totalPrice: data.totalPrice || null,
-        unitOfMeasurement: data.unitOfMeasurement || null,
         description: data.description || null,
         importHash: data.importHash || null,
         createdById: currentUser.id,
@@ -30,7 +24,15 @@ module.exports = class TemplatesDBApi {
       { transaction },
     );
 
-    await templates.setTrade(data.trade || [], {
+    await templates.setTradeId(data.tradeId || null, {
+      transaction,
+    });
+
+    await templates.setCreatedBy(data.createdBy || null, {
+      transaction,
+    });
+
+    await templates.setUpdatedBy(data.updatedBy || null, {
       transaction,
     });
 
@@ -45,13 +47,7 @@ module.exports = class TemplatesDBApi {
     const templatesData = data.map((item, index) => ({
       id: item.id || undefined,
 
-      materialCost: item.materialCost || null,
-      laborCost: item.laborCost || null,
-      markup: item.markup || null,
-      profitMargin: item.profitMargin || null,
       name: item.name || null,
-      totalPrice: item.totalPrice || null,
-      unitOfMeasurement: item.unitOfMeasurement || null,
       description: item.description || null,
       importHash: item.importHash || null,
       createdById: currentUser.id,
@@ -77,21 +73,48 @@ module.exports = class TemplatesDBApi {
 
     await templates.update(
       {
-        materialCost: data.materialCost || null,
-        laborCost: data.laborCost || null,
-        markup: data.markup || null,
-        profitMargin: data.profitMargin || null,
         name: data.name || null,
-        totalPrice: data.totalPrice || null,
-        unitOfMeasurement: data.unitOfMeasurement || null,
         description: data.description || null,
         updatedById: currentUser.id,
       },
       { transaction },
     );
 
-    await templates.setTrade(data.trade || [], {
+    await templates.setTradeId(data.tradeId || null, {
       transaction,
+    });
+
+    await templates.setCreatedBy(data.createdBy || null, {
+      transaction,
+    });
+
+    await templates.setUpdatedBy(data.updatedBy || null, {
+      transaction,
+    });
+
+    return templates;
+  }
+
+  static async deleteByIds(ids, options) {
+    const currentUser = (options && options.currentUser) || { id: null };
+    const transaction = (options && options.transaction) || undefined;
+
+    const templates = await db.templates.findAll({
+      where: {
+        id: {
+          [Op.in]: ids,
+        },
+      },
+      transaction,
+    });
+
+    await db.sequelize.transaction(async (transaction) => {
+      for (const record of templates) {
+        await record.update({ deletedBy: currentUser.id }, { transaction });
+      }
+      for (const record of templates) {
+        await record.destroy({ transaction });
+      }
     });
 
     return templates;
@@ -130,7 +153,19 @@ module.exports = class TemplatesDBApi {
 
     const output = templates.get({ plain: true });
 
-    output.trade = await templates.getTrade({
+    output.estimates_templateId = await templates.getEstimates_templateId({
+      transaction,
+    });
+
+    output.tradeId = await templates.getTradeId({
+      transaction,
+    });
+
+    output.createdBy = await templates.getCreatedBy({
+      transaction,
+    });
+
+    output.updatedBy = await templates.getUpdatedBy({
       transaction,
     });
 
@@ -151,17 +186,17 @@ module.exports = class TemplatesDBApi {
     let include = [
       {
         model: db.trades,
-        as: 'trade',
-        through: filter.trade
-          ? {
-              where: {
-                [Op.or]: filter.trade.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.trade ? true : null,
+        as: 'tradeId',
+      },
+
+      {
+        model: db.users,
+        as: 'createdBy',
+      },
+
+      {
+        model: db.users,
+        as: 'updatedBy',
       },
     ];
 
@@ -187,126 +222,6 @@ module.exports = class TemplatesDBApi {
         };
       }
 
-      if (filter.materialCostRange) {
-        const [start, end] = filter.materialCostRange;
-
-        if (start !== undefined && start !== null && start !== '') {
-          where = {
-            ...where,
-            materialCost: {
-              ...where.materialCost,
-              [Op.gte]: start,
-            },
-          };
-        }
-
-        if (end !== undefined && end !== null && end !== '') {
-          where = {
-            ...where,
-            materialCost: {
-              ...where.materialCost,
-              [Op.lte]: end,
-            },
-          };
-        }
-      }
-
-      if (filter.laborCostRange) {
-        const [start, end] = filter.laborCostRange;
-
-        if (start !== undefined && start !== null && start !== '') {
-          where = {
-            ...where,
-            laborCost: {
-              ...where.laborCost,
-              [Op.gte]: start,
-            },
-          };
-        }
-
-        if (end !== undefined && end !== null && end !== '') {
-          where = {
-            ...where,
-            laborCost: {
-              ...where.laborCost,
-              [Op.lte]: end,
-            },
-          };
-        }
-      }
-
-      if (filter.markupRange) {
-        const [start, end] = filter.markupRange;
-
-        if (start !== undefined && start !== null && start !== '') {
-          where = {
-            ...where,
-            markup: {
-              ...where.markup,
-              [Op.gte]: start,
-            },
-          };
-        }
-
-        if (end !== undefined && end !== null && end !== '') {
-          where = {
-            ...where,
-            markup: {
-              ...where.markup,
-              [Op.lte]: end,
-            },
-          };
-        }
-      }
-
-      if (filter.profitMarginRange) {
-        const [start, end] = filter.profitMarginRange;
-
-        if (start !== undefined && start !== null && start !== '') {
-          where = {
-            ...where,
-            profitMargin: {
-              ...where.profitMargin,
-              [Op.gte]: start,
-            },
-          };
-        }
-
-        if (end !== undefined && end !== null && end !== '') {
-          where = {
-            ...where,
-            profitMargin: {
-              ...where.profitMargin,
-              [Op.lte]: end,
-            },
-          };
-        }
-      }
-
-      if (filter.totalPriceRange) {
-        const [start, end] = filter.totalPriceRange;
-
-        if (start !== undefined && start !== null && start !== '') {
-          where = {
-            ...where,
-            totalPrice: {
-              ...where.totalPrice,
-              [Op.gte]: start,
-            },
-          };
-        }
-
-        if (end !== undefined && end !== null && end !== '') {
-          where = {
-            ...where,
-            totalPrice: {
-              ...where.totalPrice,
-              [Op.lte]: end,
-            },
-          };
-        }
-      }
-
       if (
         filter.active === true ||
         filter.active === 'true' ||
@@ -319,10 +234,36 @@ module.exports = class TemplatesDBApi {
         };
       }
 
-      if (filter.unitOfMeasurement) {
+      if (filter.tradeId) {
+        var listItems = filter.tradeId.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
         where = {
           ...where,
-          unitOfMeasurement: filter.unitOfMeasurement,
+          tradeIdId: { [Op.or]: listItems },
+        };
+      }
+
+      if (filter.createdBy) {
+        var listItems = filter.createdBy.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
+        where = {
+          ...where,
+          createdById: { [Op.or]: listItems },
+        };
+      }
+
+      if (filter.updatedBy) {
+        var listItems = filter.updatedBy.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
+        where = {
+          ...where,
+          updatedById: { [Op.or]: listItems },
         };
       }
 
@@ -395,21 +336,21 @@ module.exports = class TemplatesDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('templates', 'name', query),
+          Utils.ilike('templates', 'id', query),
         ],
       };
     }
 
     const records = await db.templates.findAll({
-      attributes: ['id', 'name'],
+      attributes: ['id', 'id'],
       where,
       limit: limit ? Number(limit) : undefined,
-      orderBy: [['name', 'ASC']],
+      orderBy: [['id', 'ASC']],
     });
 
     return records.map((record) => ({
       id: record.id,
-      label: record.name,
+      label: record.id,
     }));
   }
 };

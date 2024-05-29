@@ -22,42 +22,55 @@ const router = useRouter();
 const notification = computed(() => invoicesStore.notify)
 const titleStack = ref(['Admin', 'Invoices'])
 
-        const optionsJob = computed(() => invoicesStore.searchResultJob);
+        const optionsJobId = computed(() => invoicesStore.searchResultJobId);
 
-        const optionsEstimate = computed(() => invoicesStore.searchResultEstimate);
+        const optionsCreatedBy = computed(() => invoicesStore.searchResultCreatedBy);
 
-        const optionsDocument = computed(() => invoicesStore.searchResultDocument);
+        const optionsUpdatedBy = computed(() => invoicesStore.searchResultUpdatedBy);
 
 const form = reactive({
 
-      job: [],
+      invoiceNumber: '',
 
-      estimate: [],
+      invoiceDate: '',
+      dateInvoiceDate: '',
 
-      document: '',
+      terms: false,
 
-      number: '',
+      approvedJobValue: '',
+
+      invoicedAmount: '',
+
+      balanceAmount: '',
+
+      jobId: '',
+
+      createdBy: '',
+
+      updatedBy: '',
 
 })
 
 onBeforeMount(async () => {
 
-  await searchJob();
+  await searchJobId();
 
-  await searchEstimate();
+  await searchCreatedBy();
 
-  await searchDocument();
+  await searchUpdatedBy();
 
 })
 
 const submit = async () => {
   try {
 
-            form.job = form.job.map(item => item.id);
+            form.terms = form.terms.label;
 
-            form.estimate = form.estimate.map(item => item.id);
+            form.jobId = form.jobId.id;
 
-            form.document = form.document.id;
+            form.createdBy = form.createdBy.id;
+
+            form.updatedBy = form.updatedBy.id;
 
     await invoicesStore.newItem({ ...form })
     router.push('/invoices');
@@ -68,13 +81,24 @@ const submit = async () => {
 
 const reset = () => {
 
-        form.job = [];
+        form.invoiceNumber = '';
 
-        form.estimate = [];
+        form.invoiceDate = '';
+        dateInvoiceDate = '';
 
-        form.document = '';
+        form.terms = false;
 
-        form.number = '';
+        form.approvedJobValue = '';
+
+        form.invoicedAmount = '';
+
+        form.balanceAmount = '';
+
+        form.jobId = '';
+
+        form.createdBy = '';
+
+        form.updatedBy = '';
 
 }
 
@@ -82,16 +106,16 @@ const cancel = () => {
   router.push('/users')
 }
 
-    async function searchJob(val) {
-      await invoicesStore.searchJob(val);
+    async function searchJobId(val) {
+      await invoicesStore.searchJobId(val);
     }
 
-    async function searchEstimate(val) {
-      await invoicesStore.searchEstimate(val);
+    async function searchCreatedBy(val) {
+      await invoicesStore.searchCreatedBy(val);
     }
 
-    async function searchDocument(val) {
-      await invoicesStore.searchDocument(val);
+    async function searchUpdatedBy(val) {
+      await invoicesStore.searchUpdatedBy(val);
     }
 
 watch(() => invoicesStore.notify.showNotification, (newValue, oldValue) => {
@@ -119,46 +143,98 @@ watch(() => invoicesStore.notify.showNotification, (newValue, oldValue) => {
     >
 
     <FormField
-        label="Job"
-      >
-        <v-select
-          v-model="form.job"
-          :options="optionsJob"
-          multiple
-          @input="searchJob($event.target.value)"
-        />
-    </FormField>
-
-    <FormField
-        label="Estimate"
-      >
-        <v-select
-          v-model="form.estimate"
-          :options="optionsEstimate"
-          multiple
-          @input="searchEstimate($event.target.value)"
-        />
-    </FormField>
-
-  <FormField
-      label="Document"
+      label="Invoice Number"
     >
-        <v-select
-          v-model="form.document"
-          :options="optionsDocument"
-          @input="searchDocument($event.target.value)"
-        />
-  </FormField>
+      <FormControl
+        v-model="form.invoiceNumber"
+        placeholder="Your Invoice Number"
+      />
+    </FormField>
 
     <FormField
-      label="Number"
+      label="Invoice Date"
+    >
+      <FormControl
+        type="date"
+        v-model="form.invoiceDate"
+        placeholder="Your Invoice Date"
+      />
+    </FormField>
+
+    <FormField label="Terms">
+      <FormControl
+        v-model="form.terms"
+        :options="[{id: 0, label: 'By Due Date'},
+                    {id: 1, label: 'Upon Receipt'},
+                    {id: 2, label: 'Net 7 Days'},
+                    {id: 3, label: 'Net 10 Days'},
+                    {id: 4, label: 'Net 15 Days'},
+                    {id: 5, label: 'Net 30 Days'},
+                    {id: 6, label: 'Net 45 Days'},
+                    {id: 7, label: 'Net 60 Days'},
+                    ]"
+      />
+    </FormField>
+
+    <FormField
+      label="Approved Job Value"
     >
       <FormControl
         type="number"
-        v-model="form.number"
-        placeholder="Your Number"
+        v-model="form.approvedJobValue"
+        placeholder="Your Approved Job Value"
       />
     </FormField>
+
+    <FormField
+      label="Invoiced Amount"
+    >
+      <FormControl
+        type="number"
+        v-model="form.invoicedAmount"
+        placeholder="Your Invoiced Amount"
+      />
+    </FormField>
+
+    <FormField
+      label="Balance Amount"
+    >
+      <FormControl
+        type="number"
+        v-model="form.balanceAmount"
+        placeholder="Your Balance Amount"
+      />
+    </FormField>
+
+  <FormField
+      label="Job "
+    >
+        <v-select
+          v-model="form.jobId"
+          :options="optionsJobId"
+          @input="searchJobId($event.target.value)"
+        />
+  </FormField>
+
+  <FormField
+      label="Created By"
+    >
+        <v-select
+          v-model="form.createdBy"
+          :options="optionsCreatedBy"
+          @input="searchCreatedBy($event.target.value)"
+        />
+  </FormField>
+
+  <FormField
+      label="Updated By"
+    >
+        <v-select
+          v-model="form.updatedBy"
+          :options="optionsUpdatedBy"
+          @input="searchUpdatedBy($event.target.value)"
+        />
+  </FormField>
 
     <BaseDivider />
 

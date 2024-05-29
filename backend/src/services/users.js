@@ -1,13 +1,13 @@
 const db = require('../db/models');
 const UsersDBApi = require('../db/api/users');
 const processFile = require('../middlewares/upload');
+const ValidationError = require('./notifications/errors/validation');
 const csv = require('csv-parser');
 const axios = require('axios');
 const config = require('../config');
 const stream = require('stream');
 
 const InvitationEmail = require('./email/list/invitation');
-const ValidationError = require('./notifications/errors/validation');
 const EmailSender = require('./email');
 const AuthService = require('./auth');
 

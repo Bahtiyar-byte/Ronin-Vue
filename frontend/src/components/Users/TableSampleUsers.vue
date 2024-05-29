@@ -40,8 +40,11 @@ const headers = [
 { text: 'E-Mail', value: 'email'},
 { text: 'Disabled', value: 'disabled'},
 { text: 'Avatar', value: 'avatar'},
-{ text: 'Role', value: 'roleId'},
-{ text: 'Name', value: 'name'},]
+{ text: 'User Name', value: 'userName'},
+{ text: 'Created By', value: 'createdBy'},
+{ text: 'Updated By', value: 'updatedBy'},
+{ text: 'Role ', value: 'roleId'},
+{ text: 'Permissions', value: 'permissions'},]
 const isModalActive = ref(false)
 
 const isModalDangerActive = ref(false)
@@ -187,14 +190,29 @@ const sort = (title) => {
       >Avatar</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'roleId' && props.sortDirection]"
-        @click="sort('roleId')"
-      >Role</th>
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'userName' && props.sortDirection]"
+        @click="sort('userName')"
+      >User Name</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'name' && props.sortDirection]"
-        @click="sort('name')"
-      >Name</th>
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'createdBy' && props.sortDirection]"
+        @click="sort('createdBy')"
+      >Created By</th>
+
+      <th
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'updatedBy' && props.sortDirection]"
+        @click="sort('updatedBy')"
+      >Updated By</th>
+
+      <th
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'roleId' && props.sortDirection]"
+        @click="sort('roleId')"
+      >Role </th>
+
+      <th
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'permissions' && props.sortDirection]"
+        @click="sort('permissions')"
+      >Permissions</th>
 
         <th />
       </tr>
@@ -241,19 +259,31 @@ const sort = (title) => {
                 />
               </td>
 
+              <td data-label="userName">
+                {{ client.userName }}
+              </td>
+
+              <td data-label="createdBy">
+                {{ dataFormatter.usersOneListFormatter(client.createdBy) }}
+              </td>
+
+              <td data-label="updatedBy">
+                {{ dataFormatter.usersOneListFormatter(client.updatedBy) }}
+              </td>
+
               <td data-label="roleId">
+                {{ dataFormatter.rolesOneListFormatter(client.roleId) }}
+              </td>
+
+              <td data-label="permissions">
                   <span
-                    v-for="(i, idx) in dataFormatter.rolesManyListFormatter(client.roleId)"
-                    :key="idx + client.roleId"
+                    v-for="(i, idx) in dataFormatter.permissionsManyListFormatter(client.permissions)"
+                    :key="idx + client.permissions"
                     class="block"
                   >
                       {{ i }}
                   </span>
               </td>  
-
-              <td data-label="name">
-                {{ client.name }}
-              </td>
 
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons

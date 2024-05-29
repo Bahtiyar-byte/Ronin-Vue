@@ -18,8 +18,11 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.TEXT,
       },
 
-      url: {
-        type: DataTypes.TEXT,
+      active: {
+        type: DataTypes.BOOLEAN,
+
+        allowNull: false,
+        defaultValue: false,
       },
 
       importHash: {
@@ -36,26 +39,43 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   documents.associate = (db) => {
-    db.documents.belongsToMany(db.jobs, {
-      as: 'job',
-      foreignKey: {
-        name: 'documents_jobId',
-      },
-      constraints: false,
-      through: 'documentsJobJobs',
-    });
-
     /// loop through entities and it's fields, and if ref === current e[name] and create relation has many on parent entity
 
-    db.documents.hasMany(db.invoices, {
-      as: 'invoices_document',
+    db.documents.hasMany(db.images, {
+      as: 'images_documentId',
       foreignKey: {
-        name: 'documentId',
+        name: 'documentIdId',
       },
       constraints: false,
     });
 
     //end loop
+
+    db.documents.belongsTo(db.jobs, {
+      as: 'jobId',
+      foreignKey: {
+        name: 'jobIdId',
+      },
+      constraints: false,
+    });
+
+    db.documents.belongsTo(db.users, {
+      as: 'createdBy',
+      foreignKey: {
+        name: 'createdById',
+      },
+      constraints: false,
+    });
+
+    db.documents.hasMany(db.file, {
+      as: 'fileType',
+      foreignKey: 'belongsToId',
+      constraints: false,
+      scope: {
+        belongsTo: db.documents.getTableName(),
+        belongsToColumn: 'fileType',
+      },
+    });
 
     db.documents.belongsTo(db.users, {
       as: 'createdBy',

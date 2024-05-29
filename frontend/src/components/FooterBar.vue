@@ -17,9 +17,9 @@ const isFooterBarVisible = computed(() => !useLayoutStore().isFullScreen)
       <div class="text-center">
 
         <p class="text-gray-400 text-sm">{{ year }} © <a
-          href="https://flatlogic.com/"
+          href='https://flatlogic.com/'
           target="_blank"
-        >Flatlogic</a> Hand-crafted & Made with ❤️</p>
+       >Flatlogic</a> Hand-crafted & Made with ❤️</p>
 
       </div>
     </BaseLevel>

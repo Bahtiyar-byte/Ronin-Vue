@@ -15,13 +15,14 @@ module.exports = class ContactsDBApi {
       {
         id: data.id || undefined,
 
-        name: data.name || null,
-        email: data.email || null,
-        phone: data.phone || null,
-        adress: data.adress || null,
         firstName: data.firstName || null,
         lastName: data.lastName || null,
-        stage: data.stage || null,
+        email: data.email || null,
+        phone: data.phone || null,
+        company: data.company || null,
+        status: data.status || null,
+        source: data.source || null,
+        crossReference: data.crossReference || null,
         importHash: data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
@@ -29,15 +30,15 @@ module.exports = class ContactsDBApi {
       { transaction },
     );
 
-    await contacts.setJob(data.job || [], {
+    await contacts.setAssignedUserId(data.assignedUserId || null, {
       transaction,
     });
 
-    await contacts.setEstimate(data.estimate || [], {
+    await contacts.setCreatedBy(data.createdBy || null, {
       transaction,
     });
 
-    await contacts.setAppointment(data.appointment || [], {
+    await contacts.setUpdatedBy(data.updatedBy || null, {
       transaction,
     });
 
@@ -52,13 +53,14 @@ module.exports = class ContactsDBApi {
     const contactsData = data.map((item, index) => ({
       id: item.id || undefined,
 
-      name: item.name || null,
-      email: item.email || null,
-      phone: item.phone || null,
-      adress: item.adress || null,
       firstName: item.firstName || null,
       lastName: item.lastName || null,
-      stage: item.stage || null,
+      email: item.email || null,
+      phone: item.phone || null,
+      company: item.company || null,
+      status: item.status || null,
+      source: item.source || null,
+      crossReference: item.crossReference || null,
       importHash: item.importHash || null,
       createdById: currentUser.id,
       updatedById: currentUser.id,
@@ -83,28 +85,54 @@ module.exports = class ContactsDBApi {
 
     await contacts.update(
       {
-        name: data.name || null,
-        email: data.email || null,
-        phone: data.phone || null,
-        adress: data.adress || null,
         firstName: data.firstName || null,
         lastName: data.lastName || null,
-        stage: data.stage || null,
+        email: data.email || null,
+        phone: data.phone || null,
+        company: data.company || null,
+        status: data.status || null,
+        source: data.source || null,
+        crossReference: data.crossReference || null,
         updatedById: currentUser.id,
       },
       { transaction },
     );
 
-    await contacts.setJob(data.job || [], {
+    await contacts.setAssignedUserId(data.assignedUserId || null, {
       transaction,
     });
 
-    await contacts.setEstimate(data.estimate || [], {
+    await contacts.setCreatedBy(data.createdBy || null, {
       transaction,
     });
 
-    await contacts.setAppointment(data.appointment || [], {
+    await contacts.setUpdatedBy(data.updatedBy || null, {
       transaction,
+    });
+
+    return contacts;
+  }
+
+  static async deleteByIds(ids, options) {
+    const currentUser = (options && options.currentUser) || { id: null };
+    const transaction = (options && options.transaction) || undefined;
+
+    const contacts = await db.contacts.findAll({
+      where: {
+        id: {
+          [Op.in]: ids,
+        },
+      },
+      transaction,
+    });
+
+    await db.sequelize.transaction(async (transaction) => {
+      for (const record of contacts) {
+        await record.update({ deletedBy: currentUser.id }, { transaction });
+      }
+      for (const record of contacts) {
+        await record.destroy({ transaction });
+      }
     });
 
     return contacts;
@@ -143,15 +171,39 @@ module.exports = class ContactsDBApi {
 
     const output = contacts.get({ plain: true });
 
-    output.job = await contacts.getJob({
+    output.addresses_contactId = await contacts.getAddresses_contactId({
       transaction,
     });
 
-    output.estimate = await contacts.getEstimate({
+    output.jobs_contactId = await contacts.getJobs_contactId({
       transaction,
     });
 
-    output.appointment = await contacts.getAppointment({
+    output.estimates_contactId = await contacts.getEstimates_contactId({
+      transaction,
+    });
+
+    output.emails_contactId = await contacts.getEmails_contactId({
+      transaction,
+    });
+
+    output.appointments_contactId = await contacts.getAppointments_contactId({
+      transaction,
+    });
+
+    output.contracts_contactId = await contacts.getContracts_contactId({
+      transaction,
+    });
+
+    output.assignedUserId = await contacts.getAssignedUserId({
+      transaction,
+    });
+
+    output.createdBy = await contacts.getCreatedBy({
+      transaction,
+    });
+
+    output.updatedBy = await contacts.getUpdatedBy({
       transaction,
     });
 
@@ -171,48 +223,18 @@ module.exports = class ContactsDBApi {
     let where = {};
     let include = [
       {
-        model: db.jobs,
-        as: 'job',
-        through: filter.job
-          ? {
-              where: {
-                [Op.or]: filter.job.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.job ? true : null,
+        model: db.users,
+        as: 'assignedUserId',
       },
 
       {
-        model: db.estimates,
-        as: 'estimate',
-        through: filter.estimate
-          ? {
-              where: {
-                [Op.or]: filter.estimate.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.estimate ? true : null,
+        model: db.users,
+        as: 'createdBy',
       },
 
       {
-        model: db.appointments,
-        as: 'appointment',
-        through: filter.appointment
-          ? {
-              where: {
-                [Op.or]: filter.appointment.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.appointment ? true : null,
+        model: db.users,
+        as: 'updatedBy',
       },
     ];
 
@@ -221,34 +243,6 @@ module.exports = class ContactsDBApi {
         where = {
           ...where,
           ['id']: Utils.uuid(filter.id),
-        };
-      }
-
-      if (filter.name) {
-        where = {
-          ...where,
-          [Op.and]: Utils.ilike('contacts', 'name', filter.name),
-        };
-      }
-
-      if (filter.email) {
-        where = {
-          ...where,
-          [Op.and]: Utils.ilike('contacts', 'email', filter.email),
-        };
-      }
-
-      if (filter.phone) {
-        where = {
-          ...where,
-          [Op.and]: Utils.ilike('contacts', 'phone', filter.phone),
-        };
-      }
-
-      if (filter.adress) {
-        where = {
-          ...where,
-          [Op.and]: Utils.ilike('contacts', 'adress', filter.adress),
         };
       }
 
@@ -266,6 +260,38 @@ module.exports = class ContactsDBApi {
         };
       }
 
+      if (filter.email) {
+        where = {
+          ...where,
+          [Op.and]: Utils.ilike('contacts', 'email', filter.email),
+        };
+      }
+
+      if (filter.phone) {
+        where = {
+          ...where,
+          [Op.and]: Utils.ilike('contacts', 'phone', filter.phone),
+        };
+      }
+
+      if (filter.company) {
+        where = {
+          ...where,
+          [Op.and]: Utils.ilike('contacts', 'company', filter.company),
+        };
+      }
+
+      if (filter.crossReference) {
+        where = {
+          ...where,
+          [Op.and]: Utils.ilike(
+            'contacts',
+            'crossReference',
+            filter.crossReference,
+          ),
+        };
+      }
+
       if (
         filter.active === true ||
         filter.active === 'true' ||
@@ -278,10 +304,50 @@ module.exports = class ContactsDBApi {
         };
       }
 
-      if (filter.stage) {
+      if (filter.status) {
         where = {
           ...where,
-          stage: filter.stage,
+          status: filter.status,
+        };
+      }
+
+      if (filter.source) {
+        where = {
+          ...where,
+          source: filter.source,
+        };
+      }
+
+      if (filter.assignedUserId) {
+        var listItems = filter.assignedUserId.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
+        where = {
+          ...where,
+          assignedUserIdId: { [Op.or]: listItems },
+        };
+      }
+
+      if (filter.createdBy) {
+        var listItems = filter.createdBy.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
+        where = {
+          ...where,
+          createdById: { [Op.or]: listItems },
+        };
+      }
+
+      if (filter.updatedBy) {
+        var listItems = filter.updatedBy.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
+        where = {
+          ...where,
+          updatedById: { [Op.or]: listItems },
         };
       }
 
@@ -354,21 +420,21 @@ module.exports = class ContactsDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('contacts', 'name', query),
+          Utils.ilike('contacts', 'firstName', query),
         ],
       };
     }
 
     const records = await db.contacts.findAll({
-      attributes: ['id', 'name'],
+      attributes: ['id', 'firstName'],
       where,
       limit: limit ? Number(limit) : undefined,
-      orderBy: [['name', 'ASC']],
+      orderBy: [['firstName', 'ASC']],
     });
 
     return records.map((record) => ({
       id: record.id,
-      label: record.name,
+      label: record.firstName,
     }));
   }
 };

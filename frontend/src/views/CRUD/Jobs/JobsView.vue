@@ -22,9 +22,9 @@ const notification = computed(() => jobsStore.notify)
 const titleStack = ref(['Admin', 'Jobs'])
 
 const filters = ref([]);
-const filtersList = [{label: 'Name', title: 'name'},
+const filtersList = [{label: 'Name', title: 'Name'},{label: 'Description', title: 'description'},
 
-          ];
+          {label: 'Contact ', title: 'contactId'},{label: 'Order ', title: 'orderId'},{label: 'Assigned User ', title: 'assignedUserId'},{label: 'Created By', title: 'createdBy'},{label: 'Updated By', title: 'updatedBy'},];
 const showFilters = ref(false);
 
 const query = ref('');
