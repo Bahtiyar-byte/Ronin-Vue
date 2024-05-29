@@ -7,6 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    ActivityTab: typeof import('./src/components/contacts/details/ActivityTab.vue')['default']
     AddAuthenticatorAppDialog: typeof import('./src/components/dialogs/AddAuthenticatorAppDialog.vue')['default']
     AddEditAddressDialog: typeof import('./src/components/dialogs/AddEditAddressDialog.vue')['default']
     AddEditPermissionDialog: typeof import('./src/components/dialogs/AddEditPermissionDialog.vue')['default']
@@ -32,6 +33,7 @@ declare module 'vue' {
     CardStatisticsVertical: typeof import('./src/@core/components/cards/CardStatisticsVertical.vue')['default']
     CardStatisticsVerticalSimple: typeof import('./src/@core/components/CardStatisticsVerticalSimple.vue')['default']
     ConfirmDialog: typeof import('./src/components/dialogs/ConfirmDialog.vue')['default']
+    ContactInfoPanel: typeof import('./src/components/contacts/ContactInfoPanel.vue')['default']
     CreateAppDialog: typeof import('./src/components/dialogs/CreateAppDialog.vue')['default']
     CustomCheckboxes: typeof import('./src/@core/components/app-form-elements/CustomCheckboxes.vue')['default']
     CustomCheckboxesWithIcon: typeof import('./src/@core/components/app-form-elements/CustomCheckboxesWithIcon.vue')['default']
@@ -58,6 +60,7 @@ declare module 'vue' {
     PricingPlanDialog: typeof import('./src/components/dialogs/PricingPlanDialog.vue')['default']
     ProductDescriptionEditor: typeof import('./src/@core/components/ProductDescriptionEditor.vue')['default']
     ReferAndEarnDialog: typeof import('./src/components/dialogs/ReferAndEarnDialog.vue')['default']
+    RelatedTab: typeof import('./src/components/contacts/details/RelatedTab.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ScrollToTop: typeof import('./src/@core/components/ScrollToTop.vue')['default']
@@ -73,5 +76,6 @@ declare module 'vue' {
     UserInfoEditDialog: typeof import('./src/components/dialogs/UserInfoEditDialog.vue')['default']
     UserProfile: typeof import('./src/components/common/UserProfile.vue')['default']
     UserUpgradePlanDialog: typeof import('./src/components/dialogs/UserUpgradePlanDialog.vue')['default']
+    WidgetCard: typeof import('./src/components/widgets/WidgetCard.vue')['default']
   }
 }

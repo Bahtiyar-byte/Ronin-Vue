@@ -1,18 +1,16 @@
 <script setup lang="ts">
-// import UserBioPanel from '@/views/apps/user/view/UserBioPanel.vue'
-// import UserTabAccount from '@/views/apps/user/view/UserTabAccount.vue'
-// import UserTabBillingsPlans from '@/views/apps/user/view/UserTabBillingsPlans.vue'
-// import UserTabConnections from '@/views/apps/user/view/UserTabConnections.vue'
-// import UserTabNotifications from '@/views/apps/user/view/UserTabNotifications.vue'
-// import UserTabSecurity from '@/views/apps/user/view/UserTabSecurity.vue'
 import { watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useContacts } from '@/composables/useContacts'
 import type Contact from '@/types/contacts/Contact'
 
+import ContactInfoPanel from '@/components/contacts/ContactInfoPanel.vue'
+import ActivityTab from '@/components/contacts/details/ActivityTab.vue'
+import RelatedTab from '@/components/contacts/details/RelatedTab.vue'
+
 const route = useRoute()
 
-const userTab = ref(null)
+const contactTab = ref(null)
 
 const tabs = [
   { icon: 'tabler-activity', title: 'Activity' },
@@ -39,13 +37,6 @@ onMounted(async () => {
     isLoading.value = newVal
   }, { immediate: true })
 })
-
-// if (contactData.value) {
-//   const [firstName, lastName] = contactData.value.fullName.split(' ')
-//
-//   contactData.value.firstName = firstName
-//   contactData.value.lastName = lastName
-// }
 </script>
 
 <template>
@@ -72,7 +63,7 @@ onMounted(async () => {
       md="5"
       lg="4"
     >
-<!--      <UserBioPanel :user-data="contactData" />-->
+      <ContactInfoPanel :contact-data="contactData" />
     </VCol>
 
     <VCol
@@ -81,7 +72,7 @@ onMounted(async () => {
       lg="8"
     >
       <VTabs
-        v-model="userTab"
+        v-model="contactTab"
         class="v-tabs-pill"
       >
         <VTab
@@ -98,28 +89,16 @@ onMounted(async () => {
       </VTabs>
 
       <VWindow
-        v-model="userTab"
+        v-model="contactTab"
         class="mt-6 disable-tab-transition"
         :touch="false"
       >
         <VWindowItem>
-<!--          <UserTabAccount />-->
+          <ActivityTab />
         </VWindowItem>
 
         <VWindowItem>
-<!--          <UserTabSecurity />-->
-        </VWindowItem>
-
-        <VWindowItem>
-<!--          <UserTabBillingsPlans />-->
-        </VWindowItem>
-
-        <VWindowItem>
-<!--          <UserTabNotifications />-->
-        </VWindowItem>
-
-        <VWindowItem>
-<!--          <UserTabConnections />-->
+          <RelatedTab />
         </VWindowItem>
       </VWindow>
     </VCol>

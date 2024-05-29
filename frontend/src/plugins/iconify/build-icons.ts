@@ -116,7 +116,7 @@ const sources: BundleScriptConfig = {
         'edit',
         'trash',
         'activity',
-        // 'layers-linked',
+        'users',
       ],
     },
     {
@@ -140,6 +140,7 @@ const sources: BundleScriptConfig = {
       filename: require.resolve('@iconify-json/ph/icons.json'),
       icons: [
         'link-light',
+        'invoice-light',
       ],
     },
     {
@@ -147,6 +148,7 @@ const sources: BundleScriptConfig = {
       icons: [
         'work-alert-outline',
         'request-quote-outline',
+        'task-outline',
       ],
     },
     {

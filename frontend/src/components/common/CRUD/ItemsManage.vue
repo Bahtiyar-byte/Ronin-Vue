@@ -39,7 +39,7 @@ const itemsPerPageOptions = [
           <slot name="filters" />
         </VRow>
       </VCardText>
-      <VDivider />
+      <VDivider class="!opacity-60" />
     </template>
 
     <VCardText class="d-flex flex-wrap gap-4">
@@ -69,7 +69,7 @@ const itemsPerPageOptions = [
       </div>
     </VCardText>
 
-    <VDivider />
+    <VDivider class="!opacity-60" />
 
     <slot name="table" />
   </VCard>
