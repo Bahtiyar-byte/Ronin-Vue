@@ -68,13 +68,15 @@ module.exports = {
     }
 
     const entities = [
+      'users',
       'contacts',
       'addresses',
-      'jobs',
       'estimates',
+      'jobs',
+      'roles',
+      'permissions',
       'templates',
       'trades',
-      'users',
       'invoices',
       'orders',
       'images',
@@ -85,8 +87,6 @@ module.exports = {
       'tasks',
       'contracts',
       'amendments',
-      'roles',
-      'permissions',
       ,
     ];
     await queryInterface.bulkInsert(
@@ -121,6 +121,31 @@ primary key ("roles_permissionsId", "permissionId")
 );`);
 
     await queryInterface.bulkInsert('rolesPermissionsPermissions', [
+      {
+        createdAt,
+        updatedAt,
+        roles_permissionsId: getId('User'),
+        permissionId: getId('CREATE_USERS'),
+      },
+      {
+        createdAt,
+        updatedAt,
+        roles_permissionsId: getId('User'),
+        permissionId: getId('READ_USERS'),
+      },
+      {
+        createdAt,
+        updatedAt,
+        roles_permissionsId: getId('User'),
+        permissionId: getId('UPDATE_USERS'),
+      },
+      {
+        createdAt,
+        updatedAt,
+        roles_permissionsId: getId('User'),
+        permissionId: getId('DELETE_USERS'),
+      },
+
       {
         createdAt,
         updatedAt,
@@ -175,31 +200,6 @@ primary key ("roles_permissionsId", "permissionId")
         createdAt,
         updatedAt,
         roles_permissionsId: getId('User'),
-        permissionId: getId('CREATE_JOBS'),
-      },
-      {
-        createdAt,
-        updatedAt,
-        roles_permissionsId: getId('User'),
-        permissionId: getId('READ_JOBS'),
-      },
-      {
-        createdAt,
-        updatedAt,
-        roles_permissionsId: getId('User'),
-        permissionId: getId('UPDATE_JOBS'),
-      },
-      {
-        createdAt,
-        updatedAt,
-        roles_permissionsId: getId('User'),
-        permissionId: getId('DELETE_JOBS'),
-      },
-
-      {
-        createdAt,
-        updatedAt,
-        roles_permissionsId: getId('User'),
         permissionId: getId('CREATE_ESTIMATES'),
       },
       {
@@ -219,6 +219,31 @@ primary key ("roles_permissionsId", "permissionId")
         updatedAt,
         roles_permissionsId: getId('User'),
         permissionId: getId('DELETE_ESTIMATES'),
+      },
+
+      {
+        createdAt,
+        updatedAt,
+        roles_permissionsId: getId('User'),
+        permissionId: getId('CREATE_JOBS'),
+      },
+      {
+        createdAt,
+        updatedAt,
+        roles_permissionsId: getId('User'),
+        permissionId: getId('READ_JOBS'),
+      },
+      {
+        createdAt,
+        updatedAt,
+        roles_permissionsId: getId('User'),
+        permissionId: getId('UPDATE_JOBS'),
+      },
+      {
+        createdAt,
+        updatedAt,
+        roles_permissionsId: getId('User'),
+        permissionId: getId('DELETE_JOBS'),
       },
 
       {
@@ -269,31 +294,6 @@ primary key ("roles_permissionsId", "permissionId")
         updatedAt,
         roles_permissionsId: getId('User'),
         permissionId: getId('DELETE_TRADES'),
-      },
-
-      {
-        createdAt,
-        updatedAt,
-        roles_permissionsId: getId('User'),
-        permissionId: getId('CREATE_USERS'),
-      },
-      {
-        createdAt,
-        updatedAt,
-        roles_permissionsId: getId('User'),
-        permissionId: getId('READ_USERS'),
-      },
-      {
-        createdAt,
-        updatedAt,
-        roles_permissionsId: getId('User'),
-        permissionId: getId('UPDATE_USERS'),
-      },
-      {
-        createdAt,
-        updatedAt,
-        roles_permissionsId: getId('User'),
-        permissionId: getId('DELETE_USERS'),
       },
 
       {
@@ -557,6 +557,31 @@ primary key ("roles_permissionsId", "permissionId")
         createdAt,
         updatedAt,
         roles_permissionsId: getId('Administrator'),
+        permissionId: getId('CREATE_USERS'),
+      },
+      {
+        createdAt,
+        updatedAt,
+        roles_permissionsId: getId('Administrator'),
+        permissionId: getId('READ_USERS'),
+      },
+      {
+        createdAt,
+        updatedAt,
+        roles_permissionsId: getId('Administrator'),
+        permissionId: getId('UPDATE_USERS'),
+      },
+      {
+        createdAt,
+        updatedAt,
+        roles_permissionsId: getId('Administrator'),
+        permissionId: getId('DELETE_USERS'),
+      },
+
+      {
+        createdAt,
+        updatedAt,
+        roles_permissionsId: getId('Administrator'),
         permissionId: getId('CREATE_CONTACTS'),
       },
       {
@@ -607,6 +632,31 @@ primary key ("roles_permissionsId", "permissionId")
         createdAt,
         updatedAt,
         roles_permissionsId: getId('Administrator'),
+        permissionId: getId('CREATE_ESTIMATES'),
+      },
+      {
+        createdAt,
+        updatedAt,
+        roles_permissionsId: getId('Administrator'),
+        permissionId: getId('READ_ESTIMATES'),
+      },
+      {
+        createdAt,
+        updatedAt,
+        roles_permissionsId: getId('Administrator'),
+        permissionId: getId('UPDATE_ESTIMATES'),
+      },
+      {
+        createdAt,
+        updatedAt,
+        roles_permissionsId: getId('Administrator'),
+        permissionId: getId('DELETE_ESTIMATES'),
+      },
+
+      {
+        createdAt,
+        updatedAt,
+        roles_permissionsId: getId('Administrator'),
         permissionId: getId('CREATE_JOBS'),
       },
       {
@@ -632,25 +682,50 @@ primary key ("roles_permissionsId", "permissionId")
         createdAt,
         updatedAt,
         roles_permissionsId: getId('Administrator'),
-        permissionId: getId('CREATE_ESTIMATES'),
+        permissionId: getId('CREATE_ROLES'),
       },
       {
         createdAt,
         updatedAt,
         roles_permissionsId: getId('Administrator'),
-        permissionId: getId('READ_ESTIMATES'),
+        permissionId: getId('READ_ROLES'),
       },
       {
         createdAt,
         updatedAt,
         roles_permissionsId: getId('Administrator'),
-        permissionId: getId('UPDATE_ESTIMATES'),
+        permissionId: getId('UPDATE_ROLES'),
       },
       {
         createdAt,
         updatedAt,
         roles_permissionsId: getId('Administrator'),
-        permissionId: getId('DELETE_ESTIMATES'),
+        permissionId: getId('DELETE_ROLES'),
+      },
+
+      {
+        createdAt,
+        updatedAt,
+        roles_permissionsId: getId('Administrator'),
+        permissionId: getId('CREATE_PERMISSIONS'),
+      },
+      {
+        createdAt,
+        updatedAt,
+        roles_permissionsId: getId('Administrator'),
+        permissionId: getId('READ_PERMISSIONS'),
+      },
+      {
+        createdAt,
+        updatedAt,
+        roles_permissionsId: getId('Administrator'),
+        permissionId: getId('UPDATE_PERMISSIONS'),
+      },
+      {
+        createdAt,
+        updatedAt,
+        roles_permissionsId: getId('Administrator'),
+        permissionId: getId('DELETE_PERMISSIONS'),
       },
 
       {
@@ -701,31 +776,6 @@ primary key ("roles_permissionsId", "permissionId")
         updatedAt,
         roles_permissionsId: getId('Administrator'),
         permissionId: getId('DELETE_TRADES'),
-      },
-
-      {
-        createdAt,
-        updatedAt,
-        roles_permissionsId: getId('Administrator'),
-        permissionId: getId('CREATE_USERS'),
-      },
-      {
-        createdAt,
-        updatedAt,
-        roles_permissionsId: getId('Administrator'),
-        permissionId: getId('READ_USERS'),
-      },
-      {
-        createdAt,
-        updatedAt,
-        roles_permissionsId: getId('Administrator'),
-        permissionId: getId('UPDATE_USERS'),
-      },
-      {
-        createdAt,
-        updatedAt,
-        roles_permissionsId: getId('Administrator'),
-        permissionId: getId('DELETE_USERS'),
       },
 
       {
@@ -976,56 +1026,6 @@ primary key ("roles_permissionsId", "permissionId")
         updatedAt,
         roles_permissionsId: getId('Administrator'),
         permissionId: getId('DELETE_AMENDMENTS'),
-      },
-
-      {
-        createdAt,
-        updatedAt,
-        roles_permissionsId: getId('Administrator'),
-        permissionId: getId('CREATE_ROLES'),
-      },
-      {
-        createdAt,
-        updatedAt,
-        roles_permissionsId: getId('Administrator'),
-        permissionId: getId('READ_ROLES'),
-      },
-      {
-        createdAt,
-        updatedAt,
-        roles_permissionsId: getId('Administrator'),
-        permissionId: getId('UPDATE_ROLES'),
-      },
-      {
-        createdAt,
-        updatedAt,
-        roles_permissionsId: getId('Administrator'),
-        permissionId: getId('DELETE_ROLES'),
-      },
-
-      {
-        createdAt,
-        updatedAt,
-        roles_permissionsId: getId('Administrator'),
-        permissionId: getId('CREATE_PERMISSIONS'),
-      },
-      {
-        createdAt,
-        updatedAt,
-        roles_permissionsId: getId('Administrator'),
-        permissionId: getId('READ_PERMISSIONS'),
-      },
-      {
-        createdAt,
-        updatedAt,
-        roles_permissionsId: getId('Administrator'),
-        permissionId: getId('UPDATE_PERMISSIONS'),
-      },
-      {
-        createdAt,
-        updatedAt,
-        roles_permissionsId: getId('Administrator'),
-        permissionId: getId('DELETE_PERMISSIONS'),
       },
 
       {

@@ -25,6 +25,31 @@ const routes = [
 
     {
       meta: {
+        title: 'Users'
+      },
+      path: '/users',
+      name: 'Users',
+      component: () => import('@/views/CRUD/Users/UsersView.vue'),
+    },
+    {
+      meta: {
+        title: 'New Users'
+      },
+      path: '/users/new',
+      name: 'NewUsers',
+      component: () => import('@/views/CRUD/Users/UsersNew.vue'),
+    },
+    {
+      meta: {
+        title: 'Edit Users'
+      },
+      path: '/users/:id/edit',
+      name: 'EditUsers',
+      component: () => import('@/views/CRUD/Users/UsersEdit.vue'),
+    },
+
+    {
+      meta: {
         title: 'Contacts'
       },
       path: '/contacts',
@@ -75,6 +100,31 @@ const routes = [
 
     {
       meta: {
+        title: 'Estimates'
+      },
+      path: '/estimates',
+      name: 'Estimates',
+      component: () => import('@/views/CRUD/Estimates/EstimatesView.vue'),
+    },
+    {
+      meta: {
+        title: 'New Estimates'
+      },
+      path: '/estimates/new',
+      name: 'NewEstimates',
+      component: () => import('@/views/CRUD/Estimates/EstimatesNew.vue'),
+    },
+    {
+      meta: {
+        title: 'Edit Estimates'
+      },
+      path: '/estimates/:id/edit',
+      name: 'EditEstimates',
+      component: () => import('@/views/CRUD/Estimates/EstimatesEdit.vue'),
+    },
+
+    {
+      meta: {
         title: 'Jobs'
       },
       path: '/jobs',
@@ -100,27 +150,52 @@ const routes = [
 
     {
       meta: {
-        title: 'Estimates'
+        title: 'Roles'
       },
-      path: '/estimates',
-      name: 'Estimates',
-      component: () => import('@/views/CRUD/Estimates/EstimatesView.vue'),
+      path: '/roles',
+      name: 'Roles',
+      component: () => import('@/views/CRUD/Roles/RolesView.vue'),
     },
     {
       meta: {
-        title: 'New Estimates'
+        title: 'New Roles'
       },
-      path: '/estimates/new',
-      name: 'NewEstimates',
-      component: () => import('@/views/CRUD/Estimates/EstimatesNew.vue'),
+      path: '/roles/new',
+      name: 'NewRoles',
+      component: () => import('@/views/CRUD/Roles/RolesNew.vue'),
     },
     {
       meta: {
-        title: 'Edit Estimates'
+        title: 'Edit Roles'
       },
-      path: '/estimates/:id/edit',
-      name: 'EditEstimates',
-      component: () => import('@/views/CRUD/Estimates/EstimatesEdit.vue'),
+      path: '/roles/:id/edit',
+      name: 'EditRoles',
+      component: () => import('@/views/CRUD/Roles/RolesEdit.vue'),
+    },
+
+    {
+      meta: {
+        title: 'Permissions'
+      },
+      path: '/permissions',
+      name: 'Permissions',
+      component: () => import('@/views/CRUD/Permissions/PermissionsView.vue'),
+    },
+    {
+      meta: {
+        title: 'New Permissions'
+      },
+      path: '/permissions/new',
+      name: 'NewPermissions',
+      component: () => import('@/views/CRUD/Permissions/PermissionsNew.vue'),
+    },
+    {
+      meta: {
+        title: 'Edit Permissions'
+      },
+      path: '/permissions/:id/edit',
+      name: 'EditPermissions',
+      component: () => import('@/views/CRUD/Permissions/PermissionsEdit.vue'),
     },
 
     {
@@ -171,31 +246,6 @@ const routes = [
       path: '/trades/:id/edit',
       name: 'EditTrades',
       component: () => import('@/views/CRUD/Trades/TradesEdit.vue'),
-    },
-
-    {
-      meta: {
-        title: 'Users'
-      },
-      path: '/users',
-      name: 'Users',
-      component: () => import('@/views/CRUD/Users/UsersView.vue'),
-    },
-    {
-      meta: {
-        title: 'New Users'
-      },
-      path: '/users/new',
-      name: 'NewUsers',
-      component: () => import('@/views/CRUD/Users/UsersNew.vue'),
-    },
-    {
-      meta: {
-        title: 'Edit Users'
-      },
-      path: '/users/:id/edit',
-      name: 'EditUsers',
-      component: () => import('@/views/CRUD/Users/UsersEdit.vue'),
     },
 
     {
@@ -446,56 +496,6 @@ const routes = [
       path: '/amendments/:id/edit',
       name: 'EditAmendments',
       component: () => import('@/views/CRUD/Amendments/AmendmentsEdit.vue'),
-    },
-
-    {
-      meta: {
-        title: 'Roles'
-      },
-      path: '/roles',
-      name: 'Roles',
-      component: () => import('@/views/CRUD/Roles/RolesView.vue'),
-    },
-    {
-      meta: {
-        title: 'New Roles'
-      },
-      path: '/roles/new',
-      name: 'NewRoles',
-      component: () => import('@/views/CRUD/Roles/RolesNew.vue'),
-    },
-    {
-      meta: {
-        title: 'Edit Roles'
-      },
-      path: '/roles/:id/edit',
-      name: 'EditRoles',
-      component: () => import('@/views/CRUD/Roles/RolesEdit.vue'),
-    },
-
-    {
-      meta: {
-        title: 'Permissions'
-      },
-      path: '/permissions',
-      name: 'Permissions',
-      component: () => import('@/views/CRUD/Permissions/PermissionsView.vue'),
-    },
-    {
-      meta: {
-        title: 'New Permissions'
-      },
-      path: '/permissions/new',
-      name: 'NewPermissions',
-      component: () => import('@/views/CRUD/Permissions/PermissionsNew.vue'),
-    },
-    {
-      meta: {
-        title: 'Edit Permissions'
-      },
-      path: '/permissions/:id/edit',
-      name: 'EditPermissions',
-      component: () => import('@/views/CRUD/Permissions/PermissionsEdit.vue'),
     },
 
   {

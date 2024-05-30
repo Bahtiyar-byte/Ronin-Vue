@@ -74,16 +74,16 @@ module.exports = function (sequelize, DataTypes) {
       constraints: false,
     });
 
-    db.contacts.hasMany(db.jobs, {
-      as: 'jobs_contactId',
+    db.contacts.hasMany(db.estimates, {
+      as: 'estimates_contactId',
       foreignKey: {
         name: 'contactIdId',
       },
       constraints: false,
     });
 
-    db.contacts.hasMany(db.estimates, {
-      as: 'estimates_contactId',
+    db.contacts.hasMany(db.jobs, {
+      as: 'jobs_contactId',
       foreignKey: {
         name: 'contactIdId',
       },

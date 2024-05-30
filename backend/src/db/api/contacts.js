@@ -159,11 +159,11 @@ module.exports = class ContactsDBApi {
       transaction,
     });
 
-    output.jobs_contactId = await contacts.getJobs_contactId({
+    output.estimates_contactId = await contacts.getEstimates_contactId({
       transaction,
     });
 
-    output.estimates_contactId = await contacts.getEstimates_contactId({
+    output.jobs_contactId = await contacts.getJobs_contactId({
       transaction,
     });
 

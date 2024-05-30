@@ -17,19 +17,23 @@ const searchRoutes = require('./routes/search');
 
 const openaiRoutes = require('./routes/openai');
 
+const usersRoutes = require('./routes/users');
+
 const contactsRoutes = require('./routes/contacts');
 
 const addressesRoutes = require('./routes/addresses');
 
+const estimatesRoutes = require('./routes/estimates');
+
 const jobsRoutes = require('./routes/jobs');
 
-const estimatesRoutes = require('./routes/estimates');
+const rolesRoutes = require('./routes/roles');
+
+const permissionsRoutes = require('./routes/permissions');
 
 const templatesRoutes = require('./routes/templates');
 
 const tradesRoutes = require('./routes/trades');
-
-const usersRoutes = require('./routes/users');
 
 const invoicesRoutes = require('./routes/invoices');
 
@@ -50,10 +54,6 @@ const tasksRoutes = require('./routes/tasks');
 const contractsRoutes = require('./routes/contracts');
 
 const amendmentsRoutes = require('./routes/amendments');
-
-const rolesRoutes = require('./routes/roles');
-
-const permissionsRoutes = require('./routes/permissions');
 
 const options = {
   definition: {
@@ -114,6 +114,12 @@ app.use('/api/file', fileRoutes);
 app.enable('trust proxy');
 
 app.use(
+  '/api/users',
+  passport.authenticate('jwt', { session: false }),
+  usersRoutes,
+);
+
+app.use(
   '/api/contacts',
   passport.authenticate('jwt', { session: false }),
   contactsRoutes,
@@ -126,15 +132,27 @@ app.use(
 );
 
 app.use(
+  '/api/estimates',
+  passport.authenticate('jwt', { session: false }),
+  estimatesRoutes,
+);
+
+app.use(
   '/api/jobs',
   passport.authenticate('jwt', { session: false }),
   jobsRoutes,
 );
 
 app.use(
-  '/api/estimates',
+  '/api/roles',
   passport.authenticate('jwt', { session: false }),
-  estimatesRoutes,
+  rolesRoutes,
+);
+
+app.use(
+  '/api/permissions',
+  passport.authenticate('jwt', { session: false }),
+  permissionsRoutes,
 );
 
 app.use(
@@ -147,12 +165,6 @@ app.use(
   '/api/trades',
   passport.authenticate('jwt', { session: false }),
   tradesRoutes,
-);
-
-app.use(
-  '/api/users',
-  passport.authenticate('jwt', { session: false }),
-  usersRoutes,
 );
 
 app.use(
@@ -213,18 +225,6 @@ app.use(
   '/api/amendments',
   passport.authenticate('jwt', { session: false }),
   amendmentsRoutes,
-);
-
-app.use(
-  '/api/roles',
-  passport.authenticate('jwt', { session: false }),
-  rolesRoutes,
-);
-
-app.use(
-  '/api/permissions',
-  passport.authenticate('jwt', { session: false }),
-  permissionsRoutes,
 );
 
 app.use(

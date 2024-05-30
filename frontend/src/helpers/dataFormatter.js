@@ -30,6 +30,25 @@ export default {
         return val ? 'Yes' : 'No'
     },
 
+        usersManyListFormatter(val) {
+            if (!val || !val.length) return []
+            return val.map(item => item.firstName)
+        },
+        usersOneListFormatter(val) {
+            if (!val) return ''
+            return val.firstName
+        },
+        usersManyListFormatterEdit(val) {
+            if (!val || !val.length) return []
+            return val.map((item) => {
+              return {id: item.id, label: item.firstName}
+            });
+        },
+        usersOneListFormatterEdit(val) {
+            if (!val) return ''
+            return {label: val.firstName, id: val.id}
+        },
+
         contactsManyListFormatter(val) {
             if (!val || !val.length) return []
             return val.map(item => item.firstName)
@@ -47,6 +66,25 @@ export default {
         contactsOneListFormatterEdit(val) {
             if (!val) return ''
             return {label: val.firstName, id: val.id}
+        },
+
+        estimatesManyListFormatter(val) {
+            if (!val || !val.length) return []
+            return val.map(item => item.id)
+        },
+        estimatesOneListFormatter(val) {
+            if (!val) return ''
+            return val.id
+        },
+        estimatesManyListFormatterEdit(val) {
+            if (!val || !val.length) return []
+            return val.map((item) => {
+              return {id: item.id, label: item.id}
+            });
+        },
+        estimatesOneListFormatterEdit(val) {
+            if (!val) return ''
+            return {label: val.id, id: val.id}
         },
 
         jobsManyListFormatter(val) {
@@ -68,21 +106,21 @@ export default {
             return {label: val.id, id: val.id}
         },
 
-        estimatesManyListFormatter(val) {
+        rolesManyListFormatter(val) {
             if (!val || !val.length) return []
             return val.map(item => item.id)
         },
-        estimatesOneListFormatter(val) {
+        rolesOneListFormatter(val) {
             if (!val) return ''
             return val.id
         },
-        estimatesManyListFormatterEdit(val) {
+        rolesManyListFormatterEdit(val) {
             if (!val || !val.length) return []
             return val.map((item) => {
               return {id: item.id, label: item.id}
             });
         },
-        estimatesOneListFormatterEdit(val) {
+        rolesOneListFormatterEdit(val) {
             if (!val) return ''
             return {label: val.id, id: val.id}
         },
@@ -123,25 +161,6 @@ export default {
         tradesOneListFormatterEdit(val) {
             if (!val) return ''
             return {label: val.id, id: val.id}
-        },
-
-        usersManyListFormatter(val) {
-            if (!val || !val.length) return []
-            return val.map(item => item.firstName)
-        },
-        usersOneListFormatter(val) {
-            if (!val) return ''
-            return val.firstName
-        },
-        usersManyListFormatterEdit(val) {
-            if (!val || !val.length) return []
-            return val.map((item) => {
-              return {id: item.id, label: item.firstName}
-            });
-        },
-        usersOneListFormatterEdit(val) {
-            if (!val) return ''
-            return {label: val.firstName, id: val.id}
         },
 
         ordersManyListFormatter(val) {
@@ -216,25 +235,6 @@ export default {
             });
         },
         appointmentsOneListFormatterEdit(val) {
-            if (!val) return ''
-            return {label: val.id, id: val.id}
-        },
-
-        rolesManyListFormatter(val) {
-            if (!val || !val.length) return []
-            return val.map(item => item.id)
-        },
-        rolesOneListFormatter(val) {
-            if (!val) return ''
-            return val.id
-        },
-        rolesManyListFormatterEdit(val) {
-            if (!val || !val.length) return []
-            return val.map((item) => {
-              return {id: item.id, label: item.id}
-            });
-        },
-        rolesOneListFormatterEdit(val) {
             if (!val) return ''
             return {label: val.id, id: val.id}
         },

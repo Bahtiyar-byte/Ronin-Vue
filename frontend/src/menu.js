@@ -23,6 +23,13 @@ export default [
   [
 
   {
+    to: '/users',
+    label: 'Users',
+    icon: mdiTable,
+    component: () => import('@/views/CRUD/Users/UsersView.vue'),
+},
+
+  {
     to: '/contacts',
     label: 'Contacts',
     icon: mdiTable,
@@ -37,6 +44,13 @@ export default [
 },
 
   {
+    to: '/estimates',
+    label: 'Estimates',
+    icon: mdiTable,
+    component: () => import('@/views/CRUD/Estimates/EstimatesView.vue'),
+},
+
+  {
     to: '/jobs',
     label: 'Jobs',
     icon: mdiTable,
@@ -44,10 +58,17 @@ export default [
 },
 
   {
-    to: '/estimates',
-    label: 'Estimates',
+    to: '/roles',
+    label: 'Roles',
     icon: mdiTable,
-    component: () => import('@/views/CRUD/Estimates/EstimatesView.vue'),
+    component: () => import('@/views/CRUD/Roles/RolesView.vue'),
+},
+
+  {
+    to: '/permissions',
+    label: 'Permissions',
+    icon: mdiTable,
+    component: () => import('@/views/CRUD/Permissions/PermissionsView.vue'),
 },
 
   {
@@ -62,13 +83,6 @@ export default [
     label: 'Trades',
     icon: mdiTable,
     component: () => import('@/views/CRUD/Trades/TradesView.vue'),
-},
-
-  {
-    to: '/users',
-    label: 'Users',
-    icon: mdiTable,
-    component: () => import('@/views/CRUD/Users/UsersView.vue'),
 },
 
   {
@@ -139,20 +153,6 @@ export default [
     label: 'Amendments',
     icon: mdiTable,
     component: () => import('@/views/CRUD/Amendments/AmendmentsView.vue'),
-},
-
-  {
-    to: '/roles',
-    label: 'Roles',
-    icon: mdiTable,
-    component: () => import('@/views/CRUD/Roles/RolesView.vue'),
-},
-
-  {
-    to: '/permissions',
-    label: 'Permissions',
-    icon: mdiTable,
-    component: () => import('@/views/CRUD/Permissions/PermissionsView.vue'),
 },
 
     {

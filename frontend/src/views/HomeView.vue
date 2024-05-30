@@ -13,18 +13,20 @@ import CardBoxWidget from '@/components/CardBoxWidget.vue'
 const titleStack = ref(['Admin', 'Dashboard'])
 
 const counts = reactive({
-  contacts: 0,addresses: 0,jobs: 0,estimates: 0,templates: 0,trades: 0,users: 0,invoices: 0,orders: 0,images: 0,documents: 0,emails: 0,chats: 0,appointments: 0,tasks: 0,contracts: 0,amendments: 0,roles: 0,permissions: 0,
+  users: 0,contacts: 0,addresses: 0,estimates: 0,jobs: 0,roles: 0,permissions: 0,templates: 0,trades: 0,invoices: 0,orders: 0,images: 0,documents: 0,emails: 0,chats: 0,appointments: 0,tasks: 0,contracts: 0,amendments: 0,
 })
 
 onMounted(() => {
   const fetchData = async () => {
+    const { data: { count: users } } = await axios.get('/users/count');
     const { data: { count: contacts } } = await axios.get('/contacts/count');
     const { data: { count: addresses } } = await axios.get('/addresses/count');
-    const { data: { count: jobs } } = await axios.get('/jobs/count');
     const { data: { count: estimates } } = await axios.get('/estimates/count');
+    const { data: { count: jobs } } = await axios.get('/jobs/count');
+    const { data: { count: roles } } = await axios.get('/roles/count');
+    const { data: { count: permissions } } = await axios.get('/permissions/count');
     const { data: { count: templates } } = await axios.get('/templates/count');
     const { data: { count: trades } } = await axios.get('/trades/count');
-    const { data: { count: users } } = await axios.get('/users/count');
     const { data: { count: invoices } } = await axios.get('/invoices/count');
     const { data: { count: orders } } = await axios.get('/orders/count');
     const { data: { count: images } } = await axios.get('/images/count');
@@ -35,16 +37,16 @@ onMounted(() => {
     const { data: { count: tasks } } = await axios.get('/tasks/count');
     const { data: { count: contracts } } = await axios.get('/contracts/count');
     const { data: { count: amendments } } = await axios.get('/amendments/count');
-    const { data: { count: roles } } = await axios.get('/roles/count');
-    const { data: { count: permissions } } = await axios.get('/permissions/count');
 
+    counts.users = users;
     counts.contacts = contacts;
     counts.addresses = addresses;
-    counts.jobs = jobs;
     counts.estimates = estimates;
+    counts.jobs = jobs;
+    counts.roles = roles;
+    counts.permissions = permissions;
     counts.templates = templates;
     counts.trades = trades;
-    counts.users = users;
     counts.invoices = invoices;
     counts.orders = orders;
     counts.images = images;
@@ -55,8 +57,6 @@ onMounted(() => {
     counts.tasks = tasks;
     counts.contracts = contracts;
     counts.amendments = amendments;
-    counts.roles = roles;
-    counts.permissions = permissions;
 
   };
   fetchData();
@@ -75,7 +75,13 @@ onMounted(() => {
   <SectionMain class="flex flex-wrap">
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-3 mb-6 w-full">
 
-      <a href="#/contacts">
+      <a href="#/users">
+        <CardBoxWidget
+        color="text-blue-500"
+        :icon="mdiInformation"
+        :number="counts.users"
+        label="Users"
+          /></a><a href="#/contacts">
         <CardBoxWidget
         color="text-blue-500"
         :icon="mdiInformation"
@@ -87,18 +93,30 @@ onMounted(() => {
         :icon="mdiInformation"
         :number="counts.addresses"
         label="Addresses"
-          /></a><a href="#/jobs">
-        <CardBoxWidget
-        color="text-blue-500"
-        :icon="mdiInformation"
-        :number="counts.jobs"
-        label="Jobs"
           /></a><a href="#/estimates">
         <CardBoxWidget
         color="text-blue-500"
         :icon="mdiInformation"
         :number="counts.estimates"
         label="Estimates"
+          /></a><a href="#/jobs">
+        <CardBoxWidget
+        color="text-blue-500"
+        :icon="mdiInformation"
+        :number="counts.jobs"
+        label="Jobs"
+          /></a><a href="#/roles">
+        <CardBoxWidget
+        color="text-blue-500"
+        :icon="mdiInformation"
+        :number="counts.roles"
+        label="Roles"
+          /></a><a href="#/permissions">
+        <CardBoxWidget
+        color="text-blue-500"
+        :icon="mdiInformation"
+        :number="counts.permissions"
+        label="Permissions"
           /></a><a href="#/templates">
         <CardBoxWidget
         color="text-blue-500"
@@ -111,12 +129,6 @@ onMounted(() => {
         :icon="mdiInformation"
         :number="counts.trades"
         label="Trades"
-          /></a><a href="#/users">
-        <CardBoxWidget
-        color="text-blue-500"
-        :icon="mdiInformation"
-        :number="counts.users"
-        label="Users"
           /></a><a href="#/invoices">
         <CardBoxWidget
         color="text-blue-500"
@@ -177,18 +189,6 @@ onMounted(() => {
         :icon="mdiInformation"
         :number="counts.amendments"
         label="Amendments"
-          /></a><a href="#/roles">
-        <CardBoxWidget
-        color="text-blue-500"
-        :icon="mdiInformation"
-        :number="counts.roles"
-        label="Roles"
-          /></a><a href="#/permissions">
-        <CardBoxWidget
-        color="text-blue-500"
-        :icon="mdiInformation"
-        :number="counts.permissions"
-        label="Permissions"
           /></a>
 
     </div>
