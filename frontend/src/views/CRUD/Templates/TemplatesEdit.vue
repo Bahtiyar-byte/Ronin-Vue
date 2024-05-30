@@ -26,10 +26,6 @@ const notification = computed(() => templatesStore.notify)
 
         const optionsTradeId = computed(() => templatesStore.searchResultTradeId);
 
-        const optionsCreatedBy = computed(() => templatesStore.searchResultCreatedBy);
-
-        const optionsUpdatedBy = computed(() => templatesStore.searchResultUpdatedBy);
-
 const templatesItem = computed(() => templatesStore.data);
 
 const form = reactive({
@@ -40,20 +36,12 @@ const form = reactive({
 
       tradeId: '',
 
-      createdBy: '',
-
-      updatedBy: '',
-
 })
 
 const submit = async () => {
   try {
 
             form.tradeId = form.tradeId?.id;
-
-            form.createdBy = form.createdBy?.id;
-
-            form.updatedBy = form.updatedBy?.id;
 
     await templatesStore.edit({id: route.params.id, data: {...form} })
     router.push('/templates');
@@ -67,10 +55,6 @@ onBeforeMount(async () => {
 
   await searchTradeId();
 
-  await searchCreatedBy();
-
-  await searchUpdatedBy();
-
     await templatesStore.fetch(route.params.id)
     formatData();
   } catch (e) {
@@ -83,14 +67,6 @@ onBeforeMount(async () => {
       await templatesStore.searchTradeId(val);
     }
 
-    async function searchCreatedBy(val) {
-      await templatesStore.searchCreatedBy(val);
-    }
-
-    async function searchUpdatedBy(val) {
-      await templatesStore.searchUpdatedBy(val);
-    }
-
 const formatData = () => {
 
     form.name = templatesItem.value.name
@@ -98,10 +74,6 @@ const formatData = () => {
     form.description = templatesItem.value.description
 
     form.tradeId = dataFormatter.tradesOneListFormatterEdit(templatesItem.value.tradeId)
-
-    form.createdBy = dataFormatter.usersOneListFormatterEdit(templatesItem.value.createdBy)
-
-    form.updatedBy = dataFormatter.usersOneListFormatterEdit(templatesItem.value.updatedBy)
 
 }
 
@@ -163,26 +135,6 @@ const cancel = () => {
         v-model="form.tradeId"
         :options="optionsTradeId"
         @input="searchTradeId($event.target.value)"
-      />
-  </FormField>
-
-  <FormField
-      label="Created By"
-    >
-      <v-select
-        v-model="form.createdBy"
-        :options="optionsCreatedBy"
-        @input="searchCreatedBy($event.target.value)"
-      />
-  </FormField>
-
-  <FormField
-      label="Updated By"
-    >
-      <v-select
-        v-model="form.updatedBy"
-        :options="optionsUpdatedBy"
-        @input="searchUpdatedBy($event.target.value)"
       />
   </FormField>
 

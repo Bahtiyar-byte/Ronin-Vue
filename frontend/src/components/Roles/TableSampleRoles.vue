@@ -34,8 +34,7 @@ const items = computed(() => rolesStore.data)
 
 const headers = [
 
-{ text: 'Name', value: 'name'},
-{ text: 'Permissions', value: 'permissions'},]
+{ text: 'Name', value: 'name'},]
 const isModalActive = ref(false)
 
 const isModalDangerActive = ref(false)
@@ -155,11 +154,6 @@ const sort = (title) => {
         @click="sort('name')"
       >Name</th>
 
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'permissions' && props.sortDirection]"
-        @click="sort('permissions')"
-      >Permissions</th>
-
         <th />
       </tr>
     </thead>
@@ -177,16 +171,6 @@ const sort = (title) => {
               <td data-label="name">
                 {{ client.name }}
               </td>
-
-              <td data-label="permissions">
-                  <span
-                    v-for="(i, idx) in dataFormatter.permissionsManyListFormatter(client.permissions)"
-                    :key="idx + client.permissions"
-                    class="block"
-                  >
-                      {{ i }}
-                  </span>
-              </td>  
 
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons

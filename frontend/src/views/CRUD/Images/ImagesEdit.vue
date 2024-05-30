@@ -30,8 +30,6 @@ const notification = computed(() => imagesStore.notify)
 
         const optionsDocumentId = computed(() => imagesStore.searchResultDocumentId);
 
-        const optionsCreatedBy = computed(() => imagesStore.searchResultCreatedBy);
-
 const imagesItem = computed(() => imagesStore.data);
 
 const form = reactive({
@@ -44,8 +42,6 @@ const form = reactive({
 
       documentId: '',
 
-      createdBy: '',
-
 })
 
 const submit = async () => {
@@ -56,8 +52,6 @@ const submit = async () => {
             form.userId = form.userId?.id;
 
             form.documentId = form.documentId?.id;
-
-            form.createdBy = form.createdBy?.id;
 
     await imagesStore.edit({id: route.params.id, data: {...form} })
     router.push('/images');
@@ -74,8 +68,6 @@ onBeforeMount(async () => {
   await searchUserId();
 
   await searchDocumentId();
-
-  await searchCreatedBy();
 
     await imagesStore.fetch(route.params.id)
     formatData();
@@ -97,10 +89,6 @@ onBeforeMount(async () => {
       await imagesStore.searchDocumentId(val);
     }
 
-    async function searchCreatedBy(val) {
-      await imagesStore.searchCreatedBy(val);
-    }
-
 const formatData = () => {
 
     form.name = imagesItem.value.name
@@ -110,8 +98,6 @@ const formatData = () => {
     form.userId = dataFormatter.usersOneListFormatterEdit(imagesItem.value.userId)
 
     form.documentId = dataFormatter.documentsOneListFormatterEdit(imagesItem.value.documentId)
-
-    form.createdBy = dataFormatter.usersOneListFormatterEdit(imagesItem.value.createdBy)
 
 }
 
@@ -183,16 +169,6 @@ const cancel = () => {
         v-model="form.documentId"
         :options="optionsDocumentId"
         @input="searchDocumentId($event.target.value)"
-      />
-  </FormField>
-
-  <FormField
-      label="Created By"
-    >
-      <v-select
-        v-model="form.createdBy"
-        :options="optionsCreatedBy"
-        @input="searchCreatedBy($event.target.value)"
       />
   </FormField>
 

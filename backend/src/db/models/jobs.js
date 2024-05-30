@@ -214,22 +214,6 @@ module.exports = function (sequelize, DataTypes) {
 
     db.jobs.belongsTo(db.users, {
       as: 'createdBy',
-      foreignKey: {
-        name: 'createdById',
-      },
-      constraints: false,
-    });
-
-    db.jobs.belongsTo(db.users, {
-      as: 'updatedBy',
-      foreignKey: {
-        name: 'updatedById',
-      },
-      constraints: false,
-    });
-
-    db.jobs.belongsTo(db.users, {
-      as: 'createdBy',
     });
 
     db.jobs.belongsTo(db.users, {

@@ -28,8 +28,6 @@ const notification = computed(() => contractsStore.notify)
 
         const optionsJobId = computed(() => contractsStore.searchResultJobId);
 
-        const optionsCreatedBy = computed(() => contractsStore.searchResultCreatedBy);
-
 const contractsItem = computed(() => contractsStore.data);
 
 const form = reactive({
@@ -47,8 +45,6 @@ const form = reactive({
 
       jobId: '',
 
-      createdBy: '',
-
 })
 
 const submit = async () => {
@@ -57,8 +53,6 @@ const submit = async () => {
             form.contactId = form.contactId?.id;
 
             form.jobId = form.jobId?.id;
-
-            form.createdBy = form.createdBy?.id;
 
     await contractsStore.edit({id: route.params.id, data: {...form} })
     router.push('/contracts');
@@ -73,8 +67,6 @@ onBeforeMount(async () => {
   await searchContactId();
 
   await searchJobId();
-
-  await searchCreatedBy();
 
     await contractsStore.fetch(route.params.id)
     formatData();
@@ -92,10 +84,6 @@ onBeforeMount(async () => {
       await contractsStore.searchJobId(val);
     }
 
-    async function searchCreatedBy(val) {
-      await contractsStore.searchCreatedBy(val);
-    }
-
 const formatData = () => {
 
     form.name = contractsItem.value.name
@@ -109,8 +97,6 @@ const formatData = () => {
     form.signedDate = dataFormatter.dateFormatter(contractsItem.value.signedDate)
 
     form.jobId = dataFormatter.jobsOneListFormatterEdit(contractsItem.value.jobId)
-
-    form.createdBy = dataFormatter.usersOneListFormatterEdit(contractsItem.value.createdBy)
 
 }
 
@@ -202,16 +188,6 @@ const cancel = () => {
         v-model="form.jobId"
         :options="optionsJobId"
         @input="searchJobId($event.target.value)"
-      />
-  </FormField>
-
-  <FormField
-      label="Created By"
-    >
-      <v-select
-        v-model="form.createdBy"
-        :options="optionsCreatedBy"
-        @input="searchCreatedBy($event.target.value)"
       />
   </FormField>
 

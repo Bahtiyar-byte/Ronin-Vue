@@ -26,8 +26,6 @@ const titleStack = ref(['Admin', 'Contracts'])
 
         const optionsJobId = computed(() => contractsStore.searchResultJobId);
 
-        const optionsCreatedBy = computed(() => contractsStore.searchResultCreatedBy);
-
 const form = reactive({
 
       name: '',
@@ -43,8 +41,6 @@ const form = reactive({
 
       jobId: '',
 
-      createdBy: '',
-
 })
 
 onBeforeMount(async () => {
@@ -52,8 +48,6 @@ onBeforeMount(async () => {
   await searchContactId();
 
   await searchJobId();
-
-  await searchCreatedBy();
 
 })
 
@@ -63,8 +57,6 @@ const submit = async () => {
             form.contactId = form.contactId.id;
 
             form.jobId = form.jobId.id;
-
-            form.createdBy = form.createdBy.id;
 
     await contractsStore.newItem({ ...form })
     router.push('/contracts');
@@ -88,8 +80,6 @@ const reset = () => {
 
         form.jobId = '';
 
-        form.createdBy = '';
-
 }
 
 const cancel = () => {
@@ -102,10 +92,6 @@ const cancel = () => {
 
     async function searchJobId(val) {
       await contractsStore.searchJobId(val);
-    }
-
-    async function searchCreatedBy(val) {
-      await contractsStore.searchCreatedBy(val);
     }
 
 watch(() => contractsStore.notify.showNotification, (newValue, oldValue) => {
@@ -188,16 +174,6 @@ watch(() => contractsStore.notify.showNotification, (newValue, oldValue) => {
           v-model="form.jobId"
           :options="optionsJobId"
           @input="searchJobId($event.target.value)"
-        />
-  </FormField>
-
-  <FormField
-      label="Created By"
-    >
-        <v-select
-          v-model="form.createdBy"
-          :options="optionsCreatedBy"
-          @input="searchCreatedBy($event.target.value)"
         />
   </FormField>
 

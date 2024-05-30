@@ -59,14 +59,6 @@ module.exports = function (sequelize, DataTypes) {
       constraints: false,
     });
 
-    db.documents.belongsTo(db.users, {
-      as: 'createdBy',
-      foreignKey: {
-        name: 'createdById',
-      },
-      constraints: false,
-    });
-
     db.documents.hasMany(db.file, {
       as: 'fileType',
       foreignKey: 'belongsToId',

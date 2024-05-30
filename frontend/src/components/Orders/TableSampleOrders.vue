@@ -37,8 +37,7 @@ const headers = [
 { text: 'Job ', value: 'jobId'},
 { text: 'Estimate', value: 'estimateId'},
 { text: 'Order Number', value: 'orderNumber'},
-{ text: 'Total Amount', value: 'totalAmount'},
-{ text: 'Created By', value: 'createdBy'},]
+{ text: 'Total Amount', value: 'totalAmount'},]
 const isModalActive = ref(false)
 
 const isModalDangerActive = ref(false)
@@ -173,11 +172,6 @@ const sort = (title) => {
         @click="sort('totalAmount')"
       >Total Amount</th>
 
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'createdBy' && props.sortDirection]"
-        @click="sort('createdBy')"
-      >Created By</th>
-
         <th />
       </tr>
     </thead>
@@ -206,10 +200,6 @@ const sort = (title) => {
 
               <td data-label="totalAmount">
                 {{ client.totalAmount }}
-              </td>
-
-              <td data-label="createdBy">
-                {{ dataFormatter.usersOneListFormatter(client.createdBy) }}
               </td>
 
         <td class="before:hidden lg:w-1 whitespace-nowrap">

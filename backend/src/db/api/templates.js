@@ -28,14 +28,6 @@ module.exports = class TemplatesDBApi {
       transaction,
     });
 
-    await templates.setCreatedBy(data.createdBy || null, {
-      transaction,
-    });
-
-    await templates.setUpdatedBy(data.updatedBy || null, {
-      transaction,
-    });
-
     return templates;
   }
 
@@ -81,14 +73,6 @@ module.exports = class TemplatesDBApi {
     );
 
     await templates.setTradeId(data.tradeId || null, {
-      transaction,
-    });
-
-    await templates.setCreatedBy(data.createdBy || null, {
-      transaction,
-    });
-
-    await templates.setUpdatedBy(data.updatedBy || null, {
       transaction,
     });
 
@@ -161,14 +145,6 @@ module.exports = class TemplatesDBApi {
       transaction,
     });
 
-    output.createdBy = await templates.getCreatedBy({
-      transaction,
-    });
-
-    output.updatedBy = await templates.getUpdatedBy({
-      transaction,
-    });
-
     return output;
   }
 
@@ -187,16 +163,6 @@ module.exports = class TemplatesDBApi {
       {
         model: db.trades,
         as: 'tradeId',
-      },
-
-      {
-        model: db.users,
-        as: 'createdBy',
-      },
-
-      {
-        model: db.users,
-        as: 'updatedBy',
       },
     ];
 
@@ -242,28 +208,6 @@ module.exports = class TemplatesDBApi {
         where = {
           ...where,
           tradeIdId: { [Op.or]: listItems },
-        };
-      }
-
-      if (filter.createdBy) {
-        var listItems = filter.createdBy.split('|').map((item) => {
-          return Utils.uuid(item);
-        });
-
-        where = {
-          ...where,
-          createdById: { [Op.or]: listItems },
-        };
-      }
-
-      if (filter.updatedBy) {
-        var listItems = filter.updatedBy.split('|').map((item) => {
-          return Utils.uuid(item);
-        });
-
-        where = {
-          ...where,
-          updatedById: { [Op.or]: listItems },
         };
       }
 

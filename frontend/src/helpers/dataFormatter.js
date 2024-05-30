@@ -239,23 +239,4 @@ export default {
             return {label: val.id, id: val.id}
         },
 
-        permissionsManyListFormatter(val) {
-            if (!val || !val.length) return []
-            return val.map(item => item.id)
-        },
-        permissionsOneListFormatter(val) {
-            if (!val) return ''
-            return val.id
-        },
-        permissionsManyListFormatterEdit(val) {
-            if (!val || !val.length) return []
-            return val.map((item) => {
-              return {id: item.id, label: item.id}
-            });
-        },
-        permissionsOneListFormatterEdit(val) {
-            if (!val) return ''
-            return {label: val.id, id: val.id}
-        },
-
 }

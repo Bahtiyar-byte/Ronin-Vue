@@ -18,10 +18,6 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.TEXT,
       },
 
-      role_customization: {
-        type: DataTypes.TEXT,
-      },
-
       importHash: {
         type: DataTypes.STRING(255),
         allowNull: true,
@@ -36,15 +32,6 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   roles.associate = (db) => {
-    db.roles.belongsToMany(db.permissions, {
-      as: 'permissions',
-      foreignKey: {
-        name: 'roles_permissionsId',
-      },
-      constraints: false,
-      through: 'rolesPermissionsPermissions',
-    });
-
     /// loop through entities and it's fields, and if ref === current e[name] and create relation has many on parent entity
 
     db.roles.hasMany(db.users, {

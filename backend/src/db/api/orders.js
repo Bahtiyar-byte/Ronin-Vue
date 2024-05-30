@@ -32,10 +32,6 @@ module.exports = class OrdersDBApi {
       transaction,
     });
 
-    await orders.setCreatedBy(data.createdBy || null, {
-      transaction,
-    });
-
     return orders;
   }
 
@@ -83,10 +79,6 @@ module.exports = class OrdersDBApi {
     });
 
     await orders.setEstimateId(data.estimateId || null, {
-      transaction,
-    });
-
-    await orders.setCreatedBy(data.createdBy || null, {
       transaction,
     });
 
@@ -163,10 +155,6 @@ module.exports = class OrdersDBApi {
       transaction,
     });
 
-    output.createdBy = await orders.getCreatedBy({
-      transaction,
-    });
-
     return output;
   }
 
@@ -190,11 +178,6 @@ module.exports = class OrdersDBApi {
       {
         model: db.estimates,
         as: 'estimateId',
-      },
-
-      {
-        model: db.users,
-        as: 'createdBy',
       },
     ];
 
@@ -268,17 +251,6 @@ module.exports = class OrdersDBApi {
         where = {
           ...where,
           estimateIdId: { [Op.or]: listItems },
-        };
-      }
-
-      if (filter.createdBy) {
-        var listItems = filter.createdBy.split('|').map((item) => {
-          return Utils.uuid(item);
-        });
-
-        where = {
-          ...where,
-          createdById: { [Op.or]: listItems },
         };
       }
 

@@ -24,7 +24,7 @@ const titleStack = ref(['Admin', 'Appointments'])
 const filters = ref([]);
 const filtersList = [{label: 'Subject', title: 'subject'},{label: 'Description', title: 'description'},{label: 'Location', title: 'location'},
 
-          {label: 'Assigned User ', title: 'assignedUserId'},{label: 'Contact ', title: 'contactId'},{label: 'Job', title: 'jobId'},{label: 'Created By', title: 'createdBy'},{label: 'Updated By', title: 'updatedBy'},];
+          {label: 'Assigned User ', title: 'assignedUserId'},{label: 'Contact ', title: 'contactId'},{label: 'Job', title: 'jobId'},];
 const showFilters = ref(false);
 
 const query = ref('');

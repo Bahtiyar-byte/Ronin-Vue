@@ -26,8 +26,6 @@ const titleStack = ref(['Admin', 'Addresses'])
 
         const optionsJobId = computed(() => addressesStore.searchResultJobId);
 
-        const optionsCreatedBy = computed(() => addressesStore.searchResultCreatedBy);
-
 const form = reactive({
 
       contactId: '',
@@ -48,8 +46,6 @@ const form = reactive({
 
       type: false,
 
-      createdBy: '',
-
 })
 
 onBeforeMount(async () => {
@@ -57,8 +53,6 @@ onBeforeMount(async () => {
   await searchContactId();
 
   await searchJobId();
-
-  await searchCreatedBy();
 
 })
 
@@ -70,8 +64,6 @@ const submit = async () => {
             form.jobId = form.jobId.id;
 
             form.state = form.state.label;
-
-            form.createdBy = form.createdBy.id;
 
     await addressesStore.newItem({ ...form })
     router.push('/addresses');
@@ -100,8 +92,6 @@ const reset = () => {
 
         form.type = false;
 
-        form.createdBy = '';
-
 }
 
 const cancel = () => {
@@ -114,10 +104,6 @@ const cancel = () => {
 
     async function searchJobId(val) {
       await addressesStore.searchJobId(val);
-    }
-
-    async function searchCreatedBy(val) {
-      await addressesStore.searchCreatedBy(val);
     }
 
 watch(() => addressesStore.notify.showNotification, (newValue, oldValue) => {
@@ -234,16 +220,6 @@ watch(() => addressesStore.notify.showNotification, (newValue, oldValue) => {
 
       />
     </FormField>
-
-  <FormField
-      label="Created By"
-    >
-        <v-select
-          v-model="form.createdBy"
-          :options="optionsCreatedBy"
-          @input="searchCreatedBy($event.target.value)"
-        />
-  </FormField>
 
     <BaseDivider />
 

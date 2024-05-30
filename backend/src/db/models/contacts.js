@@ -126,22 +126,6 @@ module.exports = function (sequelize, DataTypes) {
 
     db.contacts.belongsTo(db.users, {
       as: 'createdBy',
-      foreignKey: {
-        name: 'createdById',
-      },
-      constraints: false,
-    });
-
-    db.contacts.belongsTo(db.users, {
-      as: 'updatedBy',
-      foreignKey: {
-        name: 'updatedById',
-      },
-      constraints: false,
-    });
-
-    db.contacts.belongsTo(db.users, {
-      as: 'createdBy',
     });
 
     db.contacts.belongsTo(db.users, {

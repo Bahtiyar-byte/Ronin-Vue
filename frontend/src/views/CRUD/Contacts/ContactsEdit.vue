@@ -30,10 +30,6 @@ const notification = computed(() => contactsStore.notify)
 
         const optionsAssignedUserId = computed(() => contactsStore.searchResultAssignedUserId);
 
-        const optionsCreatedBy = computed(() => contactsStore.searchResultCreatedBy);
-
-        const optionsUpdatedBy = computed(() => contactsStore.searchResultUpdatedBy);
-
 const contactsItem = computed(() => contactsStore.data);
 
 const form = reactive({
@@ -56,10 +52,6 @@ const form = reactive({
 
       assignedUserId: '',
 
-      createdBy: '',
-
-      updatedBy: '',
-
 })
 
 const submit = async () => {
@@ -70,10 +62,6 @@ const submit = async () => {
             form.source = form.source.label;
 
             form.assignedUserId = form.assignedUserId?.id;
-
-            form.createdBy = form.createdBy?.id;
-
-            form.updatedBy = form.updatedBy?.id;
 
     await contactsStore.edit({id: route.params.id, data: {...form} })
     router.push('/contacts');
@@ -87,10 +75,6 @@ onBeforeMount(async () => {
 
   await searchAssignedUserId();
 
-  await searchCreatedBy();
-
-  await searchUpdatedBy();
-
     await contactsStore.fetch(route.params.id)
     formatData();
   } catch (e) {
@@ -101,14 +85,6 @@ onBeforeMount(async () => {
 
     async function searchAssignedUserId(val) {
       await contactsStore.searchAssignedUserId(val);
-    }
-
-    async function searchCreatedBy(val) {
-      await contactsStore.searchCreatedBy(val);
-    }
-
-    async function searchUpdatedBy(val) {
-      await contactsStore.searchUpdatedBy(val);
     }
 
 const formatData = () => {
@@ -130,10 +106,6 @@ const formatData = () => {
     form.crossReference = contactsItem.value.crossReference
 
     form.assignedUserId = dataFormatter.usersOneListFormatterEdit(contactsItem.value.assignedUserId)
-
-    form.createdBy = dataFormatter.usersOneListFormatterEdit(contactsItem.value.createdBy)
-
-    form.updatedBy = dataFormatter.usersOneListFormatterEdit(contactsItem.value.updatedBy)
 
 }
 
@@ -244,26 +216,6 @@ const cancel = () => {
         v-model="form.assignedUserId"
         :options="optionsAssignedUserId"
         @input="searchAssignedUserId($event.target.value)"
-      />
-  </FormField>
-
-  <FormField
-      label="Created By"
-    >
-      <v-select
-        v-model="form.createdBy"
-        :options="optionsCreatedBy"
-        @input="searchCreatedBy($event.target.value)"
-      />
-  </FormField>
-
-  <FormField
-      label="Updated By"
-    >
-      <v-select
-        v-model="form.updatedBy"
-        :options="optionsUpdatedBy"
-        @input="searchUpdatedBy($event.target.value)"
       />
   </FormField>
 

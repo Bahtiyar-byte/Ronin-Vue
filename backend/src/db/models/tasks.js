@@ -83,14 +83,6 @@ module.exports = function (sequelize, DataTypes) {
 
     db.tasks.belongsTo(db.users, {
       as: 'createdBy',
-      foreignKey: {
-        name: 'createdById',
-      },
-      constraints: false,
-    });
-
-    db.tasks.belongsTo(db.users, {
-      as: 'createdBy',
     });
 
     db.tasks.belongsTo(db.users, {

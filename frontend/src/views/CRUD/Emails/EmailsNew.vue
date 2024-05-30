@@ -28,8 +28,6 @@ const titleStack = ref(['Admin', 'Emails'])
 
         const optionsContactId = computed(() => emailsStore.searchResultContactId);
 
-        const optionsCreatedBy = computed(() => emailsStore.searchResultCreatedBy);
-
 const form = reactive({
 
       jobId: '',
@@ -48,8 +46,6 @@ const form = reactive({
 
     body: '',
 
-      createdBy: '',
-
 })
 
 onBeforeMount(async () => {
@@ -59,8 +55,6 @@ onBeforeMount(async () => {
   await searchUserId();
 
   await searchContactId();
-
-  await searchCreatedBy();
 
 })
 
@@ -72,8 +66,6 @@ const submit = async () => {
             form.userId = form.userId.id;
 
             form.contactId = form.contactId.id;
-
-            form.createdBy = form.createdBy.id;
 
     await emailsStore.newItem({ ...form })
     router.push('/emails');
@@ -100,8 +92,6 @@ const reset = () => {
 
       form.body = '';
 
-        form.createdBy = '';
-
 }
 
 const cancel = () => {
@@ -118,10 +108,6 @@ const cancel = () => {
 
     async function searchContactId(val) {
       await emailsStore.searchContactId(val);
-    }
-
-    async function searchCreatedBy(val) {
-      await emailsStore.searchCreatedBy(val);
     }
 
 watch(() => emailsStore.notify.showNotification, (newValue, oldValue) => {
@@ -221,16 +207,6 @@ watch(() => emailsStore.notify.showNotification, (newValue, oldValue) => {
       cloudChannel="6"
       v-model="form.body"
       />
-
-  <FormField
-      label="Created By"
-    >
-        <v-select
-          v-model="form.createdBy"
-          :options="optionsCreatedBy"
-          @input="searchCreatedBy($event.target.value)"
-        />
-  </FormField>
 
     <BaseDivider />
 

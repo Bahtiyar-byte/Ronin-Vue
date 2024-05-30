@@ -30,10 +30,6 @@ const notification = computed(() => estimatesStore.notify)
 
         const optionsTemplateId = computed(() => estimatesStore.searchResultTemplateId);
 
-        const optionsCreatedBy = computed(() => estimatesStore.searchResultCreatedBy);
-
-        const optionsUpdatedBy = computed(() => estimatesStore.searchResultUpdatedBy);
-
 const estimatesItem = computed(() => estimatesStore.data);
 
 const form = reactive({
@@ -50,10 +46,6 @@ const form = reactive({
 
       templateId: '',
 
-      createdBy: '',
-
-      updatedBy: '',
-
 })
 
 const submit = async () => {
@@ -64,10 +56,6 @@ const submit = async () => {
             form.contactId = form.contactId?.id;
 
             form.templateId = form.templateId?.id;
-
-            form.createdBy = form.createdBy?.id;
-
-            form.updatedBy = form.updatedBy?.id;
 
     await estimatesStore.edit({id: route.params.id, data: {...form} })
     router.push('/estimates');
@@ -84,10 +72,6 @@ onBeforeMount(async () => {
   await searchContactId();
 
   await searchTemplateId();
-
-  await searchCreatedBy();
-
-  await searchUpdatedBy();
 
     await estimatesStore.fetch(route.params.id)
     formatData();
@@ -109,14 +93,6 @@ onBeforeMount(async () => {
       await estimatesStore.searchTemplateId(val);
     }
 
-    async function searchCreatedBy(val) {
-      await estimatesStore.searchCreatedBy(val);
-    }
-
-    async function searchUpdatedBy(val) {
-      await estimatesStore.searchUpdatedBy(val);
-    }
-
 const formatData = () => {
 
     form.description = estimatesItem.value.description
@@ -130,10 +106,6 @@ const formatData = () => {
     form.contactId = dataFormatter.contactsOneListFormatterEdit(estimatesItem.value.contactId)
 
     form.templateId = dataFormatter.templatesOneListFormatterEdit(estimatesItem.value.templateId)
-
-    form.createdBy = dataFormatter.usersOneListFormatterEdit(estimatesItem.value.createdBy)
-
-    form.updatedBy = dataFormatter.usersOneListFormatterEdit(estimatesItem.value.updatedBy)
 
 }
 
@@ -223,26 +195,6 @@ const cancel = () => {
         v-model="form.templateId"
         :options="optionsTemplateId"
         @input="searchTemplateId($event.target.value)"
-      />
-  </FormField>
-
-  <FormField
-      label="Created By"
-    >
-      <v-select
-        v-model="form.createdBy"
-        :options="optionsCreatedBy"
-        @input="searchCreatedBy($event.target.value)"
-      />
-  </FormField>
-
-  <FormField
-      label="Updated By"
-    >
-      <v-select
-        v-model="form.updatedBy"
-        :options="optionsUpdatedBy"
-        @input="searchUpdatedBy($event.target.value)"
       />
   </FormField>
 

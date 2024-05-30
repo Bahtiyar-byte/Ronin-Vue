@@ -41,10 +41,7 @@ const headers = [
 { text: 'Disabled', value: 'disabled'},
 { text: 'Avatar', value: 'avatar'},
 { text: 'User Name', value: 'userName'},
-{ text: 'Created By', value: 'createdBy'},
-{ text: 'Updated By', value: 'updatedBy'},
-{ text: 'Role ', value: 'roleId'},
-{ text: 'Permissions', value: 'permissions'},]
+{ text: 'Role ', value: 'roleId'},]
 const isModalActive = ref(false)
 
 const isModalDangerActive = ref(false)
@@ -195,24 +192,9 @@ const sort = (title) => {
       >User Name</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'createdBy' && props.sortDirection]"
-        @click="sort('createdBy')"
-      >Created By</th>
-
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'updatedBy' && props.sortDirection]"
-        @click="sort('updatedBy')"
-      >Updated By</th>
-
-      <th
         :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'roleId' && props.sortDirection]"
         @click="sort('roleId')"
       >Role </th>
-
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'permissions' && props.sortDirection]"
-        @click="sort('permissions')"
-      >Permissions</th>
 
         <th />
       </tr>
@@ -263,27 +245,9 @@ const sort = (title) => {
                 {{ client.userName }}
               </td>
 
-              <td data-label="createdBy">
-                {{ dataFormatter.usersOneListFormatter(client.createdBy) }}
-              </td>
-
-              <td data-label="updatedBy">
-                {{ dataFormatter.usersOneListFormatter(client.updatedBy) }}
-              </td>
-
               <td data-label="roleId">
                 {{ dataFormatter.rolesOneListFormatter(client.roleId) }}
               </td>
-
-              <td data-label="permissions">
-                  <span
-                    v-for="(i, idx) in dataFormatter.permissionsManyListFormatter(client.permissions)"
-                    :key="idx + client.permissions"
-                    class="block"
-                  >
-                      {{ i }}
-                  </span>
-              </td>  
 
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons

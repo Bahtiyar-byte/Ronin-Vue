@@ -29,10 +29,6 @@ module.exports = class DocumentsDBApi {
       transaction,
     });
 
-    await documents.setCreatedBy(data.createdBy || null, {
-      transaction,
-    });
-
     await FileDBApi.replaceRelationFiles(
       {
         belongsTo: db.documents.getTableName(),
@@ -102,10 +98,6 @@ module.exports = class DocumentsDBApi {
     );
 
     await documents.setJobId(data.jobId || null, {
-      transaction,
-    });
-
-    await documents.setCreatedBy(data.createdBy || null, {
       transaction,
     });
 
@@ -192,10 +184,6 @@ module.exports = class DocumentsDBApi {
       transaction,
     });
 
-    output.createdBy = await documents.getCreatedBy({
-      transaction,
-    });
-
     return output;
   }
 
@@ -214,11 +202,6 @@ module.exports = class DocumentsDBApi {
       {
         model: db.jobs,
         as: 'jobId',
-      },
-
-      {
-        model: db.users,
-        as: 'createdBy',
       },
 
       {
@@ -269,17 +252,6 @@ module.exports = class DocumentsDBApi {
         where = {
           ...where,
           jobIdId: { [Op.or]: listItems },
-        };
-      }
-
-      if (filter.createdBy) {
-        var listItems = filter.createdBy.split('|').map((item) => {
-          return Utils.uuid(item);
-        });
-
-        where = {
-          ...where,
-          createdById: { [Op.or]: listItems },
         };
       }
 

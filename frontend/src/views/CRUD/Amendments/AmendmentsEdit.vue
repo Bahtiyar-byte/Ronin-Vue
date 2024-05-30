@@ -28,8 +28,6 @@ const notification = computed(() => amendmentsStore.notify)
 
       const optionsType = [{id: 0, label: 'Change Order'},{id: 1, label: 'Discount'},{id: 2, label: 'Insurance Claim'},{id: 3, label: 'Supplement'},{id: 4, label: 'Upgrade'},]
 
-        const optionsCreatedBy = computed(() => amendmentsStore.searchResultCreatedBy);
-
 const amendmentsItem = computed(() => amendmentsStore.data);
 
 const form = reactive({
@@ -42,8 +40,6 @@ const form = reactive({
 
     description: [''],
 
-      createdBy: '',
-
 })
 
 const submit = async () => {
@@ -52,8 +48,6 @@ const submit = async () => {
             form.jobId = form.jobId?.id;
 
             form.type = form.type.label;
-
-            form.createdBy = form.createdBy?.id;
 
     await amendmentsStore.edit({id: route.params.id, data: {...form} })
     router.push('/amendments');
@@ -67,8 +61,6 @@ onBeforeMount(async () => {
 
   await searchJobId();
 
-  await searchCreatedBy();
-
     await amendmentsStore.fetch(route.params.id)
     formatData();
   } catch (e) {
@@ -81,10 +73,6 @@ onBeforeMount(async () => {
       await amendmentsStore.searchJobId(val);
     }
 
-    async function searchCreatedBy(val) {
-      await amendmentsStore.searchCreatedBy(val);
-    }
-
 const formatData = () => {
 
     form.jobId = dataFormatter.jobsOneListFormatterEdit(amendmentsItem.value.jobId)
@@ -94,8 +82,6 @@ const formatData = () => {
     form.amount = amendmentsItem.value.amount
 
     form.description = amendmentsItem.value.description
-
-    form.createdBy = dataFormatter.usersOneListFormatterEdit(amendmentsItem.value.createdBy)
 
 }
 
@@ -167,16 +153,6 @@ const cancel = () => {
         placeholder="Your Description"
         />
     </FormField>
-
-  <FormField
-      label="Created By"
-    >
-      <v-select
-        v-model="form.createdBy"
-        :options="optionsCreatedBy"
-        @input="searchCreatedBy($event.target.value)"
-      />
-  </FormField>
 
     <BaseDivider />
 

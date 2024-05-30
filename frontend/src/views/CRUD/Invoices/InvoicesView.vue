@@ -25,7 +25,7 @@ const filters = ref([]);
 const filtersList = [{label: 'Invoice Number', title: 'invoiceNumber'},
 
           {label: 'Approved Job Value', title: 'approvedJobValue', number: 'true'},{label: 'Invoiced Amount', title: 'invoicedAmount', number: 'true'},{label: 'Balance Amount', title: 'balanceAmount', number: 'true'},
-          {label: 'Job ', title: 'jobId'},{label: 'Created By', title: 'createdBy'},{label: 'Updated By', title: 'updatedBy'},];
+          {label: 'Job ', title: 'jobId'},];
 const showFilters = ref(false);
 
 const query = ref('');

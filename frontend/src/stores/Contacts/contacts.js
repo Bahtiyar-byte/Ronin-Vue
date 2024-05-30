@@ -13,10 +13,6 @@ export const useContactsStore = defineStore('contacts', {
 
             searchResultAssignedUserId: [],
 
-            searchResultCreatedBy: [],
-
-            searchResultUpdatedBy: [],
-
   }),
   actions: {
     async fetch(id = '', query) {
@@ -84,40 +80,6 @@ export const useContactsStore = defineStore('contacts', {
               }
             },
 
-            async searchCreatedBy(val) {
-              try {
-                if (val) {
-                  const result = await axios(
-                    `/users/autocomplete?query=${val}&limit=100`,
-                  );
-                  this.setCreatedBy(result.data);
-                } else {
-                  const result = await axios(`/users/autocomplete?limit=100`);
-                  this.setCreatedBy(result.data);
-                }
-              } catch (e) {
-                this.showNotification(e, 'error')
-                this.setCreatedBy([]);
-              }
-            },
-
-            async searchUpdatedBy(val) {
-              try {
-                if (val) {
-                  const result = await axios(
-                    `/users/autocomplete?query=${val}&limit=100`,
-                  );
-                  this.setUpdatedBy(result.data);
-                } else {
-                  const result = await axios(`/users/autocomplete?limit=100`);
-                  this.setUpdatedBy(result.data);
-                }
-              } catch (e) {
-                this.showNotification(e, 'error')
-                this.setUpdatedBy([]);
-              }
-            },
-
     startLoading() {
       this.loading = false;
     },
@@ -139,14 +101,6 @@ export const useContactsStore = defineStore('contacts', {
 
         setAssignedUserId(payload) {
             this.searchResultAssignedUserId = payload
-        },
-
-        setCreatedBy(payload) {
-            this.searchResultCreatedBy = payload
-        },
-
-        setUpdatedBy(payload) {
-            this.searchResultUpdatedBy = payload
         },
 
   }

@@ -16,17 +16,12 @@ module.exports = class RolesDBApi {
         id: data.id || undefined,
 
         name: data.name || null,
-        role_customization: data.role_customization || null,
         importHash: data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
       },
       { transaction },
     );
-
-    await roles.setPermissions(data.permissions || [], {
-      transaction,
-    });
 
     return roles;
   }
@@ -40,7 +35,6 @@ module.exports = class RolesDBApi {
       id: item.id || undefined,
 
       name: item.name || null,
-      role_customization: item.role_customization || null,
       importHash: item.importHash || null,
       createdById: currentUser.id,
       updatedById: currentUser.id,
@@ -64,15 +58,10 @@ module.exports = class RolesDBApi {
     await roles.update(
       {
         name: data.name || null,
-        role_customization: data.role_customization || null,
         updatedById: currentUser.id,
       },
       { transaction },
     );
-
-    await roles.setPermissions(data.permissions || [], {
-      transaction,
-    });
 
     return roles;
   }
@@ -139,10 +128,6 @@ module.exports = class RolesDBApi {
       transaction,
     });
 
-    output.permissions = await roles.getPermissions({
-      transaction,
-    });
-
     return output;
   }
 
@@ -157,22 +142,7 @@ module.exports = class RolesDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [
-      {
-        model: db.permissions,
-        as: 'permissions',
-        through: filter.permissions
-          ? {
-              where: {
-                [Op.or]: filter.permissions.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.permissions ? true : null,
-      },
-    ];
+    let include = [];
 
     if (filter) {
       if (filter.id) {
@@ -186,17 +156,6 @@ module.exports = class RolesDBApi {
         where = {
           ...where,
           [Op.and]: Utils.ilike('roles', 'name', filter.name),
-        };
-      }
-
-      if (filter.role_customization) {
-        where = {
-          ...where,
-          [Op.and]: Utils.ilike(
-            'roles',
-            'role_customization',
-            filter.role_customization,
-          ),
         };
       }
 

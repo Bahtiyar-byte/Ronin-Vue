@@ -15,8 +15,6 @@ export const useContractsStore = defineStore('contracts', {
 
             searchResultJobId: [],
 
-            searchResultCreatedBy: [],
-
   }),
   actions: {
     async fetch(id = '', query) {
@@ -101,23 +99,6 @@ export const useContractsStore = defineStore('contracts', {
               }
             },
 
-            async searchCreatedBy(val) {
-              try {
-                if (val) {
-                  const result = await axios(
-                    `/users/autocomplete?query=${val}&limit=100`,
-                  );
-                  this.setCreatedBy(result.data);
-                } else {
-                  const result = await axios(`/users/autocomplete?limit=100`);
-                  this.setCreatedBy(result.data);
-                }
-              } catch (e) {
-                this.showNotification(e, 'error')
-                this.setCreatedBy([]);
-              }
-            },
-
     startLoading() {
       this.loading = false;
     },
@@ -143,10 +124,6 @@ export const useContractsStore = defineStore('contracts', {
 
         setJobId(payload) {
             this.searchResultJobId = payload
-        },
-
-        setCreatedBy(payload) {
-            this.searchResultCreatedBy = payload
         },
 
   }

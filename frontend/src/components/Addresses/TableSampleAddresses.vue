@@ -42,8 +42,7 @@ const headers = [
 { text: 'State', value: 'state'},
 { text: 'Zip', value: 'zip'},
 { text: 'Country', value: 'country'},
-{ text: 'Type', value: 'type'},
-{ text: 'Created By', value: 'createdBy'},]
+{ text: 'Type', value: 'type'},]
 const isModalActive = ref(false)
 
 const isModalDangerActive = ref(false)
@@ -203,11 +202,6 @@ const sort = (title) => {
         @click="sort('type')"
       >Type</th>
 
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'createdBy' && props.sortDirection]"
-        @click="sort('createdBy')"
-      >Created By</th>
-
         <th />
       </tr>
     </thead>
@@ -256,10 +250,6 @@ const sort = (title) => {
 
               <td data-label="type">
                 {{ client.type }}
-              </td>
-
-              <td data-label="createdBy">
-                {{ dataFormatter.usersOneListFormatter(client.createdBy) }}
               </td>
 
         <td class="before:hidden lg:w-1 whitespace-nowrap">

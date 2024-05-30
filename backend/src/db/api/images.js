@@ -35,10 +35,6 @@ module.exports = class ImagesDBApi {
       transaction,
     });
 
-    await images.setCreatedBy(data.createdBy || null, {
-      transaction,
-    });
-
     return images;
   }
 
@@ -88,10 +84,6 @@ module.exports = class ImagesDBApi {
     });
 
     await images.setDocumentId(data.documentId || null, {
-      transaction,
-    });
-
-    await images.setCreatedBy(data.createdBy || null, {
       transaction,
     });
 
@@ -172,10 +164,6 @@ module.exports = class ImagesDBApi {
       transaction,
     });
 
-    output.createdBy = await images.getCreatedBy({
-      transaction,
-    });
-
     return output;
   }
 
@@ -204,11 +192,6 @@ module.exports = class ImagesDBApi {
       {
         model: db.documents,
         as: 'documentId',
-      },
-
-      {
-        model: db.users,
-        as: 'createdBy',
       },
     ];
 
@@ -269,17 +252,6 @@ module.exports = class ImagesDBApi {
         where = {
           ...where,
           documentIdId: { [Op.or]: listItems },
-        };
-      }
-
-      if (filter.createdBy) {
-        var listItems = filter.createdBy.split('|').map((item) => {
-          return Utils.uuid(item);
-        });
-
-        where = {
-          ...where,
-          createdById: { [Op.or]: listItems },
         };
       }
 

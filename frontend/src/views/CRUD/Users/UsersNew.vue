@@ -22,13 +22,7 @@ const router = useRouter();
 const notification = computed(() => usersStore.notify)
 const titleStack = ref(['Admin', 'Users'])
 
-        const optionsCreatedBy = computed(() => usersStore.searchResultCreatedBy);
-
-        const optionsUpdatedBy = computed(() => usersStore.searchResultUpdatedBy);
-
         const optionsRoleId = computed(() => usersStore.searchResultRoleId);
-
-        const optionsPermissions = computed(() => usersStore.searchResultPermissions);
 
 const form = reactive({
 
@@ -46,38 +40,20 @@ const form = reactive({
 
       userName: '',
 
-      createdBy: '',
-
-      updatedBy: '',
-
       roleId: '',
-
-      permissions: [],
 
 })
 
 onBeforeMount(async () => {
 
-  await searchCreatedBy();
-
-  await searchUpdatedBy();
-
   await searchRoleId();
-
-  await searchPermissions();
 
 })
 
 const submit = async () => {
   try {
 
-            form.createdBy = form.createdBy.id;
-
-            form.updatedBy = form.updatedBy.id;
-
             form.roleId = form.roleId.id;
-
-            form.permissions = form.permissions.map(item => item.id);
 
     await usersStore.newItem({ ...form })
     router.push('/users');
@@ -102,13 +78,7 @@ const reset = () => {
 
         form.userName = '';
 
-        form.createdBy = '';
-
-        form.updatedBy = '';
-
         form.roleId = '';
-
-        form.permissions = [];
 
 }
 
@@ -116,20 +86,8 @@ const cancel = () => {
   router.push('/users')
 }
 
-    async function searchCreatedBy(val) {
-      await usersStore.searchCreatedBy(val);
-    }
-
-    async function searchUpdatedBy(val) {
-      await usersStore.searchUpdatedBy(val);
-    }
-
     async function searchRoleId(val) {
       await usersStore.searchRoleId(val);
-    }
-
-    async function searchPermissions(val) {
-      await usersStore.searchPermissions(val);
     }
 
 watch(() => usersStore.notify.showNotification, (newValue, oldValue) => {
@@ -217,26 +175,6 @@ watch(() => usersStore.notify.showNotification, (newValue, oldValue) => {
     </FormField>
 
   <FormField
-      label="Created By"
-    >
-        <v-select
-          v-model="form.createdBy"
-          :options="optionsCreatedBy"
-          @input="searchCreatedBy($event.target.value)"
-        />
-  </FormField>
-
-  <FormField
-      label="Updated By"
-    >
-        <v-select
-          v-model="form.updatedBy"
-          :options="optionsUpdatedBy"
-          @input="searchUpdatedBy($event.target.value)"
-        />
-  </FormField>
-
-  <FormField
       label="Role "
     >
         <v-select
@@ -245,17 +183,6 @@ watch(() => usersStore.notify.showNotification, (newValue, oldValue) => {
           @input="searchRoleId($event.target.value)"
         />
   </FormField>
-
-    <FormField
-        label="Permissions"
-      >
-        <v-select
-          v-model="form.permissions"
-          :options="optionsPermissions"
-          multiple
-          @input="searchPermissions($event.target.value)"
-        />
-    </FormField>
 
     <BaseDivider />
 

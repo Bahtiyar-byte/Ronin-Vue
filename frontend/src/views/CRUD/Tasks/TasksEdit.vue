@@ -32,8 +32,6 @@ const notification = computed(() => tasksStore.notify)
 
       const optionsPriority = [{id: 0, label: 'High'},{id: 1, label: 'Medium'},{id: 2, label: 'Low'},]
 
-        const optionsCreatedBy = computed(() => tasksStore.searchResultCreatedBy);
-
 const tasksItem = computed(() => tasksStore.data);
 
 const form = reactive({
@@ -54,8 +52,6 @@ const form = reactive({
 
       completed: false,
 
-      createdBy: '',
-
 })
 
 const submit = async () => {
@@ -68,8 +64,6 @@ const submit = async () => {
             form.jobId = form.jobId?.id;
 
             form.priority = form.priority.label;
-
-            form.createdBy = form.createdBy?.id;
 
     await tasksStore.edit({id: route.params.id, data: {...form} })
     router.push('/tasks');
@@ -86,8 +80,6 @@ onBeforeMount(async () => {
   await searchAppointmentId();
 
   await searchJobId();
-
-  await searchCreatedBy();
 
     await tasksStore.fetch(route.params.id)
     formatData();
@@ -109,10 +101,6 @@ onBeforeMount(async () => {
       await tasksStore.searchJobId(val);
     }
 
-    async function searchCreatedBy(val) {
-      await tasksStore.searchCreatedBy(val);
-    }
-
 const formatData = () => {
 
     form.subject = tasksItem.value.subject
@@ -128,8 +116,6 @@ const formatData = () => {
     form.description = tasksItem.value.description
 
     form.priority = optionsPriority.find(el => el.label === tasksItem.value.priority)
-
-    form.createdBy = dataFormatter.usersOneListFormatterEdit(tasksItem.value.createdBy)
 
 }
 
@@ -239,16 +225,6 @@ const cancel = () => {
         :options="{ completed: form.completed ? 'Enabled' : 'Disabled' }"
       />
     </FormField>
-
-  <FormField
-      label="Created By"
-    >
-      <v-select
-        v-model="form.createdBy"
-        :options="optionsCreatedBy"
-        @input="searchCreatedBy($event.target.value)"
-      />
-  </FormField>
 
     <BaseDivider />
 

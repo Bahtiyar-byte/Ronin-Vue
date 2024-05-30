@@ -24,7 +24,7 @@ const titleStack = ref(['Admin', 'Templates'])
 const filters = ref([]);
 const filtersList = [{label: 'Name', title: 'name'},{label: 'Description', title: 'description'},
 
-          {label: 'Trade', title: 'tradeId'},{label: 'Created By', title: 'createdBy'},{label: 'Updated By', title: 'updatedBy'},];
+          {label: 'Trade', title: 'tradeId'},];
 const showFilters = ref(false);
 
 const query = ref('');

@@ -25,7 +25,7 @@ const filters = ref([]);
 const filtersList = [{label: 'Name', title: 'name'},{label: 'Body', title: 'body'},
 
           {label: 'Amount', title: 'amount', number: 'true'},
-          {label: 'Contact ', title: 'contactId'},{label: 'Job ', title: 'jobId'},{label: 'Created By', title: 'createdBy'},];
+          {label: 'Contact ', title: 'contactId'},{label: 'Job ', title: 'jobId'},];
 const showFilters = ref(false);
 
 const query = ref('');

@@ -37,8 +37,7 @@ const headers = [
 { text: 'Job ', value: 'jobId'},
 { text: 'Name', value: 'name'},
 { text: 'Active', value: 'active'},
-{ text: 'File Type', value: 'fileType'},
-{ text: 'Created By', value: 'createdBy'},]
+{ text: 'File Type', value: 'fileType'},]
 const isModalActive = ref(false)
 
 const isModalDangerActive = ref(false)
@@ -173,11 +172,6 @@ const sort = (title) => {
         @click="sort('fileType')"
       >File Type</th>
 
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'createdBy' && props.sortDirection]"
-        @click="sort('createdBy')"
-      >Created By</th>
-
         <th />
       </tr>
     </thead>
@@ -214,10 +208,6 @@ const sort = (title) => {
                     {{ i.name }}
                   </a>              
               </td>   
-
-              <td data-label="createdBy">
-                {{ dataFormatter.usersOneListFormatter(client.createdBy) }}
-              </td>
 
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons

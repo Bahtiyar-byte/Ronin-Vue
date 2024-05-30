@@ -24,7 +24,7 @@ const titleStack = ref(['Admin', 'Addresses'])
 const filters = ref([]);
 const filtersList = [{label: 'Street', title: 'street'},{label: 'Suite/Apt/Unit', title: 'suite_apt_unit'},{label: 'City', title: 'city'},{label: 'Zip', title: 'zip'},{label: 'Country', title: 'country'},
 
-          {label: 'Contact ', title: 'contactId'},{label: 'Job ', title: 'jobId'},{label: 'Created By', title: 'createdBy'},];
+          {label: 'Contact ', title: 'contactId'},{label: 'Job ', title: 'jobId'},];
 const showFilters = ref(false);
 
 const query = ref('');

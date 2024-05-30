@@ -30,8 +30,6 @@ const notification = computed(() => addressesStore.notify)
 
       const optionsState = [{id: 0, label: 'AL'},{id: 1, label: 'AK'},{id: 2, label: 'AZ'},{id: 3, label: 'AR'},{id: 4, label: 'CA'},]
 
-        const optionsCreatedBy = computed(() => addressesStore.searchResultCreatedBy);
-
 const addressesItem = computed(() => addressesStore.data);
 
 const form = reactive({
@@ -54,8 +52,6 @@ const form = reactive({
 
     type: false,
 
-      createdBy: '',
-
 })
 
 const submit = async () => {
@@ -66,8 +62,6 @@ const submit = async () => {
             form.jobId = form.jobId?.id;
 
             form.state = form.state.label;
-
-            form.createdBy = form.createdBy?.id;
 
     await addressesStore.edit({id: route.params.id, data: {...form} })
     router.push('/addresses');
@@ -83,8 +77,6 @@ onBeforeMount(async () => {
 
   await searchJobId();
 
-  await searchCreatedBy();
-
     await addressesStore.fetch(route.params.id)
     formatData();
   } catch (e) {
@@ -99,10 +91,6 @@ onBeforeMount(async () => {
 
     async function searchJobId(val) {
       await addressesStore.searchJobId(val);
-    }
-
-    async function searchCreatedBy(val) {
-      await addressesStore.searchCreatedBy(val);
     }
 
 const formatData = () => {
@@ -124,8 +112,6 @@ const formatData = () => {
     form.country = addressesItem.value.country
 
     form.type = addressesItem.value.type
-
-    form.createdBy = dataFormatter.usersOneListFormatterEdit(addressesItem.value.createdBy)
 
 }
 
@@ -246,16 +232,6 @@ const cancel = () => {
 
       />
     </FormField>
-
-  <FormField
-      label="Created By"
-    >
-      <v-select
-        v-model="form.createdBy"
-        :options="optionsCreatedBy"
-        @input="searchCreatedBy($event.target.value)"
-      />
-  </FormField>
 
     <BaseDivider />
 

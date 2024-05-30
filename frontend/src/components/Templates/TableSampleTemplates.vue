@@ -36,9 +36,7 @@ const headers = [
 
 { text: 'Name', value: 'name'},
 { text: 'Description', value: 'description'},
-{ text: 'Trade', value: 'tradeId'},
-{ text: 'Created By', value: 'createdBy'},
-{ text: 'Updated By', value: 'updatedBy'},]
+{ text: 'Trade', value: 'tradeId'},]
 const isModalActive = ref(false)
 
 const isModalDangerActive = ref(false)
@@ -168,16 +166,6 @@ const sort = (title) => {
         @click="sort('tradeId')"
       >Trade</th>
 
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'createdBy' && props.sortDirection]"
-        @click="sort('createdBy')"
-      >Created By</th>
-
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'updatedBy' && props.sortDirection]"
-        @click="sort('updatedBy')"
-      >Updated By</th>
-
         <th />
       </tr>
     </thead>
@@ -202,14 +190,6 @@ const sort = (title) => {
 
               <td data-label="tradeId">
                 {{ dataFormatter.tradesOneListFormatter(client.tradeId) }}
-              </td>
-
-              <td data-label="createdBy">
-                {{ dataFormatter.usersOneListFormatter(client.createdBy) }}
-              </td>
-
-              <td data-label="updatedBy">
-                {{ dataFormatter.usersOneListFormatter(client.updatedBy) }}
               </td>
 
         <td class="before:hidden lg:w-1 whitespace-nowrap">

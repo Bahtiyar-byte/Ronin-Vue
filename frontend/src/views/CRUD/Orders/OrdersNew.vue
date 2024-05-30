@@ -26,8 +26,6 @@ const titleStack = ref(['Admin', 'Orders'])
 
         const optionsEstimateId = computed(() => ordersStore.searchResultEstimateId);
 
-        const optionsCreatedBy = computed(() => ordersStore.searchResultCreatedBy);
-
 const form = reactive({
 
       jobId: '',
@@ -38,8 +36,6 @@ const form = reactive({
 
       totalAmount: '',
 
-      createdBy: '',
-
 })
 
 onBeforeMount(async () => {
@@ -47,8 +43,6 @@ onBeforeMount(async () => {
   await searchJobId();
 
   await searchEstimateId();
-
-  await searchCreatedBy();
 
 })
 
@@ -58,8 +52,6 @@ const submit = async () => {
             form.jobId = form.jobId.id;
 
             form.estimateId = form.estimateId.id;
-
-            form.createdBy = form.createdBy.id;
 
     await ordersStore.newItem({ ...form })
     router.push('/orders');
@@ -78,8 +70,6 @@ const reset = () => {
 
         form.totalAmount = '';
 
-        form.createdBy = '';
-
 }
 
 const cancel = () => {
@@ -92,10 +82,6 @@ const cancel = () => {
 
     async function searchEstimateId(val) {
       await ordersStore.searchEstimateId(val);
-    }
-
-    async function searchCreatedBy(val) {
-      await ordersStore.searchCreatedBy(val);
     }
 
 watch(() => ordersStore.notify.showNotification, (newValue, oldValue) => {
@@ -160,16 +146,6 @@ watch(() => ordersStore.notify.showNotification, (newValue, oldValue) => {
         placeholder="Your Total Amount"
       />
     </FormField>
-
-  <FormField
-      label="Created By"
-    >
-        <v-select
-          v-model="form.createdBy"
-          :options="optionsCreatedBy"
-          @input="searchCreatedBy($event.target.value)"
-        />
-  </FormField>
 
     <BaseDivider />
 

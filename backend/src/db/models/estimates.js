@@ -78,22 +78,6 @@ module.exports = function (sequelize, DataTypes) {
 
     db.estimates.belongsTo(db.users, {
       as: 'createdBy',
-      foreignKey: {
-        name: 'createdById',
-      },
-      constraints: false,
-    });
-
-    db.estimates.belongsTo(db.users, {
-      as: 'updatedBy',
-      foreignKey: {
-        name: 'updatedById',
-      },
-      constraints: false,
-    });
-
-    db.estimates.belongsTo(db.users, {
-      as: 'createdBy',
     });
 
     db.estimates.belongsTo(db.users, {

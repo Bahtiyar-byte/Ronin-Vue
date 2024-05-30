@@ -24,10 +24,6 @@ const titleStack = ref(['Admin', 'Invoices'])
 
         const optionsJobId = computed(() => invoicesStore.searchResultJobId);
 
-        const optionsCreatedBy = computed(() => invoicesStore.searchResultCreatedBy);
-
-        const optionsUpdatedBy = computed(() => invoicesStore.searchResultUpdatedBy);
-
 const form = reactive({
 
       invoiceNumber: '',
@@ -45,19 +41,11 @@ const form = reactive({
 
       jobId: '',
 
-      createdBy: '',
-
-      updatedBy: '',
-
 })
 
 onBeforeMount(async () => {
 
   await searchJobId();
-
-  await searchCreatedBy();
-
-  await searchUpdatedBy();
 
 })
 
@@ -67,10 +55,6 @@ const submit = async () => {
             form.terms = form.terms.label;
 
             form.jobId = form.jobId.id;
-
-            form.createdBy = form.createdBy.id;
-
-            form.updatedBy = form.updatedBy.id;
 
     await invoicesStore.newItem({ ...form })
     router.push('/invoices');
@@ -96,10 +80,6 @@ const reset = () => {
 
         form.jobId = '';
 
-        form.createdBy = '';
-
-        form.updatedBy = '';
-
 }
 
 const cancel = () => {
@@ -108,14 +88,6 @@ const cancel = () => {
 
     async function searchJobId(val) {
       await invoicesStore.searchJobId(val);
-    }
-
-    async function searchCreatedBy(val) {
-      await invoicesStore.searchCreatedBy(val);
-    }
-
-    async function searchUpdatedBy(val) {
-      await invoicesStore.searchUpdatedBy(val);
     }
 
 watch(() => invoicesStore.notify.showNotification, (newValue, oldValue) => {
@@ -213,26 +185,6 @@ watch(() => invoicesStore.notify.showNotification, (newValue, oldValue) => {
           v-model="form.jobId"
           :options="optionsJobId"
           @input="searchJobId($event.target.value)"
-        />
-  </FormField>
-
-  <FormField
-      label="Created By"
-    >
-        <v-select
-          v-model="form.createdBy"
-          :options="optionsCreatedBy"
-          @input="searchCreatedBy($event.target.value)"
-        />
-  </FormField>
-
-  <FormField
-      label="Updated By"
-    >
-        <v-select
-          v-model="form.updatedBy"
-          :options="optionsUpdatedBy"
-          @input="searchUpdatedBy($event.target.value)"
         />
   </FormField>
 

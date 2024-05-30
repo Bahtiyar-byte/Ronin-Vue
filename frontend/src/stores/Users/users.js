@@ -11,13 +11,7 @@ export const useUsersStore = defineStore('users', {
       typeNotification: 'warn',
     },
 
-            searchResultCreatedBy: [],
-
-            searchResultUpdatedBy: [],
-
             searchResultRoleId: [],
-
-            searchResultPermissions: [],
 
   }),
   actions: {
@@ -71,40 +65,6 @@ export const useUsersStore = defineStore('users', {
       }
     },
 
-            async searchCreatedBy(val) {
-              try {
-                if (val) {
-                  const result = await axios(
-                    `/users/autocomplete?query=${val}&limit=100`,
-                  );
-                  this.setCreatedBy(result.data);
-                } else {
-                  const result = await axios(`/users/autocomplete?limit=100`);
-                  this.setCreatedBy(result.data);
-                }
-              } catch (e) {
-                this.showNotification(e, 'error')
-                this.setCreatedBy([]);
-              }
-            },
-
-            async searchUpdatedBy(val) {
-              try {
-                if (val) {
-                  const result = await axios(
-                    `/users/autocomplete?query=${val}&limit=100`,
-                  );
-                  this.setUpdatedBy(result.data);
-                } else {
-                  const result = await axios(`/users/autocomplete?limit=100`);
-                  this.setUpdatedBy(result.data);
-                }
-              } catch (e) {
-                this.showNotification(e, 'error')
-                this.setUpdatedBy([]);
-              }
-            },
-
             async searchRoleId(val) {
               try {
                 if (val) {
@@ -119,23 +79,6 @@ export const useUsersStore = defineStore('users', {
               } catch (e) {
                 this.showNotification(e, 'error')
                 this.setRoleId([]);
-              }
-            },
-
-            async searchPermissions(val) {
-              try {
-                if (val) {
-                  const result = await axios(
-                    `/permissions/autocomplete?query=${val}&limit=100`,
-                  );
-                  this.setPermissions(result.data);
-                } else {
-                  const result = await axios(`/permissions/autocomplete?limit=100`);
-                  this.setPermissions(result.data);
-                }
-              } catch (e) {
-                this.showNotification(e, 'error')
-                this.setPermissions([]);
               }
             },
 
@@ -158,20 +101,8 @@ export const useUsersStore = defineStore('users', {
       this.notify.textNotification = ''
     },
 
-        setCreatedBy(payload) {
-            this.searchResultCreatedBy = payload
-        },
-
-        setUpdatedBy(payload) {
-            this.searchResultUpdatedBy = payload
-        },
-
         setRoleId(payload) {
             this.searchResultRoleId = payload
-        },
-
-        setPermissions(payload) {
-            this.searchResultPermissions = payload
         },
 
   }

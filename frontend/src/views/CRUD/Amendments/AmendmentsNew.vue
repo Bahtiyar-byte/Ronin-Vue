@@ -24,8 +24,6 @@ const titleStack = ref(['Admin', 'Amendments'])
 
         const optionsJobId = computed(() => amendmentsStore.searchResultJobId);
 
-        const optionsCreatedBy = computed(() => amendmentsStore.searchResultCreatedBy);
-
 const form = reactive({
 
       jobId: '',
@@ -36,15 +34,11 @@ const form = reactive({
 
     description: '',
 
-      createdBy: '',
-
 })
 
 onBeforeMount(async () => {
 
   await searchJobId();
-
-  await searchCreatedBy();
 
 })
 
@@ -54,8 +48,6 @@ const submit = async () => {
             form.jobId = form.jobId.id;
 
             form.type = form.type.label;
-
-            form.createdBy = form.createdBy.id;
 
     await amendmentsStore.newItem({ ...form })
     router.push('/amendments');
@@ -74,8 +66,6 @@ const reset = () => {
 
       form.description = '';
 
-        form.createdBy = '';
-
 }
 
 const cancel = () => {
@@ -84,10 +74,6 @@ const cancel = () => {
 
     async function searchJobId(val) {
       await amendmentsStore.searchJobId(val);
-    }
-
-    async function searchCreatedBy(val) {
-      await amendmentsStore.searchCreatedBy(val);
     }
 
 watch(() => amendmentsStore.notify.showNotification, (newValue, oldValue) => {
@@ -155,16 +141,6 @@ watch(() => amendmentsStore.notify.showNotification, (newValue, oldValue) => {
         placeholder="Your Description"
         />
     </FormField>
-
-  <FormField
-      label="Created By"
-    >
-        <v-select
-          v-model="form.createdBy"
-          :options="optionsCreatedBy"
-          @input="searchCreatedBy($event.target.value)"
-        />
-  </FormField>
 
     <BaseDivider />
 

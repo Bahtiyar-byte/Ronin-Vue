@@ -24,13 +24,7 @@ const usersStore = useUsersStore()
 const titleStack = ref(['Admin', 'Users'])
 const notification = computed(() => usersStore.notify)
 
-        const optionsCreatedBy = computed(() => usersStore.searchResultCreatedBy);
-
-        const optionsUpdatedBy = computed(() => usersStore.searchResultUpdatedBy);
-
         const optionsRoleId = computed(() => usersStore.searchResultRoleId);
-
-        const optionsPermissions = computed(() => usersStore.searchResultPermissions);
 
 const usersItem = computed(() => usersStore.data);
 
@@ -50,26 +44,14 @@ const form = reactive({
 
     userName: '',
 
-      createdBy: '',
-
-      updatedBy: '',
-
       roleId: '',
-
-      permissions: [],
 
 })
 
 const submit = async () => {
   try {
 
-            form.createdBy = form.createdBy?.id;
-
-            form.updatedBy = form.updatedBy?.id;
-
             form.roleId = form.roleId?.id;
-
-            form.permissions = form.permissions.map(item => item.id);
 
     await usersStore.edit({id: route.params.id, data: {...form} })
     router.push('/users');
@@ -81,13 +63,7 @@ const submit = async () => {
 onBeforeMount(async () => {
   try {
 
-  await searchCreatedBy();
-
-  await searchUpdatedBy();
-
   await searchRoleId();
-
-  await searchPermissions();
 
     await usersStore.fetch(route.params.id)
     formatData();
@@ -97,20 +73,8 @@ onBeforeMount(async () => {
   }
 })
 
-    async function searchCreatedBy(val) {
-      await usersStore.searchCreatedBy(val);
-    }
-
-    async function searchUpdatedBy(val) {
-      await usersStore.searchUpdatedBy(val);
-    }
-
     async function searchRoleId(val) {
       await usersStore.searchRoleId(val);
-    }
-
-    async function searchPermissions(val) {
-      await usersStore.searchPermissions(val);
     }
 
 const formatData = () => {
@@ -127,13 +91,7 @@ const formatData = () => {
 
     form.userName = usersItem.value.userName
 
-    form.createdBy = dataFormatter.usersOneListFormatterEdit(usersItem.value.createdBy)
-
-    form.updatedBy = dataFormatter.usersOneListFormatterEdit(usersItem.value.updatedBy)
-
     form.roleId = dataFormatter.rolesOneListFormatterEdit(usersItem.value.roleId)
-
-    form.permissions = dataFormatter.permissionsManyListFormatterEdit(usersItem.value.permissions)
 
 form.password = usersItem.value.password
 
@@ -232,26 +190,6 @@ const cancel = () => {
     </FormField>
 
   <FormField
-      label="Created By"
-    >
-      <v-select
-        v-model="form.createdBy"
-        :options="optionsCreatedBy"
-        @input="searchCreatedBy($event.target.value)"
-      />
-  </FormField>
-
-  <FormField
-      label="Updated By"
-    >
-      <v-select
-        v-model="form.updatedBy"
-        :options="optionsUpdatedBy"
-        @input="searchUpdatedBy($event.target.value)"
-      />
-  </FormField>
-
-  <FormField
       label="Role "
     >
       <v-select
@@ -260,17 +198,6 @@ const cancel = () => {
         @input="searchRoleId($event.target.value)"
       />
   </FormField>
-
-    <FormField
-        label="Permissions"
-      >
-        <v-select
-          v-model="form.permissions"
-          :options="optionsPermissions"
-          multiple
-          @input="searchPermissions($event.target.value)"
-        />
-    </FormField>
 
     <BaseDivider />
 

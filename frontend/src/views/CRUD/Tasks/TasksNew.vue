@@ -28,8 +28,6 @@ const titleStack = ref(['Admin', 'Tasks'])
 
         const optionsJobId = computed(() => tasksStore.searchResultJobId);
 
-        const optionsCreatedBy = computed(() => tasksStore.searchResultCreatedBy);
-
 const form = reactive({
 
       subject: '',
@@ -48,8 +46,6 @@ const form = reactive({
 
       completed: false,
 
-      createdBy: '',
-
 })
 
 onBeforeMount(async () => {
@@ -59,8 +55,6 @@ onBeforeMount(async () => {
   await searchAppointmentId();
 
   await searchJobId();
-
-  await searchCreatedBy();
 
 })
 
@@ -74,8 +68,6 @@ const submit = async () => {
             form.jobId = form.jobId.id;
 
             form.priority = form.priority.label;
-
-            form.createdBy = form.createdBy.id;
 
     await tasksStore.newItem({ ...form })
     router.push('/tasks');
@@ -102,8 +94,6 @@ const reset = () => {
 
         form.completed = false;
 
-        form.createdBy = '';
-
 }
 
 const cancel = () => {
@@ -120,10 +110,6 @@ const cancel = () => {
 
     async function searchJobId(val) {
       await tasksStore.searchJobId(val);
-    }
-
-    async function searchCreatedBy(val) {
-      await tasksStore.searchCreatedBy(val);
     }
 
 watch(() => tasksStore.notify.showNotification, (newValue, oldValue) => {
@@ -227,16 +213,6 @@ watch(() => tasksStore.notify.showNotification, (newValue, oldValue) => {
         :options="{ completed: form.completed ? 'Enabled' : 'Disabled' }"
       />
     </FormField>
-
-  <FormField
-      label="Created By"
-    >
-        <v-select
-          v-model="form.createdBy"
-          :options="optionsCreatedBy"
-          @input="searchCreatedBy($event.target.value)"
-        />
-  </FormField>
 
     <BaseDivider />
 

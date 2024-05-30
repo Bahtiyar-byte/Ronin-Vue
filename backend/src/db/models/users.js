@@ -86,45 +86,12 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   users.associate = (db) => {
-    db.users.belongsToMany(db.permissions, {
-      as: 'permissions',
-      foreignKey: {
-        name: 'users_permissionsId',
-      },
-      constraints: false,
-      through: 'usersPermissionsPermissions',
-    });
-
     /// loop through entities and it's fields, and if ref === current e[name] and create relation has many on parent entity
 
     db.users.hasMany(db.contacts, {
       as: 'contacts_assignedUserId',
       foreignKey: {
         name: 'assignedUserIdId',
-      },
-      constraints: false,
-    });
-
-    db.users.hasMany(db.contacts, {
-      as: 'contacts_createdBy',
-      foreignKey: {
-        name: 'createdById',
-      },
-      constraints: false,
-    });
-
-    db.users.hasMany(db.contacts, {
-      as: 'contacts_updatedBy',
-      foreignKey: {
-        name: 'updatedById',
-      },
-      constraints: false,
-    });
-
-    db.users.hasMany(db.addresses, {
-      as: 'addresses_createdBy',
-      foreignKey: {
-        name: 'createdById',
       },
       constraints: false,
     });
@@ -137,78 +104,6 @@ module.exports = function (sequelize, DataTypes) {
       constraints: false,
     });
 
-    db.users.hasMany(db.jobs, {
-      as: 'jobs_createdBy',
-      foreignKey: {
-        name: 'createdById',
-      },
-      constraints: false,
-    });
-
-    db.users.hasMany(db.jobs, {
-      as: 'jobs_updatedBy',
-      foreignKey: {
-        name: 'updatedById',
-      },
-      constraints: false,
-    });
-
-    db.users.hasMany(db.estimates, {
-      as: 'estimates_createdBy',
-      foreignKey: {
-        name: 'createdById',
-      },
-      constraints: false,
-    });
-
-    db.users.hasMany(db.estimates, {
-      as: 'estimates_updatedBy',
-      foreignKey: {
-        name: 'updatedById',
-      },
-      constraints: false,
-    });
-
-    db.users.hasMany(db.templates, {
-      as: 'templates_createdBy',
-      foreignKey: {
-        name: 'createdById',
-      },
-      constraints: false,
-    });
-
-    db.users.hasMany(db.templates, {
-      as: 'templates_updatedBy',
-      foreignKey: {
-        name: 'updatedById',
-      },
-      constraints: false,
-    });
-
-    db.users.hasMany(db.invoices, {
-      as: 'invoices_createdBy',
-      foreignKey: {
-        name: 'createdById',
-      },
-      constraints: false,
-    });
-
-    db.users.hasMany(db.invoices, {
-      as: 'invoices_updatedBy',
-      foreignKey: {
-        name: 'updatedById',
-      },
-      constraints: false,
-    });
-
-    db.users.hasMany(db.orders, {
-      as: 'orders_createdBy',
-      foreignKey: {
-        name: 'createdById',
-      },
-      constraints: false,
-    });
-
     db.users.hasMany(db.images, {
       as: 'images_userId',
       foreignKey: {
@@ -217,34 +112,10 @@ module.exports = function (sequelize, DataTypes) {
       constraints: false,
     });
 
-    db.users.hasMany(db.images, {
-      as: 'images_createdBy',
-      foreignKey: {
-        name: 'createdById',
-      },
-      constraints: false,
-    });
-
-    db.users.hasMany(db.documents, {
-      as: 'documents_createdBy',
-      foreignKey: {
-        name: 'createdById',
-      },
-      constraints: false,
-    });
-
     db.users.hasMany(db.emails, {
       as: 'emails_userId',
       foreignKey: {
         name: 'userIdId',
-      },
-      constraints: false,
-    });
-
-    db.users.hasMany(db.emails, {
-      as: 'emails_createdBy',
-      foreignKey: {
-        name: 'createdById',
       },
       constraints: false,
     });
@@ -273,50 +144,10 @@ module.exports = function (sequelize, DataTypes) {
       constraints: false,
     });
 
-    db.users.hasMany(db.appointments, {
-      as: 'appointments_createdBy',
-      foreignKey: {
-        name: 'createdById',
-      },
-      constraints: false,
-    });
-
-    db.users.hasMany(db.appointments, {
-      as: 'appointments_updatedBy',
-      foreignKey: {
-        name: 'updatedById',
-      },
-      constraints: false,
-    });
-
     db.users.hasMany(db.tasks, {
       as: 'tasks_assignedToUserId',
       foreignKey: {
         name: 'assignedToUserIdId',
-      },
-      constraints: false,
-    });
-
-    db.users.hasMany(db.tasks, {
-      as: 'tasks_createdBy',
-      foreignKey: {
-        name: 'createdById',
-      },
-      constraints: false,
-    });
-
-    db.users.hasMany(db.contracts, {
-      as: 'contracts_createdBy',
-      foreignKey: {
-        name: 'createdById',
-      },
-      constraints: false,
-    });
-
-    db.users.hasMany(db.amendments, {
-      as: 'amendments_createdBy',
-      foreignKey: {
-        name: 'createdById',
       },
       constraints: false,
     });
@@ -327,22 +158,6 @@ module.exports = function (sequelize, DataTypes) {
       as: 'imageId',
       foreignKey: {
         name: 'imageIdId',
-      },
-      constraints: false,
-    });
-
-    db.users.belongsTo(db.users, {
-      as: 'createdBy',
-      foreignKey: {
-        name: 'createdById',
-      },
-      constraints: false,
-    });
-
-    db.users.belongsTo(db.users, {
-      as: 'updatedBy',
-      foreignKey: {
-        name: 'updatedById',
       },
       constraints: false,
     });

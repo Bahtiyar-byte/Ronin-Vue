@@ -43,9 +43,7 @@ const headers = [
 { text: 'Description', value: 'description'},
 { text: 'Contact ', value: 'contactId'},
 { text: 'Order ', value: 'orderId'},
-{ text: 'Assigned User ', value: 'assignedUserId'},
-{ text: 'Created By', value: 'createdBy'},
-{ text: 'Updated By', value: 'updatedBy'},]
+{ text: 'Assigned User ', value: 'assignedUserId'},]
 const isModalActive = ref(false)
 
 const isModalDangerActive = ref(false)
@@ -210,16 +208,6 @@ const sort = (title) => {
         @click="sort('assignedUserId')"
       >Assigned User </th>
 
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'createdBy' && props.sortDirection]"
-        @click="sort('createdBy')"
-      >Created By</th>
-
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'updatedBy' && props.sortDirection]"
-        @click="sort('updatedBy')"
-      >Updated By</th>
-
         <th />
       </tr>
     </thead>
@@ -272,14 +260,6 @@ const sort = (title) => {
 
               <td data-label="assignedUserId">
                 {{ dataFormatter.usersOneListFormatter(client.assignedUserId) }}
-              </td>
-
-              <td data-label="createdBy">
-                {{ dataFormatter.usersOneListFormatter(client.createdBy) }}
-              </td>
-
-              <td data-label="updatedBy">
-                {{ dataFormatter.usersOneListFormatter(client.updatedBy) }}
               </td>
 
         <td class="before:hidden lg:w-1 whitespace-nowrap">

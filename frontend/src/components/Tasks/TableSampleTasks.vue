@@ -41,8 +41,7 @@ const headers = [
 { text: 'Job', value: 'jobId'},
 { text: 'Description', value: 'description'},
 { text: 'Priority', value: 'priority'},
-{ text: 'Completed', value: 'completed'},
-{ text: 'Created By', value: 'createdBy'},]
+{ text: 'Completed', value: 'completed'},]
 const isModalActive = ref(false)
 
 const isModalDangerActive = ref(false)
@@ -197,11 +196,6 @@ const sort = (title) => {
         @click="sort('completed')"
       >Completed</th>
 
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'createdBy' && props.sortDirection]"
-        @click="sort('createdBy')"
-      >Created By</th>
-
         <th />
       </tr>
     </thead>
@@ -247,10 +241,6 @@ const sort = (title) => {
               <td data-label="completed">
                 {{ dataFormatter.booleanFormatter(client.completed) }}
               </td>                                                      
-
-              <td data-label="createdBy">
-                {{ dataFormatter.usersOneListFormatter(client.createdBy) }}
-              </td>
 
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons

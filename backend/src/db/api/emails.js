@@ -40,10 +40,6 @@ module.exports = class EmailsDBApi {
       transaction,
     });
 
-    await emails.setCreatedBy(data.createdBy || null, {
-      transaction,
-    });
-
     return emails;
   }
 
@@ -103,10 +99,6 @@ module.exports = class EmailsDBApi {
     });
 
     await emails.setContactId(data.contactId || null, {
-      transaction,
-    });
-
-    await emails.setCreatedBy(data.createdBy || null, {
       transaction,
     });
 
@@ -183,10 +175,6 @@ module.exports = class EmailsDBApi {
       transaction,
     });
 
-    output.createdBy = await emails.getCreatedBy({
-      transaction,
-    });
-
     return output;
   }
 
@@ -215,11 +203,6 @@ module.exports = class EmailsDBApi {
       {
         model: db.contacts,
         as: 'contactId',
-      },
-
-      {
-        model: db.users,
-        as: 'createdBy',
       },
     ];
 
@@ -308,17 +291,6 @@ module.exports = class EmailsDBApi {
         where = {
           ...where,
           contactIdId: { [Op.or]: listItems },
-        };
-      }
-
-      if (filter.createdBy) {
-        var listItems = filter.createdBy.split('|').map((item) => {
-          return Utils.uuid(item);
-        });
-
-        where = {
-          ...where,
-          createdById: { [Op.or]: listItems },
         };
       }
 

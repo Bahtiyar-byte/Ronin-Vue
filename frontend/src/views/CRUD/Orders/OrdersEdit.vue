@@ -28,8 +28,6 @@ const notification = computed(() => ordersStore.notify)
 
         const optionsEstimateId = computed(() => ordersStore.searchResultEstimateId);
 
-        const optionsCreatedBy = computed(() => ordersStore.searchResultCreatedBy);
-
 const ordersItem = computed(() => ordersStore.data);
 
 const form = reactive({
@@ -42,8 +40,6 @@ const form = reactive({
 
     totalAmount: '',
 
-      createdBy: '',
-
 })
 
 const submit = async () => {
@@ -52,8 +48,6 @@ const submit = async () => {
             form.jobId = form.jobId?.id;
 
             form.estimateId = form.estimateId?.id;
-
-            form.createdBy = form.createdBy?.id;
 
     await ordersStore.edit({id: route.params.id, data: {...form} })
     router.push('/orders');
@@ -68,8 +62,6 @@ onBeforeMount(async () => {
   await searchJobId();
 
   await searchEstimateId();
-
-  await searchCreatedBy();
 
     await ordersStore.fetch(route.params.id)
     formatData();
@@ -87,10 +79,6 @@ onBeforeMount(async () => {
       await ordersStore.searchEstimateId(val);
     }
 
-    async function searchCreatedBy(val) {
-      await ordersStore.searchCreatedBy(val);
-    }
-
 const formatData = () => {
 
     form.jobId = dataFormatter.jobsOneListFormatterEdit(ordersItem.value.jobId)
@@ -100,8 +88,6 @@ const formatData = () => {
     form.orderNumber = ordersItem.value.orderNumber
 
     form.totalAmount = ordersItem.value.totalAmount
-
-    form.createdBy = dataFormatter.usersOneListFormatterEdit(ordersItem.value.createdBy)
 
 }
 
@@ -175,16 +161,6 @@ const cancel = () => {
         placeholder="Your Total Amount"
       />
     </FormField>
-
-  <FormField
-      label="Created By"
-    >
-      <v-select
-        v-model="form.createdBy"
-        :options="optionsCreatedBy"
-        @input="searchCreatedBy($event.target.value)"
-      />
-  </FormField>
 
     <BaseDivider />
 

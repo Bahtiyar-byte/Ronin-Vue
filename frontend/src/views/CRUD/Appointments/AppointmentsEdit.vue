@@ -30,10 +30,6 @@ const notification = computed(() => appointmentsStore.notify)
 
         const optionsJobId = computed(() => appointmentsStore.searchResultJobId);
 
-        const optionsCreatedBy = computed(() => appointmentsStore.searchResultCreatedBy);
-
-        const optionsUpdatedBy = computed(() => appointmentsStore.searchResultUpdatedBy);
-
 const appointmentsItem = computed(() => appointmentsStore.data);
 
 const form = reactive({
@@ -56,10 +52,6 @@ const form = reactive({
 
       reminder: '',
 
-      createdBy: '',
-
-      updatedBy: '',
-
 })
 
 const submit = async () => {
@@ -70,10 +62,6 @@ const submit = async () => {
             form.contactId = form.contactId?.id;
 
             form.jobId = form.jobId?.id;
-
-            form.createdBy = form.createdBy?.id;
-
-            form.updatedBy = form.updatedBy?.id;
 
     await appointmentsStore.edit({id: route.params.id, data: {...form} })
     router.push('/appointments');
@@ -90,10 +78,6 @@ onBeforeMount(async () => {
   await searchContactId();
 
   await searchJobId();
-
-  await searchCreatedBy();
-
-  await searchUpdatedBy();
 
     await appointmentsStore.fetch(route.params.id)
     formatData();
@@ -115,14 +99,6 @@ onBeforeMount(async () => {
       await appointmentsStore.searchJobId(val);
     }
 
-    async function searchCreatedBy(val) {
-      await appointmentsStore.searchCreatedBy(val);
-    }
-
-    async function searchUpdatedBy(val) {
-      await appointmentsStore.searchUpdatedBy(val);
-    }
-
 const formatData = () => {
 
     form.subject = appointmentsItem.value.subject
@@ -142,10 +118,6 @@ const formatData = () => {
     form.jobId = dataFormatter.jobsOneListFormatterEdit(appointmentsItem.value.jobId)
 
     form.reminder = dataFormatter.dateTimeFormatter(appointmentsItem.value.reminder)
-
-    form.createdBy = dataFormatter.usersOneListFormatterEdit(appointmentsItem.value.createdBy)
-
-    form.updatedBy = dataFormatter.usersOneListFormatterEdit(appointmentsItem.value.updatedBy)
 
 }
 
@@ -265,26 +237,6 @@ const cancel = () => {
         placeholder="Your Reminder"
       />
     </FormField>
-
-  <FormField
-      label="Created By"
-    >
-      <v-select
-        v-model="form.createdBy"
-        :options="optionsCreatedBy"
-        @input="searchCreatedBy($event.target.value)"
-      />
-  </FormField>
-
-  <FormField
-      label="Updated By"
-    >
-      <v-select
-        v-model="form.updatedBy"
-        :options="optionsUpdatedBy"
-        @input="searchUpdatedBy($event.target.value)"
-      />
-  </FormField>
 
     <BaseDivider />
 

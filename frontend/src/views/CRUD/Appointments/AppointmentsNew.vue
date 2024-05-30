@@ -28,10 +28,6 @@ const titleStack = ref(['Admin', 'Appointments'])
 
         const optionsJobId = computed(() => appointmentsStore.searchResultJobId);
 
-        const optionsCreatedBy = computed(() => appointmentsStore.searchResultCreatedBy);
-
-        const optionsUpdatedBy = computed(() => appointmentsStore.searchResultUpdatedBy);
-
 const form = reactive({
 
       subject: '',
@@ -52,10 +48,6 @@ const form = reactive({
 
       reminder: '',
 
-      createdBy: '',
-
-      updatedBy: '',
-
 })
 
 onBeforeMount(async () => {
@@ -65,10 +57,6 @@ onBeforeMount(async () => {
   await searchContactId();
 
   await searchJobId();
-
-  await searchCreatedBy();
-
-  await searchUpdatedBy();
 
 })
 
@@ -80,10 +68,6 @@ const submit = async () => {
             form.contactId = form.contactId.id;
 
             form.jobId = form.jobId.id;
-
-            form.createdBy = form.createdBy.id;
-
-            form.updatedBy = form.updatedBy.id;
 
     await appointmentsStore.newItem({ ...form })
     router.push('/appointments');
@@ -112,10 +96,6 @@ const reset = () => {
 
         form.reminder = '';
 
-        form.createdBy = '';
-
-        form.updatedBy = '';
-
 }
 
 const cancel = () => {
@@ -132,14 +112,6 @@ const cancel = () => {
 
     async function searchJobId(val) {
       await appointmentsStore.searchJobId(val);
-    }
-
-    async function searchCreatedBy(val) {
-      await appointmentsStore.searchCreatedBy(val);
-    }
-
-    async function searchUpdatedBy(val) {
-      await appointmentsStore.searchUpdatedBy(val);
     }
 
 watch(() => appointmentsStore.notify.showNotification, (newValue, oldValue) => {
@@ -250,26 +222,6 @@ watch(() => appointmentsStore.notify.showNotification, (newValue, oldValue) => {
         placeholder="Your Reminder"
       />
     </FormField>
-
-  <FormField
-      label="Created By"
-    >
-        <v-select
-          v-model="form.createdBy"
-          :options="optionsCreatedBy"
-          @input="searchCreatedBy($event.target.value)"
-        />
-  </FormField>
-
-  <FormField
-      label="Updated By"
-    >
-        <v-select
-          v-model="form.updatedBy"
-          :options="optionsUpdatedBy"
-          @input="searchUpdatedBy($event.target.value)"
-        />
-  </FormField>
 
     <BaseDivider />
 

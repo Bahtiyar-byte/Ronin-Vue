@@ -41,14 +41,6 @@ module.exports = class JobsDBApi {
       transaction,
     });
 
-    await jobs.setCreatedBy(data.createdBy || null, {
-      transaction,
-    });
-
-    await jobs.setUpdatedBy(data.updatedBy || null, {
-      transaction,
-    });
-
     return jobs;
   }
 
@@ -110,14 +102,6 @@ module.exports = class JobsDBApi {
     });
 
     await jobs.setAssignedUserId(data.assignedUserId || null, {
-      transaction,
-    });
-
-    await jobs.setCreatedBy(data.createdBy || null, {
-      transaction,
-    });
-
-    await jobs.setUpdatedBy(data.updatedBy || null, {
       transaction,
     });
 
@@ -242,14 +226,6 @@ module.exports = class JobsDBApi {
       transaction,
     });
 
-    output.createdBy = await jobs.getCreatedBy({
-      transaction,
-    });
-
-    output.updatedBy = await jobs.getUpdatedBy({
-      transaction,
-    });
-
     return output;
   }
 
@@ -278,16 +254,6 @@ module.exports = class JobsDBApi {
       {
         model: db.users,
         as: 'assignedUserId',
-      },
-
-      {
-        model: db.users,
-        as: 'createdBy',
-      },
-
-      {
-        model: db.users,
-        as: 'updatedBy',
       },
     ];
 
@@ -424,28 +390,6 @@ module.exports = class JobsDBApi {
         where = {
           ...where,
           assignedUserIdId: { [Op.or]: listItems },
-        };
-      }
-
-      if (filter.createdBy) {
-        var listItems = filter.createdBy.split('|').map((item) => {
-          return Utils.uuid(item);
-        });
-
-        where = {
-          ...where,
-          createdById: { [Op.or]: listItems },
-        };
-      }
-
-      if (filter.updatedBy) {
-        var listItems = filter.updatedBy.split('|').map((item) => {
-          return Utils.uuid(item);
-        });
-
-        where = {
-          ...where,
-          updatedById: { [Op.or]: listItems },
         };
       }
 

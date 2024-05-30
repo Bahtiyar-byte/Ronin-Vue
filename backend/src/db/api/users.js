@@ -46,19 +46,7 @@ module.exports = class UsersDBApi {
       transaction,
     });
 
-    await users.setCreatedBy(data.data.createdBy || null, {
-      transaction,
-    });
-
-    await users.setUpdatedBy(data.data.updatedBy || null, {
-      transaction,
-    });
-
     await users.setRoleId(data.data.roleId || null, {
-      transaction,
-    });
-
-    await users.setPermissions(data.data.permissions || [], {
       transaction,
     });
 
@@ -173,19 +161,7 @@ module.exports = class UsersDBApi {
       transaction,
     });
 
-    await users.setCreatedBy(data.createdBy || null, {
-      transaction,
-    });
-
-    await users.setUpdatedBy(data.updatedBy || null, {
-      transaction,
-    });
-
     await users.setRoleId(data.roleId || null, {
-      transaction,
-    });
-
-    await users.setPermissions(data.permissions || [], {
       transaction,
     });
 
@@ -264,55 +240,7 @@ module.exports = class UsersDBApi {
       transaction,
     });
 
-    output.contacts_createdBy = await users.getContacts_createdBy({
-      transaction,
-    });
-
-    output.contacts_updatedBy = await users.getContacts_updatedBy({
-      transaction,
-    });
-
-    output.addresses_createdBy = await users.getAddresses_createdBy({
-      transaction,
-    });
-
     output.jobs_assignedUserId = await users.getJobs_assignedUserId({
-      transaction,
-    });
-
-    output.jobs_createdBy = await users.getJobs_createdBy({
-      transaction,
-    });
-
-    output.jobs_updatedBy = await users.getJobs_updatedBy({
-      transaction,
-    });
-
-    output.estimates_createdBy = await users.getEstimates_createdBy({
-      transaction,
-    });
-
-    output.estimates_updatedBy = await users.getEstimates_updatedBy({
-      transaction,
-    });
-
-    output.templates_createdBy = await users.getTemplates_createdBy({
-      transaction,
-    });
-
-    output.templates_updatedBy = await users.getTemplates_updatedBy({
-      transaction,
-    });
-
-    output.invoices_createdBy = await users.getInvoices_createdBy({
-      transaction,
-    });
-
-    output.invoices_updatedBy = await users.getInvoices_updatedBy({
-      transaction,
-    });
-
-    output.orders_createdBy = await users.getOrders_createdBy({
       transaction,
     });
 
@@ -320,19 +248,7 @@ module.exports = class UsersDBApi {
       transaction,
     });
 
-    output.images_createdBy = await users.getImages_createdBy({
-      transaction,
-    });
-
-    output.documents_createdBy = await users.getDocuments_createdBy({
-      transaction,
-    });
-
     output.emails_userId = await users.getEmails_userId({
-      transaction,
-    });
-
-    output.emails_createdBy = await users.getEmails_createdBy({
       transaction,
     });
 
@@ -349,27 +265,7 @@ module.exports = class UsersDBApi {
         transaction,
       });
 
-    output.appointments_createdBy = await users.getAppointments_createdBy({
-      transaction,
-    });
-
-    output.appointments_updatedBy = await users.getAppointments_updatedBy({
-      transaction,
-    });
-
     output.tasks_assignedToUserId = await users.getTasks_assignedToUserId({
-      transaction,
-    });
-
-    output.tasks_createdBy = await users.getTasks_createdBy({
-      transaction,
-    });
-
-    output.contracts_createdBy = await users.getContracts_createdBy({
-      transaction,
-    });
-
-    output.amendments_createdBy = await users.getAmendments_createdBy({
       transaction,
     });
 
@@ -381,19 +277,7 @@ module.exports = class UsersDBApi {
       transaction,
     });
 
-    output.createdBy = await users.getCreatedBy({
-      transaction,
-    });
-
-    output.updatedBy = await users.getUpdatedBy({
-      transaction,
-    });
-
     output.roleId = await users.getRoleId({
-      transaction,
-    });
-
-    output.permissions = await users.getPermissions({
       transaction,
     });
 
@@ -418,33 +302,8 @@ module.exports = class UsersDBApi {
       },
 
       {
-        model: db.users,
-        as: 'createdBy',
-      },
-
-      {
-        model: db.users,
-        as: 'updatedBy',
-      },
-
-      {
         model: db.roles,
         as: 'roleId',
-      },
-
-      {
-        model: db.permissions,
-        as: 'permissions',
-        through: filter.permissions
-          ? {
-              where: {
-                [Op.or]: filter.permissions.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.permissions ? true : null,
       },
 
       {
@@ -614,28 +473,6 @@ module.exports = class UsersDBApi {
         where = {
           ...where,
           imageIdId: { [Op.or]: listItems },
-        };
-      }
-
-      if (filter.createdBy) {
-        var listItems = filter.createdBy.split('|').map((item) => {
-          return Utils.uuid(item);
-        });
-
-        where = {
-          ...where,
-          createdById: { [Op.or]: listItems },
-        };
-      }
-
-      if (filter.updatedBy) {
-        var listItems = filter.updatedBy.split('|').map((item) => {
-          return Utils.uuid(item);
-        });
-
-        where = {
-          ...where,
-          updatedById: { [Op.or]: listItems },
         };
       }
 

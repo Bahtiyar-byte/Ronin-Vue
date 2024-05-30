@@ -82,14 +82,6 @@ module.exports = function (sequelize, DataTypes) {
 
     db.addresses.belongsTo(db.users, {
       as: 'createdBy',
-      foreignKey: {
-        name: 'createdById',
-      },
-      constraints: false,
-    });
-
-    db.addresses.belongsTo(db.users, {
-      as: 'createdBy',
     });
 
     db.addresses.belongsTo(db.users, {

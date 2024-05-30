@@ -24,22 +24,16 @@ const rolesStore = useRolesStore()
 const titleStack = ref(['Admin', 'Roles'])
 const notification = computed(() => rolesStore.notify)
 
-        const optionsPermissions = computed(() => rolesStore.searchResultPermissions);
-
 const rolesItem = computed(() => rolesStore.data);
 
 const form = reactive({
 
     name: '',
 
-      permissions: [],
-
 })
 
 const submit = async () => {
   try {
-
-            form.permissions = form.permissions.map(item => item.id);
 
     await rolesStore.edit({id: route.params.id, data: {...form} })
     router.push('/roles');
@@ -51,8 +45,6 @@ const submit = async () => {
 onBeforeMount(async () => {
   try {
 
-  await searchPermissions();
-
     await rolesStore.fetch(route.params.id)
     formatData();
   } catch (e) {
@@ -61,15 +53,9 @@ onBeforeMount(async () => {
   }
 })
 
-    async function searchPermissions(val) {
-      await rolesStore.searchPermissions(val);
-    }
-
 const formatData = () => {
 
     form.name = rolesItem.value.name
-
-    form.permissions = dataFormatter.permissionsManyListFormatterEdit(rolesItem.value.permissions)
 
 }
 
@@ -111,17 +97,6 @@ const cancel = () => {
       <FormControl
         v-model="form.name"
         placeholder="Your Name"
-        />
-    </FormField>
-
-    <FormField
-        label="Permissions"
-      >
-        <v-select
-          v-model="form.permissions"
-          :options="optionsPermissions"
-          multiple
-          @input="searchPermissions($event.target.value)"
         />
     </FormField>
 

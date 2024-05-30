@@ -34,14 +34,6 @@ module.exports = class ContactsDBApi {
       transaction,
     });
 
-    await contacts.setCreatedBy(data.createdBy || null, {
-      transaction,
-    });
-
-    await contacts.setUpdatedBy(data.updatedBy || null, {
-      transaction,
-    });
-
     return contacts;
   }
 
@@ -99,14 +91,6 @@ module.exports = class ContactsDBApi {
     );
 
     await contacts.setAssignedUserId(data.assignedUserId || null, {
-      transaction,
-    });
-
-    await contacts.setCreatedBy(data.createdBy || null, {
-      transaction,
-    });
-
-    await contacts.setUpdatedBy(data.updatedBy || null, {
       transaction,
     });
 
@@ -199,14 +183,6 @@ module.exports = class ContactsDBApi {
       transaction,
     });
 
-    output.createdBy = await contacts.getCreatedBy({
-      transaction,
-    });
-
-    output.updatedBy = await contacts.getUpdatedBy({
-      transaction,
-    });
-
     return output;
   }
 
@@ -225,16 +201,6 @@ module.exports = class ContactsDBApi {
       {
         model: db.users,
         as: 'assignedUserId',
-      },
-
-      {
-        model: db.users,
-        as: 'createdBy',
-      },
-
-      {
-        model: db.users,
-        as: 'updatedBy',
       },
     ];
 
@@ -326,28 +292,6 @@ module.exports = class ContactsDBApi {
         where = {
           ...where,
           assignedUserIdId: { [Op.or]: listItems },
-        };
-      }
-
-      if (filter.createdBy) {
-        var listItems = filter.createdBy.split('|').map((item) => {
-          return Utils.uuid(item);
-        });
-
-        where = {
-          ...where,
-          createdById: { [Op.or]: listItems },
-        };
-      }
-
-      if (filter.updatedBy) {
-        var listItems = filter.updatedBy.split('|').map((item) => {
-          return Utils.uuid(item);
-        });
-
-        where = {
-          ...where,
-          updatedById: { [Op.or]: listItems },
         };
       }
 

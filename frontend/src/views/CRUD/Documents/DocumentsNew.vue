@@ -24,8 +24,6 @@ const titleStack = ref(['Admin', 'Documents'])
 
         const optionsJobId = computed(() => documentsStore.searchResultJobId);
 
-        const optionsCreatedBy = computed(() => documentsStore.searchResultCreatedBy);
-
 const form = reactive({
 
       jobId: '',
@@ -36,15 +34,11 @@ const form = reactive({
 
       fileType: [],
 
-      createdBy: '',
-
 })
 
 onBeforeMount(async () => {
 
   await searchJobId();
-
-  await searchCreatedBy();
 
 })
 
@@ -52,8 +46,6 @@ const submit = async () => {
   try {
 
             form.jobId = form.jobId.id;
-
-            form.createdBy = form.createdBy.id;
 
     await documentsStore.newItem({ ...form })
     router.push('/documents');
@@ -72,8 +64,6 @@ const reset = () => {
 
         form.fileType = [];
 
-        form.createdBy = '';
-
 }
 
 const cancel = () => {
@@ -82,10 +72,6 @@ const cancel = () => {
 
     async function searchJobId(val) {
       await documentsStore.searchJobId(val);
-    }
-
-    async function searchCreatedBy(val) {
-      await documentsStore.searchCreatedBy(val);
     }
 
 watch(() => documentsStore.notify.showNotification, (newValue, oldValue) => {
@@ -145,16 +131,6 @@ watch(() => documentsStore.notify.showNotification, (newValue, oldValue) => {
     >
       <FormFilePicker v-model="form.fileType" url="documents/fileType"/>
     </FormField>
-
-  <FormField
-      label="Created By"
-    >
-        <v-select
-          v-model="form.createdBy"
-          :options="optionsCreatedBy"
-          @input="searchCreatedBy($event.target.value)"
-        />
-  </FormField>
 
     <BaseDivider />
 

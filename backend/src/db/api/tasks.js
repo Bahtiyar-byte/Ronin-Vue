@@ -40,10 +40,6 @@ module.exports = class TasksDBApi {
       transaction,
     });
 
-    await tasks.setCreatedBy(data.createdBy || null, {
-      transaction,
-    });
-
     return tasks;
   }
 
@@ -103,10 +99,6 @@ module.exports = class TasksDBApi {
     });
 
     await tasks.setJobId(data.jobId || null, {
-      transaction,
-    });
-
-    await tasks.setCreatedBy(data.createdBy || null, {
       transaction,
     });
 
@@ -183,10 +175,6 @@ module.exports = class TasksDBApi {
       transaction,
     });
 
-    output.createdBy = await tasks.getCreatedBy({
-      transaction,
-    });
-
     return output;
   }
 
@@ -215,11 +203,6 @@ module.exports = class TasksDBApi {
       {
         model: db.jobs,
         as: 'jobId',
-      },
-
-      {
-        model: db.users,
-        as: 'createdBy',
       },
     ];
 
@@ -325,17 +308,6 @@ module.exports = class TasksDBApi {
         where = {
           ...where,
           jobIdId: { [Op.or]: listItems },
-        };
-      }
-
-      if (filter.createdBy) {
-        var listItems = filter.createdBy.split('|').map((item) => {
-          return Utils.uuid(item);
-        });
-
-        where = {
-          ...where,
-          createdById: { [Op.or]: listItems },
         };
       }
 

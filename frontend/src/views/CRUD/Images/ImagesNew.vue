@@ -28,8 +28,6 @@ const titleStack = ref(['Admin', 'Images'])
 
         const optionsDocumentId = computed(() => imagesStore.searchResultDocumentId);
 
-        const optionsCreatedBy = computed(() => imagesStore.searchResultCreatedBy);
-
 const form = reactive({
 
       name: '',
@@ -39,8 +37,6 @@ const form = reactive({
       userId: '',
 
       documentId: '',
-
-      createdBy: '',
 
 })
 
@@ -52,8 +48,6 @@ onBeforeMount(async () => {
 
   await searchDocumentId();
 
-  await searchCreatedBy();
-
 })
 
 const submit = async () => {
@@ -64,8 +58,6 @@ const submit = async () => {
             form.userId = form.userId.id;
 
             form.documentId = form.documentId.id;
-
-            form.createdBy = form.createdBy.id;
 
     await imagesStore.newItem({ ...form })
     router.push('/images');
@@ -84,8 +76,6 @@ const reset = () => {
 
         form.documentId = '';
 
-        form.createdBy = '';
-
 }
 
 const cancel = () => {
@@ -102,10 +92,6 @@ const cancel = () => {
 
     async function searchDocumentId(val) {
       await imagesStore.searchDocumentId(val);
-    }
-
-    async function searchCreatedBy(val) {
-      await imagesStore.searchCreatedBy(val);
     }
 
 watch(() => imagesStore.notify.showNotification, (newValue, oldValue) => {
@@ -168,16 +154,6 @@ watch(() => imagesStore.notify.showNotification, (newValue, oldValue) => {
           v-model="form.documentId"
           :options="optionsDocumentId"
           @input="searchDocumentId($event.target.value)"
-        />
-  </FormField>
-
-  <FormField
-      label="Created By"
-    >
-        <v-select
-          v-model="form.createdBy"
-          :options="optionsCreatedBy"
-          @input="searchCreatedBy($event.target.value)"
         />
   </FormField>
 
