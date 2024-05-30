@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import * as Vue from 'vue'
+import { ref, watch } from 'vue'
 import { debounce } from 'lodash'
-import ItemsManage from '@/components/common/CRUD/ItemsManage.vue'
 import { useContacts } from '@/composables/useContacts'
 import type { SortItem } from '@core/types'
 import type Contact from '@/types/contacts/Contact'
 import type { CheckboxFilterItem } from '@/types/filters/interfaces'
 
-const { ref, watch } = Vue
+import ItemsManage from '@/components/common/CRUD/ItemsManage.vue'
+import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
 
 const items = ref<Contact[]>([])
 const { getList, deleteContact } = useContacts()
@@ -85,9 +85,25 @@ watch([
 ], debouncedFetchData, { immediate: true })
 
 const selectedItems = ref<[]>()
+const deletionDialogOptions = ref<{
+  visible: boolean
+  onAccept: () => Promise<void>
+}>({
+  visible: false,
+  onAccept: async () => {},
+})
 
-const handleOtemDeletion = async (contact: Contact) => {
-  console.log(Vue, contact)
+const handleItemDeletion = async (contact: Contact) => {
+  deletionDialogOptions.value = {
+    visible: true,
+    onAccept: async () => {
+      const { isFetching } = await deleteContact(contact)
+
+      watch(isFetching, async () => {
+        await fetchData()
+      })
+    },
+  }
 }
 </script>
 
@@ -155,11 +171,17 @@ const handleOtemDeletion = async (contact: Contact) => {
           >
             <VIcon icon="tabler-edit" />
           </IconBtn>
-          <IconBtn @click="() => handleOtemDeletion(item)">
+          <IconBtn @click="() => handleItemDeletion(item)">
             <VIcon icon="tabler-trash" />
           </IconBtn>
         </template>
       </VDataTable>
     </template>
   </ItemsManage>
+
+  <ConfirmDialog
+    v-model:is-visible="deletionDialogOptions.visible"
+    :on-accept="deletionDialogOptions.onAccept"
+    title="Are you sure you want to delete this contact?"
+  />
 </template>

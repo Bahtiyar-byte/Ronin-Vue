@@ -63,8 +63,8 @@ services:
       PGADMIN_LISTEN_PORT: 8080
     ports:
       - "8085:8080"
-    volumes:
-      - "./servers.json:/pgadmin4/servers.json"
+#    volumes:
+#      - "./servers.json:/pgadmin4/servers.json"
     networks:
       - ronin-vue
 
