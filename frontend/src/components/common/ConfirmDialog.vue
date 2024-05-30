@@ -75,7 +75,7 @@ const onAccept = async () => {
           @click="onAccept"
           class="flex-1"
         >
-          Submit
+          Confirm
         </VBtn>
       </VCardActions>
     </VCard>

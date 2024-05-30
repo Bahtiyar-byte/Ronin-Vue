@@ -52,6 +52,7 @@ declare module 'vue' {
     I18n: typeof import('./src/@core/components/I18n.vue')['default']
     ItemsManage: typeof import('./src/components/common/CRUD/ItemsManage.vue')['default']
     ItemUpdate: typeof import('./src/components/common/CRUD/ItemUpdate.vue')['default']
+    JobInfoPanel: typeof import('./src/components/jobs/JobInfoPanel.vue')['default']
     MoreBtn: typeof import('./src/@core/components/MoreBtn.vue')['default']
     Notifications: typeof import('./src/@core/components/Notifications.vue')['default']
     PageHeader: typeof import('./src/components/common/PageHeader.vue')['default']
