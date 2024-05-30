@@ -46,6 +46,10 @@ declare module 'vue-router/auto/routes' {
     'contacts-create': RouteRecordInfo<'contacts-create', '/contacts/create', Record<never, never>, Record<never, never>>,
     'contacts-details-id': RouteRecordInfo<'contacts-details-id', '/contacts/details/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'contacts-update-id': RouteRecordInfo<'contacts-update-id', '/contacts/update/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    'jobs': RouteRecordInfo<'jobs', '/jobs', Record<never, never>, Record<never, never>>,
+    'jobs-create': RouteRecordInfo<'jobs-create', '/jobs/create', Record<never, never>, Record<never, never>>,
+    'jobs-details-id': RouteRecordInfo<'jobs-details-id', '/jobs/details/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    'jobs-update-id': RouteRecordInfo<'jobs-update-id', '/jobs/update/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'profile': RouteRecordInfo<'profile', '/profile', Record<never, never>, Record<never, never>>,
   }
 }
