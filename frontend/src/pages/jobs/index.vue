@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { debounce } from 'lodash'
+import { useRoute } from 'vue-router'
 import { useJobs } from '@/composables/useJobs'
 import type { SortItem } from '@core/types'
 import type Job from '@/types/jobs/Job'
@@ -23,14 +24,24 @@ const sortBy = ref<SortItem[]>([])
 const headers = ref([
   { title: 'Name', key: 'name' },
   { title: 'Category', key: 'category' },
-  // { title: 'Contact', key: 'contact' },
   { title: 'Status', key: 'status' },
   { title: 'Actions', key: 'actions', sortable: false },
 ])
 
+const route = useRoute()
+
 const filters = ref<(CheckboxFilterItem)[]>([
   { type: 'checkbox', key: 'status', label: 'Status', options: ['Completed', 'Invoiced', 'Approved'], value: [] },
 ])
+
+onBeforeMount(() => {
+  Object.entries(route.query).forEach(([key, val]) => {
+    const filter = filters.value.find(f => f.key === key)
+    if (filter) {
+      filter.value = val as string
+    }
+  })
+})
 
 const isLoading = ref(false)
 const searchQuery = ref<string>('')
@@ -85,10 +96,13 @@ watch([
 ], debouncedFetchData, { immediate: true })
 
 const selectedItems = ref<[]>()
-const deletionDialogOptions = ref<{
+
+interface IDeletionDialogOptions {
   visible: boolean
   onAccept: () => Promise<void>
-}>({
+}
+
+const deletionDialogOptions = ref<IDeletionDialogOptions>({
   visible: false,
   onAccept: async () => {},
 })
