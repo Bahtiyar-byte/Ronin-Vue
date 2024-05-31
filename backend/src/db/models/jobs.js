@@ -18,10 +18,14 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.TEXT,
       },
 
+      description: {
+        type: DataTypes.TEXT,
+      },
+
       category: {
         type: DataTypes.ENUM,
 
-        values: ['Commercial', 'Property Management', 'Residential'],
+        values: ['Commercial', 'PropertyManagement', 'Residential'],
       },
 
       type: {
@@ -34,13 +38,13 @@ module.exports = function (sequelize, DataTypes) {
 
           'Service',
 
+          'Warranty',
+
           'Inspection',
 
           'Insurance',
 
           'Retail',
-
-          'Warranty',
         ],
       },
 
@@ -48,6 +52,10 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.ENUM,
 
         values: ['Quoted', 'Approved', 'Active', 'Completed', 'Invoiced'],
+      },
+
+      address: {
+        type: DataTypes.TEXT,
       },
 
       importHash: {
@@ -64,89 +72,61 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   jobs.associate = (db) => {
-    db.jobs.belongsToMany(db.contacts, {
-      as: 'contact',
-      foreignKey: {
-        name: 'jobs_contactId',
-      },
-      constraints: false,
-      through: 'jobsContactContacts',
-    });
-
-    db.jobs.belongsToMany(db.users, {
-      as: 'assignedUser',
-      foreignKey: {
-        name: 'jobs_assignedUserId',
-      },
-      constraints: false,
-      through: 'jobsAssignedUserUsers',
-    });
-
-    db.jobs.belongsToMany(db.teams, {
-      as: 'assignedTeam',
-      foreignKey: {
-        name: 'jobs_assignedTeamId',
-      },
-      constraints: false,
-      through: 'jobsAssignedTeamTeams',
-    });
-
-    db.jobs.belongsToMany(db.estimates, {
-      as: 'estimate',
-      foreignKey: {
-        name: 'jobs_estimateId',
-      },
-      constraints: false,
-      through: 'jobsEstimateEstimates',
-    });
-
-    db.jobs.belongsToMany(db.appointments, {
-      as: 'appointment',
-      foreignKey: {
-        name: 'jobs_appointmentId',
-      },
-      constraints: false,
-      through: 'jobsAppointmentAppointments',
-    });
-
-    db.jobs.belongsToMany(db.images, {
-      as: 'image',
-      foreignKey: {
-        name: 'jobs_imageId',
-      },
-      constraints: false,
-      through: 'jobsImageImages',
-    });
-
-    db.jobs.belongsToMany(db.documents, {
-      as: 'document',
-      foreignKey: {
-        name: 'jobs_documentId',
-      },
-      constraints: false,
-      through: 'jobsDocumentDocuments',
-    });
-
-    db.jobs.belongsToMany(db.invoices, {
-      as: 'invoice',
-      foreignKey: {
-        name: 'jobs_invoiceId',
-      },
-      constraints: false,
-      through: 'jobsInvoiceInvoices',
-    });
-
     /// loop through entities and it's fields, and if ref === current e[name] and create relation has many on parent entity
 
     db.jobs.hasMany(db.estimates, {
-      as: 'estimates_job',
+      as: 'estimates_related_job',
       foreignKey: {
-        name: 'jobId',
+        name: 'related_jobId',
       },
       constraints: false,
     });
 
     //end loop
+
+    db.jobs.belongsTo(db.users, {
+      as: 'assigned_to',
+      foreignKey: {
+        name: 'assigned_toId',
+      },
+      constraints: false,
+    });
+
+    db.jobs.belongsTo(db.contacts, {
+      as: 'related_contact',
+      foreignKey: {
+        name: 'related_contactId',
+      },
+      constraints: false,
+    });
+
+    db.jobs.belongsTo(db.estimates, {
+      as: 'related_estimate',
+      foreignKey: {
+        name: 'related_estimateId',
+      },
+      constraints: false,
+    });
+
+    db.jobs.hasMany(db.file, {
+      as: 'images',
+      foreignKey: 'belongsToId',
+      constraints: false,
+      scope: {
+        belongsTo: db.jobs.getTableName(),
+        belongsToColumn: 'images',
+      },
+    });
+
+    db.jobs.hasMany(db.file, {
+      as: 'documents',
+      foreignKey: 'belongsToId',
+      constraints: false,
+      scope: {
+        belongsTo: db.jobs.getTableName(),
+        belongsToColumn: 'documents',
+      },
+    });
 
     db.jobs.belongsTo(db.users, {
       as: 'createdBy',

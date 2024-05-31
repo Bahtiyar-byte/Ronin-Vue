@@ -6,16 +6,15 @@ const Utils = require('../utils');
 const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
-module.exports = class TeamsDBApi {
+module.exports = class ContractsDBApi {
   static async create(data, options) {
     const currentUser = (options && options.currentUser) || { id: null };
     const transaction = (options && options.transaction) || undefined;
 
-    const teams = await db.teams.create(
+    const contracts = await db.contracts.create(
       {
         id: data.id || undefined,
 
-        name: data.name || null,
         importHash: data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
@@ -23,15 +22,7 @@ module.exports = class TeamsDBApi {
       { transaction },
     );
 
-    await teams.setUser(data.user || [], {
-      transaction,
-    });
-
-    await teams.setTeam(data.team || [], {
-      transaction,
-    });
-
-    return teams;
+    return contracts;
   }
 
   static async bulkImport(data, options) {
@@ -39,10 +30,9 @@ module.exports = class TeamsDBApi {
     const transaction = (options && options.transaction) || undefined;
 
     // Prepare data - wrapping individual data transformations in a map() method
-    const teamsData = data.map((item, index) => ({
+    const contractsData = data.map((item, index) => ({
       id: item.id || undefined,
 
-      name: item.name || null,
       importHash: item.importHash || null,
       createdById: currentUser.id,
       updatedById: currentUser.id,
@@ -50,45 +40,63 @@ module.exports = class TeamsDBApi {
     }));
 
     // Bulk create items
-    const teams = await db.teams.bulkCreate(teamsData, { transaction });
+    const contracts = await db.contracts.bulkCreate(contractsData, {
+      transaction,
+    });
 
     // For each item created, replace relation files
 
-    return teams;
+    return contracts;
   }
 
   static async update(id, data, options) {
     const currentUser = (options && options.currentUser) || { id: null };
     const transaction = (options && options.transaction) || undefined;
 
-    const teams = await db.teams.findByPk(id, {}, { transaction });
+    const contracts = await db.contracts.findByPk(id, {}, { transaction });
 
-    await teams.update(
+    await contracts.update(
       {
-        name: data.name || null,
         updatedById: currentUser.id,
       },
       { transaction },
     );
 
-    await teams.setUser(data.user || [], {
+    return contracts;
+  }
+
+  static async deleteByIds(ids, options) {
+    const currentUser = (options && options.currentUser) || { id: null };
+    const transaction = (options && options.transaction) || undefined;
+
+    const contracts = await db.contracts.findAll({
+      where: {
+        id: {
+          [Op.in]: ids,
+        },
+      },
       transaction,
     });
 
-    await teams.setTeam(data.team || [], {
-      transaction,
+    await db.sequelize.transaction(async (transaction) => {
+      for (const record of contracts) {
+        await record.update({ deletedBy: currentUser.id }, { transaction });
+      }
+      for (const record of contracts) {
+        await record.destroy({ transaction });
+      }
     });
 
-    return teams;
+    return contracts;
   }
 
   static async remove(id, options) {
     const currentUser = (options && options.currentUser) || { id: null };
     const transaction = (options && options.transaction) || undefined;
 
-    const teams = await db.teams.findByPk(id, options);
+    const contracts = await db.contracts.findByPk(id, options);
 
-    await teams.update(
+    await contracts.update(
       {
         deletedBy: currentUser.id,
       },
@@ -97,31 +105,23 @@ module.exports = class TeamsDBApi {
       },
     );
 
-    await teams.destroy({
+    await contracts.destroy({
       transaction,
     });
 
-    return teams;
+    return contracts;
   }
 
   static async findBy(where, options) {
     const transaction = (options && options.transaction) || undefined;
 
-    const teams = await db.teams.findOne({ where }, { transaction });
+    const contracts = await db.contracts.findOne({ where }, { transaction });
 
-    if (!teams) {
-      return teams;
+    if (!contracts) {
+      return contracts;
     }
 
-    const output = teams.get({ plain: true });
-
-    output.user = await teams.getUser({
-      transaction,
-    });
-
-    output.team = await teams.getTeam({
-      transaction,
-    });
+    const output = contracts.get({ plain: true });
 
     return output;
   }
@@ -137,50 +137,13 @@ module.exports = class TeamsDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [
-      {
-        model: db.users,
-        as: 'user',
-        through: filter.user
-          ? {
-              where: {
-                [Op.or]: filter.user.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.user ? true : null,
-      },
-
-      {
-        model: db.teams,
-        as: 'team',
-        through: filter.team
-          ? {
-              where: {
-                [Op.or]: filter.team.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.team ? true : null,
-      },
-    ];
+    let include = [];
 
     if (filter) {
       if (filter.id) {
         where = {
           ...where,
           ['id']: Utils.uuid(filter.id),
-        };
-      }
-
-      if (filter.name) {
-        where = {
-          ...where,
-          [Op.and]: Utils.ilike('teams', 'name', filter.name),
         };
       }
 
@@ -224,7 +187,7 @@ module.exports = class TeamsDBApi {
     let { rows, count } = options?.countOnly
       ? {
           rows: [],
-          count: await db.teams.count({
+          count: await db.contracts.count({
             where,
             include,
             distinct: true,
@@ -237,7 +200,7 @@ module.exports = class TeamsDBApi {
             transaction,
           }),
         }
-      : await db.teams.findAndCountAll({
+      : await db.contracts.findAndCountAll({
           where,
           include,
           distinct: true,
@@ -265,21 +228,21 @@ module.exports = class TeamsDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('teams', 'name', query),
+          Utils.ilike('contracts', 'id', query),
         ],
       };
     }
 
-    const records = await db.teams.findAll({
-      attributes: ['id', 'name'],
+    const records = await db.contracts.findAll({
+      attributes: ['id', 'id'],
       where,
       limit: limit ? Number(limit) : undefined,
-      orderBy: [['name', 'ASC']],
+      orderBy: [['id', 'ASC']],
     });
 
     return records.map((record) => ({
       id: record.id,
-      label: record.name,
+      label: record.id,
     }));
   }
 };

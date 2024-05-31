@@ -28,7 +28,7 @@ services:
       - ./data/db:/var/lib/postgresql/data
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
-      - POSTGRES_DB=db_ronin
+      - POSTGRES_DB=db_evans_crm
     ports:
       - "5444:5432"
     networks:
@@ -54,19 +54,19 @@ services:
 
     command: ["bash", "./start-backend.sh"]
 
-  pgadmin:
-    image: elestio/pgadmin:latest
-    restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@example.com
-      PGADMIN_DEFAULT_PASSWORD: admin
-      PGADMIN_LISTEN_PORT: 8080
-    ports:
-      - "8085:8080"
+#  pgadmin:
+#    image: elestio/pgadmin:latest
+#    restart: always
+#    environment:
+#      PGADMIN_DEFAULT_EMAIL: admin@example.com
+#      PGADMIN_DEFAULT_PASSWORD: admin
+#      PGADMIN_LISTEN_PORT: 8080
+#    ports:
+#      - "8085:8080"
 #    volumes:
 #      - "./servers.json:/pgadmin4/servers.json"
-    networks:
-      - ronin-vue
+#    networks:
+#      - ronin-vue
 
 networks:
   ronin-vue:

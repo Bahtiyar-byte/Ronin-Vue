@@ -1,41 +1,41 @@
 const express = require('express');
 
-const TeamsService = require('../services/teams');
-const TeamsDBApi = require('../db/api/teams');
+const ContractsService = require('../services/contracts');
+const ContractsDBApi = require('../db/api/contracts');
 const wrapAsync = require('../helpers').wrapAsync;
 
 const router = express.Router();
 
 const { parse } = require('json2csv');
 
+const { checkCrudPermissions } = require('../middlewares/check-permissions');
+
+router.use(checkCrudPermissions('contracts'));
+
 /**
  *  @swagger
  *  components:
  *    schemas:
- *      Teams:
+ *      Contracts:
  *        type: object
  *        properties:
-
- *          name:
- *            type: string
- *            default: name
 
  */
 
 /**
  *  @swagger
  * tags:
- *   name: Teams
- *   description: The Teams managing API
+ *   name: Contracts
+ *   description: The Contracts managing API
  */
 
 /**
  *  @swagger
- *  /api/teams:
+ *  /api/contracts:
  *    post:
  *      security:
  *        - bearerAuth: []
- *      tags: [Teams]
+ *      tags: [Contracts]
  *      summary: Add new item
  *      description: Add new item
  *      requestBody:
@@ -47,14 +47,14 @@ const { parse } = require('json2csv');
  *                data:
  *                  description: Data of the updated item
  *                  type: object
- *                  $ref: "#/components/schemas/Teams"
+ *                  $ref: "#/components/schemas/Contracts"
  *      responses:
  *        200:
  *          description: The item was successfully added
  *          content:
  *            application/json:
  *              schema:
- *                $ref: "#/components/schemas/Teams"
+ *                $ref: "#/components/schemas/Contracts"
  *        401:
  *          $ref: "#/components/responses/UnauthorizedError"
  *        405:
@@ -66,11 +66,12 @@ const { parse } = require('json2csv');
 router.post(
   '/',
   wrapAsync(async (req, res) => {
-    await TeamsService.create(
+    const link = new URL(req.headers.referer);
+    await ContractsService.create(
       req.body.data,
       req.currentUser,
       true,
-      req.headers.referer,
+      link.host,
     );
     const payload = true;
     res.status(200).send(payload);
@@ -80,7 +81,8 @@ router.post(
 router.post(
   '/bulk-import',
   wrapAsync(async (req, res) => {
-    await TeamsService.bulkImport(req, res, true, req.headers.referer);
+    const link = new URL(req.headers.referer);
+    await ContractsService.bulkImport(req, res, true, link.host);
     const payload = true;
     res.status(200).send(payload);
   }),
@@ -88,11 +90,11 @@ router.post(
 
 /**
  *  @swagger
- *  /api/teams/{id}:
+ *  /api/contracts/{id}:
  *    put:
  *      security:
  *        - bearerAuth: []
- *      tags: [Teams]
+ *      tags: [Contracts]
  *      summary: Update the data of the selected item
  *      description: Update the data of the selected item
  *      parameters:
@@ -115,7 +117,7 @@ router.post(
  *                data:
  *                  description: Data of the updated item
  *                  type: object
- *                  $ref: "#/components/schemas/Teams"
+ *                  $ref: "#/components/schemas/Contracts"
  *              required:
  *                - id
  *      responses:
@@ -124,7 +126,7 @@ router.post(
  *          content:
  *            application/json:
  *              schema:
- *                $ref: "#/components/schemas/Teams"
+ *                $ref: "#/components/schemas/Contracts"
  *        400:
  *          description: Invalid ID supplied
  *        401:
@@ -138,7 +140,7 @@ router.post(
 router.put(
   '/:id',
   wrapAsync(async (req, res) => {
-    await TeamsService.update(req.body.data, req.body.id, req.currentUser);
+    await ContractsService.update(req.body.data, req.body.id, req.currentUser);
     const payload = true;
     res.status(200).send(payload);
   }),
@@ -146,11 +148,11 @@ router.put(
 
 /**
  * @swagger
- *  /api/teams/{id}:
+ *  /api/contracts/{id}:
  *    delete:
  *      security:
  *        - bearerAuth: []
- *      tags: [Teams]
+ *      tags: [Contracts]
  *      summary: Delete the selected item
  *      description: Delete the selected item
  *      parameters:
@@ -166,7 +168,7 @@ router.put(
  *          content:
  *            application/json:
  *              schema:
- *                $ref: "#/components/schemas/Teams"
+ *                $ref: "#/components/schemas/Contracts"
  *        400:
  *          description: Invalid ID supplied
  *        401:
@@ -180,7 +182,7 @@ router.put(
 router.delete(
   '/:id',
   wrapAsync(async (req, res) => {
-    await TeamsService.remove(req.params.id, req.currentUser);
+    await ContractsService.remove(req.params.id, req.currentUser);
     const payload = true;
     res.status(200).send(payload);
   }),
@@ -188,22 +190,64 @@ router.delete(
 
 /**
  *  @swagger
- *  /api/teams:
+ *  /api/contracts:
+ *    post:
+ *      security:
+ *        - bearerAuth: []
+ *      tags: [Contracts]
+ *      summary: Delete the selected item list
+ *      description: Delete the selected item list
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              properties:
+ *                ids:
+ *                  description: IDs of the updated items
+ *                  type: array
+ *      responses:
+ *        200:
+ *          description: The items was successfully deleted
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: "#/components/schemas/Contracts"
+ *        401:
+ *          $ref: "#/components/responses/UnauthorizedError"
+ *        404:
+ *          description: Items not found
+ *        500:
+ *          description: Some server error
+ */
+
+router.post(
+  '/deleteByIds',
+  wrapAsync(async (req, res) => {
+    await ContractsService.deleteByIds(req.body.data, req.currentUser);
+    const payload = true;
+    res.status(200).send(payload);
+  }),
+);
+
+/**
+ *  @swagger
+ *  /api/contracts:
  *    get:
  *      security:
  *        - bearerAuth: []
- *      tags: [Teams]
- *      summary: Get all teams
- *      description: Get all teams
+ *      tags: [Contracts]
+ *      summary: Get all contracts
+ *      description: Get all contracts
  *      responses:
  *        200:
- *          description: Teams list successfully received
+ *          description: Contracts list successfully received
  *          content:
  *            application/json:
  *              schema:
  *                type: array
  *                items:
- *                  $ref: "#/components/schemas/Teams"
+ *                  $ref: "#/components/schemas/Contracts"
  *        401:
  *          $ref: "#/components/responses/UnauthorizedError"
  *        404:
@@ -217,9 +261,9 @@ router.get(
   wrapAsync(async (req, res) => {
     const filetype = req.query.filetype;
 
-    const payload = await TeamsDBApi.findAll(req.query);
+    const payload = await ContractsDBApi.findAll(req.query);
     if (filetype && filetype === 'csv') {
-      const fields = ['id', 'name'];
+      const fields = ['id'];
       const opts = { fields };
       try {
         const csv = parse(payload.rows, opts);
@@ -236,22 +280,22 @@ router.get(
 
 /**
  *  @swagger
- *  /api/teams/count:
+ *  /api/contracts/count:
  *    get:
  *      security:
  *        - bearerAuth: []
- *      tags: [Teams]
- *      summary: Count all teams
- *      description: Count all teams
+ *      tags: [Contracts]
+ *      summary: Count all contracts
+ *      description: Count all contracts
  *      responses:
  *        200:
- *          description: Teams count successfully received
+ *          description: Contracts count successfully received
  *          content:
  *            application/json:
  *              schema:
  *                type: array
  *                items:
- *                  $ref: "#/components/schemas/Teams"
+ *                  $ref: "#/components/schemas/Contracts"
  *        401:
  *          $ref: "#/components/responses/UnauthorizedError"
  *        404:
@@ -262,7 +306,7 @@ router.get(
 router.get(
   '/count',
   wrapAsync(async (req, res) => {
-    const payload = await TeamsDBApi.findAll(
+    const payload = await ContractsDBApi.findAll(
       req.query,
 
       { countOnly: true },
@@ -274,22 +318,22 @@ router.get(
 
 /**
  *  @swagger
- *  /api/teams/autocomplete:
+ *  /api/contracts/autocomplete:
  *    get:
  *      security:
  *        - bearerAuth: []
- *      tags: [Teams]
- *      summary: Find all teams that match search criteria
- *      description: Find all teams that match search criteria
+ *      tags: [Contracts]
+ *      summary: Find all contracts that match search criteria
+ *      description: Find all contracts that match search criteria
  *      responses:
  *        200:
- *          description: Teams list successfully received
+ *          description: Contracts list successfully received
  *          content:
  *            application/json:
  *              schema:
  *                type: array
  *                items:
- *                  $ref: "#/components/schemas/Teams"
+ *                  $ref: "#/components/schemas/Contracts"
  *        401:
  *          $ref: "#/components/responses/UnauthorizedError"
  *        404:
@@ -298,7 +342,7 @@ router.get(
  *          description: Some server error
  */
 router.get('/autocomplete', async (req, res) => {
-  const payload = await TeamsDBApi.findAllAutocomplete(
+  const payload = await ContractsDBApi.findAllAutocomplete(
     req.query.query,
     req.query.limit,
   );
@@ -308,11 +352,11 @@ router.get('/autocomplete', async (req, res) => {
 
 /**
  * @swagger
- *  /api/teams/{id}:
+ *  /api/contracts/{id}:
  *    get:
  *      security:
  *        - bearerAuth: []
- *      tags: [Teams]
+ *      tags: [Contracts]
  *      summary: Get selected item
  *      description: Get selected item
  *      parameters:
@@ -328,7 +372,7 @@ router.get('/autocomplete', async (req, res) => {
  *          content:
  *            application/json:
  *              schema:
- *                $ref: "#/components/schemas/Teams"
+ *                $ref: "#/components/schemas/Contracts"
  *        400:
  *          description: Invalid ID supplied
  *        401:
@@ -342,7 +386,7 @@ router.get('/autocomplete', async (req, res) => {
 router.get(
   '/:id',
   wrapAsync(async (req, res) => {
-    const payload = await TeamsDBApi.findBy({ id: req.params.id });
+    const payload = await ContractsDBApi.findBy({ id: req.params.id });
 
     res.status(200).send(payload);
   }),

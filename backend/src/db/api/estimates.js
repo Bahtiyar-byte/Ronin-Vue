@@ -15,8 +15,16 @@ module.exports = class EstimatesDBApi {
       {
         id: data.id || undefined,
 
-        status: data.status || null,
         name: data.name || null,
+        description: data.description || null,
+        trade: data.trade || null,
+        template_used: data.template_used || null,
+        material_cost: data.material_cost || null,
+        labor_cost: data.labor_cost || null,
+        markup: data.markup || null,
+        profit_margin: data.profit_margin || null,
+        total_price: data.total_price || null,
+        unit_of_measurement: data.unit_of_measurement || null,
         importHash: data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
@@ -24,11 +32,11 @@ module.exports = class EstimatesDBApi {
       { transaction },
     );
 
-    await estimates.setJob(data.job || null, {
+    await estimates.setRelated_contact(data.related_contact || null, {
       transaction,
     });
 
-    await estimates.setTemplate(data.template || [], {
+    await estimates.setRelated_job(data.related_job || null, {
       transaction,
     });
 
@@ -43,8 +51,16 @@ module.exports = class EstimatesDBApi {
     const estimatesData = data.map((item, index) => ({
       id: item.id || undefined,
 
-      status: item.status || null,
       name: item.name || null,
+      description: item.description || null,
+      trade: item.trade || null,
+      template_used: item.template_used || null,
+      material_cost: item.material_cost || null,
+      labor_cost: item.labor_cost || null,
+      markup: item.markup || null,
+      profit_margin: item.profit_margin || null,
+      total_price: item.total_price || null,
+      unit_of_measurement: item.unit_of_measurement || null,
       importHash: item.importHash || null,
       createdById: currentUser.id,
       updatedById: currentUser.id,
@@ -69,19 +85,52 @@ module.exports = class EstimatesDBApi {
 
     await estimates.update(
       {
-        status: data.status || null,
         name: data.name || null,
+        description: data.description || null,
+        trade: data.trade || null,
+        template_used: data.template_used || null,
+        material_cost: data.material_cost || null,
+        labor_cost: data.labor_cost || null,
+        markup: data.markup || null,
+        profit_margin: data.profit_margin || null,
+        total_price: data.total_price || null,
+        unit_of_measurement: data.unit_of_measurement || null,
         updatedById: currentUser.id,
       },
       { transaction },
     );
 
-    await estimates.setJob(data.job || null, {
+    await estimates.setRelated_contact(data.related_contact || null, {
       transaction,
     });
 
-    await estimates.setTemplate(data.template || [], {
+    await estimates.setRelated_job(data.related_job || null, {
       transaction,
+    });
+
+    return estimates;
+  }
+
+  static async deleteByIds(ids, options) {
+    const currentUser = (options && options.currentUser) || { id: null };
+    const transaction = (options && options.transaction) || undefined;
+
+    const estimates = await db.estimates.findAll({
+      where: {
+        id: {
+          [Op.in]: ids,
+        },
+      },
+      transaction,
+    });
+
+    await db.sequelize.transaction(async (transaction) => {
+      for (const record of estimates) {
+        await record.update({ deletedBy: currentUser.id }, { transaction });
+      }
+      for (const record of estimates) {
+        await record.destroy({ transaction });
+      }
     });
 
     return estimates;
@@ -120,11 +169,15 @@ module.exports = class EstimatesDBApi {
 
     const output = estimates.get({ plain: true });
 
-    output.job = await estimates.getJob({
+    output.jobs_related_estimate = await estimates.getJobs_related_estimate({
       transaction,
     });
 
-    output.template = await estimates.getTemplate({
+    output.related_contact = await estimates.getRelated_contact({
+      transaction,
+    });
+
+    output.related_job = await estimates.getRelated_job({
       transaction,
     });
 
@@ -144,23 +197,13 @@ module.exports = class EstimatesDBApi {
     let where = {};
     let include = [
       {
-        model: db.jobs,
-        as: 'job',
+        model: db.contacts,
+        as: 'related_contact',
       },
 
       {
-        model: db.templates,
-        as: 'template',
-        through: filter.template
-          ? {
-              where: {
-                [Op.or]: filter.template.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.template ? true : null,
+        model: db.jobs,
+        as: 'related_job',
       },
     ];
 
@@ -179,6 +222,162 @@ module.exports = class EstimatesDBApi {
         };
       }
 
+      if (filter.description) {
+        where = {
+          ...where,
+          [Op.and]: Utils.ilike('estimates', 'description', filter.description),
+        };
+      }
+
+      if (filter.trade) {
+        where = {
+          ...where,
+          [Op.and]: Utils.ilike('estimates', 'trade', filter.trade),
+        };
+      }
+
+      if (filter.template_used) {
+        where = {
+          ...where,
+          [Op.and]: Utils.ilike(
+            'estimates',
+            'template_used',
+            filter.template_used,
+          ),
+        };
+      }
+
+      if (filter.unit_of_measurement) {
+        where = {
+          ...where,
+          [Op.and]: Utils.ilike(
+            'estimates',
+            'unit_of_measurement',
+            filter.unit_of_measurement,
+          ),
+        };
+      }
+
+      if (filter.material_costRange) {
+        const [start, end] = filter.material_costRange;
+
+        if (start !== undefined && start !== null && start !== '') {
+          where = {
+            ...where,
+            material_cost: {
+              ...where.material_cost,
+              [Op.gte]: start,
+            },
+          };
+        }
+
+        if (end !== undefined && end !== null && end !== '') {
+          where = {
+            ...where,
+            material_cost: {
+              ...where.material_cost,
+              [Op.lte]: end,
+            },
+          };
+        }
+      }
+
+      if (filter.labor_costRange) {
+        const [start, end] = filter.labor_costRange;
+
+        if (start !== undefined && start !== null && start !== '') {
+          where = {
+            ...where,
+            labor_cost: {
+              ...where.labor_cost,
+              [Op.gte]: start,
+            },
+          };
+        }
+
+        if (end !== undefined && end !== null && end !== '') {
+          where = {
+            ...where,
+            labor_cost: {
+              ...where.labor_cost,
+              [Op.lte]: end,
+            },
+          };
+        }
+      }
+
+      if (filter.markupRange) {
+        const [start, end] = filter.markupRange;
+
+        if (start !== undefined && start !== null && start !== '') {
+          where = {
+            ...where,
+            markup: {
+              ...where.markup,
+              [Op.gte]: start,
+            },
+          };
+        }
+
+        if (end !== undefined && end !== null && end !== '') {
+          where = {
+            ...where,
+            markup: {
+              ...where.markup,
+              [Op.lte]: end,
+            },
+          };
+        }
+      }
+
+      if (filter.profit_marginRange) {
+        const [start, end] = filter.profit_marginRange;
+
+        if (start !== undefined && start !== null && start !== '') {
+          where = {
+            ...where,
+            profit_margin: {
+              ...where.profit_margin,
+              [Op.gte]: start,
+            },
+          };
+        }
+
+        if (end !== undefined && end !== null && end !== '') {
+          where = {
+            ...where,
+            profit_margin: {
+              ...where.profit_margin,
+              [Op.lte]: end,
+            },
+          };
+        }
+      }
+
+      if (filter.total_priceRange) {
+        const [start, end] = filter.total_priceRange;
+
+        if (start !== undefined && start !== null && start !== '') {
+          where = {
+            ...where,
+            total_price: {
+              ...where.total_price,
+              [Op.gte]: start,
+            },
+          };
+        }
+
+        if (end !== undefined && end !== null && end !== '') {
+          where = {
+            ...where,
+            total_price: {
+              ...where.total_price,
+              [Op.lte]: end,
+            },
+          };
+        }
+      }
+
       if (
         filter.active === true ||
         filter.active === 'true' ||
@@ -191,21 +390,25 @@ module.exports = class EstimatesDBApi {
         };
       }
 
-      if (filter.status) {
-        where = {
-          ...where,
-          status: filter.status,
-        };
-      }
-
-      if (filter.job) {
-        var listItems = filter.job.split('|').map((item) => {
+      if (filter.related_contact) {
+        var listItems = filter.related_contact.split('|').map((item) => {
           return Utils.uuid(item);
         });
 
         where = {
           ...where,
-          jobId: { [Op.or]: listItems },
+          related_contactId: { [Op.or]: listItems },
+        };
+      }
+
+      if (filter.related_job) {
+        var listItems = filter.related_job.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
+        where = {
+          ...where,
+          related_jobId: { [Op.or]: listItems },
         };
       }
 

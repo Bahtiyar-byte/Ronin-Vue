@@ -18,9 +18,7 @@ module.exports = class ContactsDBApi {
         name: data.name || null,
         email: data.email || null,
         phone: data.phone || null,
-        adress: data.adress || null,
-        firstName: data.firstName || null,
-        lastName: data.lastName || null,
+        address: data.address || null,
         stage: data.stage || null,
         importHash: data.importHash || null,
         createdById: currentUser.id,
@@ -28,18 +26,6 @@ module.exports = class ContactsDBApi {
       },
       { transaction },
     );
-
-    await contacts.setJob(data.job || [], {
-      transaction,
-    });
-
-    await contacts.setEstimate(data.estimate || [], {
-      transaction,
-    });
-
-    await contacts.setAppointment(data.appointment || [], {
-      transaction,
-    });
 
     return contacts;
   }
@@ -55,9 +41,7 @@ module.exports = class ContactsDBApi {
       name: item.name || null,
       email: item.email || null,
       phone: item.phone || null,
-      adress: item.adress || null,
-      firstName: item.firstName || null,
-      lastName: item.lastName || null,
+      address: item.address || null,
       stage: item.stage || null,
       importHash: item.importHash || null,
       createdById: currentUser.id,
@@ -86,25 +70,36 @@ module.exports = class ContactsDBApi {
         name: data.name || null,
         email: data.email || null,
         phone: data.phone || null,
-        adress: data.adress || null,
-        firstName: data.firstName || null,
-        lastName: data.lastName || null,
+        address: data.address || null,
         stage: data.stage || null,
         updatedById: currentUser.id,
       },
       { transaction },
     );
 
-    await contacts.setJob(data.job || [], {
+    return contacts;
+  }
+
+  static async deleteByIds(ids, options) {
+    const currentUser = (options && options.currentUser) || { id: null };
+    const transaction = (options && options.transaction) || undefined;
+
+    const contacts = await db.contacts.findAll({
+      where: {
+        id: {
+          [Op.in]: ids,
+        },
+      },
       transaction,
     });
 
-    await contacts.setEstimate(data.estimate || [], {
-      transaction,
-    });
-
-    await contacts.setAppointment(data.appointment || [], {
-      transaction,
+    await db.sequelize.transaction(async (transaction) => {
+      for (const record of contacts) {
+        await record.update({ deletedBy: currentUser.id }, { transaction });
+      }
+      for (const record of contacts) {
+        await record.destroy({ transaction });
+      }
     });
 
     return contacts;
@@ -143,15 +138,12 @@ module.exports = class ContactsDBApi {
 
     const output = contacts.get({ plain: true });
 
-    output.job = await contacts.getJob({
-      transaction,
-    });
+    output.estimates_related_contact =
+      await contacts.getEstimates_related_contact({
+        transaction,
+      });
 
-    output.estimate = await contacts.getEstimate({
-      transaction,
-    });
-
-    output.appointment = await contacts.getAppointment({
+    output.jobs_related_contact = await contacts.getJobs_related_contact({
       transaction,
     });
 
@@ -169,52 +161,7 @@ module.exports = class ContactsDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [
-      {
-        model: db.jobs,
-        as: 'job',
-        through: filter.job
-          ? {
-              where: {
-                [Op.or]: filter.job.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.job ? true : null,
-      },
-
-      {
-        model: db.estimates,
-        as: 'estimate',
-        through: filter.estimate
-          ? {
-              where: {
-                [Op.or]: filter.estimate.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.estimate ? true : null,
-      },
-
-      {
-        model: db.appointments,
-        as: 'appointment',
-        through: filter.appointment
-          ? {
-              where: {
-                [Op.or]: filter.appointment.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.appointment ? true : null,
-      },
-    ];
+    let include = [];
 
     if (filter) {
       if (filter.id) {
@@ -245,24 +192,10 @@ module.exports = class ContactsDBApi {
         };
       }
 
-      if (filter.adress) {
+      if (filter.address) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('contacts', 'adress', filter.adress),
-        };
-      }
-
-      if (filter.firstName) {
-        where = {
-          ...where,
-          [Op.and]: Utils.ilike('contacts', 'firstName', filter.firstName),
-        };
-      }
-
-      if (filter.lastName) {
-        where = {
-          ...where,
-          [Op.and]: Utils.ilike('contacts', 'lastName', filter.lastName),
+          [Op.and]: Utils.ilike('contacts', 'address', filter.address),
         };
       }
 

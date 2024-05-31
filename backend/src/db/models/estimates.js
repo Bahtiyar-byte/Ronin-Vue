@@ -14,13 +14,43 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
       },
 
-      status: {
-        type: DataTypes.ENUM,
-
-        values: ['Draft', 'Sent', 'Approved', 'Rejected'],
+      name: {
+        type: DataTypes.TEXT,
       },
 
-      name: {
+      description: {
+        type: DataTypes.TEXT,
+      },
+
+      trade: {
+        type: DataTypes.TEXT,
+      },
+
+      template_used: {
+        type: DataTypes.TEXT,
+      },
+
+      material_cost: {
+        type: DataTypes.DECIMAL,
+      },
+
+      labor_cost: {
+        type: DataTypes.DECIMAL,
+      },
+
+      markup: {
+        type: DataTypes.DECIMAL,
+      },
+
+      profit_margin: {
+        type: DataTypes.DECIMAL,
+      },
+
+      total_price: {
+        type: DataTypes.DECIMAL,
+      },
+
+      unit_of_measurement: {
         type: DataTypes.TEXT,
       },
 
@@ -38,23 +68,30 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   estimates.associate = (db) => {
-    db.estimates.belongsToMany(db.templates, {
-      as: 'template',
+    /// loop through entities and it's fields, and if ref === current e[name] and create relation has many on parent entity
+
+    db.estimates.hasMany(db.jobs, {
+      as: 'jobs_related_estimate',
       foreignKey: {
-        name: 'estimates_templateId',
+        name: 'related_estimateId',
       },
       constraints: false,
-      through: 'estimatesTemplateTemplates',
     });
-
-    /// loop through entities and it's fields, and if ref === current e[name] and create relation has many on parent entity
 
     //end loop
 
-    db.estimates.belongsTo(db.jobs, {
-      as: 'job',
+    db.estimates.belongsTo(db.contacts, {
+      as: 'related_contact',
       foreignKey: {
-        name: 'jobId',
+        name: 'related_contactId',
+      },
+      constraints: false,
+    });
+
+    db.estimates.belongsTo(db.jobs, {
+      as: 'related_job',
+      foreignKey: {
+        name: 'related_jobId',
       },
       constraints: false,
     });

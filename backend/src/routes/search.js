@@ -3,6 +3,9 @@ const SearchService = require('../services/search');
 
 const router = express.Router();
 
+const { checkCrudPermissions } = require('../middlewares/check-permissions');
+router.use(checkCrudPermissions('search'));
+
 /**
  * @swagger
  * path:

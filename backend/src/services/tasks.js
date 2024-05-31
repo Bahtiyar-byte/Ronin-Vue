@@ -1,16 +1,17 @@
 const db = require('../db/models');
-const TeamsDBApi = require('../db/api/teams');
+const TasksDBApi = require('../db/api/tasks');
 const processFile = require('../middlewares/upload');
+const ValidationError = require('./notifications/errors/validation');
 const csv = require('csv-parser');
 const axios = require('axios');
 const config = require('../config');
 const stream = require('stream');
 
-module.exports = class TeamsService {
+module.exports = class TasksService {
   static async create(data, currentUser) {
     const transaction = await db.sequelize.transaction();
     try {
-      await TeamsDBApi.create(data, {
+      await TasksDBApi.create(data, {
         currentUser,
         transaction,
       });
@@ -43,7 +44,7 @@ module.exports = class TeamsService {
           .on('error', (error) => reject(error));
       });
 
-      await TeamsDBApi.bulkImport(results, {
+      await TasksDBApi.bulkImport(results, {
         transaction,
         ignoreDuplicates: true,
         validate: true,
@@ -60,19 +61,35 @@ module.exports = class TeamsService {
   static async update(data, id, currentUser) {
     const transaction = await db.sequelize.transaction();
     try {
-      let teams = await TeamsDBApi.findBy({ id }, { transaction });
+      let tasks = await TasksDBApi.findBy({ id }, { transaction });
 
-      if (!teams) {
-        throw new ValidationError('teamsNotFound');
+      if (!tasks) {
+        throw new ValidationError('tasksNotFound');
       }
 
-      await TeamsDBApi.update(id, data, {
+      await TasksDBApi.update(id, data, {
         currentUser,
         transaction,
       });
 
       await transaction.commit();
-      return teams;
+      return tasks;
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
+    }
+  }
+
+  static async deleteByIds(ids, currentUser) {
+    const transaction = await db.sequelize.transaction();
+
+    try {
+      await TasksDBApi.deleteByIds(ids, {
+        currentUser,
+        transaction,
+      });
+
+      await transaction.commit();
     } catch (error) {
       await transaction.rollback();
       throw error;
@@ -83,11 +100,7 @@ module.exports = class TeamsService {
     const transaction = await db.sequelize.transaction();
 
     try {
-      if (currentUser.app_role?.name !== config.roles.admin) {
-        throw new ValidationError('errors.forbidden.message');
-      }
-
-      await TeamsDBApi.remove(id, {
+      await TasksDBApi.remove(id, {
         currentUser,
         transaction,
       });

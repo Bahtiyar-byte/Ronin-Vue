@@ -15,25 +15,12 @@ module.exports = class InvoicesDBApi {
       {
         id: data.id || undefined,
 
-        number: data.number || null,
         importHash: data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
       },
       { transaction },
     );
-
-    await invoices.setDocument(data.document || null, {
-      transaction,
-    });
-
-    await invoices.setJob(data.job || [], {
-      transaction,
-    });
-
-    await invoices.setEstimate(data.estimate || [], {
-      transaction,
-    });
 
     return invoices;
   }
@@ -46,7 +33,6 @@ module.exports = class InvoicesDBApi {
     const invoicesData = data.map((item, index) => ({
       id: item.id || undefined,
 
-      number: item.number || null,
       importHash: item.importHash || null,
       createdById: currentUser.id,
       updatedById: currentUser.id,
@@ -71,22 +57,34 @@ module.exports = class InvoicesDBApi {
 
     await invoices.update(
       {
-        number: data.number || null,
         updatedById: currentUser.id,
       },
       { transaction },
     );
 
-    await invoices.setDocument(data.document || null, {
+    return invoices;
+  }
+
+  static async deleteByIds(ids, options) {
+    const currentUser = (options && options.currentUser) || { id: null };
+    const transaction = (options && options.transaction) || undefined;
+
+    const invoices = await db.invoices.findAll({
+      where: {
+        id: {
+          [Op.in]: ids,
+        },
+      },
       transaction,
     });
 
-    await invoices.setJob(data.job || [], {
-      transaction,
-    });
-
-    await invoices.setEstimate(data.estimate || [], {
-      transaction,
+    await db.sequelize.transaction(async (transaction) => {
+      for (const record of invoices) {
+        await record.update({ deletedBy: currentUser.id }, { transaction });
+      }
+      for (const record of invoices) {
+        await record.destroy({ transaction });
+      }
     });
 
     return invoices;
@@ -125,18 +123,6 @@ module.exports = class InvoicesDBApi {
 
     const output = invoices.get({ plain: true });
 
-    output.job = await invoices.getJob({
-      transaction,
-    });
-
-    output.estimate = await invoices.getEstimate({
-      transaction,
-    });
-
-    output.document = await invoices.getDocument({
-      transaction,
-    });
-
     return output;
   }
 
@@ -151,42 +137,7 @@ module.exports = class InvoicesDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [
-      {
-        model: db.documents,
-        as: 'document',
-      },
-
-      {
-        model: db.jobs,
-        as: 'job',
-        through: filter.job
-          ? {
-              where: {
-                [Op.or]: filter.job.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.job ? true : null,
-      },
-
-      {
-        model: db.estimates,
-        as: 'estimate',
-        through: filter.estimate
-          ? {
-              where: {
-                [Op.or]: filter.estimate.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.estimate ? true : null,
-      },
-    ];
+    let include = [];
 
     if (filter) {
       if (filter.id) {
@@ -194,30 +145,6 @@ module.exports = class InvoicesDBApi {
           ...where,
           ['id']: Utils.uuid(filter.id),
         };
-      }
-
-      if (filter.numberRange) {
-        const [start, end] = filter.numberRange;
-
-        if (start !== undefined && start !== null && start !== '') {
-          where = {
-            ...where,
-            number: {
-              ...where.number,
-              [Op.gte]: start,
-            },
-          };
-        }
-
-        if (end !== undefined && end !== null && end !== '') {
-          where = {
-            ...where,
-            number: {
-              ...where.number,
-              [Op.lte]: end,
-            },
-          };
-        }
       }
 
       if (
@@ -229,17 +156,6 @@ module.exports = class InvoicesDBApi {
         where = {
           ...where,
           active: filter.active === true || filter.active === 'true',
-        };
-      }
-
-      if (filter.document) {
-        var listItems = filter.document.split('|').map((item) => {
-          return Utils.uuid(item);
-        });
-
-        where = {
-          ...where,
-          documentId: { [Op.or]: listItems },
         };
       }
 

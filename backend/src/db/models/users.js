@@ -68,10 +68,6 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.TEXT,
       },
 
-      name: {
-        type: DataTypes.TEXT,
-      },
-
       importHash: {
         type: DataTypes.STRING(255),
         allowNull: true,
@@ -86,18 +82,34 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   users.associate = (db) => {
-    db.users.belongsToMany(db.roles, {
-      as: 'roleId',
+    db.users.belongsToMany(db.permissions, {
+      as: 'custom_permissions',
       foreignKey: {
-        name: 'users_roleIdId',
+        name: 'users_custom_permissionsId',
       },
       constraints: false,
-      through: 'usersRoleIdRoles',
+      through: 'usersCustom_permissionsPermissions',
     });
 
     /// loop through entities and it's fields, and if ref === current e[name] and create relation has many on parent entity
 
+    db.users.hasMany(db.jobs, {
+      as: 'jobs_assigned_to',
+      foreignKey: {
+        name: 'assigned_toId',
+      },
+      constraints: false,
+    });
+
     //end loop
+
+    db.users.belongsTo(db.roles, {
+      as: 'app_role',
+      foreignKey: {
+        name: 'app_roleId',
+      },
+      constraints: false,
+    });
 
     db.users.hasMany(db.file, {
       as: 'avatar',

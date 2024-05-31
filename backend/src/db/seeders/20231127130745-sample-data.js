@@ -3,213 +3,271 @@ const Users = db.users;
 
 const Contacts = db.contacts;
 
-const Appointments = db.appointments;
+const Estimates = db.estimates;
 
 const Jobs = db.jobs;
 
-const Estimates = db.estimates;
+const Templates = db.templates;
 
 const Trades = db.trades;
 
-const Templates = db.templates;
+const Invoices = db.invoices;
 
-const Documents = db.documents;
+const Orders = db.orders;
 
 const Images = db.images;
 
-const Teams = db.teams;
+const Documents = db.documents;
 
-const Invoices = db.invoices;
+const Emails = db.emails;
+
+const Chats = db.chats;
+
+const Appointments = db.appointments;
+
+const Tasks = db.tasks;
+
+const Contracts = db.contracts;
+
+const Amendments = db.amendments;
 
 const ContactsData = [
   {
-    name: 'Richard Feynman',
+    name: 'James Watson',
 
-    email: 'aubrey@becker-halvorson.io',
+    email: 'iesha@herman-paucek.io',
 
-    phone: '(509) 470-1788',
+    phone: '491.179.3595 x62955',
 
-    adress: "That Barbala couldn't fly his way out of a wet paper bag",
-
-    firstName: 'Contact the tower',
-
-    lastName: "I'm washing my hands of it",
+    address: '4542 Sheldon Islands, Koelpinborough, CA 38310',
 
     stage: 'Customer',
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
   },
 
   {
-    name: 'Willard Libby',
+    name: 'Joseph J. Thomson',
 
-    email: 'joslyn@spencer.org',
+    email: 'fausto@kreiger.info',
 
-    phone: '1-839-692-7022 x3392',
+    phone: '(185) 308-7578',
 
-    adress: 'So I was walking Oscar',
+    address: 'Suite 840 576 Hoppe Club, Howeberg, PA 61668-4399',
 
-    firstName: 'That damn diabetes',
-
-    lastName: 'So I was walking Oscar',
-
-    stage: 'Lead',
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
+    stage: 'Customer',
   },
 
   {
-    name: 'Richard Feynman',
+    name: 'Sheldon Glashow',
 
-    email: 'issac@metz.net',
+    email: 'orlando@koepp.info',
 
-    phone: '321.213.7069 x3017',
+    phone: '1-686-463-7767 x4077',
 
-    adress: 'That goddamn Datamate',
-
-    firstName: "It's around here somewhere",
-
-    lastName: "Y'all never listen to me",
+    address: '173 Kemmer Manors, West Nelsonstad, RI 45447',
 
     stage: 'Lead',
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
   },
 
   {
-    name: 'Albert Einstein',
+    name: 'Edward O. Wilson',
 
-    email: 'darrin.maggio@bashirian-mckenzie.biz',
+    email: 'mikel@krajcik.org',
 
-    phone: '1-992-064-0798 x73833',
+    phone: '(230) 534-8200 x11349',
 
-    adress: "How 'bout them Cowboys",
+    address: '84491 Heller Ports, Tainatown, NV 81826',
 
-    firstName: 'I want my 5$ back',
-
-    lastName: 'Contact the tower',
-
-    stage: 'Lead',
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-  },
-
-  {
-    name: 'Dmitri Mendeleev',
-
-    email: 'page_frami@halvorson.net',
-
-    phone: '861.759.6402 x906',
-
-    adress: 'Like a red-headed stepchild',
-
-    firstName: "Goin' hog huntin'",
-
-    lastName: "Goin' hog huntin'",
-
-    stage: 'Lead',
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
+    stage: 'Customer',
   },
 ];
 
-const AppointmentsData = [
+const EstimatesData = [
   {
-    date: new Date('2023-06-02'),
+    name: 'August Kekule',
 
-    scheduled: false,
+    description:
+      'Soon will I rest, yes, forever sleep. Earned it I have. Twilight is upon me, soon night must fall.',
 
-    // type code here for "relation_many" field
+    trade: 'That damn gimble',
 
-    // type code here for "relation_many" field
+    template_used: 'Come on now',
 
-    // type code here for "relation_many" field
+    material_cost: 97.11,
 
-    name: 'Erwin Schrodinger',
+    labor_cost: 42.97,
+
+    markup: 64.05,
+
+    profit_margin: 92.22,
+
+    total_price: 64.48,
+
+    unit_of_measurement: 'I tell you what',
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
   },
 
   {
-    date: new Date('2023-12-29'),
+    name: 'Comte de Buffon',
 
-    scheduled: true,
+    description:
+      'Ready are you? What know you of ready? For eight hundred years have I trained Jedi. My own counsel will I keep on who is to be trained. A Jedi must have the deepest commitment, the most serious mind. This one a long time have I watched. All his life has he looked away - to the future, to the horizon. Never his mind on where he was. Hmm? What he was doing. Hmph. Adventure. Heh. Excitement. Heh. A Jedi craves not these things. You are reckless.',
 
-    // type code here for "relation_many" field
+    trade: 'That damn gimble',
 
-    // type code here for "relation_many" field
+    template_used: 'No one tells me shit',
 
-    // type code here for "relation_many" field
+    material_cost: 24.39,
 
+    labor_cost: 26.46,
+
+    markup: 52.22,
+
+    profit_margin: 93.44,
+
+    total_price: 11.85,
+
+    unit_of_measurement: 'Let me tell ya',
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+  },
+
+  {
+    name: 'Isaac Newton',
+
+    description: 'Truly wonderful, the mind of a child is.',
+
+    trade: "Goin' hog huntin'",
+
+    template_used: 'Yup',
+
+    material_cost: 80.79,
+
+    labor_cost: 13.53,
+
+    markup: 91.78,
+
+    profit_margin: 35.31,
+
+    total_price: 57.51,
+
+    unit_of_measurement: "How 'bout them Cowboys",
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+  },
+
+  {
     name: 'Werner Heisenberg',
-  },
 
-  {
-    date: new Date('2023-12-21'),
+    description: 'Ow, ow, OW! On my ear you are!',
 
-    scheduled: true,
+    trade: 'That damn diabetes',
 
-    // type code here for "relation_many" field
+    template_used: 'So I was walking Oscar',
 
-    // type code here for "relation_many" field
+    material_cost: 83.28,
 
-    // type code here for "relation_many" field
+    labor_cost: 23.26,
 
-    name: 'J. Robert Oppenheimer',
-  },
+    markup: 74.48,
 
-  {
-    date: new Date('2023-05-13'),
+    profit_margin: 29.19,
 
-    scheduled: false,
+    total_price: 78.54,
 
-    // type code here for "relation_many" field
+    unit_of_measurement: 'That damn gimble',
 
-    // type code here for "relation_many" field
+    // type code here for "relation_one" field
 
-    // type code here for "relation_many" field
-
-    name: 'Euclid',
-  },
-
-  {
-    date: new Date('2023-06-26'),
-
-    scheduled: false,
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    name: 'Michael Faraday',
+    // type code here for "relation_one" field
   },
 ];
 
 const JobsData = [
   {
-    name: 'Anton van Leeuwenhoek',
+    name: 'Leonard Euler',
 
-    // type code here for "relation_many" field
+    description:
+      'Through the Force, things you will see. Other places. The future - the past. Old friends long gone.',
+
+    category: 'Commercial',
+
+    type: 'Insurance',
+
+    status: 'Invoiced',
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    // type code here for "images" field
+
+    // type code here for "files" field
+
+    address: '9455 Ferdinand Forest, West Brain, VA 80382',
+  },
+
+  {
+    name: 'Werner Heisenberg',
+
+    description:
+      'Ready are you? What know you of ready? For eight hundred years have I trained Jedi. My own counsel will I keep on who is to be trained. A Jedi must have the deepest commitment, the most serious mind. This one a long time have I watched. All his life has he looked away - to the future, to the horizon. Never his mind on where he was. Hmm? What he was doing. Hmph. Adventure. Heh. Excitement. Heh. A Jedi craves not these things. You are reckless.',
+
+    category: 'Commercial',
+
+    type: 'Repair',
+
+    status: 'Quoted',
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    // type code here for "images" field
+
+    // type code here for "files" field
+
+    address: '578 Belen Valleys, Lebsackfort, WV 37428-3183',
+  },
+
+  {
+    name: 'Nicolaus Copernicus',
+
+    description: 'Not if anything to say about it I have',
+
+    category: 'Commercial',
+
+    type: 'Warranty',
+
+    status: 'Approved',
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    // type code here for "images" field
+
+    // type code here for "files" field
+
+    address: 'Suite 509 44308 Fadel Valley, South Mitchfort, TX 19845-3267',
+  },
+
+  {
+    name: 'Tycho Brahe',
+
+    description: 'Not if anything to say about it I have',
 
     category: 'Commercial',
 
@@ -217,637 +275,273 @@ const JobsData = [
 
     status: 'Completed',
 
-    // type code here for "relation_many" field
+    // type code here for "relation_one" field
 
-    // type code here for "relation_many" field
+    // type code here for "relation_one" field
 
-    // type code here for "relation_many" field
+    // type code here for "relation_one" field
 
-    // type code here for "relation_many" field
+    // type code here for "images" field
 
-    // type code here for "relation_many" field
+    // type code here for "files" field
 
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-  },
-
-  {
-    name: 'Max Planck',
-
-    // type code here for "relation_many" field
-
-    category: 'Property Management',
-
-    type: 'Repair',
-
-    status: 'Invoiced',
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-  },
-
-  {
-    name: 'Pierre Simon de Laplace',
-
-    // type code here for "relation_many" field
-
-    category: 'Residential',
-
-    type: 'New',
-
-    status: 'Approved',
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-  },
-
-  {
-    name: 'Albrecht von Haller',
-
-    // type code here for "relation_many" field
-
-    category: 'Property Management',
-
-    type: 'Inspection',
-
-    status: 'Quoted',
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-  },
-
-  {
-    name: 'William Harvey',
-
-    // type code here for "relation_many" field
-
-    category: 'Commercial',
-
-    type: 'Retail',
-
-    status: 'Invoiced',
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
+    address: 'Apt. 203 26867 Patricia Mews, East Oscar, ND 17180-7944',
   },
 ];
 
-const EstimatesData = [
-  {
-    // type code here for "relation_one" field
+const TemplatesData = [{}, {}, {}, {}];
 
-    // type code here for "relation_many" field
+const TradesData = [{}, {}, {}, {}];
 
-    status: 'Approved',
+const InvoicesData = [{}, {}, {}, {}];
 
-    name: 'Charles Sherrington',
-  },
+const OrdersData = [{}, {}, {}, {}];
 
-  {
-    // type code here for "relation_one" field
+const ImagesData = [{}, {}, {}, {}];
 
-    // type code here for "relation_many" field
+const DocumentsData = [{}, {}, {}, {}];
 
-    status: 'Rejected',
+const EmailsData = [{}, {}, {}, {}];
 
-    name: 'Edward O. Wilson',
-  },
+const ChatsData = [{}, {}, {}, {}];
 
-  {
-    // type code here for "relation_one" field
+const AppointmentsData = [{}, {}, {}, {}];
 
-    // type code here for "relation_many" field
+const TasksData = [{}, {}, {}, {}];
 
-    status: 'Rejected',
+const ContractsData = [{}, {}, {}, {}];
 
-    name: 'Frederick Gowland Hopkins',
-  },
-
-  {
-    // type code here for "relation_one" field
-
-    // type code here for "relation_many" field
-
-    status: 'Approved',
-
-    name: 'Louis Pasteur',
-  },
-
-  {
-    // type code here for "relation_one" field
-
-    // type code here for "relation_many" field
-
-    status: 'Rejected',
-
-    name: 'Hans Selye',
-  },
-];
-
-const TradesData = [
-  {
-    name: 'Hans Bethe',
-  },
-
-  {
-    name: 'James Watson',
-  },
-
-  {
-    name: 'Linus Pauling',
-  },
-
-  {
-    name: 'Noam Chomsky',
-  },
-
-  {
-    name: 'Claude Bernard',
-  },
-];
-
-const TemplatesData = [
-  {
-    // type code here for "relation_many" field
-
-    materialCost: 99.57,
-
-    laborCost: 90.76,
-
-    markup: 97.01,
-
-    profitMargin: 29.48,
-
-    name: 'Murray Gell-Mann',
-
-    totalPrice: 55.66,
-
-    unitOfMeasurement: 'SQ',
-
-    description: "C'mon Naomi",
-  },
-
-  {
-    // type code here for "relation_many" field
-
-    materialCost: 85.36,
-
-    laborCost: 28.51,
-
-    markup: 16.04,
-
-    profitMargin: 71.85,
-
-    name: 'Konrad Lorenz',
-
-    totalPrice: 46.36,
-
-    unitOfMeasurement: 'LF',
-
-    description: "C'mon Naomi",
-  },
-
-  {
-    // type code here for "relation_many" field
-
-    materialCost: 28.59,
-
-    laborCost: 35.78,
-
-    markup: 39.06,
-
-    profitMargin: 42.79,
-
-    name: 'Anton van Leeuwenhoek',
-
-    totalPrice: 89.94,
-
-    unitOfMeasurement: 'LF',
-
-    description: 'Turd gone wrong',
-  },
-
-  {
-    // type code here for "relation_many" field
-
-    materialCost: 80.78,
-
-    laborCost: 77.94,
-
-    markup: 20.54,
-
-    profitMargin: 23.31,
-
-    name: 'Richard Feynman',
-
-    totalPrice: 73.67,
-
-    unitOfMeasurement: 'LF',
-
-    description: "I'm washing my hands of it",
-  },
-
-  {
-    // type code here for "relation_many" field
-
-    materialCost: 55.99,
-
-    laborCost: 50.38,
-
-    markup: 73.58,
-
-    profitMargin: 60.88,
-
-    name: 'Alfred Binet',
-
-    totalPrice: 57.22,
-
-    unitOfMeasurement: 'LF',
-
-    description: "How 'bout them Cowboys",
-  },
-];
-
-const DocumentsData = [
-  {
-    // type code here for "relation_many" field
-
-    name: 'Albrecht von Haller',
-
-    url: 'Reminds me of my old girlfriend Olga Goodntight',
-  },
-
-  {
-    // type code here for "relation_many" field
-
-    name: 'Konrad Lorenz',
-
-    url: 'That damn Bill Stull',
-  },
-
-  {
-    // type code here for "relation_many" field
-
-    name: 'Thomas Hunt Morgan',
-
-    url: 'No one tells me shit',
-  },
-
-  {
-    // type code here for "relation_many" field
-
-    name: 'Max Planck',
-
-    url: "Goin' hog huntin'",
-  },
-
-  {
-    // type code here for "relation_many" field
-
-    name: 'Max von Laue',
-
-    url: "How 'bout them Cowboys",
-  },
-];
-
-const ImagesData = [
-  {
-    // type code here for "relation_many" field
-
-    name: 'Sheldon Glashow',
-
-    url: 'Let me tell ya',
-  },
-
-  {
-    // type code here for "relation_many" field
-
-    name: 'Claude Bernard',
-
-    url: 'Yup',
-  },
-
-  {
-    // type code here for "relation_many" field
-
-    name: 'Heike Kamerlingh Onnes',
-
-    url: 'That damn gimble',
-  },
-
-  {
-    // type code here for "relation_many" field
-
-    name: 'Nicolaus Copernicus',
-
-    url: 'So I was walking Oscar',
-  },
-
-  {
-    // type code here for "relation_many" field
-
-    name: 'Gregor Mendel',
-
-    url: 'That damn gimble',
-  },
-];
-
-const TeamsData = [
-  {
-    name: 'Enrico Fermi',
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-  },
-
-  {
-    name: 'Louis Victor de Broglie',
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-  },
-
-  {
-    name: 'Alfred Binet',
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-  },
-
-  {
-    name: 'Emil Kraepelin',
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-  },
-
-  {
-    name: 'Paul Ehrlich',
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-  },
-];
-
-const InvoicesData = [
-  {
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_one" field
-
-    number: 8,
-  },
-
-  {
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_one" field
-
-    number: 6,
-  },
-
-  {
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_one" field
-
-    number: 6,
-  },
-
-  {
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_one" field
-
-    number: 2,
-  },
-
-  {
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_one" field
-
-    number: 9,
-  },
-];
+const AmendmentsData = [{}, {}, {}, {}];
 
 // Similar logic for "relation_many"
 
-// Similar logic for "relation_many"
+async function associateEstimateWithRelated_contact() {
+  const relatedRelated_contact0 = await Contacts.findOne({
+    offset: Math.floor(Math.random() * (await Contacts.count())),
+  });
+  const Estimate0 = await Estimates.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Estimate0?.setRelated_contact) {
+    await Estimate0.setRelated_contact(relatedRelated_contact0);
+  }
 
-// Similar logic for "relation_many"
+  const relatedRelated_contact1 = await Contacts.findOne({
+    offset: Math.floor(Math.random() * (await Contacts.count())),
+  });
+  const Estimate1 = await Estimates.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (Estimate1?.setRelated_contact) {
+    await Estimate1.setRelated_contact(relatedRelated_contact1);
+  }
 
-// Similar logic for "relation_many"
+  const relatedRelated_contact2 = await Contacts.findOne({
+    offset: Math.floor(Math.random() * (await Contacts.count())),
+  });
+  const Estimate2 = await Estimates.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Estimate2?.setRelated_contact) {
+    await Estimate2.setRelated_contact(relatedRelated_contact2);
+  }
 
-// Similar logic for "relation_many"
+  const relatedRelated_contact3 = await Contacts.findOne({
+    offset: Math.floor(Math.random() * (await Contacts.count())),
+  });
+  const Estimate3 = await Estimates.findOne({
+    order: [['id', 'ASC']],
+    offset: 3,
+  });
+  if (Estimate3?.setRelated_contact) {
+    await Estimate3.setRelated_contact(relatedRelated_contact3);
+  }
+}
 
-// Similar logic for "relation_many"
-
-// Similar logic for "relation_many"
-
-// Similar logic for "relation_many"
-
-// Similar logic for "relation_many"
-
-// Similar logic for "relation_many"
-
-// Similar logic for "relation_many"
-
-// Similar logic for "relation_many"
-
-// Similar logic for "relation_many"
-
-// Similar logic for "relation_many"
-
-// Similar logic for "relation_many"
-
-async function associateEstimateWithJob() {
-  const relatedJob0 = await Jobs.findOne({
+async function associateEstimateWithRelated_job() {
+  const relatedRelated_job0 = await Jobs.findOne({
     offset: Math.floor(Math.random() * (await Jobs.count())),
   });
   const Estimate0 = await Estimates.findOne({
     order: [['id', 'ASC']],
     offset: 0,
   });
-  if (Estimate0?.setJob) {
-    await Estimate0.setJob(relatedJob0);
+  if (Estimate0?.setRelated_job) {
+    await Estimate0.setRelated_job(relatedRelated_job0);
   }
 
-  const relatedJob1 = await Jobs.findOne({
+  const relatedRelated_job1 = await Jobs.findOne({
     offset: Math.floor(Math.random() * (await Jobs.count())),
   });
   const Estimate1 = await Estimates.findOne({
     order: [['id', 'ASC']],
     offset: 1,
   });
-  if (Estimate1?.setJob) {
-    await Estimate1.setJob(relatedJob1);
+  if (Estimate1?.setRelated_job) {
+    await Estimate1.setRelated_job(relatedRelated_job1);
   }
 
-  const relatedJob2 = await Jobs.findOne({
+  const relatedRelated_job2 = await Jobs.findOne({
     offset: Math.floor(Math.random() * (await Jobs.count())),
   });
   const Estimate2 = await Estimates.findOne({
     order: [['id', 'ASC']],
     offset: 2,
   });
-  if (Estimate2?.setJob) {
-    await Estimate2.setJob(relatedJob2);
+  if (Estimate2?.setRelated_job) {
+    await Estimate2.setRelated_job(relatedRelated_job2);
   }
 
-  const relatedJob3 = await Jobs.findOne({
+  const relatedRelated_job3 = await Jobs.findOne({
     offset: Math.floor(Math.random() * (await Jobs.count())),
   });
   const Estimate3 = await Estimates.findOne({
     order: [['id', 'ASC']],
     offset: 3,
   });
-  if (Estimate3?.setJob) {
-    await Estimate3.setJob(relatedJob3);
-  }
-
-  const relatedJob4 = await Jobs.findOne({
-    offset: Math.floor(Math.random() * (await Jobs.count())),
-  });
-  const Estimate4 = await Estimates.findOne({
-    order: [['id', 'ASC']],
-    offset: 4,
-  });
-  if (Estimate4?.setJob) {
-    await Estimate4.setJob(relatedJob4);
+  if (Estimate3?.setRelated_job) {
+    await Estimate3.setRelated_job(relatedRelated_job3);
   }
 }
 
-// Similar logic for "relation_many"
-
-// Similar logic for "relation_many"
-
-// Similar logic for "relation_many"
-
-// Similar logic for "relation_many"
-
-// Similar logic for "relation_many"
-
-// Similar logic for "relation_many"
-
-// Similar logic for "relation_many"
-
-// Similar logic for "relation_many"
-
-async function associateInvoiceWithDocument() {
-  const relatedDocument0 = await Documents.findOne({
-    offset: Math.floor(Math.random() * (await Documents.count())),
+async function associateJobWithAssigned_to() {
+  const relatedAssigned_to0 = await Users.findOne({
+    offset: Math.floor(Math.random() * (await Users.count())),
   });
-  const Invoice0 = await Invoices.findOne({
+  const Job0 = await Jobs.findOne({
     order: [['id', 'ASC']],
     offset: 0,
   });
-  if (Invoice0?.setDocument) {
-    await Invoice0.setDocument(relatedDocument0);
+  if (Job0?.setAssigned_to) {
+    await Job0.setAssigned_to(relatedAssigned_to0);
   }
 
-  const relatedDocument1 = await Documents.findOne({
-    offset: Math.floor(Math.random() * (await Documents.count())),
+  const relatedAssigned_to1 = await Users.findOne({
+    offset: Math.floor(Math.random() * (await Users.count())),
   });
-  const Invoice1 = await Invoices.findOne({
+  const Job1 = await Jobs.findOne({
     order: [['id', 'ASC']],
     offset: 1,
   });
-  if (Invoice1?.setDocument) {
-    await Invoice1.setDocument(relatedDocument1);
+  if (Job1?.setAssigned_to) {
+    await Job1.setAssigned_to(relatedAssigned_to1);
   }
 
-  const relatedDocument2 = await Documents.findOne({
-    offset: Math.floor(Math.random() * (await Documents.count())),
+  const relatedAssigned_to2 = await Users.findOne({
+    offset: Math.floor(Math.random() * (await Users.count())),
   });
-  const Invoice2 = await Invoices.findOne({
+  const Job2 = await Jobs.findOne({
     order: [['id', 'ASC']],
     offset: 2,
   });
-  if (Invoice2?.setDocument) {
-    await Invoice2.setDocument(relatedDocument2);
+  if (Job2?.setAssigned_to) {
+    await Job2.setAssigned_to(relatedAssigned_to2);
   }
 
-  const relatedDocument3 = await Documents.findOne({
-    offset: Math.floor(Math.random() * (await Documents.count())),
+  const relatedAssigned_to3 = await Users.findOne({
+    offset: Math.floor(Math.random() * (await Users.count())),
   });
-  const Invoice3 = await Invoices.findOne({
+  const Job3 = await Jobs.findOne({
     order: [['id', 'ASC']],
     offset: 3,
   });
-  if (Invoice3?.setDocument) {
-    await Invoice3.setDocument(relatedDocument3);
+  if (Job3?.setAssigned_to) {
+    await Job3.setAssigned_to(relatedAssigned_to3);
+  }
+}
+
+async function associateJobWithRelated_contact() {
+  const relatedRelated_contact0 = await Contacts.findOne({
+    offset: Math.floor(Math.random() * (await Contacts.count())),
+  });
+  const Job0 = await Jobs.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Job0?.setRelated_contact) {
+    await Job0.setRelated_contact(relatedRelated_contact0);
   }
 
-  const relatedDocument4 = await Documents.findOne({
-    offset: Math.floor(Math.random() * (await Documents.count())),
+  const relatedRelated_contact1 = await Contacts.findOne({
+    offset: Math.floor(Math.random() * (await Contacts.count())),
   });
-  const Invoice4 = await Invoices.findOne({
+  const Job1 = await Jobs.findOne({
     order: [['id', 'ASC']],
-    offset: 4,
+    offset: 1,
   });
-  if (Invoice4?.setDocument) {
-    await Invoice4.setDocument(relatedDocument4);
+  if (Job1?.setRelated_contact) {
+    await Job1.setRelated_contact(relatedRelated_contact1);
+  }
+
+  const relatedRelated_contact2 = await Contacts.findOne({
+    offset: Math.floor(Math.random() * (await Contacts.count())),
+  });
+  const Job2 = await Jobs.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Job2?.setRelated_contact) {
+    await Job2.setRelated_contact(relatedRelated_contact2);
+  }
+
+  const relatedRelated_contact3 = await Contacts.findOne({
+    offset: Math.floor(Math.random() * (await Contacts.count())),
+  });
+  const Job3 = await Jobs.findOne({
+    order: [['id', 'ASC']],
+    offset: 3,
+  });
+  if (Job3?.setRelated_contact) {
+    await Job3.setRelated_contact(relatedRelated_contact3);
+  }
+}
+
+async function associateJobWithRelated_estimate() {
+  const relatedRelated_estimate0 = await Estimates.findOne({
+    offset: Math.floor(Math.random() * (await Estimates.count())),
+  });
+  const Job0 = await Jobs.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Job0?.setRelated_estimate) {
+    await Job0.setRelated_estimate(relatedRelated_estimate0);
+  }
+
+  const relatedRelated_estimate1 = await Estimates.findOne({
+    offset: Math.floor(Math.random() * (await Estimates.count())),
+  });
+  const Job1 = await Jobs.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (Job1?.setRelated_estimate) {
+    await Job1.setRelated_estimate(relatedRelated_estimate1);
+  }
+
+  const relatedRelated_estimate2 = await Estimates.findOne({
+    offset: Math.floor(Math.random() * (await Estimates.count())),
+  });
+  const Job2 = await Jobs.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Job2?.setRelated_estimate) {
+    await Job2.setRelated_estimate(relatedRelated_estimate2);
+  }
+
+  const relatedRelated_estimate3 = await Estimates.findOne({
+    offset: Math.floor(Math.random() * (await Estimates.count())),
+  });
+  const Job3 = await Jobs.findOne({
+    order: [['id', 'ASC']],
+    offset: 3,
+  });
+  if (Job3?.setRelated_estimate) {
+    await Job3.setRelated_estimate(relatedRelated_estimate3);
   }
 }
 
@@ -855,96 +549,78 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await Contacts.bulkCreate(ContactsData);
 
-    await Appointments.bulkCreate(AppointmentsData);
+    await Estimates.bulkCreate(EstimatesData);
 
     await Jobs.bulkCreate(JobsData);
 
-    await Estimates.bulkCreate(EstimatesData);
+    await Templates.bulkCreate(TemplatesData);
 
     await Trades.bulkCreate(TradesData);
 
-    await Templates.bulkCreate(TemplatesData);
+    await Invoices.bulkCreate(InvoicesData);
 
-    await Documents.bulkCreate(DocumentsData);
+    await Orders.bulkCreate(OrdersData);
 
     await Images.bulkCreate(ImagesData);
 
-    await Teams.bulkCreate(TeamsData);
+    await Documents.bulkCreate(DocumentsData);
 
-    await Invoices.bulkCreate(InvoicesData);
+    await Emails.bulkCreate(EmailsData);
+
+    await Chats.bulkCreate(ChatsData);
+
+    await Appointments.bulkCreate(AppointmentsData);
+
+    await Tasks.bulkCreate(TasksData);
+
+    await Contracts.bulkCreate(ContractsData);
+
+    await Amendments.bulkCreate(AmendmentsData);
 
     await Promise.all([
       // Similar logic for "relation_many"
 
-      // Similar logic for "relation_many"
+      await associateEstimateWithRelated_contact(),
 
-      // Similar logic for "relation_many"
+      await associateEstimateWithRelated_job(),
 
-      // Similar logic for "relation_many"
+      await associateJobWithAssigned_to(),
 
-      // Similar logic for "relation_many"
+      await associateJobWithRelated_contact(),
 
-      // Similar logic for "relation_many"
-
-      // Similar logic for "relation_many"
-
-      // Similar logic for "relation_many"
-
-      // Similar logic for "relation_many"
-
-      // Similar logic for "relation_many"
-
-      // Similar logic for "relation_many"
-
-      // Similar logic for "relation_many"
-
-      // Similar logic for "relation_many"
-
-      // Similar logic for "relation_many"
-
-      // Similar logic for "relation_many"
-
-      await associateEstimateWithJob(),
-
-      // Similar logic for "relation_many"
-
-      // Similar logic for "relation_many"
-
-      // Similar logic for "relation_many"
-
-      // Similar logic for "relation_many"
-
-      // Similar logic for "relation_many"
-
-      // Similar logic for "relation_many"
-
-      // Similar logic for "relation_many"
-
-      // Similar logic for "relation_many"
-
-      await associateInvoiceWithDocument(),
+      await associateJobWithRelated_estimate(),
     ]);
   },
 
   down: async (queryInterface, Sequelize) => {
     await queryInterface.bulkDelete('contacts', null, {});
 
-    await queryInterface.bulkDelete('appointments', null, {});
+    await queryInterface.bulkDelete('estimates', null, {});
 
     await queryInterface.bulkDelete('jobs', null, {});
 
-    await queryInterface.bulkDelete('estimates', null, {});
+    await queryInterface.bulkDelete('templates', null, {});
 
     await queryInterface.bulkDelete('trades', null, {});
 
-    await queryInterface.bulkDelete('templates', null, {});
+    await queryInterface.bulkDelete('invoices', null, {});
 
-    await queryInterface.bulkDelete('documents', null, {});
+    await queryInterface.bulkDelete('orders', null, {});
 
     await queryInterface.bulkDelete('images', null, {});
 
-    await queryInterface.bulkDelete('teams', null, {});
+    await queryInterface.bulkDelete('documents', null, {});
 
-    await queryInterface.bulkDelete('invoices', null, {});
+    await queryInterface.bulkDelete('emails', null, {});
+
+    await queryInterface.bulkDelete('chats', null, {});
+
+    await queryInterface.bulkDelete('appointments', null, {});
+
+    await queryInterface.bulkDelete('tasks', null, {});
+
+    await queryInterface.bulkDelete('contracts', null, {});
+
+    await queryInterface.bulkDelete('amendments', null, {});
   },
 };

@@ -16,9 +16,11 @@ module.exports = class JobsDBApi {
         id: data.id || undefined,
 
         name: data.name || null,
+        description: data.description || null,
         category: data.category || null,
         type: data.type || null,
         status: data.status || null,
+        address: data.address || null,
         importHash: data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
@@ -26,37 +28,37 @@ module.exports = class JobsDBApi {
       { transaction },
     );
 
-    await jobs.setContact(data.contact || [], {
+    await jobs.setAssigned_to(data.assigned_to || null, {
       transaction,
     });
 
-    await jobs.setAssignedUser(data.assignedUser || [], {
+    await jobs.setRelated_contact(data.related_contact || null, {
       transaction,
     });
 
-    await jobs.setAssignedTeam(data.assignedTeam || [], {
+    await jobs.setRelated_estimate(data.related_estimate || null, {
       transaction,
     });
 
-    await jobs.setEstimate(data.estimate || [], {
-      transaction,
-    });
+    await FileDBApi.replaceRelationFiles(
+      {
+        belongsTo: db.jobs.getTableName(),
+        belongsToColumn: 'images',
+        belongsToId: jobs.id,
+      },
+      data.images,
+      options,
+    );
 
-    await jobs.setAppointment(data.appointment || [], {
-      transaction,
-    });
-
-    await jobs.setImage(data.image || [], {
-      transaction,
-    });
-
-    await jobs.setDocument(data.document || [], {
-      transaction,
-    });
-
-    await jobs.setInvoice(data.invoice || [], {
-      transaction,
-    });
+    await FileDBApi.replaceRelationFiles(
+      {
+        belongsTo: db.jobs.getTableName(),
+        belongsToColumn: 'documents',
+        belongsToId: jobs.id,
+      },
+      data.documents,
+      options,
+    );
 
     return jobs;
   }
@@ -70,9 +72,11 @@ module.exports = class JobsDBApi {
       id: item.id || undefined,
 
       name: item.name || null,
+      description: item.description || null,
       category: item.category || null,
       type: item.type || null,
       status: item.status || null,
+      address: item.address || null,
       importHash: item.importHash || null,
       createdById: currentUser.id,
       updatedById: currentUser.id,
@@ -83,6 +87,30 @@ module.exports = class JobsDBApi {
     const jobs = await db.jobs.bulkCreate(jobsData, { transaction });
 
     // For each item created, replace relation files
+
+    for (let i = 0; i < jobs.length; i++) {
+      await FileDBApi.replaceRelationFiles(
+        {
+          belongsTo: db.jobs.getTableName(),
+          belongsToColumn: 'images',
+          belongsToId: jobs[i].id,
+        },
+        data[i].images,
+        options,
+      );
+    }
+
+    for (let i = 0; i < jobs.length; i++) {
+      await FileDBApi.replaceRelationFiles(
+        {
+          belongsTo: db.jobs.getTableName(),
+          belongsToColumn: 'documents',
+          belongsToId: jobs[i].id,
+        },
+        data[i].documents,
+        options,
+      );
+    }
 
     return jobs;
   }
@@ -96,44 +124,71 @@ module.exports = class JobsDBApi {
     await jobs.update(
       {
         name: data.name || null,
+        description: data.description || null,
         category: data.category || null,
         type: data.type || null,
         status: data.status || null,
+        address: data.address || null,
         updatedById: currentUser.id,
       },
       { transaction },
     );
 
-    await jobs.setContact(data.contact || [], {
+    await jobs.setAssigned_to(data.assigned_to || null, {
       transaction,
     });
 
-    await jobs.setAssignedUser(data.assignedUser || [], {
+    await jobs.setRelated_contact(data.related_contact || null, {
       transaction,
     });
 
-    await jobs.setAssignedTeam(data.assignedTeam || [], {
+    await jobs.setRelated_estimate(data.related_estimate || null, {
       transaction,
     });
 
-    await jobs.setEstimate(data.estimate || [], {
+    await FileDBApi.replaceRelationFiles(
+      {
+        belongsTo: db.jobs.getTableName(),
+        belongsToColumn: 'images',
+        belongsToId: jobs.id,
+      },
+      data.images,
+      options,
+    );
+
+    await FileDBApi.replaceRelationFiles(
+      {
+        belongsTo: db.jobs.getTableName(),
+        belongsToColumn: 'documents',
+        belongsToId: jobs.id,
+      },
+      data.documents,
+      options,
+    );
+
+    return jobs;
+  }
+
+  static async deleteByIds(ids, options) {
+    const currentUser = (options && options.currentUser) || { id: null };
+    const transaction = (options && options.transaction) || undefined;
+
+    const jobs = await db.jobs.findAll({
+      where: {
+        id: {
+          [Op.in]: ids,
+        },
+      },
       transaction,
     });
 
-    await jobs.setAppointment(data.appointment || [], {
-      transaction,
-    });
-
-    await jobs.setImage(data.image || [], {
-      transaction,
-    });
-
-    await jobs.setDocument(data.document || [], {
-      transaction,
-    });
-
-    await jobs.setInvoice(data.invoice || [], {
-      transaction,
+    await db.sequelize.transaction(async (transaction) => {
+      for (const record of jobs) {
+        await record.update({ deletedBy: currentUser.id }, { transaction });
+      }
+      for (const record of jobs) {
+        await record.destroy({ transaction });
+      }
     });
 
     return jobs;
@@ -172,39 +227,27 @@ module.exports = class JobsDBApi {
 
     const output = jobs.get({ plain: true });
 
-    output.estimates_job = await jobs.getEstimates_job({
+    output.estimates_related_job = await jobs.getEstimates_related_job({
       transaction,
     });
 
-    output.contact = await jobs.getContact({
+    output.assigned_to = await jobs.getAssigned_to({
       transaction,
     });
 
-    output.assignedUser = await jobs.getAssignedUser({
+    output.related_contact = await jobs.getRelated_contact({
       transaction,
     });
 
-    output.assignedTeam = await jobs.getAssignedTeam({
+    output.related_estimate = await jobs.getRelated_estimate({
       transaction,
     });
 
-    output.estimate = await jobs.getEstimate({
+    output.images = await jobs.getImages({
       transaction,
     });
 
-    output.appointment = await jobs.getAppointment({
-      transaction,
-    });
-
-    output.image = await jobs.getImage({
-      transaction,
-    });
-
-    output.document = await jobs.getDocument({
-      transaction,
-    });
-
-    output.invoice = await jobs.getInvoice({
+    output.documents = await jobs.getDocuments({
       transaction,
     });
 
@@ -224,123 +267,28 @@ module.exports = class JobsDBApi {
     let where = {};
     let include = [
       {
-        model: db.contacts,
-        as: 'contact',
-        through: filter.contact
-          ? {
-              where: {
-                [Op.or]: filter.contact.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.contact ? true : null,
-      },
-
-      {
         model: db.users,
-        as: 'assignedUser',
-        through: filter.assignedUser
-          ? {
-              where: {
-                [Op.or]: filter.assignedUser.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.assignedUser ? true : null,
+        as: 'assigned_to',
       },
 
       {
-        model: db.teams,
-        as: 'assignedTeam',
-        through: filter.assignedTeam
-          ? {
-              where: {
-                [Op.or]: filter.assignedTeam.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.assignedTeam ? true : null,
+        model: db.contacts,
+        as: 'related_contact',
       },
 
       {
         model: db.estimates,
-        as: 'estimate',
-        through: filter.estimate
-          ? {
-              where: {
-                [Op.or]: filter.estimate.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.estimate ? true : null,
+        as: 'related_estimate',
       },
 
       {
-        model: db.appointments,
-        as: 'appointment',
-        through: filter.appointment
-          ? {
-              where: {
-                [Op.or]: filter.appointment.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.appointment ? true : null,
+        model: db.file,
+        as: 'images',
       },
 
       {
-        model: db.images,
-        as: 'image',
-        through: filter.image
-          ? {
-              where: {
-                [Op.or]: filter.image.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.image ? true : null,
-      },
-
-      {
-        model: db.documents,
-        as: 'document',
-        through: filter.document
-          ? {
-              where: {
-                [Op.or]: filter.document.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.document ? true : null,
-      },
-
-      {
-        model: db.invoices,
-        as: 'invoice',
-        through: filter.invoice
-          ? {
-              where: {
-                [Op.or]: filter.invoice.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.invoice ? true : null,
+        model: db.file,
+        as: 'documents',
       },
     ];
 
@@ -356,6 +304,20 @@ module.exports = class JobsDBApi {
         where = {
           ...where,
           [Op.and]: Utils.ilike('jobs', 'name', filter.name),
+        };
+      }
+
+      if (filter.description) {
+        where = {
+          ...where,
+          [Op.and]: Utils.ilike('jobs', 'description', filter.description),
+        };
+      }
+
+      if (filter.address) {
+        where = {
+          ...where,
+          [Op.and]: Utils.ilike('jobs', 'address', filter.address),
         };
       }
 
@@ -389,6 +351,39 @@ module.exports = class JobsDBApi {
         where = {
           ...where,
           status: filter.status,
+        };
+      }
+
+      if (filter.assigned_to) {
+        var listItems = filter.assigned_to.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
+        where = {
+          ...where,
+          assigned_toId: { [Op.or]: listItems },
+        };
+      }
+
+      if (filter.related_contact) {
+        var listItems = filter.related_contact.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
+        where = {
+          ...where,
+          related_contactId: { [Op.or]: listItems },
+        };
+      }
+
+      if (filter.related_estimate) {
+        var listItems = filter.related_estimate.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
+        where = {
+          ...where,
+          related_estimateId: { [Op.or]: listItems },
         };
       }
 

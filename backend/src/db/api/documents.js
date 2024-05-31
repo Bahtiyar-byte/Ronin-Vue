@@ -15,18 +15,12 @@ module.exports = class DocumentsDBApi {
       {
         id: data.id || undefined,
 
-        name: data.name || null,
-        url: data.url || null,
         importHash: data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
       },
       { transaction },
     );
-
-    await documents.setJob(data.job || [], {
-      transaction,
-    });
 
     return documents;
   }
@@ -39,8 +33,6 @@ module.exports = class DocumentsDBApi {
     const documentsData = data.map((item, index) => ({
       id: item.id || undefined,
 
-      name: item.name || null,
-      url: item.url || null,
       importHash: item.importHash || null,
       createdById: currentUser.id,
       updatedById: currentUser.id,
@@ -65,15 +57,34 @@ module.exports = class DocumentsDBApi {
 
     await documents.update(
       {
-        name: data.name || null,
-        url: data.url || null,
         updatedById: currentUser.id,
       },
       { transaction },
     );
 
-    await documents.setJob(data.job || [], {
+    return documents;
+  }
+
+  static async deleteByIds(ids, options) {
+    const currentUser = (options && options.currentUser) || { id: null };
+    const transaction = (options && options.transaction) || undefined;
+
+    const documents = await db.documents.findAll({
+      where: {
+        id: {
+          [Op.in]: ids,
+        },
+      },
       transaction,
+    });
+
+    await db.sequelize.transaction(async (transaction) => {
+      for (const record of documents) {
+        await record.update({ deletedBy: currentUser.id }, { transaction });
+      }
+      for (const record of documents) {
+        await record.destroy({ transaction });
+      }
     });
 
     return documents;
@@ -112,14 +123,6 @@ module.exports = class DocumentsDBApi {
 
     const output = documents.get({ plain: true });
 
-    output.invoices_document = await documents.getInvoices_document({
-      transaction,
-    });
-
-    output.job = await documents.getJob({
-      transaction,
-    });
-
     return output;
   }
 
@@ -134,42 +137,13 @@ module.exports = class DocumentsDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [
-      {
-        model: db.jobs,
-        as: 'job',
-        through: filter.job
-          ? {
-              where: {
-                [Op.or]: filter.job.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.job ? true : null,
-      },
-    ];
+    let include = [];
 
     if (filter) {
       if (filter.id) {
         where = {
           ...where,
           ['id']: Utils.uuid(filter.id),
-        };
-      }
-
-      if (filter.name) {
-        where = {
-          ...where,
-          [Op.and]: Utils.ilike('documents', 'name', filter.name),
-        };
-      }
-
-      if (filter.url) {
-        where = {
-          ...where,
-          [Op.and]: Utils.ilike('documents', 'url', filter.url),
         };
       }
 
@@ -254,21 +228,21 @@ module.exports = class DocumentsDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('documents', 'url', query),
+          Utils.ilike('documents', 'id', query),
         ],
       };
     }
 
     const records = await db.documents.findAll({
-      attributes: ['id', 'url'],
+      attributes: ['id', 'id'],
       where,
       limit: limit ? Number(limit) : undefined,
-      orderBy: [['url', 'ASC']],
+      orderBy: [['id', 'ASC']],
     });
 
     return records.map((record) => ({
       id: record.id,
-      label: record.url,
+      label: record.id,
     }));
   }
 };

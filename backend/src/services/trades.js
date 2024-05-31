@@ -1,6 +1,7 @@
 const db = require('../db/models');
 const TradesDBApi = require('../db/api/trades');
 const processFile = require('../middlewares/upload');
+const ValidationError = require('./notifications/errors/validation');
 const csv = require('csv-parser');
 const axios = require('axios');
 const config = require('../config');
@@ -79,14 +80,26 @@ module.exports = class TradesService {
     }
   }
 
+  static async deleteByIds(ids, currentUser) {
+    const transaction = await db.sequelize.transaction();
+
+    try {
+      await TradesDBApi.deleteByIds(ids, {
+        currentUser,
+        transaction,
+      });
+
+      await transaction.commit();
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
+    }
+  }
+
   static async remove(id, currentUser) {
     const transaction = await db.sequelize.transaction();
 
     try {
-      if (currentUser.app_role?.name !== config.roles.admin) {
-        throw new ValidationError('errors.forbidden.message');
-      }
-
       await TradesDBApi.remove(id, {
         currentUser,
         transaction,

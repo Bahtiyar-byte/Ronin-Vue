@@ -8,6 +8,10 @@ const router = express.Router();
 
 const { parse } = require('json2csv');
 
+const { checkCrudPermissions } = require('../middlewares/check-permissions');
+
+router.use(checkCrudPermissions('invoices'));
+
 /**
  *  @swagger
  *  components:
@@ -15,10 +19,6 @@ const { parse } = require('json2csv');
  *      Invoices:
  *        type: object
  *        properties:
-
- *          number:
- *            type: integer
- *            format: int64
 
  */
 
@@ -66,11 +66,12 @@ const { parse } = require('json2csv');
 router.post(
   '/',
   wrapAsync(async (req, res) => {
+    const link = new URL(req.headers.referer);
     await InvoicesService.create(
       req.body.data,
       req.currentUser,
       true,
-      req.headers.referer,
+      link.host,
     );
     const payload = true;
     res.status(200).send(payload);
@@ -80,7 +81,8 @@ router.post(
 router.post(
   '/bulk-import',
   wrapAsync(async (req, res) => {
-    await InvoicesService.bulkImport(req, res, true, req.headers.referer);
+    const link = new URL(req.headers.referer);
+    await InvoicesService.bulkImport(req, res, true, link.host);
     const payload = true;
     res.status(200).send(payload);
   }),
@@ -189,6 +191,48 @@ router.delete(
 /**
  *  @swagger
  *  /api/invoices:
+ *    post:
+ *      security:
+ *        - bearerAuth: []
+ *      tags: [Invoices]
+ *      summary: Delete the selected item list
+ *      description: Delete the selected item list
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              properties:
+ *                ids:
+ *                  description: IDs of the updated items
+ *                  type: array
+ *      responses:
+ *        200:
+ *          description: The items was successfully deleted
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: "#/components/schemas/Invoices"
+ *        401:
+ *          $ref: "#/components/responses/UnauthorizedError"
+ *        404:
+ *          description: Items not found
+ *        500:
+ *          description: Some server error
+ */
+
+router.post(
+  '/deleteByIds',
+  wrapAsync(async (req, res) => {
+    await InvoicesService.deleteByIds(req.body.data, req.currentUser);
+    const payload = true;
+    res.status(200).send(payload);
+  }),
+);
+
+/**
+ *  @swagger
+ *  /api/invoices:
  *    get:
  *      security:
  *        - bearerAuth: []
@@ -219,7 +263,7 @@ router.get(
 
     const payload = await InvoicesDBApi.findAll(req.query);
     if (filetype && filetype === 'csv') {
-      const fields = ['id', 'number'];
+      const fields = ['id'];
       const opts = { fields };
       try {
         const csv = parse(payload.rows, opts);

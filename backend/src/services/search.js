@@ -41,40 +41,36 @@ module.exports = class SearchService {
         throw new ValidationError('iam.errors.searchQueryRequired');
       }
       const tableColumns = {
-        users: ['firstName', 'lastName', 'phoneNumber', 'email', 'name'],
+        users: ['firstName', 'lastName', 'phoneNumber', 'email'],
 
-        contacts: ['name', 'email', 'phone', 'adress', 'firstName', 'lastName'],
+        contacts: ['name', 'email', 'phone', 'address'],
 
-        appointments: ['name'],
+        estimates: [
+          'name',
 
-        jobs: ['name'],
+          'description',
 
-        estimates: ['name'],
+          'trade',
 
-        trades: ['name'],
+          'template_used',
 
-        templates: ['name', 'description'],
+          'unit_of_measurement',
+        ],
 
-        documents: ['name', 'url'],
-
-        images: ['name', 'url'],
-
-        teams: ['name'],
+        jobs: ['name', 'description', 'address'],
       };
       const columnsInt = {
-        templates: [
-          'materialCost',
+        estimates: [
+          'material_cost',
 
-          'laborCost',
+          'labor_cost',
 
           'markup',
 
-          'profitMargin',
+          'profit_margin',
 
-          'totalPrice',
+          'total_price',
         ],
-
-        invoices: ['number'],
       };
 
       let allFoundRecords = [];

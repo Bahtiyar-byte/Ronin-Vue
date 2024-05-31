@@ -1,4 +1,4 @@
-#Ronin - template backend,
+#Evans CRM - template backend,
 
 #### Run App on local machine:
 
@@ -38,10 +38,10 @@
 
 - Type this command to creating a new database.
 
-  - `postgres=> CREATE DATABASE db_ronin;`
+  - `postgres=> CREATE DATABASE db_evans_crm;`
 
 - Then give that new user privileges to the new database then quit the `psql`.
-  - `postgres=> GRANT ALL PRIVILEGES ON DATABASE db_ronin TO admin;`
+  - `postgres=> GRANT ALL PRIVILEGES ON DATABASE db_evans_crm TO admin;`
   - `postgres=> \q`
 
 ---

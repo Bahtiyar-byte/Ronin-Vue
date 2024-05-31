@@ -142,10 +142,11 @@ router.post(
 router.post(
   '/send-password-reset-email',
   wrapAsync(async (req, res) => {
+    const link = new URL(req.headers.referer);
     await AuthService.sendPasswordResetEmail(
       req.body.email,
       'register',
-      req.protocol + '://' + req.hostname + config.portUIProd,
+      link.host,
     );
     const payload = true;
     res.status(200).send(payload);
@@ -178,12 +179,13 @@ router.post(
 router.post(
   '/signup',
   wrapAsync(async (req, res) => {
+    const link = new URL(req.headers.referer);
     const payload = await AuthService.signup(
       req.body.email,
       req.body.password,
 
       req,
-      req.protocol + '://' + req.hostname + config.portUIProd,
+      link.host,
     );
     res.status(200).send(payload);
   }),

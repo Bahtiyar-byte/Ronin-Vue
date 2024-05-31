@@ -3,7 +3,7 @@ const os = require('os');
 const config = {
   gcloud: {
     bucket: 'fldemo-files',
-    hash: '05dc1f14a105b56f44ba4dcf7ef19588',
+    hash: 'f6b1c9cc694d7961a63afdf0df8487e3',
   },
   bcrypt: {
     saltRounds: 12,
@@ -19,9 +19,9 @@ const config = {
   remote: '',
   port: process.env.NODE_ENV === 'production' ? '' : '8080',
   hostUI: process.env.NODE_ENV === 'production' ? '' : 'http://localhost',
-  portUI: process.env.NODE_ENV === 'production' ? '' : '5173',
+  portUI: process.env.NODE_ENV === 'production' ? '' : '3000',
 
-  portUIProd: process.env.NODE_ENV === 'production' ? '/#' : ':5173/#',
+  portUIProd: process.env.NODE_ENV === 'production' ? '' : ':3000',
 
   swaggerUI: process.env.NODE_ENV === 'production' ? '' : 'http://localhost',
   swaggerPort: process.env.NODE_ENV === 'production' ? '' : ':8080',
@@ -36,7 +36,7 @@ const config = {
   },
   uploadDir: os.tmpdir(),
   email: {
-    from: 'Ronin <app@flatlogic.app>',
+    from: 'Evans CRM <app@flatlogic.app>',
     host: 'email-smtp.us-east-1.amazonaws.com',
     port: 587,
     auth: {
@@ -52,7 +52,7 @@ const config = {
     user: 'User',
   },
 
-  project_uuid: '57d15849-b59a-4f20-8039-0b857432bd21',
+  project_uuid: 'b7aeffad-b11a-4d04-8b32-ca0038b3d0d2',
   flHost:
     process.env.NODE_ENV === 'production'
       ? 'https://flatlogic.com/projects'

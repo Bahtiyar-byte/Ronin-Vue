@@ -14,14 +14,6 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
       },
 
-      name: {
-        type: DataTypes.TEXT,
-      },
-
-      url: {
-        type: DataTypes.TEXT,
-      },
-
       importHash: {
         type: DataTypes.STRING(255),
         allowNull: true,
@@ -36,24 +28,7 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   documents.associate = (db) => {
-    db.documents.belongsToMany(db.jobs, {
-      as: 'job',
-      foreignKey: {
-        name: 'documents_jobId',
-      },
-      constraints: false,
-      through: 'documentsJobJobs',
-    });
-
     /// loop through entities and it's fields, and if ref === current e[name] and create relation has many on parent entity
-
-    db.documents.hasMany(db.invoices, {
-      as: 'invoices_document',
-      foreignKey: {
-        name: 'documentId',
-      },
-      constraints: false,
-    });
 
     //end loop
 

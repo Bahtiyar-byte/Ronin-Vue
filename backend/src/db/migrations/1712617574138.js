@@ -79,7 +79,7 @@ module.exports = {
       );
 
       await queryInterface.createTable(
-        'appointments',
+        'estimates',
         {
           id: {
             type: Sequelize.DataTypes.UUID,
@@ -147,176 +147,6 @@ module.exports = {
       );
 
       await queryInterface.createTable(
-        'estimates',
-        {
-          id: {
-            type: Sequelize.DataTypes.UUID,
-            defaultValue: Sequelize.DataTypes.UUIDV4,
-            primaryKey: true,
-          },
-          createdById: {
-            type: Sequelize.DataTypes.UUID,
-            references: {
-              key: 'id',
-              model: 'users',
-            },
-          },
-          updatedById: {
-            type: Sequelize.DataTypes.UUID,
-            references: {
-              key: 'id',
-              model: 'users',
-            },
-          },
-          createdAt: { type: Sequelize.DataTypes.DATE },
-          updatedAt: { type: Sequelize.DataTypes.DATE },
-          deletedAt: { type: Sequelize.DataTypes.DATE },
-          importHash: {
-            type: Sequelize.DataTypes.STRING(255),
-            allowNull: true,
-            unique: true,
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.createTable(
-        'trades',
-        {
-          id: {
-            type: Sequelize.DataTypes.UUID,
-            defaultValue: Sequelize.DataTypes.UUIDV4,
-            primaryKey: true,
-          },
-          createdById: {
-            type: Sequelize.DataTypes.UUID,
-            references: {
-              key: 'id',
-              model: 'users',
-            },
-          },
-          updatedById: {
-            type: Sequelize.DataTypes.UUID,
-            references: {
-              key: 'id',
-              model: 'users',
-            },
-          },
-          createdAt: { type: Sequelize.DataTypes.DATE },
-          updatedAt: { type: Sequelize.DataTypes.DATE },
-          deletedAt: { type: Sequelize.DataTypes.DATE },
-          importHash: {
-            type: Sequelize.DataTypes.STRING(255),
-            allowNull: true,
-            unique: true,
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.createTable(
-        'templates',
-        {
-          id: {
-            type: Sequelize.DataTypes.UUID,
-            defaultValue: Sequelize.DataTypes.UUIDV4,
-            primaryKey: true,
-          },
-          createdById: {
-            type: Sequelize.DataTypes.UUID,
-            references: {
-              key: 'id',
-              model: 'users',
-            },
-          },
-          updatedById: {
-            type: Sequelize.DataTypes.UUID,
-            references: {
-              key: 'id',
-              model: 'users',
-            },
-          },
-          createdAt: { type: Sequelize.DataTypes.DATE },
-          updatedAt: { type: Sequelize.DataTypes.DATE },
-          deletedAt: { type: Sequelize.DataTypes.DATE },
-          importHash: {
-            type: Sequelize.DataTypes.STRING(255),
-            allowNull: true,
-            unique: true,
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.createTable(
-        'documents',
-        {
-          id: {
-            type: Sequelize.DataTypes.UUID,
-            defaultValue: Sequelize.DataTypes.UUIDV4,
-            primaryKey: true,
-          },
-          createdById: {
-            type: Sequelize.DataTypes.UUID,
-            references: {
-              key: 'id',
-              model: 'users',
-            },
-          },
-          updatedById: {
-            type: Sequelize.DataTypes.UUID,
-            references: {
-              key: 'id',
-              model: 'users',
-            },
-          },
-          createdAt: { type: Sequelize.DataTypes.DATE },
-          updatedAt: { type: Sequelize.DataTypes.DATE },
-          deletedAt: { type: Sequelize.DataTypes.DATE },
-          importHash: {
-            type: Sequelize.DataTypes.STRING(255),
-            allowNull: true,
-            unique: true,
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.createTable(
-        'images',
-        {
-          id: {
-            type: Sequelize.DataTypes.UUID,
-            defaultValue: Sequelize.DataTypes.UUIDV4,
-            primaryKey: true,
-          },
-          createdById: {
-            type: Sequelize.DataTypes.UUID,
-            references: {
-              key: 'id',
-              model: 'users',
-            },
-          },
-          updatedById: {
-            type: Sequelize.DataTypes.UUID,
-            references: {
-              key: 'id',
-              model: 'users',
-            },
-          },
-          createdAt: { type: Sequelize.DataTypes.DATE },
-          updatedAt: { type: Sequelize.DataTypes.DATE },
-          deletedAt: { type: Sequelize.DataTypes.DATE },
-          importHash: {
-            type: Sequelize.DataTypes.STRING(255),
-            allowNull: true,
-            unique: true,
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.createTable(
         'roles',
         {
           id: {
@@ -351,41 +181,7 @@ module.exports = {
       );
 
       await queryInterface.createTable(
-        'teams',
-        {
-          id: {
-            type: Sequelize.DataTypes.UUID,
-            defaultValue: Sequelize.DataTypes.UUIDV4,
-            primaryKey: true,
-          },
-          createdById: {
-            type: Sequelize.DataTypes.UUID,
-            references: {
-              key: 'id',
-              model: 'users',
-            },
-          },
-          updatedById: {
-            type: Sequelize.DataTypes.UUID,
-            references: {
-              key: 'id',
-              model: 'users',
-            },
-          },
-          createdAt: { type: Sequelize.DataTypes.DATE },
-          updatedAt: { type: Sequelize.DataTypes.DATE },
-          deletedAt: { type: Sequelize.DataTypes.DATE },
-          importHash: {
-            type: Sequelize.DataTypes.STRING(255),
-            allowNull: true,
-            unique: true,
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.createTable(
-        'invoices',
+        'permissions',
         {
           id: {
             type: Sequelize.DataTypes.UUID,
@@ -533,15 +329,6 @@ module.exports = {
       );
 
       await queryInterface.addColumn(
-        'users',
-        'name',
-        {
-          type: Sequelize.DataTypes.TEXT,
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
         'contacts',
         'name',
         {
@@ -570,25 +357,7 @@ module.exports = {
 
       await queryInterface.addColumn(
         'contacts',
-        'adress',
-        {
-          type: Sequelize.DataTypes.TEXT,
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'contacts',
-        'firstName',
-        {
-          type: Sequelize.DataTypes.TEXT,
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'contacts',
-        'lastName',
+        'address',
         {
           type: Sequelize.DataTypes.TEXT,
         },
@@ -607,28 +376,125 @@ module.exports = {
       );
 
       await queryInterface.addColumn(
-        'appointments',
-        'date',
+        'estimates',
+        'name',
         {
-          type: Sequelize.DataTypes.DATE,
+          type: Sequelize.DataTypes.TEXT,
         },
         { transaction },
       );
 
       await queryInterface.addColumn(
-        'appointments',
-        'scheduled',
+        'estimates',
+        'description',
         {
-          type: Sequelize.DataTypes.BOOLEAN,
-
-          defaultValue: false,
-          allowNull: false,
+          type: Sequelize.DataTypes.TEXT,
         },
         { transaction },
       );
 
       await queryInterface.addColumn(
-        'appointments',
+        'estimates',
+        'trade',
+        {
+          type: Sequelize.DataTypes.TEXT,
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'estimates',
+        'template_used',
+        {
+          type: Sequelize.DataTypes.TEXT,
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'estimates',
+        'material_cost',
+        {
+          type: Sequelize.DataTypes.DECIMAL,
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'estimates',
+        'labor_cost',
+        {
+          type: Sequelize.DataTypes.DECIMAL,
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'estimates',
+        'markup',
+        {
+          type: Sequelize.DataTypes.DECIMAL,
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'estimates',
+        'profit_margin',
+        {
+          type: Sequelize.DataTypes.DECIMAL,
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'estimates',
+        'total_price',
+        {
+          type: Sequelize.DataTypes.DECIMAL,
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'estimates',
+        'unit_of_measurement',
+        {
+          type: Sequelize.DataTypes.TEXT,
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'estimates',
+        'related_contactId',
+        {
+          type: Sequelize.DataTypes.UUID,
+
+          references: {
+            model: 'contacts',
+            key: 'id',
+          },
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'estimates',
+        'related_jobId',
+        {
+          type: Sequelize.DataTypes.UUID,
+
+          references: {
+            model: 'jobs',
+            key: 'id',
+          },
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'jobs',
         'name',
         {
           type: Sequelize.DataTypes.TEXT,
@@ -638,7 +504,7 @@ module.exports = {
 
       await queryInterface.addColumn(
         'jobs',
-        'name',
+        'description',
         {
           type: Sequelize.DataTypes.TEXT,
         },
@@ -651,7 +517,7 @@ module.exports = {
         {
           type: Sequelize.DataTypes.ENUM,
 
-          values: ['Commercial', 'Property Management', 'Residential'],
+          values: ['Commercial', 'PropertyManagement', 'Residential'],
         },
         { transaction },
       );
@@ -666,10 +532,10 @@ module.exports = {
             'New',
             'Repair',
             'Service',
+            'Warranty',
             'Inspection',
             'Insurance',
             'Retail',
-            'Warranty',
           ],
         },
         { transaction },
@@ -687,13 +553,13 @@ module.exports = {
       );
 
       await queryInterface.addColumn(
-        'estimates',
-        'jobId',
+        'jobs',
+        'assigned_toId',
         {
           type: Sequelize.DataTypes.UUID,
 
           references: {
-            model: 'jobs',
+            model: 'users',
             key: 'id',
           },
         },
@@ -701,73 +567,36 @@ module.exports = {
       );
 
       await queryInterface.addColumn(
-        'estimates',
-        'status',
+        'jobs',
+        'related_contactId',
         {
-          type: Sequelize.DataTypes.ENUM,
+          type: Sequelize.DataTypes.UUID,
 
-          values: ['Draft', 'Sent', 'Approved', 'Rejected'],
+          references: {
+            model: 'contacts',
+            key: 'id',
+          },
         },
         { transaction },
       );
 
       await queryInterface.addColumn(
-        'estimates',
-        'name',
+        'jobs',
+        'related_estimateId',
         {
-          type: Sequelize.DataTypes.TEXT,
+          type: Sequelize.DataTypes.UUID,
+
+          references: {
+            model: 'estimates',
+            key: 'id',
+          },
         },
         { transaction },
       );
 
       await queryInterface.addColumn(
-        'trades',
-        'name',
-        {
-          type: Sequelize.DataTypes.TEXT,
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'templates',
-        'materialCost',
-        {
-          type: Sequelize.DataTypes.DECIMAL,
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'templates',
-        'laborCost',
-        {
-          type: Sequelize.DataTypes.DECIMAL,
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'templates',
-        'markup',
-        {
-          type: Sequelize.DataTypes.DECIMAL,
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'templates',
-        'profitMargin',
-        {
-          type: Sequelize.DataTypes.DECIMAL,
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'templates',
-        'name',
+        'jobs',
+        'address',
         {
           type: Sequelize.DataTypes.TEXT,
         },
@@ -775,90 +604,7 @@ module.exports = {
       );
 
       await queryInterface.addColumn(
-        'templates',
-        'totalPrice',
-        {
-          type: Sequelize.DataTypes.DECIMAL,
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'templates',
-        'unitOfMeasurement',
-        {
-          type: Sequelize.DataTypes.ENUM,
-
-          values: ['SQ', 'LF'],
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'templates',
-        'description',
-        {
-          type: Sequelize.DataTypes.TEXT,
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'documents',
-        'name',
-        {
-          type: Sequelize.DataTypes.TEXT,
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'documents',
-        'url',
-        {
-          type: Sequelize.DataTypes.TEXT,
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'images',
-        'name',
-        {
-          type: Sequelize.DataTypes.TEXT,
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'images',
-        'url',
-        {
-          type: Sequelize.DataTypes.TEXT,
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'roles',
-        'name',
-        {
-          type: Sequelize.DataTypes.TEXT,
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'roles',
         'permissions',
-        {
-          type: Sequelize.DataTypes.TEXT,
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'teams',
         'name',
         {
           type: Sequelize.DataTypes.TEXT,
@@ -867,24 +613,33 @@ module.exports = {
       );
 
       await queryInterface.addColumn(
-        'invoices',
-        'documentId',
+        'roles',
+        'name',
         {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'documents',
-            key: 'id',
-          },
+          type: Sequelize.DataTypes.TEXT,
         },
         { transaction },
       );
 
       await queryInterface.addColumn(
-        'invoices',
-        'number',
+        'roles',
+        'role_customization',
         {
-          type: Sequelize.DataTypes.INTEGER,
+          type: Sequelize.DataTypes.TEXT,
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'users',
+        'app_roleId',
+        {
+          type: Sequelize.DataTypes.UUID,
+
+          references: {
+            model: 'roles',
+            key: 'id',
+          },
         },
         { transaction },
       );
@@ -906,63 +661,29 @@ module.exports = {
      */
     const transaction = await queryInterface.sequelize.transaction();
     try {
-      await queryInterface.removeColumn('invoices', 'number', { transaction });
+      await queryInterface.removeColumn('users', 'app_roleId', { transaction });
 
-      await queryInterface.removeColumn('invoices', 'documentId', {
-        transaction,
-      });
-
-      await queryInterface.removeColumn('teams', 'name', { transaction });
-
-      await queryInterface.removeColumn('roles', 'permissions', {
+      await queryInterface.removeColumn('roles', 'role_customization', {
         transaction,
       });
 
       await queryInterface.removeColumn('roles', 'name', { transaction });
 
-      await queryInterface.removeColumn('images', 'url', { transaction });
+      await queryInterface.removeColumn('permissions', 'name', { transaction });
 
-      await queryInterface.removeColumn('images', 'name', { transaction });
+      await queryInterface.removeColumn('jobs', 'address', { transaction });
 
-      await queryInterface.removeColumn('documents', 'url', { transaction });
-
-      await queryInterface.removeColumn('documents', 'name', { transaction });
-
-      await queryInterface.removeColumn('templates', 'description', {
+      await queryInterface.removeColumn('jobs', 'related_estimateId', {
         transaction,
       });
 
-      await queryInterface.removeColumn('templates', 'unitOfMeasurement', {
+      await queryInterface.removeColumn('jobs', 'related_contactId', {
         transaction,
       });
 
-      await queryInterface.removeColumn('templates', 'totalPrice', {
+      await queryInterface.removeColumn('jobs', 'assigned_toId', {
         transaction,
       });
-
-      await queryInterface.removeColumn('templates', 'name', { transaction });
-
-      await queryInterface.removeColumn('templates', 'profitMargin', {
-        transaction,
-      });
-
-      await queryInterface.removeColumn('templates', 'markup', { transaction });
-
-      await queryInterface.removeColumn('templates', 'laborCost', {
-        transaction,
-      });
-
-      await queryInterface.removeColumn('templates', 'materialCost', {
-        transaction,
-      });
-
-      await queryInterface.removeColumn('trades', 'name', { transaction });
-
-      await queryInterface.removeColumn('estimates', 'name', { transaction });
-
-      await queryInterface.removeColumn('estimates', 'status', { transaction });
-
-      await queryInterface.removeColumn('estimates', 'jobId', { transaction });
 
       await queryInterface.removeColumn('jobs', 'status', { transaction });
 
@@ -970,39 +691,61 @@ module.exports = {
 
       await queryInterface.removeColumn('jobs', 'category', { transaction });
 
+      await queryInterface.removeColumn('jobs', 'description', { transaction });
+
       await queryInterface.removeColumn('jobs', 'name', { transaction });
 
-      await queryInterface.removeColumn('appointments', 'name', {
+      await queryInterface.removeColumn('estimates', 'related_jobId', {
         transaction,
       });
 
-      await queryInterface.removeColumn('appointments', 'scheduled', {
+      await queryInterface.removeColumn('estimates', 'related_contactId', {
         transaction,
       });
 
-      await queryInterface.removeColumn('appointments', 'date', {
+      await queryInterface.removeColumn('estimates', 'unit_of_measurement', {
         transaction,
       });
+
+      await queryInterface.removeColumn('estimates', 'total_price', {
+        transaction,
+      });
+
+      await queryInterface.removeColumn('estimates', 'profit_margin', {
+        transaction,
+      });
+
+      await queryInterface.removeColumn('estimates', 'markup', { transaction });
+
+      await queryInterface.removeColumn('estimates', 'labor_cost', {
+        transaction,
+      });
+
+      await queryInterface.removeColumn('estimates', 'material_cost', {
+        transaction,
+      });
+
+      await queryInterface.removeColumn('estimates', 'template_used', {
+        transaction,
+      });
+
+      await queryInterface.removeColumn('estimates', 'trade', { transaction });
+
+      await queryInterface.removeColumn('estimates', 'description', {
+        transaction,
+      });
+
+      await queryInterface.removeColumn('estimates', 'name', { transaction });
 
       await queryInterface.removeColumn('contacts', 'stage', { transaction });
 
-      await queryInterface.removeColumn('contacts', 'lastName', {
-        transaction,
-      });
-
-      await queryInterface.removeColumn('contacts', 'firstName', {
-        transaction,
-      });
-
-      await queryInterface.removeColumn('contacts', 'adress', { transaction });
+      await queryInterface.removeColumn('contacts', 'address', { transaction });
 
       await queryInterface.removeColumn('contacts', 'phone', { transaction });
 
       await queryInterface.removeColumn('contacts', 'email', { transaction });
 
       await queryInterface.removeColumn('contacts', 'name', { transaction });
-
-      await queryInterface.removeColumn('users', 'name', { transaction });
 
       await queryInterface.removeColumn('users', 'provider', { transaction });
 
@@ -1044,25 +787,13 @@ module.exports = {
 
       await queryInterface.removeColumn('users', 'firstName', { transaction });
 
-      await queryInterface.dropTable('invoices', { transaction });
-
-      await queryInterface.dropTable('teams', { transaction });
+      await queryInterface.dropTable('permissions', { transaction });
 
       await queryInterface.dropTable('roles', { transaction });
 
-      await queryInterface.dropTable('images', { transaction });
-
-      await queryInterface.dropTable('documents', { transaction });
-
-      await queryInterface.dropTable('templates', { transaction });
-
-      await queryInterface.dropTable('trades', { transaction });
-
-      await queryInterface.dropTable('estimates', { transaction });
-
       await queryInterface.dropTable('jobs', { transaction });
 
-      await queryInterface.dropTable('appointments', { transaction });
+      await queryInterface.dropTable('estimates', { transaction });
 
       await queryInterface.dropTable('contacts', { transaction });
 

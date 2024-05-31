@@ -15,28 +15,12 @@ module.exports = class AppointmentsDBApi {
       {
         id: data.id || undefined,
 
-        date: data.date || null,
-        scheduled: data.scheduled || false,
-
-        name: data.name || null,
         importHash: data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
       },
       { transaction },
     );
-
-    await appointments.setContact(data.contact || [], {
-      transaction,
-    });
-
-    await appointments.setJob(data.job || [], {
-      transaction,
-    });
-
-    await appointments.setEstimate(data.estimate || [], {
-      transaction,
-    });
 
     return appointments;
   }
@@ -49,10 +33,6 @@ module.exports = class AppointmentsDBApi {
     const appointmentsData = data.map((item, index) => ({
       id: item.id || undefined,
 
-      date: item.date || null,
-      scheduled: item.scheduled || false,
-
-      name: item.name || null,
       importHash: item.importHash || null,
       createdById: currentUser.id,
       updatedById: currentUser.id,
@@ -81,25 +61,34 @@ module.exports = class AppointmentsDBApi {
 
     await appointments.update(
       {
-        date: data.date || null,
-        scheduled: data.scheduled || false,
-
-        name: data.name || null,
         updatedById: currentUser.id,
       },
       { transaction },
     );
 
-    await appointments.setContact(data.contact || [], {
+    return appointments;
+  }
+
+  static async deleteByIds(ids, options) {
+    const currentUser = (options && options.currentUser) || { id: null };
+    const transaction = (options && options.transaction) || undefined;
+
+    const appointments = await db.appointments.findAll({
+      where: {
+        id: {
+          [Op.in]: ids,
+        },
+      },
       transaction,
     });
 
-    await appointments.setJob(data.job || [], {
-      transaction,
-    });
-
-    await appointments.setEstimate(data.estimate || [], {
-      transaction,
+    await db.sequelize.transaction(async (transaction) => {
+      for (const record of appointments) {
+        await record.update({ deletedBy: currentUser.id }, { transaction });
+      }
+      for (const record of appointments) {
+        await record.destroy({ transaction });
+      }
     });
 
     return appointments;
@@ -141,18 +130,6 @@ module.exports = class AppointmentsDBApi {
 
     const output = appointments.get({ plain: true });
 
-    output.contact = await appointments.getContact({
-      transaction,
-    });
-
-    output.job = await appointments.getJob({
-      transaction,
-    });
-
-    output.estimate = await appointments.getEstimate({
-      transaction,
-    });
-
     return output;
   }
 
@@ -167,52 +144,7 @@ module.exports = class AppointmentsDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [
-      {
-        model: db.contacts,
-        as: 'contact',
-        through: filter.contact
-          ? {
-              where: {
-                [Op.or]: filter.contact.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.contact ? true : null,
-      },
-
-      {
-        model: db.jobs,
-        as: 'job',
-        through: filter.job
-          ? {
-              where: {
-                [Op.or]: filter.job.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.job ? true : null,
-      },
-
-      {
-        model: db.estimates,
-        as: 'estimate',
-        through: filter.estimate
-          ? {
-              where: {
-                [Op.or]: filter.estimate.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.estimate ? true : null,
-      },
-    ];
+    let include = [];
 
     if (filter) {
       if (filter.id) {
@@ -220,37 +152,6 @@ module.exports = class AppointmentsDBApi {
           ...where,
           ['id']: Utils.uuid(filter.id),
         };
-      }
-
-      if (filter.name) {
-        where = {
-          ...where,
-          [Op.and]: Utils.ilike('appointments', 'name', filter.name),
-        };
-      }
-
-      if (filter.dateRange) {
-        const [start, end] = filter.dateRange;
-
-        if (start !== undefined && start !== null && start !== '') {
-          where = {
-            ...where,
-            date: {
-              ...where.date,
-              [Op.gte]: start,
-            },
-          };
-        }
-
-        if (end !== undefined && end !== null && end !== '') {
-          where = {
-            ...where,
-            date: {
-              ...where.date,
-              [Op.lte]: end,
-            },
-          };
-        }
       }
 
       if (
@@ -262,13 +163,6 @@ module.exports = class AppointmentsDBApi {
         where = {
           ...where,
           active: filter.active === true || filter.active === 'true',
-        };
-      }
-
-      if (filter.scheduled) {
-        where = {
-          ...where,
-          scheduled: filter.scheduled,
         };
       }
 
@@ -341,21 +235,21 @@ module.exports = class AppointmentsDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('appointments', 'name', query),
+          Utils.ilike('appointments', 'id', query),
         ],
       };
     }
 
     const records = await db.appointments.findAll({
-      attributes: ['id', 'name'],
+      attributes: ['id', 'id'],
       where,
       limit: limit ? Number(limit) : undefined,
-      orderBy: [['name', 'ASC']],
+      orderBy: [['id', 'ASC']],
     });
 
     return records.map((record) => ({
       id: record.id,
-      label: record.name,
+      label: record.id,
     }));
   }
 };

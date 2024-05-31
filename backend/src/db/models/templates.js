@@ -14,40 +14,6 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
       },
 
-      materialCost: {
-        type: DataTypes.DECIMAL,
-      },
-
-      laborCost: {
-        type: DataTypes.DECIMAL,
-      },
-
-      markup: {
-        type: DataTypes.DECIMAL,
-      },
-
-      profitMargin: {
-        type: DataTypes.DECIMAL,
-      },
-
-      name: {
-        type: DataTypes.TEXT,
-      },
-
-      totalPrice: {
-        type: DataTypes.DECIMAL,
-      },
-
-      unitOfMeasurement: {
-        type: DataTypes.ENUM,
-
-        values: ['SQ', 'LF'],
-      },
-
-      description: {
-        type: DataTypes.TEXT,
-      },
-
       importHash: {
         type: DataTypes.STRING(255),
         allowNull: true,
@@ -62,15 +28,6 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   templates.associate = (db) => {
-    db.templates.belongsToMany(db.trades, {
-      as: 'trade',
-      foreignKey: {
-        name: 'templates_tradeId',
-      },
-      constraints: false,
-      through: 'templatesTradeTrades',
-    });
-
     /// loop through entities and it's fields, and if ref === current e[name] and create relation has many on parent entity
 
     //end loop

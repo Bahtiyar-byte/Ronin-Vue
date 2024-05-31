@@ -1,6 +1,6 @@
 const errors = {
   app: {
-    title: 'Ronin',
+    title: 'Evans CRM',
   },
 
   auth: {

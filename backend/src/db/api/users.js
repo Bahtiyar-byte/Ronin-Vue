@@ -34,7 +34,6 @@ module.exports = class UsersDBApi {
         passwordResetTokenExpiresAt:
           data.data.passwordResetTokenExpiresAt || null,
         provider: data.data.provider || null,
-        name: data.data.name || null,
         importHash: data.data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
@@ -42,7 +41,22 @@ module.exports = class UsersDBApi {
       { transaction },
     );
 
-    await users.setRoleId(data.data.roleId || [], {
+    if (!data.data.app_role) {
+      const role = await db.roles.findOne({
+        where: { name: 'User' },
+      });
+      if (role) {
+        await users.setApp_role(role, {
+          transaction,
+        });
+      }
+    } else {
+      await users.setApp_role(data.data.app_role || null, {
+        transaction,
+      });
+    }
+
+    await users.setCustom_permissions(data.data.custom_permissions || [], {
       transaction,
     });
 
@@ -82,7 +96,6 @@ module.exports = class UsersDBApi {
       passwordResetToken: item.passwordResetToken || null,
       passwordResetTokenExpiresAt: item.passwordResetTokenExpiresAt || null,
       provider: item.provider || null,
-      name: item.name || null,
       importHash: item.importHash || null,
       createdById: currentUser.id,
       updatedById: currentUser.id,
@@ -147,13 +160,16 @@ module.exports = class UsersDBApi {
         passwordResetToken: data.passwordResetToken || null,
         passwordResetTokenExpiresAt: data.passwordResetTokenExpiresAt || null,
         provider: data.provider || null,
-        name: data.name || null,
         updatedById: currentUser.id,
       },
       { transaction },
     );
 
-    await users.setRoleId(data.roleId || [], {
+    await users.setApp_role(data.app_role || null, {
+      transaction,
+    });
+
+    await users.setCustom_permissions(data.custom_permissions || [], {
       transaction,
     });
 
@@ -166,6 +182,31 @@ module.exports = class UsersDBApi {
       data.avatar,
       options,
     );
+
+    return users;
+  }
+
+  static async deleteByIds(ids, options) {
+    const currentUser = (options && options.currentUser) || { id: null };
+    const transaction = (options && options.transaction) || undefined;
+
+    const users = await db.users.findAll({
+      where: {
+        id: {
+          [Op.in]: ids,
+        },
+      },
+      transaction,
+    });
+
+    await db.sequelize.transaction(async (transaction) => {
+      for (const record of users) {
+        await record.update({ deletedBy: currentUser.id }, { transaction });
+      }
+      for (const record of users) {
+        await record.destroy({ transaction });
+      }
+    });
 
     return users;
   }
@@ -203,11 +244,25 @@ module.exports = class UsersDBApi {
 
     const output = users.get({ plain: true });
 
+    output.jobs_assigned_to = await users.getJobs_assigned_to({
+      transaction,
+    });
+
     output.avatar = await users.getAvatar({
       transaction,
     });
 
-    output.roleId = await users.getRoleId({
+    output.app_role = await users.getApp_role({
+      transaction,
+    });
+
+    if (output.app_role) {
+      output.app_role_permissions = await output.app_role.getPermissions({
+        transaction,
+      });
+    }
+
+    output.custom_permissions = await users.getCustom_permissions({
       transaction,
     });
 
@@ -228,17 +283,22 @@ module.exports = class UsersDBApi {
     let include = [
       {
         model: db.roles,
-        as: 'roleId',
-        through: filter.roleId
+        as: 'app_role',
+      },
+
+      {
+        model: db.permissions,
+        as: 'custom_permissions',
+        through: filter.custom_permissions
           ? {
               where: {
-                [Op.or]: filter.roleId.split('|').map((item) => {
+                [Op.or]: filter.custom_permissions.split('|').map((item) => {
                   return { ['Id']: Utils.uuid(item) };
                 }),
               },
             }
           : null,
-        required: filter.roleId ? true : null,
+        required: filter.custom_permissions ? true : null,
       },
 
       {
@@ -319,13 +379,6 @@ module.exports = class UsersDBApi {
         };
       }
 
-      if (filter.name) {
-        where = {
-          ...where,
-          [Op.and]: Utils.ilike('users', 'name', filter.name),
-        };
-      }
-
       if (filter.emailVerificationTokenExpiresAtRange) {
         const [start, end] = filter.emailVerificationTokenExpiresAtRange;
 
@@ -400,6 +453,17 @@ module.exports = class UsersDBApi {
         };
       }
 
+      if (filter.app_role) {
+        var listItems = filter.app_role.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
+        where = {
+          ...where,
+          app_roleId: { [Op.or]: listItems },
+        };
+      }
+
       if (filter.createdAtRange) {
         const [start, end] = filter.createdAtRange;
 
@@ -469,21 +533,21 @@ module.exports = class UsersDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('users', 'name', query),
+          Utils.ilike('users', 'firstName', query),
         ],
       };
     }
 
     const records = await db.users.findAll({
-      attributes: ['id', 'name'],
+      attributes: ['id', 'firstName'],
       where,
       limit: limit ? Number(limit) : undefined,
-      orderBy: [['name', 'ASC']],
+      orderBy: [['firstName', 'ASC']],
     });
 
     return records.map((record) => ({
       id: record.id,
-      label: record.name,
+      label: record.firstName,
     }));
   }
 

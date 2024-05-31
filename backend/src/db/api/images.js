@@ -15,18 +15,12 @@ module.exports = class ImagesDBApi {
       {
         id: data.id || undefined,
 
-        name: data.name || null,
-        url: data.url || null,
         importHash: data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
       },
       { transaction },
     );
-
-    await images.setJob(data.job || [], {
-      transaction,
-    });
 
     return images;
   }
@@ -39,8 +33,6 @@ module.exports = class ImagesDBApi {
     const imagesData = data.map((item, index) => ({
       id: item.id || undefined,
 
-      name: item.name || null,
-      url: item.url || null,
       importHash: item.importHash || null,
       createdById: currentUser.id,
       updatedById: currentUser.id,
@@ -63,15 +55,34 @@ module.exports = class ImagesDBApi {
 
     await images.update(
       {
-        name: data.name || null,
-        url: data.url || null,
         updatedById: currentUser.id,
       },
       { transaction },
     );
 
-    await images.setJob(data.job || [], {
+    return images;
+  }
+
+  static async deleteByIds(ids, options) {
+    const currentUser = (options && options.currentUser) || { id: null };
+    const transaction = (options && options.transaction) || undefined;
+
+    const images = await db.images.findAll({
+      where: {
+        id: {
+          [Op.in]: ids,
+        },
+      },
       transaction,
+    });
+
+    await db.sequelize.transaction(async (transaction) => {
+      for (const record of images) {
+        await record.update({ deletedBy: currentUser.id }, { transaction });
+      }
+      for (const record of images) {
+        await record.destroy({ transaction });
+      }
     });
 
     return images;
@@ -110,10 +121,6 @@ module.exports = class ImagesDBApi {
 
     const output = images.get({ plain: true });
 
-    output.job = await images.getJob({
-      transaction,
-    });
-
     return output;
   }
 
@@ -128,42 +135,13 @@ module.exports = class ImagesDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [
-      {
-        model: db.jobs,
-        as: 'job',
-        through: filter.job
-          ? {
-              where: {
-                [Op.or]: filter.job.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.job ? true : null,
-      },
-    ];
+    let include = [];
 
     if (filter) {
       if (filter.id) {
         where = {
           ...where,
           ['id']: Utils.uuid(filter.id),
-        };
-      }
-
-      if (filter.name) {
-        where = {
-          ...where,
-          [Op.and]: Utils.ilike('images', 'name', filter.name),
-        };
-      }
-
-      if (filter.url) {
-        where = {
-          ...where,
-          [Op.and]: Utils.ilike('images', 'url', filter.url),
         };
       }
 
@@ -248,21 +226,21 @@ module.exports = class ImagesDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('images', 'url', query),
+          Utils.ilike('images', 'id', query),
         ],
       };
     }
 
     const records = await db.images.findAll({
-      attributes: ['id', 'url'],
+      attributes: ['id', 'id'],
       where,
       limit: limit ? Number(limit) : undefined,
-      orderBy: [['url', 'ASC']],
+      orderBy: [['id', 'ASC']],
     });
 
     return records.map((record) => ({
       id: record.id,
-      label: record.url,
+      label: record.id,
     }));
   }
 };
