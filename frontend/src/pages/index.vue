@@ -3,11 +3,12 @@ import { onMounted, ref, watch, watchEffect } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
 import type { FetchCountFunction } from '@/types/common/CountRequestTypes'
 
-import PipelineCard from '@/components/common/pipelines/PipelineCard.vue'
 import PipelineDisplayItem from '@/types/pipiline/PipelineDisplayItem'
 import { useContacts } from '@/composables/useContacts'
 import { useJobs } from '@/composables/useJobs'
-import QuickCreateEntity from "@/components/common/index/QuickCreateEntity.vue";
+
+import PipelineCard from '@/components/common/pipelines/PipelineCard.vue'
+import QuickCreateEntity from '@/components/common/index/QuickCreateEntity.vue'
 
 const currentPipelineItems = ref<PipelineDisplayItem[]>([])
 const { count: contactsCount } = useContacts()
