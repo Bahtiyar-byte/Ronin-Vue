@@ -35,6 +35,8 @@ declare module 'vue' {
     ConfirmDialog: typeof import('./src/components/common/ConfirmDialog.vue')['default']
     ContactInfoPanel: typeof import('./src/components/contacts/ContactInfoPanel.vue')['default']
     CreateAppDialog: typeof import('./src/components/dialogs/CreateAppDialog.vue')['default']
+    CrmAnalyticsSales: typeof import('./src/components/dashboards/CrmAnalyticsSales.vue')['default']
+    CrmRevenueGrowth: typeof import('./src/components/dashboards/CrmRevenueGrowth.vue')['default']
     CustomCheckboxes: typeof import('./src/@core/components/app-form-elements/CustomCheckboxes.vue')['default']
     CustomCheckboxesWithIcon: typeof import('./src/@core/components/app-form-elements/CustomCheckboxesWithIcon.vue')['default']
     CustomCheckboxesWithImage: typeof import('./src/@core/components/app-form-elements/CustomCheckboxesWithImage.vue')['default']
@@ -78,6 +80,7 @@ declare module 'vue' {
     UserInfoEditDialog: typeof import('./src/components/dialogs/UserInfoEditDialog.vue')['default']
     UserProfile: typeof import('./src/components/common/UserProfile.vue')['default']
     UserUpgradePlanDialog: typeof import('./src/components/dialogs/UserUpgradePlanDialog.vue')['default']
+    VueApexCharts: typeof import('vue3-apexcharts')['default']
     WidgetCard: typeof import('./src/components/widgets/WidgetCard.vue')['default']
   }
 }

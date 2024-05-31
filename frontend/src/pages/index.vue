@@ -9,6 +9,8 @@ import { useJobs } from '@/composables/useJobs'
 
 import PipelineCard from '@/components/common/pipelines/PipelineCard.vue'
 import QuickCreateEntity from '@/components/common/index/QuickCreateEntity.vue'
+import CrmAnalyticsSales from '@/components/dashboards/CrmAnalyticsSales.vue'
+import CrmRevenueGrowth from '@/components/dashboards/CrmRevenueGrowth.vue'
 
 const currentPipelineItems = ref<PipelineDisplayItem[]>([])
 const { count: contactsCount } = useContacts()
@@ -87,13 +89,20 @@ watchEffect(() => {
       cols="12"
       md="4"
     >
-      <VCard title="Tools component will be here" />
+      <VCard
+        title="Tools component will be here"
+        class="mb-6"
+      />
+
+      <CrmRevenueGrowth />
     </VCol>
     <VCol
       cols="12"
       md="4"
     >
-      <QuickCreateEntity />
+      <QuickCreateEntity class="mb-6" />
+
+      <CrmAnalyticsSales />
     </VCol>
   </VRow>
 </template>
