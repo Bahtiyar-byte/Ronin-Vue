@@ -7,6 +7,7 @@ import PipelineCard from '@/components/common/pipelines/PipelineCard.vue'
 import PipelineDisplayItem from '@/types/pipiline/PipelineDisplayItem'
 import { useContacts } from '@/composables/useContacts'
 import { useJobs } from '@/composables/useJobs'
+import QuickCreateEntity from "@/components/common/index/QuickCreateEntity.vue";
 
 const currentPipelineItems = ref<PipelineDisplayItem[]>([])
 const { count: contactsCount } = useContacts()
@@ -68,11 +69,30 @@ watchEffect(() => {
 </script>
 
 <template>
-  <div>
-    <PipelineCard
-      class="mb-6"
-      title="Current pipeline"
-      :pipeline-items="currentPipelineItems"
-    />
-  </div>
+  <PipelineCard
+    class="mb-6"
+    title="Current pipeline"
+    :pipeline-items="currentPipelineItems"
+  />
+
+  <VRow>
+    <VCol
+      cols="12"
+      md="4"
+    >
+      <VCard title="Active jobs component will be here" />
+    </VCol>
+    <VCol
+      cols="12"
+      md="4"
+    >
+      <VCard title="Tools component will be here" />
+    </VCol>
+    <VCol
+      cols="12"
+      md="4"
+    >
+      <QuickCreateEntity />
+    </VCol>
+  </VRow>
 </template>

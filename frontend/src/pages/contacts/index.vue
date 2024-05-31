@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { debounce } from 'lodash'
+import { useRoute } from 'vue-router'
 import { useContacts } from '@/composables/useContacts'
 import type { SortItem } from '@core/types'
 import type Contact from '@/types/contacts/Contact'
@@ -28,12 +29,23 @@ const headers = ref([
   { title: 'Actions', key: 'actions', sortable: false },
 ])
 
+const route = useRoute()
+
 const filters = ref<(CheckboxFilterItem)[]>([
-  { type: 'checkbox', key: 'stage', label: 'Stage', options: ['Lead', 'Prospect', 'Customer'], value: [] },
+  { type: 'checkbox', key: 'stage', label: 'Stage', options: ['Lead', 'Prospect', 'Customer'], value: '' },
 ])
 
+onBeforeMount(() => {
+  Object.entries(route.query).forEach(([key, val]) => {
+    const filter = filters.value.find(f => f.key === key)
+    if (filter) {
+      filter.value = val as string
+    }
+  })
+})
+
 const isLoading = ref(false)
-const searchQuery = ref<string>('')
+const searchQuery = ref<string>((route.query?.q ?? '') as string)
 
 const fetchData = async () => {
   const requestParams = {
@@ -85,10 +97,13 @@ watch([
 ], debouncedFetchData, { immediate: true })
 
 const selectedItems = ref<[]>()
-const deletionDialogOptions = ref<{
+
+interface IDeletionDialogOptions {
   visible: boolean
   onAccept: () => Promise<void>
-}>({
+}
+
+const deletionDialogOptions = ref<IDeletionDialogOptions>({
   visible: false,
   onAccept: async () => {},
 })
