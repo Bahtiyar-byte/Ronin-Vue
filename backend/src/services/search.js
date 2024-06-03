@@ -84,6 +84,8 @@ module.exports = class SearchService {
         contracts: ['name', 'body'],
 
         amendments: ['description'],
+
+        milestones: ['Name'],
       };
       const columnsInt = {
         estimates: ['price'],
