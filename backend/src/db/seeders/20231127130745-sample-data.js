@@ -37,81 +37,81 @@ const Milestones = db.milestones;
 
 const ContactsData = [
   {
-    firstName: 'Always the last one to the party',
+    firstName: 'No one tells me shit',
+
+    lastName: 'I got that scurvy',
+
+    email: 'bradford_steuber@deckow.biz',
+
+    phone: '855-844-7618 x296',
+
+    company: 'Keebler, Mertz and Ledner',
+
+    status: 'Prospect',
+
+    source: 'Google Ads',
+
+    crossReference: 'Like a red-headed stepchild',
+
+    // type code here for "relation_one" field
+  },
+
+  {
+    firstName: "How 'bout them Cowboys",
 
     lastName: 'Let me tell ya',
 
-    email: 'donnell_kautzer@konopelski-spinka.co',
+    email: 'nicola@padberg.biz',
 
-    phone: '556.598.1479 x177',
+    phone: '(174) 430-2618',
 
-    company: 'Welch-Rodriguez',
+    company: 'Berge and Sons',
+
+    status: 'Lead',
+
+    source: 'Facebook',
+
+    crossReference: "Y'all never listen to me",
+
+    // type code here for "relation_one" field
+  },
+
+  {
+    firstName: 'Got depression, Smith and Wessen',
+
+    lastName: 'Got depression, Smith and Wessen',
+
+    email: 'louie@greenholt.io',
+
+    phone: '185.345.4117 x7893',
+
+    company: 'Hand, Baumbach and Raynor',
 
     status: 'Customer',
 
     source: 'Facebook',
 
-    crossReference: 'My boss gonna fire me',
+    crossReference: 'Yup',
 
     // type code here for "relation_one" field
   },
 
   {
-    firstName: 'Turd gone wrong',
+    firstName: 'Texas!',
 
-    lastName: "C'mon Naomi",
+    lastName: 'That damn Bill Stull',
 
-    email: 'demarcus@breitenberg.co',
+    email: 'martina@pfannerstill.biz',
 
-    phone: '246.856.0098',
+    phone: '917.611.8105 x974',
 
-    company: 'Corwin-Smith',
-
-    status: 'Prospect',
-
-    source: 'Website',
-
-    crossReference: 'Always the last one to the party',
-
-    // type code here for "relation_one" field
-  },
-
-  {
-    firstName: "It's around here somewhere",
-
-    lastName: 'Contact the tower',
-
-    email: 'opal@schaden-harvey.org',
-
-    phone: '(320) 985-5791 x3008',
-
-    company: 'Prosacco LLC',
+    company: 'Brekke Group',
 
     status: 'Lead',
 
-    source: 'Google Ads',
+    source: 'Website',
 
-    crossReference: 'Come on now',
-
-    // type code here for "relation_one" field
-  },
-
-  {
-    firstName: 'That goddamn Datamate',
-
-    lastName: 'Come on now',
-
-    email: 'evelia_frami@wilkinson.net',
-
-    phone: '1-135-368-4016 x43440',
-
-    company: 'Emard LLC',
-
-    status: 'Prospect',
-
-    source: 'Other',
-
-    crossReference: 'That damn gimble',
+    crossReference: 'My buddy Harlen',
 
     // type code here for "relation_one" field
   },
@@ -123,37 +123,17 @@ const AddressesData = [
 
     // type code here for "relation_one" field
 
-    street: 'I want my damn cart back',
+    street: 'That damn gimble',
 
-    suite_apt_unit: 'That goddamn Datamate',
+    suite_apt_unit: 'Reminds me of my old girlfriend Olga Goodntight',
 
-    city: 'My boss gonna fire me',
+    city: "How 'bout them Cowboys",
 
-    state: 'AZ',
+    state: 'AL',
 
-    zip: 'That damn gimble',
+    zip: "That Barbala couldn't fly his way out of a wet paper bag",
 
-    country: 'Might be DQ time',
-
-    type: 'Billing',
-  },
-
-  {
-    // type code here for "relation_one" field
-
-    // type code here for "relation_one" field
-
-    street: 'Might be DQ time',
-
-    suite_apt_unit: "It's around here somewhere",
-
-    city: 'I want my damn cart back',
-
-    state: 'AZ',
-
-    zip: 'Always the last one to the party',
-
-    country: 'Yup',
+    country: "I'm washing my hands of it",
 
     type: 'Billing',
   },
@@ -163,19 +143,39 @@ const AddressesData = [
 
     // type code here for "relation_one" field
 
-    street: "It's around here somewhere",
+    street: 'That damn Bill Stull',
+
+    suite_apt_unit: 'No one tells me shit',
+
+    city: 'That goddamn Datamate',
+
+    state: 'AL',
+
+    zip: "That Barbala couldn't fly his way out of a wet paper bag",
+
+    country: "It's around here somewhere",
+
+    type: 'Billing',
+  },
+
+  {
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    street: "Goin' hog huntin'",
 
     suite_apt_unit: 'My buddy Harlen',
 
-    city: 'Turd gone wrong',
+    city: 'That damn gimble',
 
-    state: 'AK',
+    state: 'AL',
 
-    zip: "Y'all never listen to me",
+    zip: 'I got that scurvy',
 
-    country: 'Yup',
+    country: "How 'bout them Cowboys",
 
-    type: 'Location',
+    type: 'Billing',
   },
 
   {
@@ -183,17 +183,17 @@ const AddressesData = [
 
     // type code here for "relation_one" field
 
-    street: 'I want my 5$ back',
+    street: 'Standby',
 
-    suite_apt_unit: 'Always the last one to the party',
+    suite_apt_unit: 'Yup',
 
-    city: 'I want my damn cart back',
+    city: 'Standby',
 
     state: 'CA',
 
-    zip: 'Come on now',
+    zip: "C'mon Naomi",
 
-    country: 'My boss gonna fire me',
+    country: "How 'bout them Cowboys",
 
     type: 'Billing',
   },
@@ -201,28 +201,12 @@ const AddressesData = [
 
 const EstimatesData = [
   {
-    description:
-      'Soon will I rest, yes, forever sleep. Earned it I have. Twilight is upon me, soon night must fall.',
+    description: 'Younglings, younglings gather ’round.',
 
     additionalNotes:
-      'Ready are you? What know you of ready? For eight hundred years have I trained Jedi. My own counsel will I keep on who is to be trained. A Jedi must have the deepest commitment, the most serious mind. This one a long time have I watched. All his life has he looked away - to the future, to the horizon. Never his mind on where he was. Hmm? What he was doing. Hmph. Adventure. Heh. Excitement. Heh. A Jedi craves not these things. You are reckless.',
+      'Yes, a Jedi’s strength flows from the Force. But beware of the dark side. Anger, fear, aggression; the dark side of the Force are they. Easily they flow, quick to join you in a fight. If once you start down the dark path, forever will it dominate your destiny, consume you it will, as it did Obi-Wan’s apprentice.',
 
-    price: 92.78,
-
-    // type code here for "relation_one" field
-
-    // type code here for "relation_one" field
-
-    // type code here for "relation_one" field
-  },
-
-  {
-    description:
-      'Clear your mind must be, if you are to find the villains behind this plot.',
-
-    additionalNotes: 'Adventure. Excitement. A Jedi craves not these things.',
-
-    price: 47.95,
+    price: 75.68,
 
     // type code here for "relation_one" field
 
@@ -232,27 +216,43 @@ const EstimatesData = [
   },
 
   {
-    description:
+    description: 'Reckless he is. Matters are worse.',
+
+    additionalNotes:
       'Like fire across the galaxy the Clone Wars spread. In league with the wicked Count Dooku, more and more planets slip. Against this threat, upon the Jedi Knights falls the duty to lead the newly formed army of the Republic. And as the heat of war grows, so, to, grows the prowess of one most gifted student of the Force.',
+
+    price: 34.76,
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+  },
+
+  {
+    description: 'That is why you fail.',
+
+    additionalNotes:
+      'Death is a natural part of life. Rejoice for those around you who transform into the Force. Mourn them do not. Miss them do not. Attachment leads to jealously. The shadow of greed, that is.',
+
+    price: 60.09,
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+  },
+
+  {
+    description:
+      'Strong is Vader. Mind what you have learned. Save you it can.',
 
     additionalNotes:
       'Pain, suffering, death I feel. Something terrible has happened. Young Skywalker is in pain. Terrible pain',
 
-    price: 77.36,
-
-    // type code here for "relation_one" field
-
-    // type code here for "relation_one" field
-
-    // type code here for "relation_one" field
-  },
-
-  {
-    description: 'Your weapons, you will not need them.',
-
-    additionalNotes: 'Do. Or do not. There is no try.',
-
-    price: 67.28,
+    price: 57.14,
 
     // type code here for "relation_one" field
 
@@ -264,64 +264,20 @@ const EstimatesData = [
 
 const JobsData = [
   {
-    Name: 'I got that scurvy',
-
-    type: 'Retail',
-
-    category: 'Property Management',
-
-    status: 'Active',
-
-    startDate: new Date('2023-06-14'),
-
-    endDate: new Date('2023-12-09'),
-
-    description: 'Your weapons, you will not need them.',
-
-    // type code here for "relation_one" field
-
-    // type code here for "relation_one" field
-
-    // type code here for "relation_one" field
-  },
-
-  {
-    Name: 'Always the last one to the party',
-
-    type: 'Retail',
-
-    category: 'Commercial ',
-
-    status: 'Quoted',
-
-    startDate: new Date('2024-05-17'),
-
-    endDate: new Date('2023-11-26'),
-
-    description: 'Hmm. In the end, cowards are those who follow the dark side.',
-
-    // type code here for "relation_one" field
-
-    // type code here for "relation_one" field
-
-    // type code here for "relation_one" field
-  },
-
-  {
-    Name: 'My boss gonna fire me',
+    Name: "That Barbala couldn't fly his way out of a wet paper bag",
 
     type: 'Service',
 
-    category: 'Property Management',
+    category: 'Residential',
 
-    status: 'Closed',
+    status: 'Approved',
 
-    startDate: new Date('2024-04-25'),
+    startDate: new Date('2024-04-03'),
 
-    endDate: new Date('2024-02-19'),
+    endDate: new Date('2024-01-22'),
 
     description:
-      'Yes, a Jedi’s strength flows from the Force. But beware of the dark side. Anger, fear, aggression; the dark side of the Force are they. Easily they flow, quick to join you in a fight. If once you start down the dark path, forever will it dominate your destiny, consume you it will, as it did Obi-Wan’s apprentice.',
+      'Pain, suffering, death I feel. Something terrible has happened. Young Skywalker is in pain. Terrible pain',
 
     // type code here for "relation_one" field
 
@@ -331,19 +287,63 @@ const JobsData = [
   },
 
   {
-    Name: "That's messed up",
+    Name: "That Barbala couldn't fly his way out of a wet paper bag",
 
-    type: 'Repair',
+    type: 'Retail',
 
-    category: 'Property Management',
+    category: 'Residential',
 
     status: 'Approved',
 
-    startDate: new Date('2024-04-21'),
+    startDate: new Date('2023-10-12'),
 
-    endDate: new Date('2024-03-02'),
+    endDate: new Date('2023-07-31'),
 
-    description: 'You will find only what you bring in.',
+    description: 'Already know you that which you need.',
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+  },
+
+  {
+    Name: 'So I was walking Oscar',
+
+    type: 'Warranty',
+
+    category: 'Commercial ',
+
+    status: 'Completed',
+
+    startDate: new Date('2023-12-08'),
+
+    endDate: new Date('2023-10-14'),
+
+    description: 'Not if anything to say about it I have',
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+  },
+
+  {
+    Name: 'Turd gone wrong',
+
+    type: 'Inspection',
+
+    category: 'Commercial ',
+
+    status: 'Active',
+
+    startDate: new Date('2023-07-16'),
+
+    endDate: new Date('2024-04-16'),
+
+    description: 'Around the survivors a perimeter create.',
 
     // type code here for "relation_one" field
 
@@ -355,35 +355,34 @@ const JobsData = [
 
 const TemplatesData = [
   {
-    name: 'Hans Bethe',
+    name: 'Claude Levi-Strauss',
 
-    description: 'Do. Or do not. There is no try.',
+    description: 'Difficult to see. Always in motion is the future...',
 
     // type code here for "relation_one" field
   },
 
   {
-    name: 'Stephen Hawking',
+    name: 'Anton van Leeuwenhoek',
 
     description:
-      'Ready are you? What know you of ready? For eight hundred years have I trained Jedi. My own counsel will I keep on who is to be trained. A Jedi must have the deepest commitment, the most serious mind. This one a long time have I watched. All his life has he looked away - to the future, to the horizon. Never his mind on where he was. Hmm? What he was doing. Hmph. Adventure. Heh. Excitement. Heh. A Jedi craves not these things. You are reckless.',
+      'Like fire across the galaxy the Clone Wars spread. In league with the wicked Count Dooku, more and more planets slip. Against this threat, upon the Jedi Knights falls the duty to lead the newly formed army of the Republic. And as the heat of war grows, so, to, grows the prowess of one most gifted student of the Force.',
 
     // type code here for "relation_one" field
   },
 
   {
-    name: 'Christiaan Huygens',
+    name: 'Robert Koch',
 
-    description:
-      'Pain, suffering, death I feel. Something terrible has happened. Young Skywalker is in pain. Terrible pain',
+    description: 'Hmm. In the end, cowards are those who follow the dark side.',
 
     // type code here for "relation_one" field
   },
 
   {
-    name: 'Francis Galton',
+    name: 'Marie Curie',
 
-    description: 'Good relations with the Wookiees, I have.',
+    description: 'Difficult to see. Always in motion is the future...',
 
     // type code here for "relation_one" field
   },
@@ -391,15 +390,15 @@ const TemplatesData = [
 
 const TradesData = [
   {
-    Name: 'Slate',
+    Name: 'Shingles',
   },
 
   {
-    Name: 'Skylight',
+    Name: 'Gutter Cleaning',
   },
 
   {
-    Name: 'Box Gutters',
+    Name: 'Gutter Guards',
   },
 
   {
@@ -409,65 +408,65 @@ const TradesData = [
 
 const InvoicesData = [
   {
-    invoiceNumber: 'Contact the tower',
+    invoiceNumber: "That's messed up",
 
-    invoiceDate: new Date('2023-06-29'),
-
-    terms: 'Upon Receipt',
-
-    approvedJobValue: 51.26,
-
-    invoicedAmount: 79.47,
-
-    balanceAmount: 93.02,
-
-    // type code here for "relation_one" field
-  },
-
-  {
-    invoiceNumber: 'Always the last one to the party',
-
-    invoiceDate: new Date('2023-06-10'),
+    invoiceDate: new Date('2024-02-25'),
 
     terms: 'Net 60 Days',
 
-    approvedJobValue: 82.26,
+    approvedJobValue: 77.46,
 
-    invoicedAmount: 23.27,
+    invoicedAmount: 42.95,
 
-    balanceAmount: 55.04,
-
-    // type code here for "relation_one" field
-  },
-
-  {
-    invoiceNumber: 'Reminds me of my old girlfriend Olga Goodntight',
-
-    invoiceDate: new Date('2023-07-29'),
-
-    terms: 'Net 60 Days',
-
-    approvedJobValue: 75.37,
-
-    invoicedAmount: 30.92,
-
-    balanceAmount: 69.19,
+    balanceAmount: 27.27,
 
     // type code here for "relation_one" field
   },
 
   {
-    invoiceNumber: 'That damn Bill Stull',
+    invoiceNumber: 'That goddamn Datamate',
 
-    invoiceDate: new Date('2024-01-28'),
+    invoiceDate: new Date('2023-09-06'),
 
-    terms: 'Upon Receipt',
+    terms: 'Net 15 Days',
 
-    approvedJobValue: 84.04,
+    approvedJobValue: 74.21,
 
-    invoicedAmount: 71.19,
+    invoicedAmount: 38.37,
 
-    balanceAmount: 64.38,
+    balanceAmount: 47.97,
+
+    // type code here for "relation_one" field
+  },
+
+  {
+    invoiceNumber: 'I got that scurvy',
+
+    invoiceDate: new Date('2023-06-25'),
+
+    terms: 'Net 30 Days',
+
+    approvedJobValue: 65.66,
+
+    invoicedAmount: 46.91,
+
+    balanceAmount: 68.17,
+
+    // type code here for "relation_one" field
+  },
+
+  {
+    invoiceNumber: 'No one tells me shit',
+
+    invoiceDate: new Date('2023-11-26'),
+
+    terms: 'Net 15 Days',
+
+    approvedJobValue: 14.57,
+
+    invoicedAmount: 29.21,
+
+    balanceAmount: 17.42,
 
     // type code here for "relation_one" field
   },
@@ -479,9 +478,9 @@ const OrdersData = [
 
     // type code here for "relation_one" field
 
-    orderNumber: 'Standby',
+    orderNumber: 'My boss gonna fire me',
 
-    totalAmount: 40.99,
+    totalAmount: 33.09,
   },
 
   {
@@ -489,9 +488,9 @@ const OrdersData = [
 
     // type code here for "relation_one" field
 
-    orderNumber: 'I tell you what',
+    orderNumber: 'No one tells me shit',
 
-    totalAmount: 92.05,
+    totalAmount: 67.15,
   },
 
   {
@@ -499,9 +498,9 @@ const OrdersData = [
 
     // type code here for "relation_one" field
 
-    orderNumber: "That Barbala couldn't fly his way out of a wet paper bag",
+    orderNumber: 'I want my 5$ back',
 
-    totalAmount: 20.21,
+    totalAmount: 78.98,
   },
 
   {
@@ -509,15 +508,15 @@ const OrdersData = [
 
     // type code here for "relation_one" field
 
-    orderNumber: 'Yup',
+    orderNumber: 'Got depression, Smith and Wessen',
 
-    totalAmount: 22.67,
+    totalAmount: 86.55,
   },
 ];
 
 const ImagesData = [
   {
-    name: 'John Dalton',
+    name: 'Leonard Euler',
 
     // type code here for "relation_one" field
 
@@ -527,7 +526,7 @@ const ImagesData = [
   },
 
   {
-    name: 'Nicolaus Copernicus',
+    name: 'George Gaylord Simpson',
 
     // type code here for "relation_one" field
 
@@ -537,7 +536,7 @@ const ImagesData = [
   },
 
   {
-    name: 'Lynn Margulis',
+    name: 'Trofim Lysenko',
 
     // type code here for "relation_one" field
 
@@ -547,7 +546,7 @@ const ImagesData = [
   },
 
   {
-    name: 'Louis Pasteur',
+    name: 'Wilhelm Wundt',
 
     // type code here for "relation_one" field
 
@@ -561,7 +560,7 @@ const DocumentsData = [
   {
     // type code here for "relation_one" field
 
-    name: 'Marcello Malpighi',
+    name: 'William Harvey',
 
     active: true,
 
@@ -571,7 +570,17 @@ const DocumentsData = [
   {
     // type code here for "relation_one" field
 
-    name: 'Trofim Lysenko',
+    name: 'Rudolf Virchow',
+
+    active: true,
+
+    // type code here for "files" field
+  },
+
+  {
+    // type code here for "relation_one" field
+
+    name: 'Linus Pauling',
 
     active: false,
 
@@ -581,17 +590,7 @@ const DocumentsData = [
   {
     // type code here for "relation_one" field
 
-    name: 'B. F. Skinner',
-
-    active: false,
-
-    // type code here for "files" field
-  },
-
-  {
-    // type code here for "relation_one" field
-
-    name: 'Emil Kraepelin',
+    name: 'Edward O. Wilson',
 
     active: false,
 
@@ -603,28 +602,9 @@ const EmailsData = [
   {
     // type code here for "relation_one" field
 
-    toAddress: 'Always the last one to the party',
+    toAddress: 'Contact the tower',
 
-    fromAddress: 'That damn Bill Stull',
-
-    isInbound: true,
-
-    // type code here for "relation_one" field
-
-    // type code here for "relation_one" field
-
-    subject:
-      'Once you start down the dark path, forever will it dominate your destiny, consume you it will.',
-
-    body: 'Use your feelings, Obi-Wan, and find him you will.',
-  },
-
-  {
-    // type code here for "relation_one" field
-
-    toAddress: "Y'all never listen to me",
-
-    fromAddress: 'Reminds me of my old girlfriend Olga Goodntight',
+    fromAddress: 'That damn diabetes',
 
     isInbound: true,
 
@@ -632,26 +612,7 @@ const EmailsData = [
 
     // type code here for "relation_one" field
 
-    subject: 'Reckless he is. Matters are worse.',
-
-    body: 'Yes, a Jedi’s strength flows from the Force. But beware of the dark side. Anger, fear, aggression; the dark side of the Force are they. Easily they flow, quick to join you in a fight. If once you start down the dark path, forever will it dominate your destiny, consume you it will, as it did Obi-Wan’s apprentice.',
-  },
-
-  {
-    // type code here for "relation_one" field
-
-    toAddress: "How 'bout them Cowboys",
-
-    fromAddress: 'I want my damn cart back',
-
-    isInbound: false,
-
-    // type code here for "relation_one" field
-
-    // type code here for "relation_one" field
-
-    subject:
-      'Yes, a Jedi’s strength flows from the Force. But beware of the dark side. Anger, fear, aggression; the dark side of the Force are they. Easily they flow, quick to join you in a fight. If once you start down the dark path, forever will it dominate your destiny, consume you it will, as it did Obi-Wan’s apprentice.',
+    subject: 'Your weapons, you will not need them.',
 
     body: 'Once you start down the dark path, forever will it dominate your destiny, consume you it will.',
   },
@@ -659,9 +620,9 @@ const EmailsData = [
   {
     // type code here for "relation_one" field
 
-    toAddress: 'Come on now',
+    toAddress: 'Reminds me of my old girlfriend Olga Goodntight',
 
-    fromAddress: 'Contact the tower',
+    fromAddress: 'Reminds me of my old girlfriend Olga Goodntight',
 
     isInbound: false,
 
@@ -670,9 +631,45 @@ const EmailsData = [
     // type code here for "relation_one" field
 
     subject:
-      'The dark side clouds everything. Impossible to see the future is.',
+      'Ready are you? What know you of ready? For eight hundred years have I trained Jedi. My own counsel will I keep on who is to be trained. A Jedi must have the deepest commitment, the most serious mind. This one a long time have I watched. All his life has he looked away - to the future, to the horizon. Never his mind on where he was. Hmm? What he was doing. Hmph. Adventure. Heh. Excitement. Heh. A Jedi craves not these things. You are reckless.',
 
-    body: 'Yes, a Jedi’s strength flows from the Force. But beware of the dark side. Anger, fear, aggression; the dark side of the Force are they. Easily they flow, quick to join you in a fight. If once you start down the dark path, forever will it dominate your destiny, consume you it will, as it did Obi-Wan’s apprentice.',
+    body: 'Clear your mind must be, if you are to find the villains behind this plot.',
+  },
+
+  {
+    // type code here for "relation_one" field
+
+    toAddress: 'Like a red-headed stepchild',
+
+    fromAddress: 'Like a red-headed stepchild',
+
+    isInbound: false,
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    subject: 'Use your feelings, Obi-Wan, and find him you will.',
+
+    body: 'Always pass on what you have learned.',
+  },
+
+  {
+    // type code here for "relation_one" field
+
+    toAddress: "Y'all never listen to me",
+
+    fromAddress: 'Like a red-headed stepchild',
+
+    isInbound: false,
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    subject: 'Truly wonderful, the mind of a child is.',
+
+    body: 'At an end your rule is, and not short enough it was!',
   },
 ];
 
@@ -684,9 +681,10 @@ const ChatsData = [
 
     // type code here for "relation_one" field
 
-    message: 'Mudhole? Slimy? My home this is!',
+    message:
+      'Like fire across the galaxy the Clone Wars spread. In league with the wicked Count Dooku, more and more planets slip. Against this threat, upon the Jedi Knights falls the duty to lead the newly formed army of the Republic. And as the heat of war grows, so, to, grows the prowess of one most gifted student of the Force.',
 
-    sentTime: new Date('2023-10-02'),
+    sentTime: new Date('2024-05-06'),
   },
 
   {
@@ -696,9 +694,9 @@ const ChatsData = [
 
     // type code here for "relation_one" field
 
-    message: 'Not if anything to say about it I have',
+    message: 'Truly wonderful, the mind of a child is.',
 
-    sentTime: new Date('2023-11-06'),
+    sentTime: new Date('2023-07-12'),
   },
 
   {
@@ -709,9 +707,9 @@ const ChatsData = [
     // type code here for "relation_one" field
 
     message:
-      'Pain, suffering, death I feel. Something terrible has happened. Young Skywalker is in pain. Terrible pain',
+      'Like fire across the galaxy the Clone Wars spread. In league with the wicked Count Dooku, more and more planets slip. Against this threat, upon the Jedi Knights falls the duty to lead the newly formed army of the Republic. And as the heat of war grows, so, to, grows the prowess of one most gifted student of the Force.',
 
-    sentTime: new Date('2023-10-01'),
+    sentTime: new Date('2023-07-05'),
   },
 
   {
@@ -721,72 +719,52 @@ const ChatsData = [
 
     // type code here for "relation_one" field
 
-    message: 'Not if anything to say about it I have',
+    message:
+      'Always two there are, no more, no less. A master and an apprentice.',
 
-    sentTime: new Date('2023-08-28'),
+    sentTime: new Date('2023-08-14'),
   },
 ];
 
 const AppointmentsData = [
   {
-    subject: 'So I was walking Oscar',
+    subject: 'Reminds me of my old girlfriend Olga Goodntight',
 
     // type code here for "relation_one" field
 
     // type code here for "relation_one" field
 
-    startTime: new Date('2024-04-13'),
+    startTime: new Date('2023-07-13'),
 
-    endTime: new Date('2023-06-10'),
+    endTime: new Date('2024-01-06'),
 
-    description: 'That is why you fail.',
+    description: 'Luminous beings are we - not this crude matter.',
 
-    location: 'Always the last one to the party',
+    location: 'Yup',
 
     // type code here for "relation_one" field
 
-    reminder: new Date('2023-07-12'),
+    reminder: new Date('2024-01-10'),
   },
 
   {
-    subject: 'Texas!',
+    subject: 'Might be DQ time',
 
     // type code here for "relation_one" field
 
     // type code here for "relation_one" field
 
-    startTime: new Date('2024-02-25'),
+    startTime: new Date('2023-11-11'),
 
-    endTime: new Date('2024-04-09'),
+    endTime: new Date('2023-07-20'),
 
-    description: 'Your weapons, you will not need them.',
+    description: 'Truly wonderful, the mind of a child is.',
 
-    location: 'That damn gimble',
-
-    // type code here for "relation_one" field
-
-    reminder: new Date('2024-03-18'),
-  },
-
-  {
-    subject: 'I tell you what',
+    location: 'No one tells me shit',
 
     // type code here for "relation_one" field
 
-    // type code here for "relation_one" field
-
-    startTime: new Date('2023-07-16'),
-
-    endTime: new Date('2023-11-01'),
-
-    description:
-      'Do not assume anything Obi-Wan. Clear your mind must be if you are to discover the real villains behind this plot.',
-
-    location: 'That damn diabetes',
-
-    // type code here for "relation_one" field
-
-    reminder: new Date('2024-05-05'),
+    reminder: new Date('2023-10-24'),
   },
 
   {
@@ -796,52 +774,55 @@ const AppointmentsData = [
 
     // type code here for "relation_one" field
 
-    startTime: new Date('2023-12-02'),
+    startTime: new Date('2024-05-04'),
 
-    endTime: new Date('2023-06-26'),
+    endTime: new Date('2023-11-04'),
 
-    description: 'To answer power with power, the Jedi way this is',
+    description:
+      'Ready are you? What know you of ready? For eight hundred years have I trained Jedi. My own counsel will I keep on who is to be trained. A Jedi must have the deepest commitment, the most serious mind. This one a long time have I watched. All his life has he looked away - to the future, to the horizon. Never his mind on where he was. Hmm? What he was doing. Hmph. Adventure. Heh. Excitement. Heh. A Jedi craves not these things. You are reckless.',
 
-    location: 'I want my 5$ back',
+    location: 'That damn gimble',
 
     // type code here for "relation_one" field
 
-    reminder: new Date('2023-06-09'),
+    reminder: new Date('2023-12-17'),
+  },
+
+  {
+    subject: 'I want my 5$ back',
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    startTime: new Date('2023-11-23'),
+
+    endTime: new Date('2024-05-30'),
+
+    description: 'Not if anything to say about it I have',
+
+    location: 'Turd gone wrong',
+
+    // type code here for "relation_one" field
+
+    reminder: new Date('2024-01-03'),
   },
 ];
 
 const TasksData = [
   {
-    subject: "Y'all never listen to me",
+    subject: 'I want my damn cart back',
 
     // type code here for "relation_one" field
 
     // type code here for "relation_one" field
 
-    dueDateAndTime: new Date('2023-07-11'),
+    dueDateAndTime: new Date('2024-03-28'),
 
     // type code here for "relation_one" field
 
     description:
-      'Do not assume anything Obi-Wan. Clear your mind must be if you are to discover the real villains behind this plot.',
-
-    priority: 'Medium',
-
-    completed: false,
-  },
-
-  {
-    subject: 'That goddamn Datamate',
-
-    // type code here for "relation_one" field
-
-    // type code here for "relation_one" field
-
-    dueDateAndTime: new Date('2024-02-15'),
-
-    // type code here for "relation_one" field
-
-    description: 'Mudhole? Slimy? My home this is!',
+      'Once you start down the dark path, forever will it dominate your destiny, consume you it will.',
 
     priority: 'High',
 
@@ -849,18 +830,17 @@ const TasksData = [
   },
 
   {
-    subject: "That's messed up",
+    subject: 'Texas!',
 
     // type code here for "relation_one" field
 
     // type code here for "relation_one" field
 
-    dueDateAndTime: new Date('2023-11-27'),
+    dueDateAndTime: new Date('2023-07-06'),
 
     // type code here for "relation_one" field
 
-    description:
-      'Like fire across the galaxy the Clone Wars spread. In league with the wicked Count Dooku, more and more planets slip. Against this threat, upon the Jedi Knights falls the duty to lead the newly formed army of the Republic. And as the heat of war grows, so, to, grows the prowess of one most gifted student of the Force.',
+    description: 'Reckless he is. Matters are worse.',
 
     priority: 'Medium',
 
@@ -868,18 +848,37 @@ const TasksData = [
   },
 
   {
-    subject: 'That damn diabetes',
+    subject: 'Like a red-headed stepchild',
 
     // type code here for "relation_one" field
 
     // type code here for "relation_one" field
 
-    dueDateAndTime: new Date('2023-06-22'),
+    dueDateAndTime: new Date('2023-11-23'),
 
     // type code here for "relation_one" field
 
     description:
-      'Through the Force, things you will see. Other places. The future - the past. Old friends long gone.',
+      'Always two there are, no more, no less. A master and an apprentice.',
+
+    priority: 'Medium',
+
+    completed: true,
+  },
+
+  {
+    subject: 'My buddy Harlen',
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    dueDateAndTime: new Date('2023-12-29'),
+
+    // type code here for "relation_one" field
+
+    description:
+      'Do not assume anything Obi-Wan. Clear your mind must be if you are to discover the real villains behind this plot.',
 
     priority: 'High',
 
@@ -889,57 +888,57 @@ const TasksData = [
 
 const ContractsData = [
   {
-    name: 'Trofim Lysenko',
+    name: 'Euclid',
 
-    amount: 62.94,
+    amount: 77.04,
 
-    body: 'Adventure. Excitement. A Jedi craves not these things.',
-
-    // type code here for "relation_one" field
-
-    signedDate: new Date('2023-09-23'),
-
-    // type code here for "relation_one" field
-  },
-
-  {
-    name: 'Edward O. Wilson',
-
-    amount: 12.14,
-
-    body: 'Truly wonderful, the mind of a child is.',
+    body: 'Your weapons, you will not need them.',
 
     // type code here for "relation_one" field
 
-    signedDate: new Date('2024-04-16'),
+    signedDate: new Date('2024-02-17'),
 
     // type code here for "relation_one" field
   },
 
   {
-    name: 'Richard Feynman',
+    name: 'Max Delbruck',
 
-    amount: 30.89,
+    amount: 13.62,
 
-    body: 'That is why you fail.',
+    body: 'Size matters not. Look at me. Judge me by my size, do you? Hmm? Hmm. And well you should not. For my ally is the Force, and a powerful ally it is. Life creates it, makes it grow. Its energy surrounds us and binds us. Luminous beings are we, not this crude matter. You must feel the Force around you; here, between you, me, the tree, the rock, everywhere, yes. Even between the land and the ship.',
 
     // type code here for "relation_one" field
 
-    signedDate: new Date('2023-09-30'),
+    signedDate: new Date('2024-03-04'),
 
     // type code here for "relation_one" field
   },
 
   {
-    name: 'Werner Heisenberg',
+    name: 'Michael Faraday',
 
-    amount: 10.37,
+    amount: 38.03,
 
-    body: 'Luminous beings are we - not this crude matter.',
+    body: 'To answer power with power, the Jedi way this is',
 
     // type code here for "relation_one" field
 
-    signedDate: new Date('2023-10-26'),
+    signedDate: new Date('2023-08-07'),
+
+    // type code here for "relation_one" field
+  },
+
+  {
+    name: 'Alfred Wegener',
+
+    amount: 42.74,
+
+    body: 'Always pass on what you have learned.',
+
+    // type code here for "relation_one" field
+
+    signedDate: new Date('2023-12-28'),
 
     // type code here for "relation_one" field
   },
@@ -951,31 +950,9 @@ const AmendmentsData = [
 
     type: 'Upgrade',
 
-    amount: 30.38,
+    amount: 25.87,
 
-    description:
-      'Through the Force, things you will see. Other places. The future - the past. Old friends long gone.',
-  },
-
-  {
-    // type code here for "relation_one" field
-
-    type: 'Upgrade',
-
-    amount: 61.38,
-
-    description:
-      'Clear your mind must be, if you are to find the villains behind this plot.',
-  },
-
-  {
-    // type code here for "relation_one" field
-
-    type: 'Insurance Claim',
-
-    amount: 75.58,
-
-    description: 'Do. Or do not. There is no try.',
+    description: 'Around the survivors a perimeter create.',
   },
 
   {
@@ -983,28 +960,47 @@ const AmendmentsData = [
 
     type: 'Supplement',
 
-    amount: 52.86,
+    amount: 73.41,
 
-    description:
-      'The dark side clouds everything. Impossible to see the future is.',
+    description: 'Younglings, younglings gather ’round.',
+  },
+
+  {
+    // type code here for "relation_one" field
+
+    type: 'Supplement',
+
+    amount: 23.18,
+
+    description: 'Ow, ow, OW! On my ear you are!',
+  },
+
+  {
+    // type code here for "relation_one" field
+
+    type: 'Discount',
+
+    amount: 27.57,
+
+    description: 'Hmm. In the end, cowards are those who follow the dark side.',
   },
 ];
 
 const MilestonesData = [
   {
-    Name: 'Let me tell ya',
+    Name: "Goin' hog huntin'",
+  },
+
+  {
+    Name: 'Like a red-headed stepchild',
+  },
+
+  {
+    Name: 'That damn gimble',
   },
 
   {
     Name: 'Might be DQ time',
-  },
-
-  {
-    Name: 'That damn diabetes',
-  },
-
-  {
-    Name: "I'm washing my hands of it",
   },
 ];
 
