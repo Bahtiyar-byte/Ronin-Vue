@@ -155,6 +155,13 @@ export default [
     component: () => import('@/views/CRUD/Amendments/AmendmentsView.vue'),
 },
 
+  {
+    to: '/milestones',
+    label: 'Milestones',
+    icon: mdiTable,
+    component: () => import('@/views/CRUD/Milestones/MilestonesView.vue'),
+},
+
     {
       to: '/change_password',
       label: 'Change Password',

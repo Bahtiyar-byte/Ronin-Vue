@@ -498,6 +498,31 @@ const routes = [
       component: () => import('@/views/CRUD/Amendments/AmendmentsEdit.vue'),
     },
 
+    {
+      meta: {
+        title: 'Milestones'
+      },
+      path: '/milestones',
+      name: 'Milestones',
+      component: () => import('@/views/CRUD/Milestones/MilestonesView.vue'),
+    },
+    {
+      meta: {
+        title: 'New Milestones'
+      },
+      path: '/milestones/new',
+      name: 'NewMilestones',
+      component: () => import('@/views/CRUD/Milestones/MilestonesNew.vue'),
+    },
+    {
+      meta: {
+        title: 'Edit Milestones'
+      },
+      path: '/milestones/:id/edit',
+      name: 'EditMilestones',
+      component: () => import('@/views/CRUD/Milestones/MilestonesEdit.vue'),
+    },
+
   {
     meta: {
       title: 'Change Password'

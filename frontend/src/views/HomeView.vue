@@ -13,7 +13,7 @@ import CardBoxWidget from '@/components/CardBoxWidget.vue'
 const titleStack = ref(['Admin', 'Dashboard'])
 
 const counts = reactive({
-  users: 0,contacts: 0,addresses: 0,estimates: 0,jobs: 0,roles: 0,permissions: 0,templates: 0,trades: 0,invoices: 0,orders: 0,images: 0,documents: 0,emails: 0,chats: 0,appointments: 0,tasks: 0,contracts: 0,amendments: 0,
+  users: 0,contacts: 0,addresses: 0,estimates: 0,jobs: 0,roles: 0,permissions: 0,templates: 0,trades: 0,invoices: 0,orders: 0,images: 0,documents: 0,emails: 0,chats: 0,appointments: 0,tasks: 0,contracts: 0,amendments: 0,milestones: 0,
 })
 
 onMounted(() => {
@@ -37,6 +37,7 @@ onMounted(() => {
     const { data: { count: tasks } } = await axios.get('/tasks/count');
     const { data: { count: contracts } } = await axios.get('/contracts/count');
     const { data: { count: amendments } } = await axios.get('/amendments/count');
+    const { data: { count: milestones } } = await axios.get('/milestones/count');
 
     counts.users = users;
     counts.contacts = contacts;
@@ -57,6 +58,7 @@ onMounted(() => {
     counts.tasks = tasks;
     counts.contracts = contracts;
     counts.amendments = amendments;
+    counts.milestones = milestones;
 
   };
   fetchData();
@@ -189,6 +191,12 @@ onMounted(() => {
         :icon="mdiInformation"
         :number="counts.amendments"
         label="Amendments"
+          /></a><a href="#/milestones">
+        <CardBoxWidget
+        color="text-blue-500"
+        :icon="mdiInformation"
+        :number="counts.milestones"
+        label="Milestones"
           /></a>
 
     </div>
