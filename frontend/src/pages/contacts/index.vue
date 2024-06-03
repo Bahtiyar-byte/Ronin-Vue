@@ -3,6 +3,7 @@ import { ref, watch } from 'vue'
 import { debounce } from 'lodash'
 import { useRoute } from 'vue-router'
 import { useContacts } from '@/composables/useContacts'
+import { useFilters } from '@/composables/useFilters'
 import type { SortItem } from '@core/types'
 import type Contact from '@/types/contacts/Contact'
 import type { CheckboxFilterItem } from '@/types/filters/interfaces'
@@ -12,6 +13,8 @@ import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
 
 const items = ref<Contact[]>([])
 const { getList, deleteContact } = useContacts()
+
+const { getVariants } = useFilters()
 
 const pagination = ref({
   page: 1,
@@ -30,13 +33,29 @@ const headers = ref([
 const route = useRoute()
 
 const filters = ref<(CheckboxFilterItem)[]>([
-  { type: 'checkbox', key: 'stage', label: 'Stage', options: ['Lead', 'Prospect', 'Customer'], value: '' },
+  { type: 'checkbox', key: 'stage', label: 'Stage', options: [], value: [] },
 ])
 
-onBeforeMount(() => {
+onBeforeMount(async () => {
+  const promises = Object.values(filters.value).map(async val => {
+    if (val.options !== undefined && val.options.length === 0) {
+      const { data } = await getVariants('contacts', val.key)
+
+      watch(data, newVal => {
+        if (newVal === null) {
+          return
+        }
+
+        val.options = newVal
+      })
+    }
+  })
+
+  await Promise.all(promises)
+
   Object.entries(route.query).forEach(([key, val]) => {
     const filter = filters.value.find(f => f.key === key)
-    if (filter) {
+    if (filter && val?.length) {
       filter.value = val as string
     }
   })
