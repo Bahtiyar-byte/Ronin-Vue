@@ -34,7 +34,7 @@ const items = computed(() => tradesStore.data)
 
 const headers = [
 
-{ text: 'Name', value: 'name'},]
+{ text: 'Name', value: 'Name'},]
 const isModalActive = ref(false)
 
 const isModalDangerActive = ref(false)
@@ -150,8 +150,8 @@ const sort = (title) => {
       <th v-if="checkable" />
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'name' && props.sortDirection]"
-        @click="sort('name')"
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'Name' && props.sortDirection]"
+        @click="sort('Name')"
       >Name</th>
 
         <th />
@@ -168,8 +168,8 @@ const sort = (title) => {
           @checked="checked($event, client)"
         />
 
-              <td data-label="name">
-                {{ client.name }}
+              <td data-label="Name">
+                {{ client.Name }}
               </td>
 
         <td class="before:hidden lg:w-1 whitespace-nowrap">

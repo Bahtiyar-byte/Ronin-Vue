@@ -32,173 +32,78 @@ export default {
 
         usersManyListFormatter(val) {
             if (!val || !val.length) return []
-            return val.map(item => item.name)
+            return val.map(item => item.firstName)
         },
         usersOneListFormatter(val) {
             if (!val) return ''
-            return val.name
+            return val.firstName
         },
         usersManyListFormatterEdit(val) {
             if (!val || !val.length) return []
             return val.map((item) => {
-              return {id: item.id, label: item.name}
+              return {id: item.id, label: item.firstName}
             });
         },
         usersOneListFormatterEdit(val) {
             if (!val) return ''
-            return {label: val.name, id: val.id}
+            return {label: val.firstName, id: val.id}
         },
 
         contactsManyListFormatter(val) {
             if (!val || !val.length) return []
-            return val.map(item => item.name)
+            return val.map(item => item.firstName)
         },
         contactsOneListFormatter(val) {
             if (!val) return ''
-            return val.name
+            return val.firstName
         },
         contactsManyListFormatterEdit(val) {
             if (!val || !val.length) return []
             return val.map((item) => {
-              return {id: item.id, label: item.name}
+              return {id: item.id, label: item.firstName}
             });
         },
         contactsOneListFormatterEdit(val) {
             if (!val) return ''
-            return {label: val.name, id: val.id}
-        },
-
-        appointmentsManyListFormatter(val) {
-            if (!val || !val.length) return []
-            return val.map(item => item.name)
-        },
-        appointmentsOneListFormatter(val) {
-            if (!val) return ''
-            return val.name
-        },
-        appointmentsManyListFormatterEdit(val) {
-            if (!val || !val.length) return []
-            return val.map((item) => {
-              return {id: item.id, label: item.name}
-            });
-        },
-        appointmentsOneListFormatterEdit(val) {
-            if (!val) return ''
-            return {label: val.name, id: val.id}
-        },
-
-        jobsManyListFormatter(val) {
-            if (!val || !val.length) return []
-            return val.map(item => item.name)
-        },
-        jobsOneListFormatter(val) {
-            if (!val) return ''
-            return val.name
-        },
-        jobsManyListFormatterEdit(val) {
-            if (!val || !val.length) return []
-            return val.map((item) => {
-              return {id: item.id, label: item.name}
-            });
-        },
-        jobsOneListFormatterEdit(val) {
-            if (!val) return ''
-            return {label: val.name, id: val.id}
+            return {label: val.firstName, id: val.id}
         },
 
         estimatesManyListFormatter(val) {
             if (!val || !val.length) return []
-            return val.map(item => item.name)
+            return val.map(item => item.id)
         },
         estimatesOneListFormatter(val) {
             if (!val) return ''
-            return val.name
+            return val.id
         },
         estimatesManyListFormatterEdit(val) {
             if (!val || !val.length) return []
             return val.map((item) => {
-              return {id: item.id, label: item.name}
+              return {id: item.id, label: item.id}
             });
         },
         estimatesOneListFormatterEdit(val) {
             if (!val) return ''
-            return {label: val.name, id: val.id}
+            return {label: val.id, id: val.id}
         },
 
-        tradesManyListFormatter(val) {
+        jobsManyListFormatter(val) {
             if (!val || !val.length) return []
-            return val.map(item => item.name)
+            return val.map(item => item.id)
         },
-        tradesOneListFormatter(val) {
+        jobsOneListFormatter(val) {
             if (!val) return ''
-            return val.name
+            return val.id
         },
-        tradesManyListFormatterEdit(val) {
-            if (!val || !val.length) return []
-            return val.map((item) => {
-              return {id: item.id, label: item.name}
-            });
-        },
-        tradesOneListFormatterEdit(val) {
-            if (!val) return ''
-            return {label: val.name, id: val.id}
-        },
-
-        templatesManyListFormatter(val) {
-            if (!val || !val.length) return []
-            return val.map(item => item.name)
-        },
-        templatesOneListFormatter(val) {
-            if (!val) return ''
-            return val.name
-        },
-        templatesManyListFormatterEdit(val) {
+        jobsManyListFormatterEdit(val) {
             if (!val || !val.length) return []
             return val.map((item) => {
-              return {id: item.id, label: item.name}
+              return {id: item.id, label: item.id}
             });
         },
-        templatesOneListFormatterEdit(val) {
+        jobsOneListFormatterEdit(val) {
             if (!val) return ''
-            return {label: val.name, id: val.id}
-        },
-
-        documentsManyListFormatter(val) {
-            if (!val || !val.length) return []
-            return val.map(item => item.url)
-        },
-        documentsOneListFormatter(val) {
-            if (!val) return ''
-            return val.url
-        },
-        documentsManyListFormatterEdit(val) {
-            if (!val || !val.length) return []
-            return val.map((item) => {
-              return {id: item.id, label: item.url}
-            });
-        },
-        documentsOneListFormatterEdit(val) {
-            if (!val) return ''
-            return {label: val.url, id: val.id}
-        },
-
-        imagesManyListFormatter(val) {
-            if (!val || !val.length) return []
-            return val.map(item => item.url)
-        },
-        imagesOneListFormatter(val) {
-            if (!val) return ''
-            return val.url
-        },
-        imagesManyListFormatterEdit(val) {
-            if (!val || !val.length) return []
-            return val.map((item) => {
-              return {id: item.id, label: item.url}
-            });
-        },
-        imagesOneListFormatterEdit(val) {
-            if (!val) return ''
-            return {label: val.url, id: val.id}
+            return {label: val.id, id: val.id}
         },
 
         rolesManyListFormatter(val) {
@@ -220,40 +125,116 @@ export default {
             return {label: val.id, id: val.id}
         },
 
-        teamsManyListFormatter(val) {
-            if (!val || !val.length) return []
-            return val.map(item => item.name)
-        },
-        teamsOneListFormatter(val) {
-            if (!val) return ''
-            return val.name
-        },
-        teamsManyListFormatterEdit(val) {
-            if (!val || !val.length) return []
-            return val.map((item) => {
-              return {id: item.id, label: item.name}
-            });
-        },
-        teamsOneListFormatterEdit(val) {
-            if (!val) return ''
-            return {label: val.name, id: val.id}
-        },
-
-        invoicesManyListFormatter(val) {
+        templatesManyListFormatter(val) {
             if (!val || !val.length) return []
             return val.map(item => item.id)
         },
-        invoicesOneListFormatter(val) {
+        templatesOneListFormatter(val) {
             if (!val) return ''
             return val.id
         },
-        invoicesManyListFormatterEdit(val) {
+        templatesManyListFormatterEdit(val) {
             if (!val || !val.length) return []
             return val.map((item) => {
               return {id: item.id, label: item.id}
             });
         },
-        invoicesOneListFormatterEdit(val) {
+        templatesOneListFormatterEdit(val) {
+            if (!val) return ''
+            return {label: val.id, id: val.id}
+        },
+
+        tradesManyListFormatter(val) {
+            if (!val || !val.length) return []
+            return val.map(item => item.id)
+        },
+        tradesOneListFormatter(val) {
+            if (!val) return ''
+            return val.id
+        },
+        tradesManyListFormatterEdit(val) {
+            if (!val || !val.length) return []
+            return val.map((item) => {
+              return {id: item.id, label: item.id}
+            });
+        },
+        tradesOneListFormatterEdit(val) {
+            if (!val) return ''
+            return {label: val.id, id: val.id}
+        },
+
+        ordersManyListFormatter(val) {
+            if (!val || !val.length) return []
+            return val.map(item => item.id)
+        },
+        ordersOneListFormatter(val) {
+            if (!val) return ''
+            return val.id
+        },
+        ordersManyListFormatterEdit(val) {
+            if (!val || !val.length) return []
+            return val.map((item) => {
+              return {id: item.id, label: item.id}
+            });
+        },
+        ordersOneListFormatterEdit(val) {
+            if (!val) return ''
+            return {label: val.id, id: val.id}
+        },
+
+        imagesManyListFormatter(val) {
+            if (!val || !val.length) return []
+            return val.map(item => item.id)
+        },
+        imagesOneListFormatter(val) {
+            if (!val) return ''
+            return val.id
+        },
+        imagesManyListFormatterEdit(val) {
+            if (!val || !val.length) return []
+            return val.map((item) => {
+              return {id: item.id, label: item.id}
+            });
+        },
+        imagesOneListFormatterEdit(val) {
+            if (!val) return ''
+            return {label: val.id, id: val.id}
+        },
+
+        documentsManyListFormatter(val) {
+            if (!val || !val.length) return []
+            return val.map(item => item.id)
+        },
+        documentsOneListFormatter(val) {
+            if (!val) return ''
+            return val.id
+        },
+        documentsManyListFormatterEdit(val) {
+            if (!val || !val.length) return []
+            return val.map((item) => {
+              return {id: item.id, label: item.id}
+            });
+        },
+        documentsOneListFormatterEdit(val) {
+            if (!val) return ''
+            return {label: val.id, id: val.id}
+        },
+
+        appointmentsManyListFormatter(val) {
+            if (!val || !val.length) return []
+            return val.map(item => item.id)
+        },
+        appointmentsOneListFormatter(val) {
+            if (!val) return ''
+            return val.id
+        },
+        appointmentsManyListFormatterEdit(val) {
+            if (!val || !val.length) return []
+            return val.map((item) => {
+              return {id: item.id, label: item.id}
+            });
+        },
+        appointmentsOneListFormatterEdit(val) {
             if (!val) return ''
             return {label: val.id, id: val.id}
         },

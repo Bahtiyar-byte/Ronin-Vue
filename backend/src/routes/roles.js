@@ -8,6 +8,10 @@ const router = express.Router();
 
 const { parse } = require('json2csv');
 
+const { checkCrudPermissions } = require('../middlewares/check-permissions');
+
+router.use(checkCrudPermissions('roles'));
+
 /**
  *  @swagger
  *  components:
@@ -19,9 +23,6 @@ const { parse } = require('json2csv');
  *          name:
  *            type: string
  *            default: name
- *          permissions:
- *            type: string
- *            default: permissions
 
  */
 
@@ -69,12 +70,8 @@ const { parse } = require('json2csv');
 router.post(
   '/',
   wrapAsync(async (req, res) => {
-    await RolesService.create(
-      req.body.data,
-      req.currentUser,
-      true,
-      req.headers.referer,
-    );
+    const link = new URL(req.headers.referer);
+    await RolesService.create(req.body.data, req.currentUser, true, link.host);
     const payload = true;
     res.status(200).send(payload);
   }),
@@ -83,7 +80,8 @@ router.post(
 router.post(
   '/bulk-import',
   wrapAsync(async (req, res) => {
-    await RolesService.bulkImport(req, res, true, req.headers.referer);
+    const link = new URL(req.headers.referer);
+    await RolesService.bulkImport(req, res, true, link.host);
     const payload = true;
     res.status(200).send(payload);
   }),
@@ -192,6 +190,48 @@ router.delete(
 /**
  *  @swagger
  *  /api/roles:
+ *    post:
+ *      security:
+ *        - bearerAuth: []
+ *      tags: [Roles]
+ *      summary: Delete the selected item list
+ *      description: Delete the selected item list
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              properties:
+ *                ids:
+ *                  description: IDs of the updated items
+ *                  type: array
+ *      responses:
+ *        200:
+ *          description: The items was successfully deleted
+ *          content:
+ *            application/json:
+ *              schema:
+ *                $ref: "#/components/schemas/Roles"
+ *        401:
+ *          $ref: "#/components/responses/UnauthorizedError"
+ *        404:
+ *          description: Items not found
+ *        500:
+ *          description: Some server error
+ */
+
+router.post(
+  '/deleteByIds',
+  wrapAsync(async (req, res) => {
+    await RolesService.deleteByIds(req.body.data, req.currentUser);
+    const payload = true;
+    res.status(200).send(payload);
+  }),
+);
+
+/**
+ *  @swagger
+ *  /api/roles:
  *    get:
  *      security:
  *        - bearerAuth: []
@@ -222,7 +262,7 @@ router.get(
 
     const payload = await RolesDBApi.findAll(req.query);
     if (filetype && filetype === 'csv') {
-      const fields = ['id', 'name', 'permissions'];
+      const fields = ['id', 'name'];
       const opts = { fields };
       try {
         const csv = parse(payload.rows, opts);

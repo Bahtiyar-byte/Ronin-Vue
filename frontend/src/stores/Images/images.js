@@ -11,7 +11,11 @@ export const useImagesStore = defineStore('images', {
       typeNotification: 'warn',
     },
 
-            searchResultJob: [],
+            searchResultJobId: [],
+
+            searchResultUserId: [],
+
+            searchResultDocumentId: [],
 
   }),
   actions: {
@@ -63,20 +67,54 @@ export const useImagesStore = defineStore('images', {
       }
     },
 
-            async searchJob(val) {
+            async searchJobId(val) {
               try {
                 if (val) {
                   const result = await axios(
                     `/jobs/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setJob(result.data);
+                  this.setJobId(result.data);
                 } else {
                   const result = await axios(`/jobs/autocomplete?limit=100`);
-                  this.setJob(result.data);
+                  this.setJobId(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setJob([]);
+                this.setJobId([]);
+              }
+            },
+
+            async searchUserId(val) {
+              try {
+                if (val) {
+                  const result = await axios(
+                    `/users/autocomplete?query=${val}&limit=100`,
+                  );
+                  this.setUserId(result.data);
+                } else {
+                  const result = await axios(`/users/autocomplete?limit=100`);
+                  this.setUserId(result.data);
+                }
+              } catch (e) {
+                this.showNotification(e, 'error')
+                this.setUserId([]);
+              }
+            },
+
+            async searchDocumentId(val) {
+              try {
+                if (val) {
+                  const result = await axios(
+                    `/documents/autocomplete?query=${val}&limit=100`,
+                  );
+                  this.setDocumentId(result.data);
+                } else {
+                  const result = await axios(`/documents/autocomplete?limit=100`);
+                  this.setDocumentId(result.data);
+                }
+              } catch (e) {
+                this.showNotification(e, 'error')
+                this.setDocumentId([]);
               }
             },
 
@@ -99,8 +137,16 @@ export const useImagesStore = defineStore('images', {
       this.notify.textNotification = ''
     },
 
-        setJob(payload) {
-            this.searchResultJob = payload
+        setJobId(payload) {
+            this.searchResultJobId = payload
+        },
+
+        setUserId(payload) {
+            this.searchResultUserId = payload
+        },
+
+        setDocumentId(payload) {
+            this.searchResultDocumentId = payload
         },
 
   }

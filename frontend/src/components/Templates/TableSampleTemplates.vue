@@ -34,15 +34,9 @@ const items = computed(() => templatesStore.data)
 
 const headers = [
 
-{ text: 'Trade', value: 'trade'},
-{ text: 'Material Cost', value: 'materialCost'},
-{ text: 'Labor Cost', value: 'laborCost'},
-{ text: 'Markup', value: 'markup'},
-{ text: 'Profit Margin', value: 'profitMargin'},
 { text: 'Name', value: 'name'},
-{ text: 'Total Price', value: 'totalPrice'},
-{ text: 'Unit Of Measurement', value: 'unitOfMeasurement'},
-{ text: 'Description', value: 'description'},]
+{ text: 'Description', value: 'description'},
+{ text: 'Trade', value: 'tradeId'},]
 const isModalActive = ref(false)
 
 const isModalDangerActive = ref(false)
@@ -158,49 +152,19 @@ const sort = (title) => {
       <th v-if="checkable" />
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'trade' && props.sortDirection]"
-        @click="sort('trade')"
-      >Trade</th>
-
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'materialCost' && props.sortDirection]"
-        @click="sort('materialCost')"
-      >Material Cost</th>
-
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'laborCost' && props.sortDirection]"
-        @click="sort('laborCost')"
-      >Labor Cost</th>
-
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'markup' && props.sortDirection]"
-        @click="sort('markup')"
-      >Markup</th>
-
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'profitMargin' && props.sortDirection]"
-        @click="sort('profitMargin')"
-      >Profit Margin</th>
-
-      <th
         :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'name' && props.sortDirection]"
         @click="sort('name')"
       >Name</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'totalPrice' && props.sortDirection]"
-        @click="sort('totalPrice')"
-      >Total Price</th>
-
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'unitOfMeasurement' && props.sortDirection]"
-        @click="sort('unitOfMeasurement')"
-      >Unit Of Measurement</th>
-
-      <th
         :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'description' && props.sortDirection]"
         @click="sort('description')"
       >Description</th>
+
+      <th
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'tradeId' && props.sortDirection]"
+        @click="sort('tradeId')"
+      >Trade</th>
 
         <th />
       </tr>
@@ -216,46 +180,16 @@ const sort = (title) => {
           @checked="checked($event, client)"
         />
 
-              <td data-label="trade">
-                  <span
-                    v-for="(i, idx) in dataFormatter.tradesManyListFormatter(client.trade)"
-                    :key="idx + client.trade"
-                    class="block"
-                  >
-                      {{ i }}
-                  </span>
-              </td>  
-
-              <td data-label="materialCost">
-                {{ client.materialCost }}
-              </td>
-
-              <td data-label="laborCost">
-                {{ client.laborCost }}
-              </td>
-
-              <td data-label="markup">
-                {{ client.markup }}
-              </td>
-
-              <td data-label="profitMargin">
-                {{ client.profitMargin }}
-              </td>
-
               <td data-label="name">
                 {{ client.name }}
               </td>
 
-              <td data-label="totalPrice">
-                {{ client.totalPrice }}
-              </td>
-
-              <td data-label="unitOfMeasurement">
-                {{ client.unitOfMeasurement }}
-              </td>
-
               <td data-label="description">
                 {{ client.description }}
+              </td>
+
+              <td data-label="tradeId">
+                {{ dataFormatter.tradesOneListFormatter(client.tradeId) }}
               </td>
 
         <td class="before:hidden lg:w-1 whitespace-nowrap">

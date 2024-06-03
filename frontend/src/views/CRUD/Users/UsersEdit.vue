@@ -42,16 +42,16 @@ const form = reactive({
 
       avatar: [],
 
-      roleId: [],
+    userName: '',
 
-    name: '',
+      roleId: '',
 
 })
 
 const submit = async () => {
   try {
 
-            form.roleId = form.roleId.map(item => item.id);
+            form.roleId = form.roleId?.id;
 
     await usersStore.edit({id: route.params.id, data: {...form} })
     router.push('/users');
@@ -89,9 +89,9 @@ const formatData = () => {
 
     form.avatar = usersItem.value.avatar
 
-    form.roleId = dataFormatter.rolesManyListFormatterEdit(usersItem.value.roleId)
+    form.userName = usersItem.value.userName
 
-    form.name = usersItem.value.name
+    form.roleId = dataFormatter.rolesOneListFormatterEdit(usersItem.value.roleId)
 
 form.password = usersItem.value.password
 
@@ -181,24 +181,23 @@ const cancel = () => {
       </FormField>
 
     <FormField
-        label="Role"
-      >
-        <v-select
-          v-model="form.roleId"
-          :options="optionsRoleId"
-          multiple
-          @input="searchRoleId($event.target.value)"
+      label="User Name"
+    >
+      <FormControl
+        v-model="form.userName"
+        placeholder="Your User Name"
         />
     </FormField>
 
-    <FormField
-      label="Name"
+  <FormField
+      label="Role "
     >
-      <FormControl
-        v-model="form.name"
-        placeholder="Your Name"
-        />
-    </FormField>
+      <v-select
+        v-model="form.roleId"
+        :options="optionsRoleId"
+        @input="searchRoleId($event.target.value)"
+      />
+  </FormField>
 
     <BaseDivider />
 

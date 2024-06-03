@@ -22,9 +22,9 @@ const notification = computed(() => imagesStore.notify)
 const titleStack = ref(['Admin', 'Images'])
 
 const filters = ref([]);
-const filtersList = [{label: 'Name', title: 'name'},{label: 'Url', title: 'url'},
+const filtersList = [{label: 'Name', title: 'name'},
 
-          ];
+          {label: 'Job ', title: 'jobId'},{label: 'User ', title: 'userId'},{label: 'Document ', title: 'documentId'},];
 const showFilters = ref(false);
 
 const query = ref('');

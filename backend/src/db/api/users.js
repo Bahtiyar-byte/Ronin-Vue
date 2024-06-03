@@ -34,7 +34,7 @@ module.exports = class UsersDBApi {
         passwordResetTokenExpiresAt:
           data.data.passwordResetTokenExpiresAt || null,
         provider: data.data.provider || null,
-        name: data.data.name || null,
+        userName: data.data.userName || null,
         importHash: data.data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
@@ -42,7 +42,11 @@ module.exports = class UsersDBApi {
       { transaction },
     );
 
-    await users.setRoleId(data.data.roleId || [], {
+    await users.setImageId(data.data.imageId || null, {
+      transaction,
+    });
+
+    await users.setRoleId(data.data.roleId || null, {
       transaction,
     });
 
@@ -82,7 +86,7 @@ module.exports = class UsersDBApi {
       passwordResetToken: item.passwordResetToken || null,
       passwordResetTokenExpiresAt: item.passwordResetTokenExpiresAt || null,
       provider: item.provider || null,
-      name: item.name || null,
+      userName: item.userName || null,
       importHash: item.importHash || null,
       createdById: currentUser.id,
       updatedById: currentUser.id,
@@ -147,13 +151,17 @@ module.exports = class UsersDBApi {
         passwordResetToken: data.passwordResetToken || null,
         passwordResetTokenExpiresAt: data.passwordResetTokenExpiresAt || null,
         provider: data.provider || null,
-        name: data.name || null,
+        userName: data.userName || null,
         updatedById: currentUser.id,
       },
       { transaction },
     );
 
-    await users.setRoleId(data.roleId || [], {
+    await users.setImageId(data.imageId || null, {
+      transaction,
+    });
+
+    await users.setRoleId(data.roleId || null, {
       transaction,
     });
 
@@ -166,6 +174,31 @@ module.exports = class UsersDBApi {
       data.avatar,
       options,
     );
+
+    return users;
+  }
+
+  static async deleteByIds(ids, options) {
+    const currentUser = (options && options.currentUser) || { id: null };
+    const transaction = (options && options.transaction) || undefined;
+
+    const users = await db.users.findAll({
+      where: {
+        id: {
+          [Op.in]: ids,
+        },
+      },
+      transaction,
+    });
+
+    await db.sequelize.transaction(async (transaction) => {
+      for (const record of users) {
+        await record.update({ deletedBy: currentUser.id }, { transaction });
+      }
+      for (const record of users) {
+        await record.destroy({ transaction });
+      }
+    });
 
     return users;
   }
@@ -203,7 +236,44 @@ module.exports = class UsersDBApi {
 
     const output = users.get({ plain: true });
 
+    output.contacts_assignedUserId = await users.getContacts_assignedUserId({
+      transaction,
+    });
+
+    output.jobs_assignedUserId = await users.getJobs_assignedUserId({
+      transaction,
+    });
+
+    output.images_userId = await users.getImages_userId({
+      transaction,
+    });
+
+    output.emails_userId = await users.getEmails_userId({
+      transaction,
+    });
+
+    output.chats_senderId = await users.getChats_senderId({
+      transaction,
+    });
+
+    output.chats_receiverId = await users.getChats_receiverId({
+      transaction,
+    });
+
+    output.appointments_assignedUserId =
+      await users.getAppointments_assignedUserId({
+        transaction,
+      });
+
+    output.tasks_assignedToUserId = await users.getTasks_assignedToUserId({
+      transaction,
+    });
+
     output.avatar = await users.getAvatar({
+      transaction,
+    });
+
+    output.imageId = await users.getImageId({
       transaction,
     });
 
@@ -227,18 +297,13 @@ module.exports = class UsersDBApi {
     let where = {};
     let include = [
       {
+        model: db.images,
+        as: 'imageId',
+      },
+
+      {
         model: db.roles,
         as: 'roleId',
-        through: filter.roleId
-          ? {
-              where: {
-                [Op.or]: filter.roleId.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.roleId ? true : null,
       },
 
       {
@@ -319,10 +384,10 @@ module.exports = class UsersDBApi {
         };
       }
 
-      if (filter.name) {
+      if (filter.userName) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('users', 'name', filter.name),
+          [Op.and]: Utils.ilike('users', 'userName', filter.userName),
         };
       }
 
@@ -400,6 +465,28 @@ module.exports = class UsersDBApi {
         };
       }
 
+      if (filter.imageId) {
+        var listItems = filter.imageId.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
+        where = {
+          ...where,
+          imageIdId: { [Op.or]: listItems },
+        };
+      }
+
+      if (filter.roleId) {
+        var listItems = filter.roleId.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
+        where = {
+          ...where,
+          roleIdId: { [Op.or]: listItems },
+        };
+      }
+
       if (filter.createdAtRange) {
         const [start, end] = filter.createdAtRange;
 
@@ -469,21 +556,21 @@ module.exports = class UsersDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('users', 'name', query),
+          Utils.ilike('users', 'firstName', query),
         ],
       };
     }
 
     const records = await db.users.findAll({
-      attributes: ['id', 'name'],
+      attributes: ['id', 'firstName'],
       where,
       limit: limit ? Number(limit) : undefined,
-      orderBy: [['name', 'ASC']],
+      orderBy: [['firstName', 'ASC']],
     });
 
     return records.map((record) => ({
       id: record.id,
-      label: record.name,
+      label: record.firstName,
     }));
   }
 

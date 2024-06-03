@@ -22,9 +22,9 @@ const notification = computed(() => documentsStore.notify)
 const titleStack = ref(['Admin', 'Documents'])
 
 const filters = ref([]);
-const filtersList = [{label: 'Name', title: 'name'},{label: 'Url', title: 'url'},
+const filtersList = [{label: 'Name', title: 'name'},
 
-          ];
+          {label: 'Job ', title: 'jobId'},];
 const showFilters = ref(false);
 
 const query = ref('');

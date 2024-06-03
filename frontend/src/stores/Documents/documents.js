@@ -11,7 +11,7 @@ export const useDocumentsStore = defineStore('documents', {
       typeNotification: 'warn',
     },
 
-            searchResultJob: [],
+            searchResultJobId: [],
 
   }),
   actions: {
@@ -63,20 +63,20 @@ export const useDocumentsStore = defineStore('documents', {
       }
     },
 
-            async searchJob(val) {
+            async searchJobId(val) {
               try {
                 if (val) {
                   const result = await axios(
                     `/jobs/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setJob(result.data);
+                  this.setJobId(result.data);
                 } else {
                   const result = await axios(`/jobs/autocomplete?limit=100`);
-                  this.setJob(result.data);
+                  this.setJobId(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setJob([]);
+                this.setJobId([]);
               }
             },
 
@@ -99,8 +99,8 @@ export const useDocumentsStore = defineStore('documents', {
       this.notify.textNotification = ''
     },
 
-        setJob(payload) {
-            this.searchResultJob = payload
+        setJobId(payload) {
+            this.searchResultJobId = payload
         },
 
   }

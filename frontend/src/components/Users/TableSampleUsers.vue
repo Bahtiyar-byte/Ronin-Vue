@@ -40,8 +40,8 @@ const headers = [
 { text: 'E-Mail', value: 'email'},
 { text: 'Disabled', value: 'disabled'},
 { text: 'Avatar', value: 'avatar'},
-{ text: 'Role', value: 'roleId'},
-{ text: 'Name', value: 'name'},]
+{ text: 'User Name', value: 'userName'},
+{ text: 'Role ', value: 'roleId'},]
 const isModalActive = ref(false)
 
 const isModalDangerActive = ref(false)
@@ -187,14 +187,14 @@ const sort = (title) => {
       >Avatar</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'roleId' && props.sortDirection]"
-        @click="sort('roleId')"
-      >Role</th>
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'userName' && props.sortDirection]"
+        @click="sort('userName')"
+      >User Name</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'name' && props.sortDirection]"
-        @click="sort('name')"
-      >Name</th>
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'roleId' && props.sortDirection]"
+        @click="sort('roleId')"
+      >Role </th>
 
         <th />
       </tr>
@@ -241,18 +241,12 @@ const sort = (title) => {
                 />
               </td>
 
-              <td data-label="roleId">
-                  <span
-                    v-for="(i, idx) in dataFormatter.rolesManyListFormatter(client.roleId)"
-                    :key="idx + client.roleId"
-                    class="block"
-                  >
-                      {{ i }}
-                  </span>
-              </td>  
+              <td data-label="userName">
+                {{ client.userName }}
+              </td>
 
-              <td data-label="name">
-                {{ client.name }}
+              <td data-label="roleId">
+                {{ dataFormatter.rolesOneListFormatter(client.roleId) }}
               </td>
 
         <td class="before:hidden lg:w-1 whitespace-nowrap">

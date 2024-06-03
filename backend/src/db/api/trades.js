@@ -15,7 +15,7 @@ module.exports = class TradesDBApi {
       {
         id: data.id || undefined,
 
-        name: data.name || null,
+        Name: data.Name || null,
         importHash: data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
@@ -34,7 +34,7 @@ module.exports = class TradesDBApi {
     const tradesData = data.map((item, index) => ({
       id: item.id || undefined,
 
-      name: item.name || null,
+      Name: item.Name || null,
       importHash: item.importHash || null,
       createdById: currentUser.id,
       updatedById: currentUser.id,
@@ -57,11 +57,36 @@ module.exports = class TradesDBApi {
 
     await trades.update(
       {
-        name: data.name || null,
+        Name: data.Name || null,
         updatedById: currentUser.id,
       },
       { transaction },
     );
+
+    return trades;
+  }
+
+  static async deleteByIds(ids, options) {
+    const currentUser = (options && options.currentUser) || { id: null };
+    const transaction = (options && options.transaction) || undefined;
+
+    const trades = await db.trades.findAll({
+      where: {
+        id: {
+          [Op.in]: ids,
+        },
+      },
+      transaction,
+    });
+
+    await db.sequelize.transaction(async (transaction) => {
+      for (const record of trades) {
+        await record.update({ deletedBy: currentUser.id }, { transaction });
+      }
+      for (const record of trades) {
+        await record.destroy({ transaction });
+      }
+    });
 
     return trades;
   }
@@ -99,6 +124,10 @@ module.exports = class TradesDBApi {
 
     const output = trades.get({ plain: true });
 
+    output.templates_tradeId = await trades.getTemplates_tradeId({
+      transaction,
+    });
+
     return output;
   }
 
@@ -123,13 +152,6 @@ module.exports = class TradesDBApi {
         };
       }
 
-      if (filter.name) {
-        where = {
-          ...where,
-          [Op.and]: Utils.ilike('trades', 'name', filter.name),
-        };
-      }
-
       if (
         filter.active === true ||
         filter.active === 'true' ||
@@ -139,6 +161,13 @@ module.exports = class TradesDBApi {
         where = {
           ...where,
           active: filter.active === true || filter.active === 'true',
+        };
+      }
+
+      if (filter.Name) {
+        where = {
+          ...where,
+          Name: filter.Name,
         };
       }
 
@@ -211,21 +240,21 @@ module.exports = class TradesDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('trades', 'name', query),
+          Utils.ilike('trades', 'id', query),
         ],
       };
     }
 
     const records = await db.trades.findAll({
-      attributes: ['id', 'name'],
+      attributes: ['id', 'id'],
       where,
       limit: limit ? Number(limit) : undefined,
-      orderBy: [['name', 'ASC']],
+      orderBy: [['id', 'ASC']],
     });
 
     return records.map((record) => ({
       id: record.id,
-      label: record.name,
+      label: record.id,
     }));
   }
 };

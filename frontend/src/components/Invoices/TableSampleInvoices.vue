@@ -34,10 +34,13 @@ const items = computed(() => invoicesStore.data)
 
 const headers = [
 
-{ text: 'Job', value: 'job'},
-{ text: 'Estimate', value: 'estimate'},
-{ text: 'Document', value: 'document'},
-{ text: 'Number', value: 'number'},]
+{ text: 'Invoice Number', value: 'invoiceNumber'},
+{ text: 'Invoice Date', value: 'invoiceDate'},
+{ text: 'Terms', value: 'terms'},
+{ text: 'Approved Job Value', value: 'approvedJobValue'},
+{ text: 'Invoiced Amount', value: 'invoicedAmount'},
+{ text: 'Balance Amount', value: 'balanceAmount'},
+{ text: 'Job ', value: 'jobId'},]
 const isModalActive = ref(false)
 
 const isModalDangerActive = ref(false)
@@ -153,24 +156,39 @@ const sort = (title) => {
       <th v-if="checkable" />
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'job' && props.sortDirection]"
-        @click="sort('job')"
-      >Job</th>
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'invoiceNumber' && props.sortDirection]"
+        @click="sort('invoiceNumber')"
+      >Invoice Number</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'estimate' && props.sortDirection]"
-        @click="sort('estimate')"
-      >Estimate</th>
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'invoiceDate' && props.sortDirection]"
+        @click="sort('invoiceDate')"
+      >Invoice Date</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'document' && props.sortDirection]"
-        @click="sort('document')"
-      >Document</th>
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'terms' && props.sortDirection]"
+        @click="sort('terms')"
+      >Terms</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'number' && props.sortDirection]"
-        @click="sort('number')"
-      >Number</th>
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'approvedJobValue' && props.sortDirection]"
+        @click="sort('approvedJobValue')"
+      >Approved Job Value</th>
+
+      <th
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'invoicedAmount' && props.sortDirection]"
+        @click="sort('invoicedAmount')"
+      >Invoiced Amount</th>
+
+      <th
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'balanceAmount' && props.sortDirection]"
+        @click="sort('balanceAmount')"
+      >Balance Amount</th>
+
+      <th
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'jobId' && props.sortDirection]"
+        @click="sort('jobId')"
+      >Job </th>
 
         <th />
       </tr>
@@ -186,32 +204,32 @@ const sort = (title) => {
           @checked="checked($event, client)"
         />
 
-              <td data-label="job">
-                  <span
-                    v-for="(i, idx) in dataFormatter.jobsManyListFormatter(client.job)"
-                    :key="idx + client.job"
-                    class="block"
-                  >
-                      {{ i }}
-                  </span>
-              </td>  
-
-              <td data-label="estimate">
-                  <span
-                    v-for="(i, idx) in dataFormatter.estimatesManyListFormatter(client.estimate)"
-                    :key="idx + client.estimate"
-                    class="block"
-                  >
-                      {{ i }}
-                  </span>
-              </td>  
-
-              <td data-label="document">
-                {{ dataFormatter.documentsOneListFormatter(client.document) }}
+              <td data-label="invoiceNumber">
+                {{ client.invoiceNumber }}
               </td>
 
-              <td data-label="number">
-                {{ client.number }}
+              <td data-label="invoiceDate">
+                {{ dataFormatter.dateFormatter(client.invoiceDate) }}
+              </td>
+
+              <td data-label="terms">
+                {{ client.terms }}
+              </td>
+
+              <td data-label="approvedJobValue">
+                {{ client.approvedJobValue }}
+              </td>
+
+              <td data-label="invoicedAmount">
+                {{ client.invoicedAmount }}
+              </td>
+
+              <td data-label="balanceAmount">
+                {{ client.balanceAmount }}
+              </td>
+
+              <td data-label="jobId">
+                {{ dataFormatter.jobsOneListFormatter(client.jobId) }}
               </td>
 
         <td class="before:hidden lg:w-1 whitespace-nowrap">

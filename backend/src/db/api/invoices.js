@@ -15,7 +15,12 @@ module.exports = class InvoicesDBApi {
       {
         id: data.id || undefined,
 
-        number: data.number || null,
+        invoiceNumber: data.invoiceNumber || null,
+        invoiceDate: data.invoiceDate || null,
+        terms: data.terms || null,
+        approvedJobValue: data.approvedJobValue || null,
+        invoicedAmount: data.invoicedAmount || null,
+        balanceAmount: data.balanceAmount || null,
         importHash: data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
@@ -23,15 +28,7 @@ module.exports = class InvoicesDBApi {
       { transaction },
     );
 
-    await invoices.setDocument(data.document || null, {
-      transaction,
-    });
-
-    await invoices.setJob(data.job || [], {
-      transaction,
-    });
-
-    await invoices.setEstimate(data.estimate || [], {
+    await invoices.setJobId(data.jobId || null, {
       transaction,
     });
 
@@ -46,7 +43,12 @@ module.exports = class InvoicesDBApi {
     const invoicesData = data.map((item, index) => ({
       id: item.id || undefined,
 
-      number: item.number || null,
+      invoiceNumber: item.invoiceNumber || null,
+      invoiceDate: item.invoiceDate || null,
+      terms: item.terms || null,
+      approvedJobValue: item.approvedJobValue || null,
+      invoicedAmount: item.invoicedAmount || null,
+      balanceAmount: item.balanceAmount || null,
       importHash: item.importHash || null,
       createdById: currentUser.id,
       updatedById: currentUser.id,
@@ -71,22 +73,44 @@ module.exports = class InvoicesDBApi {
 
     await invoices.update(
       {
-        number: data.number || null,
+        invoiceNumber: data.invoiceNumber || null,
+        invoiceDate: data.invoiceDate || null,
+        terms: data.terms || null,
+        approvedJobValue: data.approvedJobValue || null,
+        invoicedAmount: data.invoicedAmount || null,
+        balanceAmount: data.balanceAmount || null,
         updatedById: currentUser.id,
       },
       { transaction },
     );
 
-    await invoices.setDocument(data.document || null, {
+    await invoices.setJobId(data.jobId || null, {
       transaction,
     });
 
-    await invoices.setJob(data.job || [], {
+    return invoices;
+  }
+
+  static async deleteByIds(ids, options) {
+    const currentUser = (options && options.currentUser) || { id: null };
+    const transaction = (options && options.transaction) || undefined;
+
+    const invoices = await db.invoices.findAll({
+      where: {
+        id: {
+          [Op.in]: ids,
+        },
+      },
       transaction,
     });
 
-    await invoices.setEstimate(data.estimate || [], {
-      transaction,
+    await db.sequelize.transaction(async (transaction) => {
+      for (const record of invoices) {
+        await record.update({ deletedBy: currentUser.id }, { transaction });
+      }
+      for (const record of invoices) {
+        await record.destroy({ transaction });
+      }
     });
 
     return invoices;
@@ -125,15 +149,7 @@ module.exports = class InvoicesDBApi {
 
     const output = invoices.get({ plain: true });
 
-    output.job = await invoices.getJob({
-      transaction,
-    });
-
-    output.estimate = await invoices.getEstimate({
-      transaction,
-    });
-
-    output.document = await invoices.getDocument({
+    output.jobId = await invoices.getJobId({
       transaction,
     });
 
@@ -153,38 +169,8 @@ module.exports = class InvoicesDBApi {
     let where = {};
     let include = [
       {
-        model: db.documents,
-        as: 'document',
-      },
-
-      {
         model: db.jobs,
-        as: 'job',
-        through: filter.job
-          ? {
-              where: {
-                [Op.or]: filter.job.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.job ? true : null,
-      },
-
-      {
-        model: db.estimates,
-        as: 'estimate',
-        through: filter.estimate
-          ? {
-              where: {
-                [Op.or]: filter.estimate.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.estimate ? true : null,
+        as: 'jobId',
       },
     ];
 
@@ -196,14 +182,25 @@ module.exports = class InvoicesDBApi {
         };
       }
 
-      if (filter.numberRange) {
-        const [start, end] = filter.numberRange;
+      if (filter.invoiceNumber) {
+        where = {
+          ...where,
+          [Op.and]: Utils.ilike(
+            'invoices',
+            'invoiceNumber',
+            filter.invoiceNumber,
+          ),
+        };
+      }
+
+      if (filter.invoiceDateRange) {
+        const [start, end] = filter.invoiceDateRange;
 
         if (start !== undefined && start !== null && start !== '') {
           where = {
             ...where,
-            number: {
-              ...where.number,
+            invoiceDate: {
+              ...where.invoiceDate,
               [Op.gte]: start,
             },
           };
@@ -212,8 +209,80 @@ module.exports = class InvoicesDBApi {
         if (end !== undefined && end !== null && end !== '') {
           where = {
             ...where,
-            number: {
-              ...where.number,
+            invoiceDate: {
+              ...where.invoiceDate,
+              [Op.lte]: end,
+            },
+          };
+        }
+      }
+
+      if (filter.approvedJobValueRange) {
+        const [start, end] = filter.approvedJobValueRange;
+
+        if (start !== undefined && start !== null && start !== '') {
+          where = {
+            ...where,
+            approvedJobValue: {
+              ...where.approvedJobValue,
+              [Op.gte]: start,
+            },
+          };
+        }
+
+        if (end !== undefined && end !== null && end !== '') {
+          where = {
+            ...where,
+            approvedJobValue: {
+              ...where.approvedJobValue,
+              [Op.lte]: end,
+            },
+          };
+        }
+      }
+
+      if (filter.invoicedAmountRange) {
+        const [start, end] = filter.invoicedAmountRange;
+
+        if (start !== undefined && start !== null && start !== '') {
+          where = {
+            ...where,
+            invoicedAmount: {
+              ...where.invoicedAmount,
+              [Op.gte]: start,
+            },
+          };
+        }
+
+        if (end !== undefined && end !== null && end !== '') {
+          where = {
+            ...where,
+            invoicedAmount: {
+              ...where.invoicedAmount,
+              [Op.lte]: end,
+            },
+          };
+        }
+      }
+
+      if (filter.balanceAmountRange) {
+        const [start, end] = filter.balanceAmountRange;
+
+        if (start !== undefined && start !== null && start !== '') {
+          where = {
+            ...where,
+            balanceAmount: {
+              ...where.balanceAmount,
+              [Op.gte]: start,
+            },
+          };
+        }
+
+        if (end !== undefined && end !== null && end !== '') {
+          where = {
+            ...where,
+            balanceAmount: {
+              ...where.balanceAmount,
               [Op.lte]: end,
             },
           };
@@ -232,14 +301,21 @@ module.exports = class InvoicesDBApi {
         };
       }
 
-      if (filter.document) {
-        var listItems = filter.document.split('|').map((item) => {
+      if (filter.terms) {
+        where = {
+          ...where,
+          terms: filter.terms,
+        };
+      }
+
+      if (filter.jobId) {
+        var listItems = filter.jobId.split('|').map((item) => {
           return Utils.uuid(item);
         });
 
         where = {
           ...where,
-          documentId: { [Op.or]: listItems },
+          jobIdId: { [Op.or]: listItems },
         };
       }
 

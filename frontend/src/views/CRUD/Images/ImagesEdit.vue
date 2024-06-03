@@ -24,24 +24,34 @@ const imagesStore = useImagesStore()
 const titleStack = ref(['Admin', 'Images'])
 const notification = computed(() => imagesStore.notify)
 
-        const optionsJob = computed(() => imagesStore.searchResultJob);
+        const optionsJobId = computed(() => imagesStore.searchResultJobId);
+
+        const optionsUserId = computed(() => imagesStore.searchResultUserId);
+
+        const optionsDocumentId = computed(() => imagesStore.searchResultDocumentId);
 
 const imagesItem = computed(() => imagesStore.data);
 
 const form = reactive({
 
-      job: [],
-
     name: '',
 
-    url: '',
+      jobId: '',
+
+      userId: '',
+
+      documentId: '',
 
 })
 
 const submit = async () => {
   try {
 
-            form.job = form.job.map(item => item.id);
+            form.jobId = form.jobId?.id;
+
+            form.userId = form.userId?.id;
+
+            form.documentId = form.documentId?.id;
 
     await imagesStore.edit({id: route.params.id, data: {...form} })
     router.push('/images');
@@ -53,7 +63,11 @@ const submit = async () => {
 onBeforeMount(async () => {
   try {
 
-  await searchJob();
+  await searchJobId();
+
+  await searchUserId();
+
+  await searchDocumentId();
 
     await imagesStore.fetch(route.params.id)
     formatData();
@@ -63,17 +77,27 @@ onBeforeMount(async () => {
   }
 })
 
-    async function searchJob(val) {
-      await imagesStore.searchJob(val);
+    async function searchJobId(val) {
+      await imagesStore.searchJobId(val);
+    }
+
+    async function searchUserId(val) {
+      await imagesStore.searchUserId(val);
+    }
+
+    async function searchDocumentId(val) {
+      await imagesStore.searchDocumentId(val);
     }
 
 const formatData = () => {
 
-    form.job = dataFormatter.jobsManyListFormatterEdit(imagesItem.value.job)
-
     form.name = imagesItem.value.name
 
-    form.url = imagesItem.value.url
+    form.jobId = dataFormatter.jobsOneListFormatterEdit(imagesItem.value.jobId)
+
+    form.userId = dataFormatter.usersOneListFormatterEdit(imagesItem.value.userId)
+
+    form.documentId = dataFormatter.documentsOneListFormatterEdit(imagesItem.value.documentId)
 
 }
 
@@ -110,17 +134,6 @@ const cancel = () => {
     >
 
     <FormField
-        label="Job"
-      >
-        <v-select
-          v-model="form.job"
-          :options="optionsJob"
-          multiple
-          @input="searchJob($event.target.value)"
-        />
-    </FormField>
-
-    <FormField
       label="Name"
     >
       <FormControl
@@ -129,14 +142,35 @@ const cancel = () => {
         />
     </FormField>
 
-    <FormField
-      label="Url"
+  <FormField
+      label="Job "
     >
-      <FormControl
-        v-model="form.url"
-        placeholder="Your Url"
-        />
-    </FormField>
+      <v-select
+        v-model="form.jobId"
+        :options="optionsJobId"
+        @input="searchJobId($event.target.value)"
+      />
+  </FormField>
+
+  <FormField
+      label="User "
+    >
+      <v-select
+        v-model="form.userId"
+        :options="optionsUserId"
+        @input="searchUserId($event.target.value)"
+      />
+  </FormField>
+
+  <FormField
+      label="Document "
+    >
+      <v-select
+        v-model="form.documentId"
+        :options="optionsDocumentId"
+        @input="searchDocumentId($event.target.value)"
+      />
+  </FormField>
 
     <BaseDivider />
 

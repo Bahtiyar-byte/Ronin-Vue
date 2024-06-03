@@ -24,34 +24,38 @@ const estimatesStore = useEstimatesStore()
 const titleStack = ref(['Admin', 'Estimates'])
 const notification = computed(() => estimatesStore.notify)
 
-        const optionsJob = computed(() => estimatesStore.searchResultJob);
+        const optionsJobId = computed(() => estimatesStore.searchResultJobId);
 
-        const optionsTemplate = computed(() => estimatesStore.searchResultTemplate);
+        const optionsContactId = computed(() => estimatesStore.searchResultContactId);
 
-      const optionsStatus = [{id: 0, label: 'Draft'},{id: 1, label: 'Sent'},{id: 2, label: 'Approved'},{id: 3, label: 'Rejected'},]
+        const optionsTemplateId = computed(() => estimatesStore.searchResultTemplateId);
 
 const estimatesItem = computed(() => estimatesStore.data);
 
 const form = reactive({
 
-      job: '',
+    description: [''],
 
-      template: [],
+    additionalNotes: [''],
 
-      status: '',
+    price: '',
 
-    name: '',
+      jobId: '',
+
+      contactId: '',
+
+      templateId: '',
 
 })
 
 const submit = async () => {
   try {
 
-            form.job = form.job?.id;
+            form.jobId = form.jobId?.id;
 
-            form.template = form.template.map(item => item.id);
+            form.contactId = form.contactId?.id;
 
-            form.status = form.status.label;
+            form.templateId = form.templateId?.id;
 
     await estimatesStore.edit({id: route.params.id, data: {...form} })
     router.push('/estimates');
@@ -63,9 +67,11 @@ const submit = async () => {
 onBeforeMount(async () => {
   try {
 
-  await searchJob();
+  await searchJobId();
 
-  await searchTemplate();
+  await searchContactId();
+
+  await searchTemplateId();
 
     await estimatesStore.fetch(route.params.id)
     formatData();
@@ -75,23 +81,31 @@ onBeforeMount(async () => {
   }
 })
 
-    async function searchJob(val) {
-      await estimatesStore.searchJob(val);
+    async function searchJobId(val) {
+      await estimatesStore.searchJobId(val);
     }
 
-    async function searchTemplate(val) {
-      await estimatesStore.searchTemplate(val);
+    async function searchContactId(val) {
+      await estimatesStore.searchContactId(val);
+    }
+
+    async function searchTemplateId(val) {
+      await estimatesStore.searchTemplateId(val);
     }
 
 const formatData = () => {
 
-    form.job = dataFormatter.jobsOneListFormatterEdit(estimatesItem.value.job)
+    form.description = estimatesItem.value.description
 
-    form.template = dataFormatter.templatesManyListFormatterEdit(estimatesItem.value.template)
+    form.additionalNotes = estimatesItem.value.additionalNotes
 
-    form.status = optionsStatus.find(el => el.label === estimatesItem.value.status)
+    form.price = estimatesItem.value.price
 
-    form.name = estimatesItem.value.name
+    form.jobId = dataFormatter.jobsOneListFormatterEdit(estimatesItem.value.jobId)
+
+    form.contactId = dataFormatter.contactsOneListFormatterEdit(estimatesItem.value.contactId)
+
+    form.templateId = dataFormatter.templatesOneListFormatterEdit(estimatesItem.value.templateId)
 
 }
 
@@ -127,42 +141,62 @@ const cancel = () => {
       @submit.prevent="submit"
     >
 
+    <FormField
+      label="Description"
+    >
+      <FormControl
+        v-model="form.description"
+        type="textarea"
+        placeholder="Your Description"
+        />
+    </FormField>
+
+    <label class="block font-bold mb-2 text-pavitra-700 text-sm">Additional Notes</label>
+    <Editor
+      api-key="s0bs8snu2u6qo8skn5r3kurkerhbaagpsgm9cdkbxnbo8nj4"
+      cloudChannel="6"
+      v-model="form.additionalNotes"
+      />
+
+    <FormField
+      label="Price"
+    >
+      <FormControl
+        type="number"
+        v-model="form.price"
+        placeholder="Your Price"
+      />
+    </FormField>
+
   <FormField
-      label="Job"
+      label="Job Id"
     >
       <v-select
-        v-model="form.job"
-        :options="optionsJob"
-        @input="searchJob($event.target.value)"
+        v-model="form.jobId"
+        :options="optionsJobId"
+        @input="searchJobId($event.target.value)"
       />
   </FormField>
 
-    <FormField
-        label="Template"
-      >
-        <v-select
-          v-model="form.template"
-          :options="optionsTemplate"
-          multiple
-          @input="searchTemplate($event.target.value)"
-        />
-    </FormField>
-
-    <FormField label="Status">
-      <FormControl
-        v-model="form.status"
-        :options="optionsStatus"
-      />
-    </FormField>
-
-    <FormField
-      label="Name"
+  <FormField
+      label="Contact Id"
     >
-      <FormControl
-        v-model="form.name"
-        placeholder="Your Name"
-        />
-    </FormField>
+      <v-select
+        v-model="form.contactId"
+        :options="optionsContactId"
+        @input="searchContactId($event.target.value)"
+      />
+  </FormField>
+
+  <FormField
+      label="Template "
+    >
+      <v-select
+        v-model="form.templateId"
+        :options="optionsTemplateId"
+        @input="searchTemplateId($event.target.value)"
+      />
+  </FormField>
 
     <BaseDivider />
 

@@ -37,17 +37,10 @@ export default [
 },
 
   {
-    to: '/appointments',
-    label: 'Appointments',
+    to: '/addresses',
+    label: 'Addresses',
     icon: mdiTable,
-    component: () => import('@/views/CRUD/Appointments/AppointmentsView.vue'),
-},
-
-  {
-    to: '/jobs',
-    label: 'Jobs',
-    icon: mdiTable,
-    component: () => import('@/views/CRUD/Jobs/JobsView.vue'),
+    component: () => import('@/views/CRUD/Addresses/AddressesView.vue'),
 },
 
   {
@@ -58,31 +51,10 @@ export default [
 },
 
   {
-    to: '/trades',
-    label: 'Trades',
+    to: '/jobs',
+    label: 'Jobs',
     icon: mdiTable,
-    component: () => import('@/views/CRUD/Trades/TradesView.vue'),
-},
-
-  {
-    to: '/templates',
-    label: 'Templates',
-    icon: mdiTable,
-    component: () => import('@/views/CRUD/Templates/TemplatesView.vue'),
-},
-
-  {
-    to: '/documents',
-    label: 'Documents',
-    icon: mdiTable,
-    component: () => import('@/views/CRUD/Documents/DocumentsView.vue'),
-},
-
-  {
-    to: '/images',
-    label: 'Images',
-    icon: mdiTable,
-    component: () => import('@/views/CRUD/Images/ImagesView.vue'),
+    component: () => import('@/views/CRUD/Jobs/JobsView.vue'),
 },
 
   {
@@ -93,10 +65,24 @@ export default [
 },
 
   {
-    to: '/teams',
-    label: 'Teams',
+    to: '/permissions',
+    label: 'Permissions',
     icon: mdiTable,
-    component: () => import('@/views/CRUD/Teams/TeamsView.vue'),
+    component: () => import('@/views/CRUD/Permissions/PermissionsView.vue'),
+},
+
+  {
+    to: '/templates',
+    label: 'Templates',
+    icon: mdiTable,
+    component: () => import('@/views/CRUD/Templates/TemplatesView.vue'),
+},
+
+  {
+    to: '/trades',
+    label: 'Trades',
+    icon: mdiTable,
+    component: () => import('@/views/CRUD/Trades/TradesView.vue'),
 },
 
   {
@@ -104,6 +90,69 @@ export default [
     label: 'Invoices',
     icon: mdiTable,
     component: () => import('@/views/CRUD/Invoices/InvoicesView.vue'),
+},
+
+  {
+    to: '/orders',
+    label: 'Orders',
+    icon: mdiTable,
+    component: () => import('@/views/CRUD/Orders/OrdersView.vue'),
+},
+
+  {
+    to: '/images',
+    label: 'Images',
+    icon: mdiTable,
+    component: () => import('@/views/CRUD/Images/ImagesView.vue'),
+},
+
+  {
+    to: '/documents',
+    label: 'Documents',
+    icon: mdiTable,
+    component: () => import('@/views/CRUD/Documents/DocumentsView.vue'),
+},
+
+  {
+    to: '/emails',
+    label: 'Emails',
+    icon: mdiTable,
+    component: () => import('@/views/CRUD/Emails/EmailsView.vue'),
+},
+
+  {
+    to: '/chats',
+    label: 'Chats',
+    icon: mdiTable,
+    component: () => import('@/views/CRUD/Chats/ChatsView.vue'),
+},
+
+  {
+    to: '/appointments',
+    label: 'Appointments',
+    icon: mdiTable,
+    component: () => import('@/views/CRUD/Appointments/AppointmentsView.vue'),
+},
+
+  {
+    to: '/tasks',
+    label: 'Tasks',
+    icon: mdiTable,
+    component: () => import('@/views/CRUD/Tasks/TasksView.vue'),
+},
+
+  {
+    to: '/contracts',
+    label: 'Contracts',
+    icon: mdiTable,
+    component: () => import('@/views/CRUD/Contracts/ContractsView.vue'),
+},
+
+  {
+    to: '/amendments',
+    label: 'Amendments',
+    icon: mdiTable,
+    component: () => import('@/views/CRUD/Amendments/AmendmentsView.vue'),
 },
 
     {

@@ -24,38 +24,44 @@ const appointmentsStore = useAppointmentsStore()
 const titleStack = ref(['Admin', 'Appointments'])
 const notification = computed(() => appointmentsStore.notify)
 
-        const optionsContact = computed(() => appointmentsStore.searchResultContact);
+        const optionsAssignedUserId = computed(() => appointmentsStore.searchResultAssignedUserId);
 
-        const optionsJob = computed(() => appointmentsStore.searchResultJob);
+        const optionsContactId = computed(() => appointmentsStore.searchResultContactId);
 
-        const optionsEstimate = computed(() => appointmentsStore.searchResultEstimate);
+        const optionsJobId = computed(() => appointmentsStore.searchResultJobId);
 
 const appointmentsItem = computed(() => appointmentsStore.data);
 
 const form = reactive({
 
-      date: '',
+    subject: '',
 
-      scheduled: false,
+      assignedUserId: '',
 
-      contact: [],
+      contactId: '',
 
-      job: [],
+      startTime: '',
 
-      estimate: [],
+      endTime: '',
 
-    name: '',
+    description: [''],
+
+    location: '',
+
+      jobId: '',
+
+      reminder: '',
 
 })
 
 const submit = async () => {
   try {
 
-            form.contact = form.contact.map(item => item.id);
+            form.assignedUserId = form.assignedUserId?.id;
 
-            form.job = form.job.map(item => item.id);
+            form.contactId = form.contactId?.id;
 
-            form.estimate = form.estimate.map(item => item.id);
+            form.jobId = form.jobId?.id;
 
     await appointmentsStore.edit({id: route.params.id, data: {...form} })
     router.push('/appointments');
@@ -67,11 +73,11 @@ const submit = async () => {
 onBeforeMount(async () => {
   try {
 
-  await searchContact();
+  await searchAssignedUserId();
 
-  await searchJob();
+  await searchContactId();
 
-  await searchEstimate();
+  await searchJobId();
 
     await appointmentsStore.fetch(route.params.id)
     formatData();
@@ -81,29 +87,37 @@ onBeforeMount(async () => {
   }
 })
 
-    async function searchContact(val) {
-      await appointmentsStore.searchContact(val);
+    async function searchAssignedUserId(val) {
+      await appointmentsStore.searchAssignedUserId(val);
     }
 
-    async function searchJob(val) {
-      await appointmentsStore.searchJob(val);
+    async function searchContactId(val) {
+      await appointmentsStore.searchContactId(val);
     }
 
-    async function searchEstimate(val) {
-      await appointmentsStore.searchEstimate(val);
+    async function searchJobId(val) {
+      await appointmentsStore.searchJobId(val);
     }
 
 const formatData = () => {
 
-    form.date = dataFormatter.dateTimeFormatter(appointmentsItem.value.date)
+    form.subject = appointmentsItem.value.subject
 
-    form.contact = dataFormatter.contactsManyListFormatterEdit(appointmentsItem.value.contact)
+    form.assignedUserId = dataFormatter.usersOneListFormatterEdit(appointmentsItem.value.assignedUserId)
 
-    form.job = dataFormatter.jobsManyListFormatterEdit(appointmentsItem.value.job)
+    form.contactId = dataFormatter.contactsOneListFormatterEdit(appointmentsItem.value.contactId)
 
-    form.estimate = dataFormatter.estimatesManyListFormatterEdit(appointmentsItem.value.estimate)
+    form.startTime = dataFormatter.dateTimeFormatter(appointmentsItem.value.startTime)
 
-    form.name = appointmentsItem.value.name
+    form.endTime = dataFormatter.dateTimeFormatter(appointmentsItem.value.endTime)
+
+    form.description = appointmentsItem.value.description
+
+    form.location = appointmentsItem.value.location
+
+    form.jobId = dataFormatter.jobsOneListFormatterEdit(appointmentsItem.value.jobId)
+
+    form.reminder = dataFormatter.dateTimeFormatter(appointmentsItem.value.reminder)
 
 }
 
@@ -140,64 +154,88 @@ const cancel = () => {
     >
 
     <FormField
-      label="Date"
+      label="Subject"
+    >
+      <FormControl
+        v-model="form.subject"
+        placeholder="Your Subject"
+        />
+    </FormField>
+
+  <FormField
+      label="Assigned User "
+    >
+      <v-select
+        v-model="form.assignedUserId"
+        :options="optionsAssignedUserId"
+        @input="searchAssignedUserId($event.target.value)"
+      />
+  </FormField>
+
+  <FormField
+      label="Contact "
+    >
+      <v-select
+        v-model="form.contactId"
+        :options="optionsContactId"
+        @input="searchContactId($event.target.value)"
+      />
+  </FormField>
+
+    <FormField
+      label="Start Time"
     >
       <FormControl
         type="datetime-local"
-        v-model="form.date"
-        placeholder="Your Date"
-      />
-    </FormField>
-
-    <FormField label="Scheduled">
-      <FormCheckRadioPicker
-        v-model="form.scheduled"
-        name="sample-switch"
-        type="switch"
-        :options="{ scheduled: form.scheduled ? 'Enabled' : 'Disabled' }"
+        v-model="form.startTime"
+        placeholder="Your Start Time"
       />
     </FormField>
 
     <FormField
-        label="Contact"
-      >
-        <v-select
-          v-model="form.contact"
-          :options="optionsContact"
-          multiple
-          @input="searchContact($event.target.value)"
-        />
-    </FormField>
-
-    <FormField
-        label="Job"
-      >
-        <v-select
-          v-model="form.job"
-          :options="optionsJob"
-          multiple
-          @input="searchJob($event.target.value)"
-        />
-    </FormField>
-
-    <FormField
-        label="Estimate"
-      >
-        <v-select
-          v-model="form.estimate"
-          :options="optionsEstimate"
-          multiple
-          @input="searchEstimate($event.target.value)"
-        />
-    </FormField>
-
-    <FormField
-      label="Name"
+      label="End Time"
     >
       <FormControl
-        v-model="form.name"
-        placeholder="Your Name"
+        type="datetime-local"
+        v-model="form.endTime"
+        placeholder="Your End Time"
+      />
+    </FormField>
+
+    <label class="block font-bold mb-2 text-pavitra-700 text-sm">Description</label>
+    <Editor
+      api-key="s0bs8snu2u6qo8skn5r3kurkerhbaagpsgm9cdkbxnbo8nj4"
+      cloudChannel="6"
+      v-model="form.description"
+      />
+
+    <FormField
+      label="Location"
+    >
+      <FormControl
+        v-model="form.location"
+        placeholder="Your Location"
         />
+    </FormField>
+
+  <FormField
+      label="Job"
+    >
+      <v-select
+        v-model="form.jobId"
+        :options="optionsJobId"
+        @input="searchJobId($event.target.value)"
+      />
+  </FormField>
+
+    <FormField
+      label="Reminder"
+    >
+      <FormControl
+        type="datetime-local"
+        v-model="form.reminder"
+        placeholder="Your Reminder"
+      />
     </FormField>
 
     <BaseDivider />

@@ -3,851 +3,1911 @@ const Users = db.users;
 
 const Contacts = db.contacts;
 
-const Appointments = db.appointments;
-
-const Jobs = db.jobs;
+const Addresses = db.addresses;
 
 const Estimates = db.estimates;
 
-const Trades = db.trades;
+const Jobs = db.jobs;
 
 const Templates = db.templates;
 
-const Documents = db.documents;
-
-const Images = db.images;
-
-const Teams = db.teams;
+const Trades = db.trades;
 
 const Invoices = db.invoices;
 
+const Orders = db.orders;
+
+const Images = db.images;
+
+const Documents = db.documents;
+
+const Emails = db.emails;
+
+const Chats = db.chats;
+
+const Appointments = db.appointments;
+
+const Tasks = db.tasks;
+
+const Contracts = db.contracts;
+
+const Amendments = db.amendments;
+
 const ContactsData = [
   {
-    name: 'Richard Feynman',
+    firstName: "How 'bout them Cowboys",
 
-    email: 'aubrey@becker-halvorson.io',
+    lastName: "That Barbala couldn't fly his way out of a wet paper bag",
 
-    phone: '(509) 470-1788',
+    email: 'beckie@runolfsson-mills.org',
 
-    adress: "That Barbala couldn't fly his way out of a wet paper bag",
+    phone: '(966) 056-2766',
 
-    firstName: 'Contact the tower',
+    company: 'Langosh LLC',
 
-    lastName: "I'm washing my hands of it",
+    status: 'Lead',
 
-    stage: 'Customer',
+    source: 'Other',
 
-    // type code here for "relation_many" field
+    crossReference: 'That damn Bill Stull',
 
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
+    // type code here for "relation_one" field
   },
 
   {
-    name: 'Willard Libby',
+    firstName: 'So I was walking Oscar',
 
-    email: 'joslyn@spencer.org',
+    lastName: 'Standby',
 
-    phone: '1-839-692-7022 x3392',
+    email: 'cyril_bernhard@leuschke-oreilly.name',
 
-    adress: 'So I was walking Oscar',
+    phone: '1-747-203-7088 x58635',
 
-    firstName: 'That damn diabetes',
+    company: 'Lemke, Haag and Koelpin',
 
-    lastName: 'So I was walking Oscar',
+    status: 'Prospect',
 
-    stage: 'Lead',
+    source: 'Google Ads',
 
-    // type code here for "relation_many" field
+    crossReference: 'I want my 5$ back',
 
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
+    // type code here for "relation_one" field
   },
 
   {
-    name: 'Richard Feynman',
+    firstName: 'Might be DQ time',
 
-    email: 'issac@metz.net',
+    lastName: 'Come on now',
 
-    phone: '321.213.7069 x3017',
+    email: 'trevor.kihn@abbott-ferry.io',
 
-    adress: 'That goddamn Datamate',
+    phone: '1-708-731-1757 x17615',
 
-    firstName: "It's around here somewhere",
+    company: 'Schimmel Inc',
 
-    lastName: "Y'all never listen to me",
+    status: 'Prospect',
 
-    stage: 'Lead',
+    source: 'Other',
 
-    // type code here for "relation_many" field
+    crossReference: 'That damn diabetes',
 
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-  },
-
-  {
-    name: 'Albert Einstein',
-
-    email: 'darrin.maggio@bashirian-mckenzie.biz',
-
-    phone: '1-992-064-0798 x73833',
-
-    adress: "How 'bout them Cowboys",
-
-    firstName: 'I want my 5$ back',
-
-    lastName: 'Contact the tower',
-
-    stage: 'Lead',
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-  },
-
-  {
-    name: 'Dmitri Mendeleev',
-
-    email: 'page_frami@halvorson.net',
-
-    phone: '861.759.6402 x906',
-
-    adress: 'Like a red-headed stepchild',
-
-    firstName: "Goin' hog huntin'",
-
-    lastName: "Goin' hog huntin'",
-
-    stage: 'Lead',
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
+    // type code here for "relation_one" field
   },
 ];
 
-const AppointmentsData = [
+const AddressesData = [
   {
-    date: new Date('2023-06-02'),
+    // type code here for "relation_one" field
 
-    scheduled: false,
+    // type code here for "relation_one" field
 
-    // type code here for "relation_many" field
+    street: 'I tell you what',
 
-    // type code here for "relation_many" field
+    suite_apt_unit: 'That goddamn Datamate',
 
-    // type code here for "relation_many" field
+    city: 'Come on now',
 
-    name: 'Erwin Schrodinger',
+    state: 'AK',
+
+    zip: "That's messed up",
+
+    country: "How 'bout them Cowboys",
+
+    type: 'Location',
   },
 
   {
-    date: new Date('2023-12-29'),
+    // type code here for "relation_one" field
 
-    scheduled: true,
+    // type code here for "relation_one" field
 
-    // type code here for "relation_many" field
+    street: 'I tell you what',
 
-    // type code here for "relation_many" field
+    suite_apt_unit: 'That damn Bill Stull',
 
-    // type code here for "relation_many" field
+    city: 'So I was walking Oscar',
 
-    name: 'Werner Heisenberg',
+    state: 'AR',
+
+    zip: "C'mon Naomi",
+
+    country: "It's around here somewhere",
+
+    type: 'Mailing',
   },
 
   {
-    date: new Date('2023-12-21'),
+    // type code here for "relation_one" field
 
-    scheduled: true,
+    // type code here for "relation_one" field
 
-    // type code here for "relation_many" field
+    street: 'I want my 5$ back',
 
-    // type code here for "relation_many" field
+    suite_apt_unit: 'Let me tell ya',
 
-    // type code here for "relation_many" field
+    city: 'So I was walking Oscar',
 
-    name: 'J. Robert Oppenheimer',
-  },
+    state: 'AR',
 
-  {
-    date: new Date('2023-05-13'),
+    zip: 'Contact the tower',
 
-    scheduled: false,
+    country: 'Yup',
 
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    name: 'Euclid',
-  },
-
-  {
-    date: new Date('2023-06-26'),
-
-    scheduled: false,
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    name: 'Michael Faraday',
-  },
-];
-
-const JobsData = [
-  {
-    name: 'Anton van Leeuwenhoek',
-
-    // type code here for "relation_many" field
-
-    category: 'Commercial',
-
-    type: 'New',
-
-    status: 'Completed',
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-  },
-
-  {
-    name: 'Max Planck',
-
-    // type code here for "relation_many" field
-
-    category: 'Property Management',
-
-    type: 'Repair',
-
-    status: 'Invoiced',
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-  },
-
-  {
-    name: 'Pierre Simon de Laplace',
-
-    // type code here for "relation_many" field
-
-    category: 'Residential',
-
-    type: 'New',
-
-    status: 'Approved',
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-  },
-
-  {
-    name: 'Albrecht von Haller',
-
-    // type code here for "relation_many" field
-
-    category: 'Property Management',
-
-    type: 'Inspection',
-
-    status: 'Quoted',
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-  },
-
-  {
-    name: 'William Harvey',
-
-    // type code here for "relation_many" field
-
-    category: 'Commercial',
-
-    type: 'Retail',
-
-    status: 'Invoiced',
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
+    type: 'Mailing',
   },
 ];
 
 const EstimatesData = [
   {
+    description: 'Already know you that which you need.',
+
+    additionalNotes:
+      'Strong is Vader. Mind what you have learned. Save you it can.',
+
+    price: 93.39,
+
     // type code here for "relation_one" field
 
-    // type code here for "relation_many" field
+    // type code here for "relation_one" field
 
-    status: 'Approved',
-
-    name: 'Charles Sherrington',
+    // type code here for "relation_one" field
   },
 
   {
+    description:
+      'Much to learn you still have my old padawan. ... This is just the beginning!',
+
+    additionalNotes:
+      'Strong is Vader. Mind what you have learned. Save you it can.',
+
+    price: 16.35,
+
     // type code here for "relation_one" field
 
-    // type code here for "relation_many" field
+    // type code here for "relation_one" field
 
-    status: 'Rejected',
-
-    name: 'Edward O. Wilson',
+    // type code here for "relation_one" field
   },
 
   {
+    description:
+      'Through the Force, things you will see. Other places. The future - the past. Old friends long gone.',
+
+    additionalNotes:
+      'Once you start down the dark path, forever will it dominate your destiny, consume you it will.',
+
+    price: 54.94,
+
     // type code here for "relation_one" field
 
-    // type code here for "relation_many" field
-
-    status: 'Rejected',
-
-    name: 'Frederick Gowland Hopkins',
-  },
-
-  {
     // type code here for "relation_one" field
 
-    // type code here for "relation_many" field
-
-    status: 'Approved',
-
-    name: 'Louis Pasteur',
-  },
-
-  {
     // type code here for "relation_one" field
-
-    // type code here for "relation_many" field
-
-    status: 'Rejected',
-
-    name: 'Hans Selye',
   },
 ];
 
-const TradesData = [
+const JobsData = [
   {
-    name: 'Hans Bethe',
+    Name: 'Reminds me of my old girlfriend Olga Goodntight',
+
+    type: 'Inspection',
+
+    category: 'Commercial ',
+
+    status: 'Completed',
+
+    startDate: new Date('2024-01-21'),
+
+    endDate: new Date('2023-08-01'),
+
+    description:
+      'Do not assume anything Obi-Wan. Clear your mind must be if you are to discover the real villains behind this plot.',
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
   },
 
   {
-    name: 'James Watson',
+    Name: 'That damn diabetes',
+
+    type: 'Inspection',
+
+    category: 'Residential',
+
+    status: 'Completed',
+
+    startDate: new Date('2023-10-24'),
+
+    endDate: new Date('2023-11-30'),
+
+    description: 'To answer power with power, the Jedi way this is',
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
   },
 
   {
-    name: 'Linus Pauling',
-  },
+    Name: 'Might be DQ time',
 
-  {
-    name: 'Noam Chomsky',
-  },
+    type: 'Retail',
 
-  {
-    name: 'Claude Bernard',
+    category: 'Residential',
+
+    status: 'Quoted',
+
+    startDate: new Date('2024-05-18'),
+
+    endDate: new Date('2023-08-06'),
+
+    description: 'That is why you fail.',
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
   },
 ];
 
 const TemplatesData = [
   {
-    // type code here for "relation_many" field
+    name: 'Jean Baptiste Lamarck',
 
-    materialCost: 99.57,
+    description:
+      'Always two there are, no more, no less. A master and an apprentice.',
 
-    laborCost: 90.76,
-
-    markup: 97.01,
-
-    profitMargin: 29.48,
-
-    name: 'Murray Gell-Mann',
-
-    totalPrice: 55.66,
-
-    unitOfMeasurement: 'SQ',
-
-    description: "C'mon Naomi",
+    // type code here for "relation_one" field
   },
 
   {
-    // type code here for "relation_many" field
+    name: 'Arthur Eddington',
 
-    materialCost: 85.36,
+    description: 'You will find only what you bring in.',
 
-    laborCost: 28.51,
-
-    markup: 16.04,
-
-    profitMargin: 71.85,
-
-    name: 'Konrad Lorenz',
-
-    totalPrice: 46.36,
-
-    unitOfMeasurement: 'LF',
-
-    description: "C'mon Naomi",
+    // type code here for "relation_one" field
   },
 
   {
-    // type code here for "relation_many" field
+    name: 'Charles Lyell',
 
-    materialCost: 28.59,
+    description: 'Reckless he is. Matters are worse.',
 
-    laborCost: 35.78,
-
-    markup: 39.06,
-
-    profitMargin: 42.79,
-
-    name: 'Anton van Leeuwenhoek',
-
-    totalPrice: 89.94,
-
-    unitOfMeasurement: 'LF',
-
-    description: 'Turd gone wrong',
-  },
-
-  {
-    // type code here for "relation_many" field
-
-    materialCost: 80.78,
-
-    laborCost: 77.94,
-
-    markup: 20.54,
-
-    profitMargin: 23.31,
-
-    name: 'Richard Feynman',
-
-    totalPrice: 73.67,
-
-    unitOfMeasurement: 'LF',
-
-    description: "I'm washing my hands of it",
-  },
-
-  {
-    // type code here for "relation_many" field
-
-    materialCost: 55.99,
-
-    laborCost: 50.38,
-
-    markup: 73.58,
-
-    profitMargin: 60.88,
-
-    name: 'Alfred Binet',
-
-    totalPrice: 57.22,
-
-    unitOfMeasurement: 'LF',
-
-    description: "How 'bout them Cowboys",
+    // type code here for "relation_one" field
   },
 ];
 
-const DocumentsData = [
+const TradesData = [
   {
-    // type code here for "relation_many" field
-
-    name: 'Albrecht von Haller',
-
-    url: 'Reminds me of my old girlfriend Olga Goodntight',
+    Name: 'Painting',
   },
 
   {
-    // type code here for "relation_many" field
-
-    name: 'Konrad Lorenz',
-
-    url: 'That damn Bill Stull',
+    Name: 'Chimney Cap',
   },
 
   {
-    // type code here for "relation_many" field
-
-    name: 'Thomas Hunt Morgan',
-
-    url: 'No one tells me shit',
-  },
-
-  {
-    // type code here for "relation_many" field
-
-    name: 'Max Planck',
-
-    url: "Goin' hog huntin'",
-  },
-
-  {
-    // type code here for "relation_many" field
-
-    name: 'Max von Laue',
-
-    url: "How 'bout them Cowboys",
-  },
-];
-
-const ImagesData = [
-  {
-    // type code here for "relation_many" field
-
-    name: 'Sheldon Glashow',
-
-    url: 'Let me tell ya',
-  },
-
-  {
-    // type code here for "relation_many" field
-
-    name: 'Claude Bernard',
-
-    url: 'Yup',
-  },
-
-  {
-    // type code here for "relation_many" field
-
-    name: 'Heike Kamerlingh Onnes',
-
-    url: 'That damn gimble',
-  },
-
-  {
-    // type code here for "relation_many" field
-
-    name: 'Nicolaus Copernicus',
-
-    url: 'So I was walking Oscar',
-  },
-
-  {
-    // type code here for "relation_many" field
-
-    name: 'Gregor Mendel',
-
-    url: 'That damn gimble',
-  },
-];
-
-const TeamsData = [
-  {
-    name: 'Enrico Fermi',
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-  },
-
-  {
-    name: 'Louis Victor de Broglie',
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-  },
-
-  {
-    name: 'Alfred Binet',
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-  },
-
-  {
-    name: 'Emil Kraepelin',
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-  },
-
-  {
-    name: 'Paul Ehrlich',
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
+    Name: 'Service Repairs',
   },
 ];
 
 const InvoicesData = [
   {
-    // type code here for "relation_many" field
+    invoiceNumber: 'I got that scurvy',
 
-    // type code here for "relation_many" field
+    invoiceDate: new Date('2023-06-30'),
+
+    terms: 'Upon Receipt',
+
+    approvedJobValue: 36.91,
+
+    invoicedAmount: 36.49,
+
+    balanceAmount: 51.19,
 
     // type code here for "relation_one" field
-
-    number: 8,
   },
 
   {
-    // type code here for "relation_many" field
+    invoiceNumber: 'Might be DQ time',
 
-    // type code here for "relation_many" field
+    invoiceDate: new Date('2023-11-27'),
+
+    terms: 'Net 7 Days',
+
+    approvedJobValue: 63.34,
+
+    invoicedAmount: 24.83,
+
+    balanceAmount: 78.16,
 
     // type code here for "relation_one" field
-
-    number: 6,
   },
 
   {
-    // type code here for "relation_many" field
+    invoiceNumber: 'Reminds me of my old girlfriend Olga Goodntight',
 
-    // type code here for "relation_many" field
+    invoiceDate: new Date('2023-08-13'),
 
-    // type code here for "relation_one" field
+    terms: 'Net 45 Days',
 
-    number: 6,
-  },
+    approvedJobValue: 84.34,
 
-  {
-    // type code here for "relation_many" field
+    invoicedAmount: 54.26,
 
-    // type code here for "relation_many" field
+    balanceAmount: 14.71,
 
     // type code here for "relation_one" field
-
-    number: 2,
-  },
-
-  {
-    // type code here for "relation_many" field
-
-    // type code here for "relation_many" field
-
-    // type code here for "relation_one" field
-
-    number: 9,
   },
 ];
 
-// Similar logic for "relation_many"
+const OrdersData = [
+  {
+    // type code here for "relation_one" field
 
-// Similar logic for "relation_many"
+    // type code here for "relation_one" field
 
-// Similar logic for "relation_many"
+    orderNumber: "That Barbala couldn't fly his way out of a wet paper bag",
 
-// Similar logic for "relation_many"
+    totalAmount: 60.94,
+  },
 
-// Similar logic for "relation_many"
+  {
+    // type code here for "relation_one" field
 
-// Similar logic for "relation_many"
+    // type code here for "relation_one" field
 
-// Similar logic for "relation_many"
+    orderNumber: 'Reminds me of my old girlfriend Olga Goodntight',
 
-// Similar logic for "relation_many"
+    totalAmount: 22.88,
+  },
 
-// Similar logic for "relation_many"
+  {
+    // type code here for "relation_one" field
 
-// Similar logic for "relation_many"
+    // type code here for "relation_one" field
 
-// Similar logic for "relation_many"
+    orderNumber: 'Always the last one to the party',
 
-// Similar logic for "relation_many"
+    totalAmount: 80.89,
+  },
+];
 
-// Similar logic for "relation_many"
+const ImagesData = [
+  {
+    name: 'Frederick Gowland Hopkins',
 
-// Similar logic for "relation_many"
+    // type code here for "relation_one" field
 
-// Similar logic for "relation_many"
+    // type code here for "relation_one" field
 
-async function associateEstimateWithJob() {
-  const relatedJob0 = await Jobs.findOne({
+    // type code here for "relation_one" field
+  },
+
+  {
+    name: 'William Bayliss',
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+  },
+
+  {
+    name: 'Max Planck',
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+  },
+];
+
+const DocumentsData = [
+  {
+    // type code here for "relation_one" field
+
+    name: 'Claude Bernard',
+
+    active: false,
+
+    // type code here for "files" field
+  },
+
+  {
+    // type code here for "relation_one" field
+
+    name: 'Frederick Gowland Hopkins',
+
+    active: true,
+
+    // type code here for "files" field
+  },
+
+  {
+    // type code here for "relation_one" field
+
+    name: 'Hans Bethe',
+
+    active: true,
+
+    // type code here for "files" field
+  },
+];
+
+const EmailsData = [
+  {
+    // type code here for "relation_one" field
+
+    toAddress: "That's messed up",
+
+    fromAddress: "C'mon Naomi",
+
+    isInbound: true,
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    subject: 'Use your feelings, Obi-Wan, and find him you will.',
+
+    body: 'Ready are you? What know you of ready? For eight hundred years have I trained Jedi. My own counsel will I keep on who is to be trained. A Jedi must have the deepest commitment, the most serious mind. This one a long time have I watched. All his life has he looked away - to the future, to the horizon. Never his mind on where he was. Hmm? What he was doing. Hmph. Adventure. Heh. Excitement. Heh. A Jedi craves not these things. You are reckless.',
+  },
+
+  {
+    // type code here for "relation_one" field
+
+    toAddress: 'Reminds me of my old girlfriend Olga Goodntight',
+
+    fromAddress: 'I want my 5$ back',
+
+    isInbound: true,
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    subject: 'Mudhole? Slimy? My home this is!',
+
+    body: 'Difficult to see. Always in motion is the future...',
+  },
+
+  {
+    // type code here for "relation_one" field
+
+    toAddress: "I'm washing my hands of it",
+
+    fromAddress: 'Yup',
+
+    isInbound: true,
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    subject:
+      'Always two there are, no more, no less. A master and an apprentice.',
+
+    body: 'Always pass on what you have learned.',
+  },
+];
+
+const ChatsData = [
+  {
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    message: 'You will find only what you bring in.',
+
+    sentTime: new Date('2023-12-17'),
+  },
+
+  {
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    message:
+      'Size matters not. Look at me. Judge me by my size, do you? Hmm? Hmm. And well you should not. For my ally is the Force, and a powerful ally it is. Life creates it, makes it grow. Its energy surrounds us and binds us. Luminous beings are we, not this crude matter. You must feel the Force around you; here, between you, me, the tree, the rock, everywhere, yes. Even between the land and the ship.',
+
+    sentTime: new Date('2023-11-02'),
+  },
+
+  {
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    message: 'Already know you that which you need.',
+
+    sentTime: new Date('2023-06-27'),
+  },
+];
+
+const AppointmentsData = [
+  {
+    subject: 'Let me tell ya',
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    startTime: new Date('2023-11-26'),
+
+    endTime: new Date('2023-10-18'),
+
+    description:
+      'Once you start down the dark path, forever will it dominate your destiny, consume you it will.',
+
+    location: 'No one tells me shit',
+
+    // type code here for "relation_one" field
+
+    reminder: new Date('2023-07-27'),
+  },
+
+  {
+    subject: 'I got that scurvy',
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    startTime: new Date('2024-04-20'),
+
+    endTime: new Date('2023-08-23'),
+
+    description:
+      'Clear your mind must be, if you are to find the villains behind this plot.',
+
+    location: 'I want my 5$ back',
+
+    // type code here for "relation_one" field
+
+    reminder: new Date('2024-02-11'),
+  },
+
+  {
+    subject: 'Yup',
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    startTime: new Date('2023-10-21'),
+
+    endTime: new Date('2024-04-09'),
+
+    description: 'To answer power with power, the Jedi way this is',
+
+    location: "I'm washing my hands of it",
+
+    // type code here for "relation_one" field
+
+    reminder: new Date('2024-04-15'),
+  },
+];
+
+const TasksData = [
+  {
+    subject: 'My boss gonna fire me',
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    dueDateAndTime: new Date('2024-02-10'),
+
+    // type code here for "relation_one" field
+
+    description: 'Already know you that which you need.',
+
+    priority: 'Low',
+
+    completed: false,
+  },
+
+  {
+    subject: 'Reminds me of my old girlfriend Olga Goodntight',
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    dueDateAndTime: new Date('2024-05-24'),
+
+    // type code here for "relation_one" field
+
+    description: 'Always pass on what you have learned.',
+
+    priority: 'High',
+
+    completed: false,
+  },
+
+  {
+    subject: 'Turd gone wrong',
+
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    dueDateAndTime: new Date('2023-11-11'),
+
+    // type code here for "relation_one" field
+
+    description:
+      'Size matters not. Look at me. Judge me by my size, do you? Hmm? Hmm. And well you should not. For my ally is the Force, and a powerful ally it is. Life creates it, makes it grow. Its energy surrounds us and binds us. Luminous beings are we, not this crude matter. You must feel the Force around you; here, between you, me, the tree, the rock, everywhere, yes. Even between the land and the ship.',
+
+    priority: 'High',
+
+    completed: true,
+  },
+];
+
+const ContractsData = [
+  {
+    name: 'Jean Baptiste Lamarck',
+
+    amount: 14.24,
+
+    body: 'Mudhole? Slimy? My home this is!',
+
+    // type code here for "relation_one" field
+
+    signedDate: new Date('2023-12-10'),
+
+    // type code here for "relation_one" field
+  },
+
+  {
+    name: 'Michael Faraday',
+
+    amount: 86.04,
+
+    body: 'Truly wonderful, the mind of a child is.',
+
+    // type code here for "relation_one" field
+
+    signedDate: new Date('2023-06-07'),
+
+    // type code here for "relation_one" field
+  },
+
+  {
+    name: 'Heike Kamerlingh Onnes',
+
+    amount: 88.58,
+
+    body: 'Adventure. Excitement. A Jedi craves not these things.',
+
+    // type code here for "relation_one" field
+
+    signedDate: new Date('2023-06-15'),
+
+    // type code here for "relation_one" field
+  },
+];
+
+const AmendmentsData = [
+  {
+    // type code here for "relation_one" field
+
+    type: 'Change Order',
+
+    amount: 58.01,
+
+    description:
+      'Yes, a Jedi’s strength flows from the Force. But beware of the dark side. Anger, fear, aggression; the dark side of the Force are they. Easily they flow, quick to join you in a fight. If once you start down the dark path, forever will it dominate your destiny, consume you it will, as it did Obi-Wan’s apprentice.',
+  },
+
+  {
+    // type code here for "relation_one" field
+
+    type: 'Supplement',
+
+    amount: 34.02,
+
+    description: 'Always pass on what you have learned.',
+  },
+
+  {
+    // type code here for "relation_one" field
+
+    type: 'Upgrade',
+
+    amount: 51.66,
+
+    description: 'Mudhole? Slimy? My home this is!',
+  },
+];
+
+async function associateUserWithImageid() {
+  const relatedImageid0 = await Images.findOne({
+    offset: Math.floor(Math.random() * (await Images.count())),
+  });
+  const User0 = await Users.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (User0?.setImageid) {
+    await User0.setImageid(relatedImageid0);
+  }
+
+  const relatedImageid1 = await Images.findOne({
+    offset: Math.floor(Math.random() * (await Images.count())),
+  });
+  const User1 = await Users.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (User1?.setImageid) {
+    await User1.setImageid(relatedImageid1);
+  }
+
+  const relatedImageid2 = await Images.findOne({
+    offset: Math.floor(Math.random() * (await Images.count())),
+  });
+  const User2 = await Users.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (User2?.setImageid) {
+    await User2.setImageid(relatedImageid2);
+  }
+}
+
+async function associateContactWithAssigneduserid() {
+  const relatedAssigneduserid0 = await Users.findOne({
+    offset: Math.floor(Math.random() * (await Users.count())),
+  });
+  const Contact0 = await Contacts.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Contact0?.setAssigneduserid) {
+    await Contact0.setAssigneduserid(relatedAssigneduserid0);
+  }
+
+  const relatedAssigneduserid1 = await Users.findOne({
+    offset: Math.floor(Math.random() * (await Users.count())),
+  });
+  const Contact1 = await Contacts.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (Contact1?.setAssigneduserid) {
+    await Contact1.setAssigneduserid(relatedAssigneduserid1);
+  }
+
+  const relatedAssigneduserid2 = await Users.findOne({
+    offset: Math.floor(Math.random() * (await Users.count())),
+  });
+  const Contact2 = await Contacts.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Contact2?.setAssigneduserid) {
+    await Contact2.setAssigneduserid(relatedAssigneduserid2);
+  }
+}
+
+async function associateAddressWithContactid() {
+  const relatedContactid0 = await Contacts.findOne({
+    offset: Math.floor(Math.random() * (await Contacts.count())),
+  });
+  const Address0 = await Addresses.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Address0?.setContactid) {
+    await Address0.setContactid(relatedContactid0);
+  }
+
+  const relatedContactid1 = await Contacts.findOne({
+    offset: Math.floor(Math.random() * (await Contacts.count())),
+  });
+  const Address1 = await Addresses.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (Address1?.setContactid) {
+    await Address1.setContactid(relatedContactid1);
+  }
+
+  const relatedContactid2 = await Contacts.findOne({
+    offset: Math.floor(Math.random() * (await Contacts.count())),
+  });
+  const Address2 = await Addresses.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Address2?.setContactid) {
+    await Address2.setContactid(relatedContactid2);
+  }
+}
+
+async function associateAddressWithJobid() {
+  const relatedJobid0 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
+  });
+  const Address0 = await Addresses.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Address0?.setJobid) {
+    await Address0.setJobid(relatedJobid0);
+  }
+
+  const relatedJobid1 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
+  });
+  const Address1 = await Addresses.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (Address1?.setJobid) {
+    await Address1.setJobid(relatedJobid1);
+  }
+
+  const relatedJobid2 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
+  });
+  const Address2 = await Addresses.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Address2?.setJobid) {
+    await Address2.setJobid(relatedJobid2);
+  }
+}
+
+async function associateEstimateWithJobid() {
+  const relatedJobid0 = await Jobs.findOne({
     offset: Math.floor(Math.random() * (await Jobs.count())),
   });
   const Estimate0 = await Estimates.findOne({
     order: [['id', 'ASC']],
     offset: 0,
   });
-  if (Estimate0?.setJob) {
-    await Estimate0.setJob(relatedJob0);
+  if (Estimate0?.setJobid) {
+    await Estimate0.setJobid(relatedJobid0);
   }
 
-  const relatedJob1 = await Jobs.findOne({
+  const relatedJobid1 = await Jobs.findOne({
     offset: Math.floor(Math.random() * (await Jobs.count())),
   });
   const Estimate1 = await Estimates.findOne({
     order: [['id', 'ASC']],
     offset: 1,
   });
-  if (Estimate1?.setJob) {
-    await Estimate1.setJob(relatedJob1);
+  if (Estimate1?.setJobid) {
+    await Estimate1.setJobid(relatedJobid1);
   }
 
-  const relatedJob2 = await Jobs.findOne({
+  const relatedJobid2 = await Jobs.findOne({
     offset: Math.floor(Math.random() * (await Jobs.count())),
   });
   const Estimate2 = await Estimates.findOne({
     order: [['id', 'ASC']],
     offset: 2,
   });
-  if (Estimate2?.setJob) {
-    await Estimate2.setJob(relatedJob2);
-  }
-
-  const relatedJob3 = await Jobs.findOne({
-    offset: Math.floor(Math.random() * (await Jobs.count())),
-  });
-  const Estimate3 = await Estimates.findOne({
-    order: [['id', 'ASC']],
-    offset: 3,
-  });
-  if (Estimate3?.setJob) {
-    await Estimate3.setJob(relatedJob3);
-  }
-
-  const relatedJob4 = await Jobs.findOne({
-    offset: Math.floor(Math.random() * (await Jobs.count())),
-  });
-  const Estimate4 = await Estimates.findOne({
-    order: [['id', 'ASC']],
-    offset: 4,
-  });
-  if (Estimate4?.setJob) {
-    await Estimate4.setJob(relatedJob4);
+  if (Estimate2?.setJobid) {
+    await Estimate2.setJobid(relatedJobid2);
   }
 }
 
-// Similar logic for "relation_many"
+async function associateEstimateWithContactid() {
+  const relatedContactid0 = await Contacts.findOne({
+    offset: Math.floor(Math.random() * (await Contacts.count())),
+  });
+  const Estimate0 = await Estimates.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Estimate0?.setContactid) {
+    await Estimate0.setContactid(relatedContactid0);
+  }
 
-// Similar logic for "relation_many"
+  const relatedContactid1 = await Contacts.findOne({
+    offset: Math.floor(Math.random() * (await Contacts.count())),
+  });
+  const Estimate1 = await Estimates.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (Estimate1?.setContactid) {
+    await Estimate1.setContactid(relatedContactid1);
+  }
 
-// Similar logic for "relation_many"
+  const relatedContactid2 = await Contacts.findOne({
+    offset: Math.floor(Math.random() * (await Contacts.count())),
+  });
+  const Estimate2 = await Estimates.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Estimate2?.setContactid) {
+    await Estimate2.setContactid(relatedContactid2);
+  }
+}
 
-// Similar logic for "relation_many"
+async function associateEstimateWithTemplateid() {
+  const relatedTemplateid0 = await Templates.findOne({
+    offset: Math.floor(Math.random() * (await Templates.count())),
+  });
+  const Estimate0 = await Estimates.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Estimate0?.setTemplateid) {
+    await Estimate0.setTemplateid(relatedTemplateid0);
+  }
 
-// Similar logic for "relation_many"
+  const relatedTemplateid1 = await Templates.findOne({
+    offset: Math.floor(Math.random() * (await Templates.count())),
+  });
+  const Estimate1 = await Estimates.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (Estimate1?.setTemplateid) {
+    await Estimate1.setTemplateid(relatedTemplateid1);
+  }
 
-// Similar logic for "relation_many"
+  const relatedTemplateid2 = await Templates.findOne({
+    offset: Math.floor(Math.random() * (await Templates.count())),
+  });
+  const Estimate2 = await Estimates.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Estimate2?.setTemplateid) {
+    await Estimate2.setTemplateid(relatedTemplateid2);
+  }
+}
 
-// Similar logic for "relation_many"
+async function associateJobWithContactid() {
+  const relatedContactid0 = await Contacts.findOne({
+    offset: Math.floor(Math.random() * (await Contacts.count())),
+  });
+  const Job0 = await Jobs.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Job0?.setContactid) {
+    await Job0.setContactid(relatedContactid0);
+  }
 
-// Similar logic for "relation_many"
+  const relatedContactid1 = await Contacts.findOne({
+    offset: Math.floor(Math.random() * (await Contacts.count())),
+  });
+  const Job1 = await Jobs.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (Job1?.setContactid) {
+    await Job1.setContactid(relatedContactid1);
+  }
 
-async function associateInvoiceWithDocument() {
-  const relatedDocument0 = await Documents.findOne({
-    offset: Math.floor(Math.random() * (await Documents.count())),
+  const relatedContactid2 = await Contacts.findOne({
+    offset: Math.floor(Math.random() * (await Contacts.count())),
+  });
+  const Job2 = await Jobs.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Job2?.setContactid) {
+    await Job2.setContactid(relatedContactid2);
+  }
+}
+
+async function associateJobWithOrderid() {
+  const relatedOrderid0 = await Orders.findOne({
+    offset: Math.floor(Math.random() * (await Orders.count())),
+  });
+  const Job0 = await Jobs.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Job0?.setOrderid) {
+    await Job0.setOrderid(relatedOrderid0);
+  }
+
+  const relatedOrderid1 = await Orders.findOne({
+    offset: Math.floor(Math.random() * (await Orders.count())),
+  });
+  const Job1 = await Jobs.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (Job1?.setOrderid) {
+    await Job1.setOrderid(relatedOrderid1);
+  }
+
+  const relatedOrderid2 = await Orders.findOne({
+    offset: Math.floor(Math.random() * (await Orders.count())),
+  });
+  const Job2 = await Jobs.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Job2?.setOrderid) {
+    await Job2.setOrderid(relatedOrderid2);
+  }
+}
+
+async function associateJobWithAssigneduserid() {
+  const relatedAssigneduserid0 = await Users.findOne({
+    offset: Math.floor(Math.random() * (await Users.count())),
+  });
+  const Job0 = await Jobs.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Job0?.setAssigneduserid) {
+    await Job0.setAssigneduserid(relatedAssigneduserid0);
+  }
+
+  const relatedAssigneduserid1 = await Users.findOne({
+    offset: Math.floor(Math.random() * (await Users.count())),
+  });
+  const Job1 = await Jobs.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (Job1?.setAssigneduserid) {
+    await Job1.setAssigneduserid(relatedAssigneduserid1);
+  }
+
+  const relatedAssigneduserid2 = await Users.findOne({
+    offset: Math.floor(Math.random() * (await Users.count())),
+  });
+  const Job2 = await Jobs.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Job2?.setAssigneduserid) {
+    await Job2.setAssigneduserid(relatedAssigneduserid2);
+  }
+}
+
+async function associateTemplateWithTradeid() {
+  const relatedTradeid0 = await Trades.findOne({
+    offset: Math.floor(Math.random() * (await Trades.count())),
+  });
+  const Template0 = await Templates.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Template0?.setTradeid) {
+    await Template0.setTradeid(relatedTradeid0);
+  }
+
+  const relatedTradeid1 = await Trades.findOne({
+    offset: Math.floor(Math.random() * (await Trades.count())),
+  });
+  const Template1 = await Templates.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (Template1?.setTradeid) {
+    await Template1.setTradeid(relatedTradeid1);
+  }
+
+  const relatedTradeid2 = await Trades.findOne({
+    offset: Math.floor(Math.random() * (await Trades.count())),
+  });
+  const Template2 = await Templates.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Template2?.setTradeid) {
+    await Template2.setTradeid(relatedTradeid2);
+  }
+}
+
+async function associateInvoiceWithJobid() {
+  const relatedJobid0 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
   });
   const Invoice0 = await Invoices.findOne({
     order: [['id', 'ASC']],
     offset: 0,
   });
-  if (Invoice0?.setDocument) {
-    await Invoice0.setDocument(relatedDocument0);
+  if (Invoice0?.setJobid) {
+    await Invoice0.setJobid(relatedJobid0);
   }
 
-  const relatedDocument1 = await Documents.findOne({
-    offset: Math.floor(Math.random() * (await Documents.count())),
+  const relatedJobid1 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
   });
   const Invoice1 = await Invoices.findOne({
     order: [['id', 'ASC']],
     offset: 1,
   });
-  if (Invoice1?.setDocument) {
-    await Invoice1.setDocument(relatedDocument1);
+  if (Invoice1?.setJobid) {
+    await Invoice1.setJobid(relatedJobid1);
   }
 
-  const relatedDocument2 = await Documents.findOne({
-    offset: Math.floor(Math.random() * (await Documents.count())),
+  const relatedJobid2 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
   });
   const Invoice2 = await Invoices.findOne({
     order: [['id', 'ASC']],
     offset: 2,
   });
-  if (Invoice2?.setDocument) {
-    await Invoice2.setDocument(relatedDocument2);
+  if (Invoice2?.setJobid) {
+    await Invoice2.setJobid(relatedJobid2);
+  }
+}
+
+async function associateOrderWithJobid() {
+  const relatedJobid0 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
+  });
+  const Order0 = await Orders.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Order0?.setJobid) {
+    await Order0.setJobid(relatedJobid0);
   }
 
-  const relatedDocument3 = await Documents.findOne({
-    offset: Math.floor(Math.random() * (await Documents.count())),
+  const relatedJobid1 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
   });
-  const Invoice3 = await Invoices.findOne({
+  const Order1 = await Orders.findOne({
     order: [['id', 'ASC']],
-    offset: 3,
+    offset: 1,
   });
-  if (Invoice3?.setDocument) {
-    await Invoice3.setDocument(relatedDocument3);
+  if (Order1?.setJobid) {
+    await Order1.setJobid(relatedJobid1);
   }
 
-  const relatedDocument4 = await Documents.findOne({
+  const relatedJobid2 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
+  });
+  const Order2 = await Orders.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Order2?.setJobid) {
+    await Order2.setJobid(relatedJobid2);
+  }
+}
+
+async function associateOrderWithEstimateid() {
+  const relatedEstimateid0 = await Estimates.findOne({
+    offset: Math.floor(Math.random() * (await Estimates.count())),
+  });
+  const Order0 = await Orders.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Order0?.setEstimateid) {
+    await Order0.setEstimateid(relatedEstimateid0);
+  }
+
+  const relatedEstimateid1 = await Estimates.findOne({
+    offset: Math.floor(Math.random() * (await Estimates.count())),
+  });
+  const Order1 = await Orders.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (Order1?.setEstimateid) {
+    await Order1.setEstimateid(relatedEstimateid1);
+  }
+
+  const relatedEstimateid2 = await Estimates.findOne({
+    offset: Math.floor(Math.random() * (await Estimates.count())),
+  });
+  const Order2 = await Orders.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Order2?.setEstimateid) {
+    await Order2.setEstimateid(relatedEstimateid2);
+  }
+}
+
+async function associateImageWithJobid() {
+  const relatedJobid0 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
+  });
+  const Image0 = await Images.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Image0?.setJobid) {
+    await Image0.setJobid(relatedJobid0);
+  }
+
+  const relatedJobid1 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
+  });
+  const Image1 = await Images.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (Image1?.setJobid) {
+    await Image1.setJobid(relatedJobid1);
+  }
+
+  const relatedJobid2 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
+  });
+  const Image2 = await Images.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Image2?.setJobid) {
+    await Image2.setJobid(relatedJobid2);
+  }
+}
+
+async function associateImageWithUserid() {
+  const relatedUserid0 = await Users.findOne({
+    offset: Math.floor(Math.random() * (await Users.count())),
+  });
+  const Image0 = await Images.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Image0?.setUserid) {
+    await Image0.setUserid(relatedUserid0);
+  }
+
+  const relatedUserid1 = await Users.findOne({
+    offset: Math.floor(Math.random() * (await Users.count())),
+  });
+  const Image1 = await Images.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (Image1?.setUserid) {
+    await Image1.setUserid(relatedUserid1);
+  }
+
+  const relatedUserid2 = await Users.findOne({
+    offset: Math.floor(Math.random() * (await Users.count())),
+  });
+  const Image2 = await Images.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Image2?.setUserid) {
+    await Image2.setUserid(relatedUserid2);
+  }
+}
+
+async function associateImageWithDocumentid() {
+  const relatedDocumentid0 = await Documents.findOne({
     offset: Math.floor(Math.random() * (await Documents.count())),
   });
-  const Invoice4 = await Invoices.findOne({
+  const Image0 = await Images.findOne({
     order: [['id', 'ASC']],
-    offset: 4,
+    offset: 0,
   });
-  if (Invoice4?.setDocument) {
-    await Invoice4.setDocument(relatedDocument4);
+  if (Image0?.setDocumentid) {
+    await Image0.setDocumentid(relatedDocumentid0);
+  }
+
+  const relatedDocumentid1 = await Documents.findOne({
+    offset: Math.floor(Math.random() * (await Documents.count())),
+  });
+  const Image1 = await Images.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (Image1?.setDocumentid) {
+    await Image1.setDocumentid(relatedDocumentid1);
+  }
+
+  const relatedDocumentid2 = await Documents.findOne({
+    offset: Math.floor(Math.random() * (await Documents.count())),
+  });
+  const Image2 = await Images.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Image2?.setDocumentid) {
+    await Image2.setDocumentid(relatedDocumentid2);
+  }
+}
+
+async function associateDocumentWithJobid() {
+  const relatedJobid0 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
+  });
+  const Document0 = await Documents.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Document0?.setJobid) {
+    await Document0.setJobid(relatedJobid0);
+  }
+
+  const relatedJobid1 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
+  });
+  const Document1 = await Documents.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (Document1?.setJobid) {
+    await Document1.setJobid(relatedJobid1);
+  }
+
+  const relatedJobid2 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
+  });
+  const Document2 = await Documents.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Document2?.setJobid) {
+    await Document2.setJobid(relatedJobid2);
+  }
+}
+
+async function associateEmailWithJobid() {
+  const relatedJobid0 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
+  });
+  const Email0 = await Emails.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Email0?.setJobid) {
+    await Email0.setJobid(relatedJobid0);
+  }
+
+  const relatedJobid1 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
+  });
+  const Email1 = await Emails.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (Email1?.setJobid) {
+    await Email1.setJobid(relatedJobid1);
+  }
+
+  const relatedJobid2 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
+  });
+  const Email2 = await Emails.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Email2?.setJobid) {
+    await Email2.setJobid(relatedJobid2);
+  }
+}
+
+async function associateEmailWithUserid() {
+  const relatedUserid0 = await Users.findOne({
+    offset: Math.floor(Math.random() * (await Users.count())),
+  });
+  const Email0 = await Emails.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Email0?.setUserid) {
+    await Email0.setUserid(relatedUserid0);
+  }
+
+  const relatedUserid1 = await Users.findOne({
+    offset: Math.floor(Math.random() * (await Users.count())),
+  });
+  const Email1 = await Emails.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (Email1?.setUserid) {
+    await Email1.setUserid(relatedUserid1);
+  }
+
+  const relatedUserid2 = await Users.findOne({
+    offset: Math.floor(Math.random() * (await Users.count())),
+  });
+  const Email2 = await Emails.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Email2?.setUserid) {
+    await Email2.setUserid(relatedUserid2);
+  }
+}
+
+async function associateEmailWithContactid() {
+  const relatedContactid0 = await Contacts.findOne({
+    offset: Math.floor(Math.random() * (await Contacts.count())),
+  });
+  const Email0 = await Emails.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Email0?.setContactid) {
+    await Email0.setContactid(relatedContactid0);
+  }
+
+  const relatedContactid1 = await Contacts.findOne({
+    offset: Math.floor(Math.random() * (await Contacts.count())),
+  });
+  const Email1 = await Emails.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (Email1?.setContactid) {
+    await Email1.setContactid(relatedContactid1);
+  }
+
+  const relatedContactid2 = await Contacts.findOne({
+    offset: Math.floor(Math.random() * (await Contacts.count())),
+  });
+  const Email2 = await Emails.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Email2?.setContactid) {
+    await Email2.setContactid(relatedContactid2);
+  }
+}
+
+async function associateChatWithJobid() {
+  const relatedJobid0 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
+  });
+  const Chat0 = await Chats.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Chat0?.setJobid) {
+    await Chat0.setJobid(relatedJobid0);
+  }
+
+  const relatedJobid1 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
+  });
+  const Chat1 = await Chats.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (Chat1?.setJobid) {
+    await Chat1.setJobid(relatedJobid1);
+  }
+
+  const relatedJobid2 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
+  });
+  const Chat2 = await Chats.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Chat2?.setJobid) {
+    await Chat2.setJobid(relatedJobid2);
+  }
+}
+
+async function associateChatWithSenderid() {
+  const relatedSenderid0 = await Users.findOne({
+    offset: Math.floor(Math.random() * (await Users.count())),
+  });
+  const Chat0 = await Chats.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Chat0?.setSenderid) {
+    await Chat0.setSenderid(relatedSenderid0);
+  }
+
+  const relatedSenderid1 = await Users.findOne({
+    offset: Math.floor(Math.random() * (await Users.count())),
+  });
+  const Chat1 = await Chats.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (Chat1?.setSenderid) {
+    await Chat1.setSenderid(relatedSenderid1);
+  }
+
+  const relatedSenderid2 = await Users.findOne({
+    offset: Math.floor(Math.random() * (await Users.count())),
+  });
+  const Chat2 = await Chats.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Chat2?.setSenderid) {
+    await Chat2.setSenderid(relatedSenderid2);
+  }
+}
+
+async function associateChatWithReceiverid() {
+  const relatedReceiverid0 = await Users.findOne({
+    offset: Math.floor(Math.random() * (await Users.count())),
+  });
+  const Chat0 = await Chats.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Chat0?.setReceiverid) {
+    await Chat0.setReceiverid(relatedReceiverid0);
+  }
+
+  const relatedReceiverid1 = await Users.findOne({
+    offset: Math.floor(Math.random() * (await Users.count())),
+  });
+  const Chat1 = await Chats.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (Chat1?.setReceiverid) {
+    await Chat1.setReceiverid(relatedReceiverid1);
+  }
+
+  const relatedReceiverid2 = await Users.findOne({
+    offset: Math.floor(Math.random() * (await Users.count())),
+  });
+  const Chat2 = await Chats.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Chat2?.setReceiverid) {
+    await Chat2.setReceiverid(relatedReceiverid2);
+  }
+}
+
+async function associateAppointmentWithAssigneduserid() {
+  const relatedAssigneduserid0 = await Users.findOne({
+    offset: Math.floor(Math.random() * (await Users.count())),
+  });
+  const Appointment0 = await Appointments.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Appointment0?.setAssigneduserid) {
+    await Appointment0.setAssigneduserid(relatedAssigneduserid0);
+  }
+
+  const relatedAssigneduserid1 = await Users.findOne({
+    offset: Math.floor(Math.random() * (await Users.count())),
+  });
+  const Appointment1 = await Appointments.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (Appointment1?.setAssigneduserid) {
+    await Appointment1.setAssigneduserid(relatedAssigneduserid1);
+  }
+
+  const relatedAssigneduserid2 = await Users.findOne({
+    offset: Math.floor(Math.random() * (await Users.count())),
+  });
+  const Appointment2 = await Appointments.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Appointment2?.setAssigneduserid) {
+    await Appointment2.setAssigneduserid(relatedAssigneduserid2);
+  }
+}
+
+async function associateAppointmentWithContactid() {
+  const relatedContactid0 = await Contacts.findOne({
+    offset: Math.floor(Math.random() * (await Contacts.count())),
+  });
+  const Appointment0 = await Appointments.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Appointment0?.setContactid) {
+    await Appointment0.setContactid(relatedContactid0);
+  }
+
+  const relatedContactid1 = await Contacts.findOne({
+    offset: Math.floor(Math.random() * (await Contacts.count())),
+  });
+  const Appointment1 = await Appointments.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (Appointment1?.setContactid) {
+    await Appointment1.setContactid(relatedContactid1);
+  }
+
+  const relatedContactid2 = await Contacts.findOne({
+    offset: Math.floor(Math.random() * (await Contacts.count())),
+  });
+  const Appointment2 = await Appointments.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Appointment2?.setContactid) {
+    await Appointment2.setContactid(relatedContactid2);
+  }
+}
+
+async function associateAppointmentWithJobid() {
+  const relatedJobid0 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
+  });
+  const Appointment0 = await Appointments.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Appointment0?.setJobid) {
+    await Appointment0.setJobid(relatedJobid0);
+  }
+
+  const relatedJobid1 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
+  });
+  const Appointment1 = await Appointments.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (Appointment1?.setJobid) {
+    await Appointment1.setJobid(relatedJobid1);
+  }
+
+  const relatedJobid2 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
+  });
+  const Appointment2 = await Appointments.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Appointment2?.setJobid) {
+    await Appointment2.setJobid(relatedJobid2);
+  }
+}
+
+async function associateTaskWithAssignedtouserid() {
+  const relatedAssignedtouserid0 = await Users.findOne({
+    offset: Math.floor(Math.random() * (await Users.count())),
+  });
+  const Task0 = await Tasks.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Task0?.setAssignedtouserid) {
+    await Task0.setAssignedtouserid(relatedAssignedtouserid0);
+  }
+
+  const relatedAssignedtouserid1 = await Users.findOne({
+    offset: Math.floor(Math.random() * (await Users.count())),
+  });
+  const Task1 = await Tasks.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (Task1?.setAssignedtouserid) {
+    await Task1.setAssignedtouserid(relatedAssignedtouserid1);
+  }
+
+  const relatedAssignedtouserid2 = await Users.findOne({
+    offset: Math.floor(Math.random() * (await Users.count())),
+  });
+  const Task2 = await Tasks.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Task2?.setAssignedtouserid) {
+    await Task2.setAssignedtouserid(relatedAssignedtouserid2);
+  }
+}
+
+async function associateTaskWithAppointmentid() {
+  const relatedAppointmentid0 = await Appointments.findOne({
+    offset: Math.floor(Math.random() * (await Appointments.count())),
+  });
+  const Task0 = await Tasks.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Task0?.setAppointmentid) {
+    await Task0.setAppointmentid(relatedAppointmentid0);
+  }
+
+  const relatedAppointmentid1 = await Appointments.findOne({
+    offset: Math.floor(Math.random() * (await Appointments.count())),
+  });
+  const Task1 = await Tasks.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (Task1?.setAppointmentid) {
+    await Task1.setAppointmentid(relatedAppointmentid1);
+  }
+
+  const relatedAppointmentid2 = await Appointments.findOne({
+    offset: Math.floor(Math.random() * (await Appointments.count())),
+  });
+  const Task2 = await Tasks.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Task2?.setAppointmentid) {
+    await Task2.setAppointmentid(relatedAppointmentid2);
+  }
+}
+
+async function associateTaskWithJobid() {
+  const relatedJobid0 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
+  });
+  const Task0 = await Tasks.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Task0?.setJobid) {
+    await Task0.setJobid(relatedJobid0);
+  }
+
+  const relatedJobid1 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
+  });
+  const Task1 = await Tasks.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (Task1?.setJobid) {
+    await Task1.setJobid(relatedJobid1);
+  }
+
+  const relatedJobid2 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
+  });
+  const Task2 = await Tasks.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Task2?.setJobid) {
+    await Task2.setJobid(relatedJobid2);
+  }
+}
+
+async function associateContractWithContactid() {
+  const relatedContactid0 = await Contacts.findOne({
+    offset: Math.floor(Math.random() * (await Contacts.count())),
+  });
+  const Contract0 = await Contracts.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Contract0?.setContactid) {
+    await Contract0.setContactid(relatedContactid0);
+  }
+
+  const relatedContactid1 = await Contacts.findOne({
+    offset: Math.floor(Math.random() * (await Contacts.count())),
+  });
+  const Contract1 = await Contracts.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (Contract1?.setContactid) {
+    await Contract1.setContactid(relatedContactid1);
+  }
+
+  const relatedContactid2 = await Contacts.findOne({
+    offset: Math.floor(Math.random() * (await Contacts.count())),
+  });
+  const Contract2 = await Contracts.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Contract2?.setContactid) {
+    await Contract2.setContactid(relatedContactid2);
+  }
+}
+
+async function associateContractWithJobid() {
+  const relatedJobid0 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
+  });
+  const Contract0 = await Contracts.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Contract0?.setJobid) {
+    await Contract0.setJobid(relatedJobid0);
+  }
+
+  const relatedJobid1 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
+  });
+  const Contract1 = await Contracts.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (Contract1?.setJobid) {
+    await Contract1.setJobid(relatedJobid1);
+  }
+
+  const relatedJobid2 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
+  });
+  const Contract2 = await Contracts.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Contract2?.setJobid) {
+    await Contract2.setJobid(relatedJobid2);
+  }
+}
+
+async function associateAmendmentWithJobid() {
+  const relatedJobid0 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
+  });
+  const Amendment0 = await Amendments.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Amendment0?.setJobid) {
+    await Amendment0.setJobid(relatedJobid0);
+  }
+
+  const relatedJobid1 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
+  });
+  const Amendment1 = await Amendments.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (Amendment1?.setJobid) {
+    await Amendment1.setJobid(relatedJobid1);
+  }
+
+  const relatedJobid2 = await Jobs.findOne({
+    offset: Math.floor(Math.random() * (await Jobs.count())),
+  });
+  const Amendment2 = await Amendments.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Amendment2?.setJobid) {
+    await Amendment2.setJobid(relatedJobid2);
   }
 }
 
@@ -855,96 +1915,136 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await Contacts.bulkCreate(ContactsData);
 
-    await Appointments.bulkCreate(AppointmentsData);
-
-    await Jobs.bulkCreate(JobsData);
+    await Addresses.bulkCreate(AddressesData);
 
     await Estimates.bulkCreate(EstimatesData);
 
-    await Trades.bulkCreate(TradesData);
+    await Jobs.bulkCreate(JobsData);
 
     await Templates.bulkCreate(TemplatesData);
 
-    await Documents.bulkCreate(DocumentsData);
-
-    await Images.bulkCreate(ImagesData);
-
-    await Teams.bulkCreate(TeamsData);
+    await Trades.bulkCreate(TradesData);
 
     await Invoices.bulkCreate(InvoicesData);
 
+    await Orders.bulkCreate(OrdersData);
+
+    await Images.bulkCreate(ImagesData);
+
+    await Documents.bulkCreate(DocumentsData);
+
+    await Emails.bulkCreate(EmailsData);
+
+    await Chats.bulkCreate(ChatsData);
+
+    await Appointments.bulkCreate(AppointmentsData);
+
+    await Tasks.bulkCreate(TasksData);
+
+    await Contracts.bulkCreate(ContractsData);
+
+    await Amendments.bulkCreate(AmendmentsData);
+
     await Promise.all([
-      // Similar logic for "relation_many"
+      await associateUserWithImageid(),
 
-      // Similar logic for "relation_many"
+      await associateContactWithAssigneduserid(),
 
-      // Similar logic for "relation_many"
+      await associateAddressWithContactid(),
 
-      // Similar logic for "relation_many"
+      await associateAddressWithJobid(),
 
-      // Similar logic for "relation_many"
+      await associateEstimateWithJobid(),
 
-      // Similar logic for "relation_many"
+      await associateEstimateWithContactid(),
 
-      // Similar logic for "relation_many"
+      await associateEstimateWithTemplateid(),
 
-      // Similar logic for "relation_many"
+      await associateJobWithContactid(),
 
-      // Similar logic for "relation_many"
+      await associateJobWithOrderid(),
 
-      // Similar logic for "relation_many"
+      await associateJobWithAssigneduserid(),
 
-      // Similar logic for "relation_many"
+      await associateTemplateWithTradeid(),
 
-      // Similar logic for "relation_many"
+      await associateInvoiceWithJobid(),
 
-      // Similar logic for "relation_many"
+      await associateOrderWithJobid(),
 
-      // Similar logic for "relation_many"
+      await associateOrderWithEstimateid(),
 
-      // Similar logic for "relation_many"
+      await associateImageWithJobid(),
 
-      await associateEstimateWithJob(),
+      await associateImageWithUserid(),
 
-      // Similar logic for "relation_many"
+      await associateImageWithDocumentid(),
 
-      // Similar logic for "relation_many"
+      await associateDocumentWithJobid(),
 
-      // Similar logic for "relation_many"
+      await associateEmailWithJobid(),
 
-      // Similar logic for "relation_many"
+      await associateEmailWithUserid(),
 
-      // Similar logic for "relation_many"
+      await associateEmailWithContactid(),
 
-      // Similar logic for "relation_many"
+      await associateChatWithJobid(),
 
-      // Similar logic for "relation_many"
+      await associateChatWithSenderid(),
 
-      // Similar logic for "relation_many"
+      await associateChatWithReceiverid(),
 
-      await associateInvoiceWithDocument(),
+      await associateAppointmentWithAssigneduserid(),
+
+      await associateAppointmentWithContactid(),
+
+      await associateAppointmentWithJobid(),
+
+      await associateTaskWithAssignedtouserid(),
+
+      await associateTaskWithAppointmentid(),
+
+      await associateTaskWithJobid(),
+
+      await associateContractWithContactid(),
+
+      await associateContractWithJobid(),
+
+      await associateAmendmentWithJobid(),
     ]);
   },
 
   down: async (queryInterface, Sequelize) => {
     await queryInterface.bulkDelete('contacts', null, {});
 
-    await queryInterface.bulkDelete('appointments', null, {});
-
-    await queryInterface.bulkDelete('jobs', null, {});
+    await queryInterface.bulkDelete('addresses', null, {});
 
     await queryInterface.bulkDelete('estimates', null, {});
 
-    await queryInterface.bulkDelete('trades', null, {});
+    await queryInterface.bulkDelete('jobs', null, {});
 
     await queryInterface.bulkDelete('templates', null, {});
 
-    await queryInterface.bulkDelete('documents', null, {});
+    await queryInterface.bulkDelete('trades', null, {});
+
+    await queryInterface.bulkDelete('invoices', null, {});
+
+    await queryInterface.bulkDelete('orders', null, {});
 
     await queryInterface.bulkDelete('images', null, {});
 
-    await queryInterface.bulkDelete('teams', null, {});
+    await queryInterface.bulkDelete('documents', null, {});
 
-    await queryInterface.bulkDelete('invoices', null, {});
+    await queryInterface.bulkDelete('emails', null, {});
+
+    await queryInterface.bulkDelete('chats', null, {});
+
+    await queryInterface.bulkDelete('appointments', null, {});
+
+    await queryInterface.bulkDelete('tasks', null, {});
+
+    await queryInterface.bulkDelete('contracts', null, {});
+
+    await queryInterface.bulkDelete('amendments', null, {});
   },
 };

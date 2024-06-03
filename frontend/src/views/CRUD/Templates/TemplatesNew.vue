@@ -22,42 +22,28 @@ const router = useRouter();
 const notification = computed(() => templatesStore.notify)
 const titleStack = ref(['Admin', 'Templates'])
 
-        const optionsTrade = computed(() => templatesStore.searchResultTrade);
+        const optionsTradeId = computed(() => templatesStore.searchResultTradeId);
 
 const form = reactive({
 
-      trade: [],
-
-      materialCost: '',
-
-      laborCost: '',
-
-      markup: '',
-
-      profitMargin: '',
-
       name: '',
 
-      totalPrice: '',
+    description: '',
 
-      unitOfMeasurement: false,
-
-      description: '',
+      tradeId: '',
 
 })
 
 onBeforeMount(async () => {
 
-  await searchTrade();
+  await searchTradeId();
 
 })
 
 const submit = async () => {
   try {
 
-            form.trade = form.trade.map(item => item.id);
-
-            form.unitOfMeasurement = form.unitOfMeasurement.label;
+            form.tradeId = form.tradeId.id;
 
     await templatesStore.newItem({ ...form })
     router.push('/templates');
@@ -68,23 +54,11 @@ const submit = async () => {
 
 const reset = () => {
 
-        form.trade = [];
-
-        form.materialCost = '';
-
-        form.laborCost = '';
-
-        form.markup = '';
-
-        form.profitMargin = '';
-
         form.name = '';
 
-        form.totalPrice = '';
+      form.description = '';
 
-        form.unitOfMeasurement = false;
-
-        form.description = '';
+        form.tradeId = '';
 
 }
 
@@ -92,8 +66,8 @@ const cancel = () => {
   router.push('/users')
 }
 
-    async function searchTrade(val) {
-      await templatesStore.searchTrade(val);
+    async function searchTradeId(val) {
+      await templatesStore.searchTradeId(val);
     }
 
 watch(() => templatesStore.notify.showNotification, (newValue, oldValue) => {
@@ -121,57 +95,6 @@ watch(() => templatesStore.notify.showNotification, (newValue, oldValue) => {
     >
 
     <FormField
-        label="Trade"
-      >
-        <v-select
-          v-model="form.trade"
-          :options="optionsTrade"
-          multiple
-          @input="searchTrade($event.target.value)"
-        />
-    </FormField>
-
-    <FormField
-      label="Material Cost"
-    >
-      <FormControl
-        type="number"
-        v-model="form.materialCost"
-        placeholder="Your Material Cost"
-      />
-    </FormField>
-
-    <FormField
-      label="Labor Cost"
-    >
-      <FormControl
-        type="number"
-        v-model="form.laborCost"
-        placeholder="Your Labor Cost"
-      />
-    </FormField>
-
-    <FormField
-      label="Markup"
-    >
-      <FormControl
-        type="number"
-        v-model="form.markup"
-        placeholder="Your Markup"
-      />
-    </FormField>
-
-    <FormField
-      label="Profit Margin"
-    >
-      <FormControl
-        type="number"
-        v-model="form.profitMargin"
-        placeholder="Your Profit Margin"
-      />
-    </FormField>
-
-    <FormField
       label="Name"
     >
       <FormControl
@@ -181,32 +104,24 @@ watch(() => templatesStore.notify.showNotification, (newValue, oldValue) => {
     </FormField>
 
     <FormField
-      label="Total Price"
-    >
-      <FormControl
-        type="number"
-        v-model="form.totalPrice"
-        placeholder="Your Total Price"
-      />
-    </FormField>
-
-    <FormField label="Unit Of Measurement">
-      <FormControl
-        v-model="form.unitOfMeasurement"
-        :options="[{id: 0, label: 'SQ'},
-                    {id: 1, label: 'LF'},
-                    ]"
-      />
-    </FormField>
-
-    <FormField
       label="Description"
     >
       <FormControl
         v-model="form.description"
+        type="textarea"
         placeholder="Your Description"
-      />
+        />
     </FormField>
+
+  <FormField
+      label="Trade"
+    >
+        <v-select
+          v-model="form.tradeId"
+          :options="optionsTradeId"
+          @input="searchTradeId($event.target.value)"
+        />
+  </FormField>
 
     <BaseDivider />
 

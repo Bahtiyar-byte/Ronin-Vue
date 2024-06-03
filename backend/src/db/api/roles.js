@@ -16,17 +16,12 @@ module.exports = class RolesDBApi {
         id: data.id || undefined,
 
         name: data.name || null,
-        permissions: data.permissions || null,
         importHash: data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
       },
       { transaction },
     );
-
-    await roles.setUser(data.user || [], {
-      transaction,
-    });
 
     return roles;
   }
@@ -40,7 +35,6 @@ module.exports = class RolesDBApi {
       id: item.id || undefined,
 
       name: item.name || null,
-      permissions: item.permissions || null,
       importHash: item.importHash || null,
       createdById: currentUser.id,
       updatedById: currentUser.id,
@@ -64,14 +58,34 @@ module.exports = class RolesDBApi {
     await roles.update(
       {
         name: data.name || null,
-        permissions: data.permissions || null,
         updatedById: currentUser.id,
       },
       { transaction },
     );
 
-    await roles.setUser(data.user || [], {
+    return roles;
+  }
+
+  static async deleteByIds(ids, options) {
+    const currentUser = (options && options.currentUser) || { id: null };
+    const transaction = (options && options.transaction) || undefined;
+
+    const roles = await db.roles.findAll({
+      where: {
+        id: {
+          [Op.in]: ids,
+        },
+      },
       transaction,
+    });
+
+    await db.sequelize.transaction(async (transaction) => {
+      for (const record of roles) {
+        await record.update({ deletedBy: currentUser.id }, { transaction });
+      }
+      for (const record of roles) {
+        await record.destroy({ transaction });
+      }
     });
 
     return roles;
@@ -110,7 +124,7 @@ module.exports = class RolesDBApi {
 
     const output = roles.get({ plain: true });
 
-    output.user = await roles.getUser({
+    output.users_roleId = await roles.getUsers_roleId({
       transaction,
     });
 
@@ -128,22 +142,7 @@ module.exports = class RolesDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [
-      {
-        model: db.users,
-        as: 'user',
-        through: filter.user
-          ? {
-              where: {
-                [Op.or]: filter.user.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
-            }
-          : null,
-        required: filter.user ? true : null,
-      },
-    ];
+    let include = [];
 
     if (filter) {
       if (filter.id) {
@@ -157,13 +156,6 @@ module.exports = class RolesDBApi {
         where = {
           ...where,
           [Op.and]: Utils.ilike('roles', 'name', filter.name),
-        };
-      }
-
-      if (filter.permissions) {
-        where = {
-          ...where,
-          [Op.and]: Utils.ilike('roles', 'permissions', filter.permissions),
         };
       }
 

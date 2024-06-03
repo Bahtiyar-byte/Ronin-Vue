@@ -34,18 +34,16 @@ const items = computed(() => jobsStore.data)
 
 const headers = [
 
-{ text: 'Name', value: 'name'},
-{ text: 'Contact', value: 'contact'},
-{ text: 'Category', value: 'category'},
+{ text: 'Name', value: 'Name'},
 { text: 'Type', value: 'type'},
+{ text: 'Category', value: 'category'},
 { text: 'Status', value: 'status'},
-{ text: 'Assigned User', value: 'assignedUser'},
-{ text: 'Assigned Team', value: 'assignedTeam'},
-{ text: 'Estimate', value: 'estimate'},
-{ text: 'Appointment', value: 'appointment'},
-{ text: 'Image', value: 'image'},
-{ text: 'Document', value: 'document'},
-{ text: 'Invoice', value: 'invoice'},]
+{ text: 'Start Date', value: 'startDate'},
+{ text: 'End Date', value: 'endDate'},
+{ text: 'Description', value: 'description'},
+{ text: 'Contact ', value: 'contactId'},
+{ text: 'Order ', value: 'orderId'},
+{ text: 'Assigned User ', value: 'assignedUserId'},]
 const isModalActive = ref(false)
 
 const isModalDangerActive = ref(false)
@@ -161,19 +159,9 @@ const sort = (title) => {
       <th v-if="checkable" />
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'name' && props.sortDirection]"
-        @click="sort('name')"
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'Name' && props.sortDirection]"
+        @click="sort('Name')"
       >Name</th>
-
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'contact' && props.sortDirection]"
-        @click="sort('contact')"
-      >Contact</th>
-
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'category' && props.sortDirection]"
-        @click="sort('category')"
-      >Category</th>
 
       <th
         :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'type' && props.sortDirection]"
@@ -181,44 +169,44 @@ const sort = (title) => {
       >Type</th>
 
       <th
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'category' && props.sortDirection]"
+        @click="sort('category')"
+      >Category</th>
+
+      <th
         :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'status' && props.sortDirection]"
         @click="sort('status')"
       >Status</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'assignedUser' && props.sortDirection]"
-        @click="sort('assignedUser')"
-      >Assigned User</th>
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'startDate' && props.sortDirection]"
+        @click="sort('startDate')"
+      >Start Date</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'assignedTeam' && props.sortDirection]"
-        @click="sort('assignedTeam')"
-      >Assigned Team</th>
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'endDate' && props.sortDirection]"
+        @click="sort('endDate')"
+      >End Date</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'estimate' && props.sortDirection]"
-        @click="sort('estimate')"
-      >Estimate</th>
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'description' && props.sortDirection]"
+        @click="sort('description')"
+      >Description</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'appointment' && props.sortDirection]"
-        @click="sort('appointment')"
-      >Appointment</th>
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'contactId' && props.sortDirection]"
+        @click="sort('contactId')"
+      >Contact </th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'image' && props.sortDirection]"
-        @click="sort('image')"
-      >Image</th>
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'orderId' && props.sortDirection]"
+        @click="sort('orderId')"
+      >Order </th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'document' && props.sortDirection]"
-        @click="sort('document')"
-      >Document</th>
-
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'invoice' && props.sortDirection]"
-        @click="sort('invoice')"
-      >Invoice</th>
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'assignedUserId' && props.sortDirection]"
+        @click="sort('assignedUserId')"
+      >Assigned User </th>
 
         <th />
       </tr>
@@ -234,101 +222,45 @@ const sort = (title) => {
           @checked="checked($event, client)"
         />
 
-              <td data-label="name">
-                {{ client.name }}
-              </td>
-
-              <td data-label="contact">
-                  <span
-                    v-for="(i, idx) in dataFormatter.contactsManyListFormatter(client.contact)"
-                    :key="idx + client.contact"
-                    class="block"
-                  >
-                      {{ i }}
-                  </span>
-              </td>  
-
-              <td data-label="category">
-                {{ client.category }}
+              <td data-label="Name">
+                {{ client.Name }}
               </td>
 
               <td data-label="type">
                 {{ client.type }}
               </td>
 
+              <td data-label="category">
+                {{ client.category }}
+              </td>
+
               <td data-label="status">
                 {{ client.status }}
               </td>
 
-              <td data-label="assignedUser">
-                  <span
-                    v-for="(i, idx) in dataFormatter.usersManyListFormatter(client.assignedUser)"
-                    :key="idx + client.assignedUser"
-                    class="block"
-                  >
-                      {{ i }}
-                  </span>
-              </td>  
+              <td data-label="startDate">
+                {{ dataFormatter.dateTimeFormatter(client.startDate) }}
+              </td>    
 
-              <td data-label="assignedTeam">
-                  <span
-                    v-for="(i, idx) in dataFormatter.teamsManyListFormatter(client.assignedTeam)"
-                    :key="idx + client.assignedTeam"
-                    class="block"
-                  >
-                      {{ i }}
-                  </span>
-              </td>  
+              <td data-label="endDate">
+                {{ dataFormatter.dateTimeFormatter(client.endDate) }}
+              </td>    
 
-              <td data-label="estimate">
-                  <span
-                    v-for="(i, idx) in dataFormatter.estimatesManyListFormatter(client.estimate)"
-                    :key="idx + client.estimate"
-                    class="block"
-                  >
-                      {{ i }}
-                  </span>
-              </td>  
+              <td data-label="description">
+                {{ client.description }}
+              </td>
 
-              <td data-label="appointment">
-                  <span
-                    v-for="(i, idx) in dataFormatter.appointmentsManyListFormatter(client.appointment)"
-                    :key="idx + client.appointment"
-                    class="block"
-                  >
-                      {{ i }}
-                  </span>
-              </td>  
+              <td data-label="contactId">
+                {{ dataFormatter.contactsOneListFormatter(client.contactId) }}
+              </td>
 
-              <td data-label="image">
-                  <span
-                    v-for="(i, idx) in dataFormatter.imagesManyListFormatter(client.image)"
-                    :key="idx + client.image"
-                    class="block"
-                  >
-                      {{ i }}
-                  </span>
-              </td>  
+              <td data-label="orderId">
+                {{ dataFormatter.ordersOneListFormatter(client.orderId) }}
+              </td>
 
-              <td data-label="document">
-                  <span
-                    v-for="(i, idx) in dataFormatter.documentsManyListFormatter(client.document)"
-                    :key="idx + client.document"
-                    class="block"
-                  >
-                      {{ i }}
-                  </span>
-              </td>  
-
-              <td data-label="invoice">
-                  <span
-                    v-for="(i, idx) in dataFormatter.invoicesManyListFormatter(client.invoice)"
-                    :key="idx + client.invoice"
-                    class="block"
-                  >
-                      {{ i }}
-                  </span>
-              </td>  
+              <td data-label="assignedUserId">
+                {{ dataFormatter.usersOneListFormatter(client.assignedUserId) }}
+              </td>
 
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons

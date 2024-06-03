@@ -22,28 +22,30 @@ const router = useRouter();
 const notification = computed(() => documentsStore.notify)
 const titleStack = ref(['Admin', 'Documents'])
 
-        const optionsJob = computed(() => documentsStore.searchResultJob);
+        const optionsJobId = computed(() => documentsStore.searchResultJobId);
 
 const form = reactive({
 
-      job: [],
+      jobId: '',
 
       name: '',
 
-      url: '',
+      active: false,
+
+      fileType: [],
 
 })
 
 onBeforeMount(async () => {
 
-  await searchJob();
+  await searchJobId();
 
 })
 
 const submit = async () => {
   try {
 
-            form.job = form.job.map(item => item.id);
+            form.jobId = form.jobId.id;
 
     await documentsStore.newItem({ ...form })
     router.push('/documents');
@@ -54,11 +56,13 @@ const submit = async () => {
 
 const reset = () => {
 
-        form.job = [];
+        form.jobId = '';
 
         form.name = '';
 
-        form.url = '';
+        form.active = false;
+
+        form.fileType = [];
 
 }
 
@@ -66,8 +70,8 @@ const cancel = () => {
   router.push('/users')
 }
 
-    async function searchJob(val) {
-      await documentsStore.searchJob(val);
+    async function searchJobId(val) {
+      await documentsStore.searchJobId(val);
     }
 
 watch(() => documentsStore.notify.showNotification, (newValue, oldValue) => {
@@ -94,16 +98,15 @@ watch(() => documentsStore.notify.showNotification, (newValue, oldValue) => {
       @submit.prevent="submit"
     >
 
-    <FormField
-        label="Job"
-      >
+  <FormField
+      label="Job "
+    >
         <v-select
-          v-model="form.job"
-          :options="optionsJob"
-          multiple
-          @input="searchJob($event.target.value)"
+          v-model="form.jobId"
+          :options="optionsJobId"
+          @input="searchJobId($event.target.value)"
         />
-    </FormField>
+  </FormField>
 
     <FormField
       label="Name"
@@ -114,13 +117,19 @@ watch(() => documentsStore.notify.showNotification, (newValue, oldValue) => {
       />
     </FormField>
 
-    <FormField
-      label="Url"
-    >
-      <FormControl
-        v-model="form.url"
-        placeholder="Your Url"
+    <FormField label="Active">
+      <FormCheckRadioPicker
+        v-model="form.active"
+        name="sample-switch"
+        type="switch"
+        :options="{ active: form.active ? 'Enabled' : 'Disabled' }"
       />
+    </FormField>
+
+    <FormField
+      label="File Type"
+    >
+      <FormFilePicker v-model="form.fileType" url="documents/fileType"/>
     </FormField>
 
     <BaseDivider />

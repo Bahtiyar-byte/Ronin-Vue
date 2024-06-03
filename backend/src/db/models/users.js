@@ -68,7 +68,7 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.TEXT,
       },
 
-      name: {
+      userName: {
         type: DataTypes.TEXT,
       },
 
@@ -86,18 +86,89 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   users.associate = (db) => {
-    db.users.belongsToMany(db.roles, {
-      as: 'roleId',
-      foreignKey: {
-        name: 'users_roleIdId',
-      },
-      constraints: false,
-      through: 'usersRoleIdRoles',
-    });
-
     /// loop through entities and it's fields, and if ref === current e[name] and create relation has many on parent entity
 
+    db.users.hasMany(db.contacts, {
+      as: 'contacts_assignedUserId',
+      foreignKey: {
+        name: 'assignedUserIdId',
+      },
+      constraints: false,
+    });
+
+    db.users.hasMany(db.jobs, {
+      as: 'jobs_assignedUserId',
+      foreignKey: {
+        name: 'assignedUserIdId',
+      },
+      constraints: false,
+    });
+
+    db.users.hasMany(db.images, {
+      as: 'images_userId',
+      foreignKey: {
+        name: 'userIdId',
+      },
+      constraints: false,
+    });
+
+    db.users.hasMany(db.emails, {
+      as: 'emails_userId',
+      foreignKey: {
+        name: 'userIdId',
+      },
+      constraints: false,
+    });
+
+    db.users.hasMany(db.chats, {
+      as: 'chats_senderId',
+      foreignKey: {
+        name: 'senderIdId',
+      },
+      constraints: false,
+    });
+
+    db.users.hasMany(db.chats, {
+      as: 'chats_receiverId',
+      foreignKey: {
+        name: 'receiverIdId',
+      },
+      constraints: false,
+    });
+
+    db.users.hasMany(db.appointments, {
+      as: 'appointments_assignedUserId',
+      foreignKey: {
+        name: 'assignedUserIdId',
+      },
+      constraints: false,
+    });
+
+    db.users.hasMany(db.tasks, {
+      as: 'tasks_assignedToUserId',
+      foreignKey: {
+        name: 'assignedToUserIdId',
+      },
+      constraints: false,
+    });
+
     //end loop
+
+    db.users.belongsTo(db.images, {
+      as: 'imageId',
+      foreignKey: {
+        name: 'imageIdId',
+      },
+      constraints: false,
+    });
+
+    db.users.belongsTo(db.roles, {
+      as: 'roleId',
+      foreignKey: {
+        name: 'roleIdId',
+      },
+      constraints: false,
+    });
 
     db.users.hasMany(db.file, {
       as: 'avatar',

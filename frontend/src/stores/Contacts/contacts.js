@@ -11,11 +11,7 @@ export const useContactsStore = defineStore('contacts', {
       typeNotification: 'warn',
     },
 
-            searchResultJob: [],
-
-            searchResultEstimate: [],
-
-            searchResultAppointment: [],
+            searchResultAssignedUserId: [],
 
   }),
   actions: {
@@ -67,54 +63,20 @@ export const useContactsStore = defineStore('contacts', {
       }
     },
 
-            async searchJob(val) {
+            async searchAssignedUserId(val) {
               try {
                 if (val) {
                   const result = await axios(
-                    `/jobs/autocomplete?query=${val}&limit=100`,
+                    `/users/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setJob(result.data);
+                  this.setAssignedUserId(result.data);
                 } else {
-                  const result = await axios(`/jobs/autocomplete?limit=100`);
-                  this.setJob(result.data);
+                  const result = await axios(`/users/autocomplete?limit=100`);
+                  this.setAssignedUserId(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setJob([]);
-              }
-            },
-
-            async searchEstimate(val) {
-              try {
-                if (val) {
-                  const result = await axios(
-                    `/estimates/autocomplete?query=${val}&limit=100`,
-                  );
-                  this.setEstimate(result.data);
-                } else {
-                  const result = await axios(`/estimates/autocomplete?limit=100`);
-                  this.setEstimate(result.data);
-                }
-              } catch (e) {
-                this.showNotification(e, 'error')
-                this.setEstimate([]);
-              }
-            },
-
-            async searchAppointment(val) {
-              try {
-                if (val) {
-                  const result = await axios(
-                    `/appointments/autocomplete?query=${val}&limit=100`,
-                  );
-                  this.setAppointment(result.data);
-                } else {
-                  const result = await axios(`/appointments/autocomplete?limit=100`);
-                  this.setAppointment(result.data);
-                }
-              } catch (e) {
-                this.showNotification(e, 'error')
-                this.setAppointment([]);
+                this.setAssignedUserId([]);
               }
             },
 
@@ -137,16 +99,8 @@ export const useContactsStore = defineStore('contacts', {
       this.notify.textNotification = ''
     },
 
-        setJob(payload) {
-            this.searchResultJob = payload
-        },
-
-        setEstimate(payload) {
-            this.searchResultEstimate = payload
-        },
-
-        setAppointment(payload) {
-            this.searchResultAppointment = payload
+        setAssignedUserId(payload) {
+            this.searchResultAssignedUserId = payload
         },
 
   }

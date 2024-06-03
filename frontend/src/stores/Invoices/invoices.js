@@ -11,11 +11,7 @@ export const useInvoicesStore = defineStore('invoices', {
       typeNotification: 'warn',
     },
 
-            searchResultJob: [],
-
-            searchResultEstimate: [],
-
-            searchResultDocument: [],
+            searchResultJobId: [],
 
   }),
   actions: {
@@ -67,54 +63,20 @@ export const useInvoicesStore = defineStore('invoices', {
       }
     },
 
-            async searchJob(val) {
+            async searchJobId(val) {
               try {
                 if (val) {
                   const result = await axios(
                     `/jobs/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setJob(result.data);
+                  this.setJobId(result.data);
                 } else {
                   const result = await axios(`/jobs/autocomplete?limit=100`);
-                  this.setJob(result.data);
+                  this.setJobId(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setJob([]);
-              }
-            },
-
-            async searchEstimate(val) {
-              try {
-                if (val) {
-                  const result = await axios(
-                    `/estimates/autocomplete?query=${val}&limit=100`,
-                  );
-                  this.setEstimate(result.data);
-                } else {
-                  const result = await axios(`/estimates/autocomplete?limit=100`);
-                  this.setEstimate(result.data);
-                }
-              } catch (e) {
-                this.showNotification(e, 'error')
-                this.setEstimate([]);
-              }
-            },
-
-            async searchDocument(val) {
-              try {
-                if (val) {
-                  const result = await axios(
-                    `/documents/autocomplete?query=${val}&limit=100`,
-                  );
-                  this.setDocument(result.data);
-                } else {
-                  const result = await axios(`/documents/autocomplete?limit=100`);
-                  this.setDocument(result.data);
-                }
-              } catch (e) {
-                this.showNotification(e, 'error')
-                this.setDocument([]);
+                this.setJobId([]);
               }
             },
 
@@ -137,16 +99,8 @@ export const useInvoicesStore = defineStore('invoices', {
       this.notify.textNotification = ''
     },
 
-        setJob(payload) {
-            this.searchResultJob = payload
-        },
-
-        setEstimate(payload) {
-            this.searchResultEstimate = payload
-        },
-
-        setDocument(payload) {
-            this.searchResultDocument = payload
+        setJobId(payload) {
+            this.searchResultJobId = payload
         },
 
   }

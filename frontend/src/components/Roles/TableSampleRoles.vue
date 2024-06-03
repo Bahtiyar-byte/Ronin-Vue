@@ -34,9 +34,7 @@ const items = computed(() => rolesStore.data)
 
 const headers = [
 
-{ text: 'Name', value: 'name'},
-{ text: 'Permissions', value: 'permissions'},
-{ text: 'User', value: 'user'},]
+{ text: 'Name', value: 'name'},]
 const isModalActive = ref(false)
 
 const isModalDangerActive = ref(false)
@@ -156,16 +154,6 @@ const sort = (title) => {
         @click="sort('name')"
       >Name</th>
 
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'permissions' && props.sortDirection]"
-        @click="sort('permissions')"
-      >Permissions</th>
-
-      <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'user' && props.sortDirection]"
-        @click="sort('user')"
-      >User</th>
-
         <th />
       </tr>
     </thead>
@@ -183,20 +171,6 @@ const sort = (title) => {
               <td data-label="name">
                 {{ client.name }}
               </td>
-
-              <td data-label="permissions">
-                {{ client.permissions }}
-              </td>
-
-              <td data-label="user">
-                  <span
-                    v-for="(i, idx) in dataFormatter.usersManyListFormatter(client.user)"
-                    :key="idx + client.user"
-                    class="block"
-                  >
-                      {{ i }}
-                  </span>
-              </td>  
 
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons

@@ -14,8 +14,52 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
       },
 
-      number: {
-        type: DataTypes.INTEGER,
+      invoiceNumber: {
+        type: DataTypes.TEXT,
+      },
+
+      invoiceDate: {
+        type: DataTypes.DATEONLY,
+
+        get: function () {
+          return this.getDataValue('invoiceDate')
+            ? moment.utc(this.getDataValue('invoiceDate')).format('YYYY-MM-DD')
+            : null;
+        },
+      },
+
+      terms: {
+        type: DataTypes.ENUM,
+
+        values: [
+          'By Due Date',
+
+          'Upon Receipt',
+
+          'Net 7 Days',
+
+          'Net 10 Days',
+
+          'Net 15 Days',
+
+          'Net 30 Days',
+
+          'Net 45 Days',
+
+          'Net 60 Days',
+        ],
+      },
+
+      approvedJobValue: {
+        type: DataTypes.DECIMAL,
+      },
+
+      invoicedAmount: {
+        type: DataTypes.DECIMAL,
+      },
+
+      balanceAmount: {
+        type: DataTypes.DECIMAL,
       },
 
       importHash: {
@@ -32,32 +76,14 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   invoices.associate = (db) => {
-    db.invoices.belongsToMany(db.jobs, {
-      as: 'job',
-      foreignKey: {
-        name: 'invoices_jobId',
-      },
-      constraints: false,
-      through: 'invoicesJobJobs',
-    });
-
-    db.invoices.belongsToMany(db.estimates, {
-      as: 'estimate',
-      foreignKey: {
-        name: 'invoices_estimateId',
-      },
-      constraints: false,
-      through: 'invoicesEstimateEstimates',
-    });
-
     /// loop through entities and it's fields, and if ref === current e[name] and create relation has many on parent entity
 
     //end loop
 
-    db.invoices.belongsTo(db.documents, {
-      as: 'document',
+    db.invoices.belongsTo(db.jobs, {
+      as: 'jobId',
       foreignKey: {
-        name: 'documentId',
+        name: 'jobIdId',
       },
       constraints: false,
     });

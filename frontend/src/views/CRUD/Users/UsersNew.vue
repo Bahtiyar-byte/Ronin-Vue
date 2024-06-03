@@ -38,9 +38,9 @@ const form = reactive({
 
       avatar: [],
 
-      roleId: [],
+      userName: '',
 
-      name: '',
+      roleId: '',
 
 })
 
@@ -53,7 +53,7 @@ onBeforeMount(async () => {
 const submit = async () => {
   try {
 
-            form.roleId = form.roleId.map(item => item.id);
+            form.roleId = form.roleId.id;
 
     await usersStore.newItem({ ...form })
     router.push('/users');
@@ -76,9 +76,9 @@ const reset = () => {
 
         form.avatar = [];
 
-        form.roleId = [];
+        form.userName = '';
 
-        form.name = '';
+        form.roleId = '';
 
 }
 
@@ -166,24 +166,23 @@ watch(() => usersStore.notify.showNotification, (newValue, oldValue) => {
     </FormField>
 
     <FormField
-        label="Role"
-      >
+      label="User Name"
+    >
+      <FormControl
+        v-model="form.userName"
+        placeholder="Your User Name"
+      />
+    </FormField>
+
+  <FormField
+      label="Role "
+    >
         <v-select
           v-model="form.roleId"
           :options="optionsRoleId"
-          multiple
           @input="searchRoleId($event.target.value)"
         />
-    </FormField>
-
-    <FormField
-      label="Name"
-    >
-      <FormControl
-        v-model="form.name"
-        placeholder="Your Name"
-      />
-    </FormField>
+  </FormField>
 
     <BaseDivider />
 

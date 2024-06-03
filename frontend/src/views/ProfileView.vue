@@ -42,9 +42,9 @@ const form = reactive({
 
       avatar: [],
 
-      roleId: [],
+      userName: '',
 
-      name: '',
+      roleId: '',
 
 })
 
@@ -53,7 +53,7 @@ const usersItem = computed(() => usersStore.data);
 const submit = async () => {
   try {
 
-            form.roleId = form.roleId.map(item => item.id);
+            form.roleId = form.roleId.id;
 
     await usersStore.edit({id: form.id, data: {...form} })
     let currentUser = await authStore.findMe();
@@ -99,9 +99,9 @@ const formatData = () => {
 
     form.avatar = usersItem.value.avatar
 
-    form.roleId = dataFormatter.rolesManyListFormatterEditItem(form.roleId)
+    form.userName = usersItem.value.userName
 
-    form.name = usersItem.value.name
+    form.roleId = dataFormatter.rolesOneListFormatterEditItem(form.roleId)
 
 form.password = usersItem.value.password
 
@@ -182,24 +182,23 @@ const cancel = () => {
       </FormField>
 
     <FormField
-        label="Role"
-      >
-        <v-select
-          v-model="form.roleId"
-          :options="optionsRoleId"
-          multiple
-          @input="searchRoleId($event.target.value)"
-        />
-    </FormField>
-
-    <FormField
-      label="Name"
+      label="User Name"
     >
       <FormControl
-        v-model="form.name"
-        placeholder="Your Name"
+        v-model="form.userName"
+        placeholder="Your User Name"
       />
     </FormField>
+
+  <FormField
+      label="Role "
+    >
+      <v-select
+        v-model="form.roleId"
+        :options="optionsRoleId"
+        @input="searchRoleId($event.target.value)"
+      />
+  </FormField>
 
     <BaseDivider />
 

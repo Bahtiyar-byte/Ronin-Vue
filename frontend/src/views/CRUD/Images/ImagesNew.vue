@@ -22,28 +22,42 @@ const router = useRouter();
 const notification = computed(() => imagesStore.notify)
 const titleStack = ref(['Admin', 'Images'])
 
-        const optionsJob = computed(() => imagesStore.searchResultJob);
+        const optionsJobId = computed(() => imagesStore.searchResultJobId);
+
+        const optionsUserId = computed(() => imagesStore.searchResultUserId);
+
+        const optionsDocumentId = computed(() => imagesStore.searchResultDocumentId);
 
 const form = reactive({
 
-      job: [],
-
       name: '',
 
-      url: '',
+      jobId: '',
+
+      userId: '',
+
+      documentId: '',
 
 })
 
 onBeforeMount(async () => {
 
-  await searchJob();
+  await searchJobId();
+
+  await searchUserId();
+
+  await searchDocumentId();
 
 })
 
 const submit = async () => {
   try {
 
-            form.job = form.job.map(item => item.id);
+            form.jobId = form.jobId.id;
+
+            form.userId = form.userId.id;
+
+            form.documentId = form.documentId.id;
 
     await imagesStore.newItem({ ...form })
     router.push('/images');
@@ -54,11 +68,13 @@ const submit = async () => {
 
 const reset = () => {
 
-        form.job = [];
-
         form.name = '';
 
-        form.url = '';
+        form.jobId = '';
+
+        form.userId = '';
+
+        form.documentId = '';
 
 }
 
@@ -66,8 +82,16 @@ const cancel = () => {
   router.push('/users')
 }
 
-    async function searchJob(val) {
-      await imagesStore.searchJob(val);
+    async function searchJobId(val) {
+      await imagesStore.searchJobId(val);
+    }
+
+    async function searchUserId(val) {
+      await imagesStore.searchUserId(val);
+    }
+
+    async function searchDocumentId(val) {
+      await imagesStore.searchDocumentId(val);
     }
 
 watch(() => imagesStore.notify.showNotification, (newValue, oldValue) => {
@@ -95,17 +119,6 @@ watch(() => imagesStore.notify.showNotification, (newValue, oldValue) => {
     >
 
     <FormField
-        label="Job"
-      >
-        <v-select
-          v-model="form.job"
-          :options="optionsJob"
-          multiple
-          @input="searchJob($event.target.value)"
-        />
-    </FormField>
-
-    <FormField
       label="Name"
     >
       <FormControl
@@ -114,14 +127,35 @@ watch(() => imagesStore.notify.showNotification, (newValue, oldValue) => {
       />
     </FormField>
 
-    <FormField
-      label="Url"
+  <FormField
+      label="Job "
     >
-      <FormControl
-        v-model="form.url"
-        placeholder="Your Url"
-      />
-    </FormField>
+        <v-select
+          v-model="form.jobId"
+          :options="optionsJobId"
+          @input="searchJobId($event.target.value)"
+        />
+  </FormField>
+
+  <FormField
+      label="User "
+    >
+        <v-select
+          v-model="form.userId"
+          :options="optionsUserId"
+          @input="searchUserId($event.target.value)"
+        />
+  </FormField>
+
+  <FormField
+      label="Document "
+    >
+        <v-select
+          v-model="form.documentId"
+          :options="optionsDocumentId"
+          @input="searchDocumentId($event.target.value)"
+        />
+  </FormField>
 
     <BaseDivider />
 
