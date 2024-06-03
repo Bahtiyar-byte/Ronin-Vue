@@ -11,6 +11,312 @@ module.exports = {
     const transaction = await queryInterface.sequelize.transaction();
     try {
       await queryInterface.createTable(
+        'users',
+        {
+          id: {
+            type: Sequelize.DataTypes.UUID,
+            defaultValue: Sequelize.DataTypes.UUIDV4,
+            primaryKey: true,
+          },
+          createdById: {
+            type: Sequelize.DataTypes.UUID,
+            references: {
+              key: 'id',
+              model: 'users',
+            },
+          },
+          updatedById: {
+            type: Sequelize.DataTypes.UUID,
+            references: {
+              key: 'id',
+              model: 'users',
+            },
+          },
+          createdAt: { type: Sequelize.DataTypes.DATE },
+          updatedAt: { type: Sequelize.DataTypes.DATE },
+          deletedAt: { type: Sequelize.DataTypes.DATE },
+          importHash: {
+            type: Sequelize.DataTypes.STRING(255),
+            allowNull: true,
+            unique: true,
+          },
+        },
+        { transaction },
+      );
+
+      await queryInterface.createTable(
+        'contacts',
+        {
+          id: {
+            type: Sequelize.DataTypes.UUID,
+            defaultValue: Sequelize.DataTypes.UUIDV4,
+            primaryKey: true,
+          },
+          createdById: {
+            type: Sequelize.DataTypes.UUID,
+            references: {
+              key: 'id',
+              model: 'users',
+            },
+          },
+          updatedById: {
+            type: Sequelize.DataTypes.UUID,
+            references: {
+              key: 'id',
+              model: 'users',
+            },
+          },
+          createdAt: { type: Sequelize.DataTypes.DATE },
+          updatedAt: { type: Sequelize.DataTypes.DATE },
+          deletedAt: { type: Sequelize.DataTypes.DATE },
+          importHash: {
+            type: Sequelize.DataTypes.STRING(255),
+            allowNull: true,
+            unique: true,
+          },
+        },
+        { transaction },
+      );
+
+      await queryInterface.createTable(
+        'addresses',
+        {
+          id: {
+            type: Sequelize.DataTypes.UUID,
+            defaultValue: Sequelize.DataTypes.UUIDV4,
+            primaryKey: true,
+          },
+          createdById: {
+            type: Sequelize.DataTypes.UUID,
+            references: {
+              key: 'id',
+              model: 'users',
+            },
+          },
+          updatedById: {
+            type: Sequelize.DataTypes.UUID,
+            references: {
+              key: 'id',
+              model: 'users',
+            },
+          },
+          createdAt: { type: Sequelize.DataTypes.DATE },
+          updatedAt: { type: Sequelize.DataTypes.DATE },
+          deletedAt: { type: Sequelize.DataTypes.DATE },
+          importHash: {
+            type: Sequelize.DataTypes.STRING(255),
+            allowNull: true,
+            unique: true,
+          },
+        },
+        { transaction },
+      );
+
+      await queryInterface.createTable(
+        'estimates',
+        {
+          id: {
+            type: Sequelize.DataTypes.UUID,
+            defaultValue: Sequelize.DataTypes.UUIDV4,
+            primaryKey: true,
+          },
+          createdById: {
+            type: Sequelize.DataTypes.UUID,
+            references: {
+              key: 'id',
+              model: 'users',
+            },
+          },
+          updatedById: {
+            type: Sequelize.DataTypes.UUID,
+            references: {
+              key: 'id',
+              model: 'users',
+            },
+          },
+          createdAt: { type: Sequelize.DataTypes.DATE },
+          updatedAt: { type: Sequelize.DataTypes.DATE },
+          deletedAt: { type: Sequelize.DataTypes.DATE },
+          importHash: {
+            type: Sequelize.DataTypes.STRING(255),
+            allowNull: true,
+            unique: true,
+          },
+        },
+        { transaction },
+      );
+
+      await queryInterface.createTable(
+        'jobs',
+        {
+          id: {
+            type: Sequelize.DataTypes.UUID,
+            defaultValue: Sequelize.DataTypes.UUIDV4,
+            primaryKey: true,
+          },
+          createdById: {
+            type: Sequelize.DataTypes.UUID,
+            references: {
+              key: 'id',
+              model: 'users',
+            },
+          },
+          updatedById: {
+            type: Sequelize.DataTypes.UUID,
+            references: {
+              key: 'id',
+              model: 'users',
+            },
+          },
+          createdAt: { type: Sequelize.DataTypes.DATE },
+          updatedAt: { type: Sequelize.DataTypes.DATE },
+          deletedAt: { type: Sequelize.DataTypes.DATE },
+          importHash: {
+            type: Sequelize.DataTypes.STRING(255),
+            allowNull: true,
+            unique: true,
+          },
+        },
+        { transaction },
+      );
+
+      await queryInterface.createTable(
+        'roles',
+        {
+          id: {
+            type: Sequelize.DataTypes.UUID,
+            defaultValue: Sequelize.DataTypes.UUIDV4,
+            primaryKey: true,
+          },
+          createdById: {
+            type: Sequelize.DataTypes.UUID,
+            references: {
+              key: 'id',
+              model: 'users',
+            },
+          },
+          updatedById: {
+            type: Sequelize.DataTypes.UUID,
+            references: {
+              key: 'id',
+              model: 'users',
+            },
+          },
+          createdAt: { type: Sequelize.DataTypes.DATE },
+          updatedAt: { type: Sequelize.DataTypes.DATE },
+          deletedAt: { type: Sequelize.DataTypes.DATE },
+          importHash: {
+            type: Sequelize.DataTypes.STRING(255),
+            allowNull: true,
+            unique: true,
+          },
+        },
+        { transaction },
+      );
+
+      await queryInterface.createTable(
+        'permissions',
+        {
+          id: {
+            type: Sequelize.DataTypes.UUID,
+            defaultValue: Sequelize.DataTypes.UUIDV4,
+            primaryKey: true,
+          },
+          createdById: {
+            type: Sequelize.DataTypes.UUID,
+            references: {
+              key: 'id',
+              model: 'users',
+            },
+          },
+          updatedById: {
+            type: Sequelize.DataTypes.UUID,
+            references: {
+              key: 'id',
+              model: 'users',
+            },
+          },
+          createdAt: { type: Sequelize.DataTypes.DATE },
+          updatedAt: { type: Sequelize.DataTypes.DATE },
+          deletedAt: { type: Sequelize.DataTypes.DATE },
+          importHash: {
+            type: Sequelize.DataTypes.STRING(255),
+            allowNull: true,
+            unique: true,
+          },
+        },
+        { transaction },
+      );
+
+      await queryInterface.createTable(
+        'templates',
+        {
+          id: {
+            type: Sequelize.DataTypes.UUID,
+            defaultValue: Sequelize.DataTypes.UUIDV4,
+            primaryKey: true,
+          },
+          createdById: {
+            type: Sequelize.DataTypes.UUID,
+            references: {
+              key: 'id',
+              model: 'users',
+            },
+          },
+          updatedById: {
+            type: Sequelize.DataTypes.UUID,
+            references: {
+              key: 'id',
+              model: 'users',
+            },
+          },
+          createdAt: { type: Sequelize.DataTypes.DATE },
+          updatedAt: { type: Sequelize.DataTypes.DATE },
+          deletedAt: { type: Sequelize.DataTypes.DATE },
+          importHash: {
+            type: Sequelize.DataTypes.STRING(255),
+            allowNull: true,
+            unique: true,
+          },
+        },
+        { transaction },
+      );
+
+      await queryInterface.createTable(
+        'trades',
+        {
+          id: {
+            type: Sequelize.DataTypes.UUID,
+            defaultValue: Sequelize.DataTypes.UUIDV4,
+            primaryKey: true,
+          },
+          createdById: {
+            type: Sequelize.DataTypes.UUID,
+            references: {
+              key: 'id',
+              model: 'users',
+            },
+          },
+          updatedById: {
+            type: Sequelize.DataTypes.UUID,
+            references: {
+              key: 'id',
+              model: 'users',
+            },
+          },
+          createdAt: { type: Sequelize.DataTypes.DATE },
+          updatedAt: { type: Sequelize.DataTypes.DATE },
+          deletedAt: { type: Sequelize.DataTypes.DATE },
+          importHash: {
+            type: Sequelize.DataTypes.STRING(255),
+            allowNull: true,
+            unique: true,
+          },
+        },
+        { transaction },
+      );
+
+      await queryInterface.createTable(
         'invoices',
         {
           id: {
@@ -79,6 +385,74 @@ module.exports = {
       );
 
       await queryInterface.createTable(
+        'images',
+        {
+          id: {
+            type: Sequelize.DataTypes.UUID,
+            defaultValue: Sequelize.DataTypes.UUIDV4,
+            primaryKey: true,
+          },
+          createdById: {
+            type: Sequelize.DataTypes.UUID,
+            references: {
+              key: 'id',
+              model: 'users',
+            },
+          },
+          updatedById: {
+            type: Sequelize.DataTypes.UUID,
+            references: {
+              key: 'id',
+              model: 'users',
+            },
+          },
+          createdAt: { type: Sequelize.DataTypes.DATE },
+          updatedAt: { type: Sequelize.DataTypes.DATE },
+          deletedAt: { type: Sequelize.DataTypes.DATE },
+          importHash: {
+            type: Sequelize.DataTypes.STRING(255),
+            allowNull: true,
+            unique: true,
+          },
+        },
+        { transaction },
+      );
+
+      await queryInterface.createTable(
+        'documents',
+        {
+          id: {
+            type: Sequelize.DataTypes.UUID,
+            defaultValue: Sequelize.DataTypes.UUIDV4,
+            primaryKey: true,
+          },
+          createdById: {
+            type: Sequelize.DataTypes.UUID,
+            references: {
+              key: 'id',
+              model: 'users',
+            },
+          },
+          updatedById: {
+            type: Sequelize.DataTypes.UUID,
+            references: {
+              key: 'id',
+              model: 'users',
+            },
+          },
+          createdAt: { type: Sequelize.DataTypes.DATE },
+          updatedAt: { type: Sequelize.DataTypes.DATE },
+          deletedAt: { type: Sequelize.DataTypes.DATE },
+          importHash: {
+            type: Sequelize.DataTypes.STRING(255),
+            allowNull: true,
+            unique: true,
+          },
+        },
+        { transaction },
+      );
+
+      await queryInterface.createTable(
         'emails',
         {
           id: {
@@ -114,6 +488,40 @@ module.exports = {
 
       await queryInterface.createTable(
         'chats',
+        {
+          id: {
+            type: Sequelize.DataTypes.UUID,
+            defaultValue: Sequelize.DataTypes.UUIDV4,
+            primaryKey: true,
+          },
+          createdById: {
+            type: Sequelize.DataTypes.UUID,
+            references: {
+              key: 'id',
+              model: 'users',
+            },
+          },
+          updatedById: {
+            type: Sequelize.DataTypes.UUID,
+            references: {
+              key: 'id',
+              model: 'users',
+            },
+          },
+          createdAt: { type: Sequelize.DataTypes.DATE },
+          updatedAt: { type: Sequelize.DataTypes.DATE },
+          deletedAt: { type: Sequelize.DataTypes.DATE },
+          importHash: {
+            type: Sequelize.DataTypes.STRING(255),
+            allowNull: true,
+            unique: true,
+          },
+        },
+        { transaction },
+      );
+
+      await queryInterface.createTable(
+        'appointments',
         {
           id: {
             type: Sequelize.DataTypes.UUID,
@@ -249,7 +657,7 @@ module.exports = {
       );
 
       await queryInterface.createTable(
-        'roles',
+        'milestones',
         {
           id: {
             type: Sequelize.DataTypes.UUID,
@@ -282,69 +690,152 @@ module.exports = {
         { transaction },
       );
 
-      await queryInterface.createTable(
-        'permissions',
+      await queryInterface.addColumn(
+        'users',
+        'firstName',
         {
-          id: {
-            type: Sequelize.DataTypes.UUID,
-            defaultValue: Sequelize.DataTypes.UUIDV4,
-            primaryKey: true,
-          },
-          createdById: {
-            type: Sequelize.DataTypes.UUID,
-            references: {
-              key: 'id',
-              model: 'users',
-            },
-          },
-          updatedById: {
-            type: Sequelize.DataTypes.UUID,
-            references: {
-              key: 'id',
-              model: 'users',
-            },
-          },
-          createdAt: { type: Sequelize.DataTypes.DATE },
-          updatedAt: { type: Sequelize.DataTypes.DATE },
-          deletedAt: { type: Sequelize.DataTypes.DATE },
-          importHash: {
-            type: Sequelize.DataTypes.STRING(255),
-            allowNull: true,
-            unique: true,
+          type: Sequelize.DataTypes.TEXT,
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'users',
+        'lastName',
+        {
+          type: Sequelize.DataTypes.TEXT,
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'users',
+        'phoneNumber',
+        {
+          type: Sequelize.DataTypes.TEXT,
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'users',
+        'email',
+        {
+          type: Sequelize.DataTypes.TEXT,
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'users',
+        'disabled',
+        {
+          type: Sequelize.DataTypes.BOOLEAN,
+
+          defaultValue: false,
+          allowNull: false,
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'users',
+        'password',
+        {
+          type: Sequelize.DataTypes.TEXT,
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'users',
+        'emailVerified',
+        {
+          type: Sequelize.DataTypes.BOOLEAN,
+
+          defaultValue: false,
+          allowNull: false,
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'users',
+        'emailVerificationToken',
+        {
+          type: Sequelize.DataTypes.TEXT,
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'users',
+        'emailVerificationTokenExpiresAt',
+        {
+          type: Sequelize.DataTypes.DATE,
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'users',
+        'passwordResetToken',
+        {
+          type: Sequelize.DataTypes.TEXT,
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'users',
+        'passwordResetTokenExpiresAt',
+        {
+          type: Sequelize.DataTypes.DATE,
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'users',
+        'provider',
+        {
+          type: Sequelize.DataTypes.TEXT,
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'users',
+        'userName',
+        {
+          type: Sequelize.DataTypes.TEXT,
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'users',
+        'imageIdId',
+        {
+          type: Sequelize.DataTypes.UUID,
+
+          references: {
+            model: 'images',
+            key: 'id',
           },
         },
         { transaction },
       );
 
-      await queryInterface.createTable(
-        'addresses',
+      await queryInterface.addColumn(
+        'users',
+        'roleIdId',
         {
-          id: {
-            type: Sequelize.DataTypes.UUID,
-            defaultValue: Sequelize.DataTypes.UUIDV4,
-            primaryKey: true,
-          },
-          createdById: {
-            type: Sequelize.DataTypes.UUID,
-            references: {
-              key: 'id',
-              model: 'users',
-            },
-          },
-          updatedById: {
-            type: Sequelize.DataTypes.UUID,
-            references: {
-              key: 'id',
-              model: 'users',
-            },
-          },
-          createdAt: { type: Sequelize.DataTypes.DATE },
-          updatedAt: { type: Sequelize.DataTypes.DATE },
-          deletedAt: { type: Sequelize.DataTypes.DATE },
-          importHash: {
-            type: Sequelize.DataTypes.STRING(255),
-            allowNull: true,
-            unique: true,
+          type: Sequelize.DataTypes.UUID,
+
+          references: {
+            model: 'roles',
+            key: 'id',
           },
         },
         { transaction },
@@ -422,6 +913,184 @@ module.exports = {
         'crossReference',
         {
           type: Sequelize.DataTypes.TEXT,
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'contacts',
+        'assignedUserIdId',
+        {
+          type: Sequelize.DataTypes.UUID,
+
+          references: {
+            model: 'users',
+            key: 'id',
+          },
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'addresses',
+        'contactIdId',
+        {
+          type: Sequelize.DataTypes.UUID,
+
+          references: {
+            model: 'contacts',
+            key: 'id',
+          },
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'addresses',
+        'jobIdId',
+        {
+          type: Sequelize.DataTypes.UUID,
+
+          references: {
+            model: 'jobs',
+            key: 'id',
+          },
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'addresses',
+        'street',
+        {
+          type: Sequelize.DataTypes.TEXT,
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'addresses',
+        'suite_apt_unit',
+        {
+          type: Sequelize.DataTypes.TEXT,
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'addresses',
+        'city',
+        {
+          type: Sequelize.DataTypes.TEXT,
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'addresses',
+        'state',
+        {
+          type: Sequelize.DataTypes.ENUM,
+
+          values: ['AL', 'AK', 'AZ', 'AR', 'CA'],
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'addresses',
+        'zip',
+        {
+          type: Sequelize.DataTypes.TEXT,
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'addresses',
+        'country',
+        {
+          type: Sequelize.DataTypes.TEXT,
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'addresses',
+        'type',
+        {
+          type: Sequelize.DataTypes.ENUM,
+
+          values: ['Mailing', 'Billing', 'Location'],
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'estimates',
+        'description',
+        {
+          type: Sequelize.DataTypes.TEXT,
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'estimates',
+        'additionalNotes',
+        {
+          type: Sequelize.DataTypes.TEXT,
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'estimates',
+        'price',
+        {
+          type: Sequelize.DataTypes.DECIMAL,
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'estimates',
+        'jobIdId',
+        {
+          type: Sequelize.DataTypes.UUID,
+
+          references: {
+            model: 'jobs',
+            key: 'id',
+          },
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'estimates',
+        'contactIdId',
+        {
+          type: Sequelize.DataTypes.UUID,
+
+          references: {
+            model: 'contacts',
+            key: 'id',
+          },
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'estimates',
+        'templateIdId',
+        {
+          type: Sequelize.DataTypes.UUID,
+
+          references: {
+            model: 'templates',
+            key: 'id',
+          },
         },
         { transaction },
       );
@@ -511,8 +1180,50 @@ module.exports = {
       );
 
       await queryInterface.addColumn(
-        'estimates',
-        'description',
+        'jobs',
+        'contactIdId',
+        {
+          type: Sequelize.DataTypes.UUID,
+
+          references: {
+            model: 'contacts',
+            key: 'id',
+          },
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'jobs',
+        'orderIdId',
+        {
+          type: Sequelize.DataTypes.UUID,
+
+          references: {
+            model: 'orders',
+            key: 'id',
+          },
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'jobs',
+        'assignedUserIdId',
+        {
+          type: Sequelize.DataTypes.UUID,
+
+          references: {
+            model: 'users',
+            key: 'id',
+          },
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'roles',
+        'name',
         {
           type: Sequelize.DataTypes.TEXT,
         },
@@ -520,19 +1231,10 @@ module.exports = {
       );
 
       await queryInterface.addColumn(
-        'estimates',
-        'additionalNotes',
+        'permissions',
+        'name',
         {
           type: Sequelize.DataTypes.TEXT,
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'estimates',
-        'price',
-        {
-          type: Sequelize.DataTypes.DECIMAL,
         },
         { transaction },
       );
@@ -551,6 +1253,20 @@ module.exports = {
         'description',
         {
           type: Sequelize.DataTypes.TEXT,
+        },
+        { transaction },
+      );
+
+      await queryInterface.addColumn(
+        'templates',
+        'tradeIdId',
+        {
+          type: Sequelize.DataTypes.UUID,
+
+          references: {
+            model: 'trades',
+            key: 'id',
+          },
         },
         { transaction },
       );
@@ -588,15 +1304,6 @@ module.exports = {
             'Box Gutters',
             'Pressure Washing',
           ],
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'users',
-        'userName',
-        {
-          type: Sequelize.DataTypes.TEXT,
         },
         { transaction },
       );
@@ -681,300 +1388,6 @@ module.exports = {
       );
 
       await queryInterface.addColumn(
-        'invoices',
-        'createdById',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'users',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'invoices',
-        'updatedById',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'users',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'contacts',
-        'assignedUserIdId',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'users',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'contacts',
-        'createdById',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'users',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'contacts',
-        'updatedById',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'users',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'jobs',
-        'contactIdId',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'contacts',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'jobs',
-        'orderIdId',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'orders',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'jobs',
-        'assignedUserIdId',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'users',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'jobs',
-        'createdById',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'users',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'jobs',
-        'updatedById',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'users',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'estimates',
-        'jobIdId',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'jobs',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'estimates',
-        'contactIdId',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'contacts',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'estimates',
-        'templateIdId',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'templates',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'estimates',
-        'createdById',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'users',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'estimates',
-        'updatedById',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'users',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'templates',
-        'tradeIdId',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'trades',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'templates',
-        'createdById',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'users',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'templates',
-        'updatedById',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'users',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'users',
-        'imageIdId',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'images',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'users',
-        'createdById',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'users',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'users',
-        'updatedById',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'users',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
         'orders',
         'jobIdId',
         {
@@ -1016,20 +1429,6 @@ module.exports = {
         'totalAmount',
         {
           type: Sequelize.DataTypes.DECIMAL,
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'orders',
-        'createdById',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'users',
-            key: 'id',
-          },
         },
         { transaction },
       );
@@ -1086,20 +1485,6 @@ module.exports = {
       );
 
       await queryInterface.addColumn(
-        'images',
-        'createdById',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'users',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
         'documents',
         'jobIdId',
         {
@@ -1130,20 +1515,6 @@ module.exports = {
 
           defaultValue: false,
           allowNull: false,
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'documents',
-        'createdById',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'users',
-            key: 'id',
-          },
         },
         { transaction },
       );
@@ -1234,20 +1605,6 @@ module.exports = {
         'body',
         {
           type: Sequelize.DataTypes.TEXT,
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'emails',
-        'createdById',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'users',
-            key: 'id',
-          },
         },
         { transaction },
       );
@@ -1409,34 +1766,6 @@ module.exports = {
       );
 
       await queryInterface.addColumn(
-        'appointments',
-        'createdById',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'users',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'appointments',
-        'updatedById',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'users',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
         'tasks',
         'subject',
         {
@@ -1529,20 +1858,6 @@ module.exports = {
       );
 
       await queryInterface.addColumn(
-        'tasks',
-        'createdById',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'users',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
         'contracts',
         'name',
         {
@@ -1607,20 +1922,6 @@ module.exports = {
       );
 
       await queryInterface.addColumn(
-        'contracts',
-        'createdById',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'users',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
         'amendments',
         'jobIdId',
         {
@@ -1670,165 +1971,10 @@ module.exports = {
       );
 
       await queryInterface.addColumn(
-        'amendments',
-        'createdById',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'users',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'roles',
-        'name',
+        'milestones',
+        'Name',
         {
           type: Sequelize.DataTypes.TEXT,
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'permissions',
-        'name',
-        {
-          type: Sequelize.DataTypes.TEXT,
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'users',
-        'roleIdId',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'roles',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'roles',
-        'role_customization',
-        {
-          type: Sequelize.DataTypes.TEXT,
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'addresses',
-        'contactIdId',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'contacts',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'addresses',
-        'jobIdId',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'jobs',
-            key: 'id',
-          },
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'addresses',
-        'street',
-        {
-          type: Sequelize.DataTypes.TEXT,
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'addresses',
-        'suite_apt_unit',
-        {
-          type: Sequelize.DataTypes.TEXT,
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'addresses',
-        'city',
-        {
-          type: Sequelize.DataTypes.TEXT,
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'addresses',
-        'state',
-        {
-          type: Sequelize.DataTypes.ENUM,
-
-          values: ['AL', 'AK', 'AZ', 'AR', 'CA'],
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'addresses',
-        'zip',
-        {
-          type: Sequelize.DataTypes.TEXT,
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'addresses',
-        'country',
-        {
-          type: Sequelize.DataTypes.TEXT,
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'addresses',
-        'type',
-        {
-          type: Sequelize.DataTypes.ENUM,
-
-          values: ['Mailing', 'Billing', 'Location'],
-        },
-        { transaction },
-      );
-
-      await queryInterface.addColumn(
-        'addresses',
-        'createdById',
-        {
-          type: Sequelize.DataTypes.UUID,
-
-          references: {
-            model: 'users',
-            key: 'id',
-          },
         },
         { transaction },
       );
@@ -1850,49 +1996,7 @@ module.exports = {
      */
     const transaction = await queryInterface.sequelize.transaction();
     try {
-      await queryInterface.removeColumn('addresses', 'createdById', {
-        transaction,
-      });
-
-      await queryInterface.removeColumn('addresses', 'type', { transaction });
-
-      await queryInterface.removeColumn('addresses', 'country', {
-        transaction,
-      });
-
-      await queryInterface.removeColumn('addresses', 'zip', { transaction });
-
-      await queryInterface.removeColumn('addresses', 'state', { transaction });
-
-      await queryInterface.removeColumn('addresses', 'city', { transaction });
-
-      await queryInterface.removeColumn('addresses', 'suite_apt_unit', {
-        transaction,
-      });
-
-      await queryInterface.removeColumn('addresses', 'street', { transaction });
-
-      await queryInterface.removeColumn('addresses', 'jobIdId', {
-        transaction,
-      });
-
-      await queryInterface.removeColumn('addresses', 'contactIdId', {
-        transaction,
-      });
-
-      await queryInterface.removeColumn('roles', 'role_customization', {
-        transaction,
-      });
-
-      await queryInterface.removeColumn('users', 'roleIdId', { transaction });
-
-      await queryInterface.removeColumn('permissions', 'name', { transaction });
-
-      await queryInterface.removeColumn('roles', 'name', { transaction });
-
-      await queryInterface.removeColumn('amendments', 'createdById', {
-        transaction,
-      });
+      await queryInterface.removeColumn('milestones', 'Name', { transaction });
 
       await queryInterface.removeColumn('amendments', 'description', {
         transaction,
@@ -1905,10 +2009,6 @@ module.exports = {
       await queryInterface.removeColumn('amendments', 'type', { transaction });
 
       await queryInterface.removeColumn('amendments', 'jobIdId', {
-        transaction,
-      });
-
-      await queryInterface.removeColumn('contracts', 'createdById', {
         transaction,
       });
 
@@ -1929,10 +2029,6 @@ module.exports = {
       await queryInterface.removeColumn('contracts', 'amount', { transaction });
 
       await queryInterface.removeColumn('contracts', 'name', { transaction });
-
-      await queryInterface.removeColumn('tasks', 'createdById', {
-        transaction,
-      });
 
       await queryInterface.removeColumn('tasks', 'completed', { transaction });
 
@@ -1957,14 +2053,6 @@ module.exports = {
       });
 
       await queryInterface.removeColumn('tasks', 'subject', { transaction });
-
-      await queryInterface.removeColumn('appointments', 'updatedById', {
-        transaction,
-      });
-
-      await queryInterface.removeColumn('appointments', 'createdById', {
-        transaction,
-      });
 
       await queryInterface.removeColumn('appointments', 'reminder', {
         transaction,
@@ -2014,10 +2102,6 @@ module.exports = {
 
       await queryInterface.removeColumn('chats', 'jobIdId', { transaction });
 
-      await queryInterface.removeColumn('emails', 'createdById', {
-        transaction,
-      });
-
       await queryInterface.removeColumn('emails', 'body', { transaction });
 
       await queryInterface.removeColumn('emails', 'subject', { transaction });
@@ -2038,19 +2122,11 @@ module.exports = {
 
       await queryInterface.removeColumn('emails', 'jobIdId', { transaction });
 
-      await queryInterface.removeColumn('documents', 'createdById', {
-        transaction,
-      });
-
       await queryInterface.removeColumn('documents', 'active', { transaction });
 
       await queryInterface.removeColumn('documents', 'name', { transaction });
 
       await queryInterface.removeColumn('documents', 'jobIdId', {
-        transaction,
-      });
-
-      await queryInterface.removeColumn('images', 'createdById', {
         transaction,
       });
 
@@ -2063,10 +2139,6 @@ module.exports = {
       await queryInterface.removeColumn('images', 'jobIdId', { transaction });
 
       await queryInterface.removeColumn('images', 'name', { transaction });
-
-      await queryInterface.removeColumn('orders', 'createdById', {
-        transaction,
-      });
 
       await queryInterface.removeColumn('orders', 'totalAmount', {
         transaction,
@@ -2081,80 +2153,6 @@ module.exports = {
       });
 
       await queryInterface.removeColumn('orders', 'jobIdId', { transaction });
-
-      await queryInterface.removeColumn('users', 'updatedById', {
-        transaction,
-      });
-
-      await queryInterface.removeColumn('users', 'createdById', {
-        transaction,
-      });
-
-      await queryInterface.removeColumn('users', 'imageIdId', { transaction });
-
-      await queryInterface.removeColumn('templates', 'updatedById', {
-        transaction,
-      });
-
-      await queryInterface.removeColumn('templates', 'createdById', {
-        transaction,
-      });
-
-      await queryInterface.removeColumn('templates', 'tradeIdId', {
-        transaction,
-      });
-
-      await queryInterface.removeColumn('estimates', 'updatedById', {
-        transaction,
-      });
-
-      await queryInterface.removeColumn('estimates', 'createdById', {
-        transaction,
-      });
-
-      await queryInterface.removeColumn('estimates', 'templateIdId', {
-        transaction,
-      });
-
-      await queryInterface.removeColumn('estimates', 'contactIdId', {
-        transaction,
-      });
-
-      await queryInterface.removeColumn('estimates', 'jobIdId', {
-        transaction,
-      });
-
-      await queryInterface.removeColumn('jobs', 'updatedById', { transaction });
-
-      await queryInterface.removeColumn('jobs', 'createdById', { transaction });
-
-      await queryInterface.removeColumn('jobs', 'assignedUserIdId', {
-        transaction,
-      });
-
-      await queryInterface.removeColumn('jobs', 'orderIdId', { transaction });
-
-      await queryInterface.removeColumn('jobs', 'contactIdId', { transaction });
-
-      await queryInterface.removeColumn('contacts', 'updatedById', {
-        transaction,
-      });
-
-      await queryInterface.removeColumn('contacts', 'createdById', {
-        transaction,
-      });
-
-      await queryInterface.removeColumn('contacts', 'assignedUserIdId', {
-        transaction,
-      });
-
-      await queryInterface.removeColumn('invoices', 'updatedById', {
-        transaction,
-      });
-
-      await queryInterface.removeColumn('invoices', 'createdById', {
-        transaction,
-      });
 
       await queryInterface.removeColumn('invoices', 'jobIdId', { transaction });
 
@@ -2180,9 +2178,11 @@ module.exports = {
         transaction,
       });
 
-      await queryInterface.removeColumn('users', 'userName', { transaction });
-
       await queryInterface.removeColumn('trades', 'Name', { transaction });
+
+      await queryInterface.removeColumn('templates', 'tradeIdId', {
+        transaction,
+      });
 
       await queryInterface.removeColumn('templates', 'description', {
         transaction,
@@ -2190,15 +2190,17 @@ module.exports = {
 
       await queryInterface.removeColumn('templates', 'name', { transaction });
 
-      await queryInterface.removeColumn('estimates', 'price', { transaction });
+      await queryInterface.removeColumn('permissions', 'name', { transaction });
 
-      await queryInterface.removeColumn('estimates', 'additionalNotes', {
+      await queryInterface.removeColumn('roles', 'name', { transaction });
+
+      await queryInterface.removeColumn('jobs', 'assignedUserIdId', {
         transaction,
       });
 
-      await queryInterface.removeColumn('estimates', 'description', {
-        transaction,
-      });
+      await queryInterface.removeColumn('jobs', 'orderIdId', { transaction });
+
+      await queryInterface.removeColumn('jobs', 'contactIdId', { transaction });
 
       await queryInterface.removeColumn('jobs', 'description', { transaction });
 
@@ -2213,6 +2215,58 @@ module.exports = {
       await queryInterface.removeColumn('jobs', 'type', { transaction });
 
       await queryInterface.removeColumn('jobs', 'Name', { transaction });
+
+      await queryInterface.removeColumn('estimates', 'templateIdId', {
+        transaction,
+      });
+
+      await queryInterface.removeColumn('estimates', 'contactIdId', {
+        transaction,
+      });
+
+      await queryInterface.removeColumn('estimates', 'jobIdId', {
+        transaction,
+      });
+
+      await queryInterface.removeColumn('estimates', 'price', { transaction });
+
+      await queryInterface.removeColumn('estimates', 'additionalNotes', {
+        transaction,
+      });
+
+      await queryInterface.removeColumn('estimates', 'description', {
+        transaction,
+      });
+
+      await queryInterface.removeColumn('addresses', 'type', { transaction });
+
+      await queryInterface.removeColumn('addresses', 'country', {
+        transaction,
+      });
+
+      await queryInterface.removeColumn('addresses', 'zip', { transaction });
+
+      await queryInterface.removeColumn('addresses', 'state', { transaction });
+
+      await queryInterface.removeColumn('addresses', 'city', { transaction });
+
+      await queryInterface.removeColumn('addresses', 'suite_apt_unit', {
+        transaction,
+      });
+
+      await queryInterface.removeColumn('addresses', 'street', { transaction });
+
+      await queryInterface.removeColumn('addresses', 'jobIdId', {
+        transaction,
+      });
+
+      await queryInterface.removeColumn('addresses', 'contactIdId', {
+        transaction,
+      });
+
+      await queryInterface.removeColumn('contacts', 'assignedUserIdId', {
+        transaction,
+      });
 
       await queryInterface.removeColumn('contacts', 'crossReference', {
         transaction,
@@ -2236,11 +2290,53 @@ module.exports = {
         transaction,
       });
 
-      await queryInterface.dropTable('addresses', { transaction });
+      await queryInterface.removeColumn('users', 'roleIdId', { transaction });
 
-      await queryInterface.dropTable('permissions', { transaction });
+      await queryInterface.removeColumn('users', 'imageIdId', { transaction });
 
-      await queryInterface.dropTable('roles', { transaction });
+      await queryInterface.removeColumn('users', 'userName', { transaction });
+
+      await queryInterface.removeColumn('users', 'provider', { transaction });
+
+      await queryInterface.removeColumn(
+        'users',
+        'passwordResetTokenExpiresAt',
+        { transaction },
+      );
+
+      await queryInterface.removeColumn('users', 'passwordResetToken', {
+        transaction,
+      });
+
+      await queryInterface.removeColumn(
+        'users',
+        'emailVerificationTokenExpiresAt',
+        { transaction },
+      );
+
+      await queryInterface.removeColumn('users', 'emailVerificationToken', {
+        transaction,
+      });
+
+      await queryInterface.removeColumn('users', 'emailVerified', {
+        transaction,
+      });
+
+      await queryInterface.removeColumn('users', 'password', { transaction });
+
+      await queryInterface.removeColumn('users', 'disabled', { transaction });
+
+      await queryInterface.removeColumn('users', 'email', { transaction });
+
+      await queryInterface.removeColumn('users', 'phoneNumber', {
+        transaction,
+      });
+
+      await queryInterface.removeColumn('users', 'lastName', { transaction });
+
+      await queryInterface.removeColumn('users', 'firstName', { transaction });
+
+      await queryInterface.dropTable('milestones', { transaction });
 
       await queryInterface.dropTable('amendments', { transaction });
 
@@ -2248,13 +2344,37 @@ module.exports = {
 
       await queryInterface.dropTable('tasks', { transaction });
 
+      await queryInterface.dropTable('appointments', { transaction });
+
       await queryInterface.dropTable('chats', { transaction });
 
       await queryInterface.dropTable('emails', { transaction });
 
+      await queryInterface.dropTable('documents', { transaction });
+
+      await queryInterface.dropTable('images', { transaction });
+
       await queryInterface.dropTable('orders', { transaction });
 
       await queryInterface.dropTable('invoices', { transaction });
+
+      await queryInterface.dropTable('trades', { transaction });
+
+      await queryInterface.dropTable('templates', { transaction });
+
+      await queryInterface.dropTable('permissions', { transaction });
+
+      await queryInterface.dropTable('roles', { transaction });
+
+      await queryInterface.dropTable('jobs', { transaction });
+
+      await queryInterface.dropTable('estimates', { transaction });
+
+      await queryInterface.dropTable('addresses', { transaction });
+
+      await queryInterface.dropTable('contacts', { transaction });
+
+      await queryInterface.dropTable('users', { transaction });
 
       await transaction.commit();
     } catch (err) {
