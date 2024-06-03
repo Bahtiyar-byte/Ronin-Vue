@@ -13,6 +13,7 @@ interface Props {
   }
   showTitle: boolean
   showItemsPerPage: boolean
+  cardTitle?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -42,7 +43,7 @@ const showButtonsWrapper = props.showItemsPerPage || showButtonsContainer
     :title="itemsTitle as string"
     :breadcrumbs="breadcrumbs"
   />
-  <VCard>
+  <VCard :title="cardTitle">
     <template v-if="$slots.filters">
       <VCardItem class="pb-4">
         <VCardTitle>Filters</VCardTitle>
@@ -59,6 +60,8 @@ const showButtonsWrapper = props.showItemsPerPage || showButtonsContainer
       v-if="showButtonsWrapper"
       class="d-flex flex-wrap gap-4"
     >
+      <slot name="searchSectionTitle" />
+
       <div
         v-if="props.showItemsPerPage"
         class="me-3 d-flex gap-3"
