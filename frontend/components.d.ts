@@ -7,6 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    ActiveJobs: typeof import('./src/components/jobs/ActiveJobs.vue')['default']
     ActivityTab: typeof import('./src/components/contacts/details/ActivityTab.vue')['default']
     AddAuthenticatorAppDialog: typeof import('./src/components/dialogs/AddAuthenticatorAppDialog.vue')['default']
     AddEditAddressDialog: typeof import('./src/components/dialogs/AddEditAddressDialog.vue')['default']
@@ -62,7 +63,7 @@ declare module 'vue' {
     PipelineCard: typeof import('./src/components/common/pipelines/PipelineCard.vue')['default']
     PricingPlanDialog: typeof import('./src/components/dialogs/PricingPlanDialog.vue')['default']
     ProductDescriptionEditor: typeof import('./src/@core/components/ProductDescriptionEditor.vue')['default']
-    QuickCreateEntity: typeof import('./src/components/common/index/QuickCreateEntity.vue')['default']
+    QuickCreateEntity: typeof import('./src/components/index/QuickCreateEntity.vue')['default']
     ReferAndEarnDialog: typeof import('./src/components/dialogs/ReferAndEarnDialog.vue')['default']
     RelatedTab: typeof import('./src/components/contacts/details/RelatedTab.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

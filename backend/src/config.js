@@ -36,15 +36,15 @@ const config = {
   },
   uploadDir: os.tmpdir(),
   email: {
-    from: 'Evans CRM <app@flatlogic.app>',
-    host: 'email-smtp.us-east-1.amazonaws.com',
+    from: 'Evans CRM <info@thedigitalronin.com>',
+    host: 'smtp.gmail.com',
     port: 587,
     auth: {
-      user: 'AKIAVEW7G4PQUBGM52OF',
+      user: 'info@thedigitalronin.com',
       pass: process.env.EMAIL_PASS,
     },
     tls: {
-      rejectUnauthorized: false,
+      rejectUnauthorized: true
     },
   },
   roles: {

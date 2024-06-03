@@ -41,6 +41,7 @@ services:
     - ./../backend/src:/usr/src/app/src
     - ./../backend/package.json:/usr/src/app/package.json
     - ./../backend/.prettierrc:/usr/src/app/.prettierrc
+    - ./../backend/.env:/usr/src/app/.env
     build: ../backend
     environment:
      - DEV_DB_HOST=db

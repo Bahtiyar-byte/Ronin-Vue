@@ -1,19 +1,27 @@
 <script setup lang="ts">
+import { useSlots } from 'vue'
 import type { BreadcrumbsItem } from '@/types/breadcrumbs/BreadcrumbsItem'
 import PageHeader from '@/components/common/PageHeader.vue'
 import AppSelect from '@core/components/app-form-elements/AppSelect.vue'
 import AppTextField from '@core/components/app-form-elements/AppTextField.vue'
 
-defineProps<{
-  itemsTitle: string
+interface Props {
+  itemsTitle?: string
   breadcrumbs?: BreadcrumbsItem[]
   searchSettings?: {
     placeholder: string
   }
-}>()
+  showTitle: boolean
+  showItemsPerPage: boolean
+}
 
-const searchQuery = defineModel<string>('searchQuery', { required: true })
-const itemsPerPage = defineModel<number>('itemsPerPage', { required: true })
+const props = withDefaults(defineProps<Props>(), {
+  showTitle: true,
+  showItemsPerPage: true,
+})
+
+const searchQuery = defineModel<string>('searchQuery')
+const itemsPerPage = defineModel<number>('itemsPerPage')
 
 const itemsPerPageOptions = [
   { value: 10, title: '10' },
@@ -22,11 +30,16 @@ const itemsPerPageOptions = [
   { value: 100, title: '100' },
   { value: -1, title: 'All' },
 ]
+
+const slots = useSlots()
+const showButtonsContainer = props.searchSettings || slots.buttons
+const showButtonsWrapper = props.showItemsPerPage || showButtonsContainer
 </script>
 
 <template>
   <PageHeader
-    :title="itemsTitle"
+    v-if="props.showTitle"
+    :title="itemsTitle as string"
     :breadcrumbs="breadcrumbs"
   />
   <VCard>
@@ -42,8 +55,14 @@ const itemsPerPageOptions = [
       <VDivider class="!opacity-60" />
     </template>
 
-    <VCardText class="d-flex flex-wrap gap-4">
-      <div class="me-3 d-flex gap-3">
+    <VCardText
+      v-if="showButtonsWrapper"
+      class="d-flex flex-wrap gap-4"
+    >
+      <div
+        v-if="props.showItemsPerPage"
+        class="me-3 d-flex gap-3"
+      >
         <AppSelect
           v-model="itemsPerPage"
           :items="itemsPerPageOptions"
@@ -53,7 +72,10 @@ const itemsPerPageOptions = [
 
       <VSpacer />
 
-      <div class="app-search-filter d-flex align-center flex-wrap gap-4">
+      <div
+        v-if="searchSettings || showButtonsContainer"
+        class="app-search-filter d-flex align-center flex-wrap gap-4"
+      >
         <div
           v-if="searchSettings"
           style="inline-size: 15.625rem;"
@@ -69,7 +91,10 @@ const itemsPerPageOptions = [
       </div>
     </VCardText>
 
-    <VDivider class="!opacity-60" />
+    <VDivider
+      v-if="showButtonsWrapper"
+      class="!opacity-60"
+    />
 
     <slot name="table" />
   </VCard>

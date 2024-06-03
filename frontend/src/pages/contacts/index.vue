@@ -19,8 +19,6 @@ const pagination = ref({
   totalItems: 0,
 })
 
-const sortBy = ref<SortItem[]>([])
-
 const headers = ref([
   { title: 'Name', key: 'name' },
   { title: 'Email', key: 'email' },
@@ -45,6 +43,7 @@ onBeforeMount(() => {
 })
 
 const isLoading = ref(false)
+const sortBy = ref<SortItem[]>([])
 const searchQuery = ref<string>((route.query?.q ?? '') as string)
 
 const fetchData = async () => {
