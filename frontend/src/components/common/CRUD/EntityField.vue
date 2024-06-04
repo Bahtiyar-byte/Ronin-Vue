@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { debounce } from 'lodash'
 import AppTextField from '@core/components/app-form-elements/AppTextField.vue'
 import AppSelect from '@core/components/app-form-elements/AppSelect.vue'
 import AppAutocomplete from '@core/components/app-form-elements/AppAutocomplete.vue'
@@ -14,9 +15,19 @@ const props = defineProps<{
 const value = defineModel<string | string[]>()
 const field = props.field
 
-if (field.type === 'autocomplete' && typeof field.autocomplete_function === 'function') {
-  field.variants = await field.autocomplete_function() as Array<{ value: string; title: string }>
+const fetchAutocompleteVariants = async (query: string = '') => {
+  if (field.type === 'autocomplete' && typeof field.autocomplete_function === 'function') {
+    field.variants = await field.autocomplete_function(query) as Array<{ value: string; title: string }>
+  }
 }
+
+const debouncedFetchVariants = debounce((query: string) => {
+  fetchAutocompleteVariants(query)
+}, 400)
+
+onBeforeMount(() => {
+  fetchAutocompleteVariants()
+})
 
 const getComponentType = (type: string) => {
   if (type === 'select') {
@@ -39,6 +50,7 @@ const getComponentType = (type: string) => {
       v-bind="attrs"
       :items="field.variants"
       :error-messages="errorMessages"
+      @update:search="debouncedFetchVariants"
     />
     <slot name="append" />
   </div>
