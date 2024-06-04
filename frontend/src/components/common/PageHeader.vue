@@ -8,19 +8,15 @@ defineProps<{
 </script>
 
 <template>
-  <VContainer class="!py-0">
-    <VRow class="flex-col">
-      <VCol>
-        <h1 class="font-semibold text-2xl px-1">
-          {{ title }}
-        </h1>
+  <div class="px-6">
+    <h1 class="font-semibold text-2xl px-1">
+      {{ title }}
+    </h1>
 
-        <VBreadcrumbs
-          v-if="breadcrumbs"
-          :items="breadcrumbs"
-          class="!pl-0"
-        />
-      </VCol>
-    </VRow>
-  </VContainer>
+    <VBreadcrumbs
+      v-if="breadcrumbs"
+      :items="breadcrumbs"
+      class="!pl-0"
+    />
+  </div>
 </template>

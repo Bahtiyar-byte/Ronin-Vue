@@ -3,6 +3,7 @@ import { onBeforeMount, ref, watch } from 'vue'
 import * as yup from 'yup'
 import { useRoute } from 'vue-router'
 import { useContacts } from '@/composables/useContacts'
+import { useFilters } from '@/composables/useFilters'
 import { hasKey } from '@core/utils/helpers'
 
 import ItemUpdate from '@/components/common/CRUD/ItemUpdate.vue'
@@ -22,6 +23,7 @@ const breadcrumbs = ref([
   { title: 'New contact', disabled: true },
 ])
 
+const { getVariants } = useFilters()
 const contactRef = ref<Contact>()
 
 const formFields = ref<Array<FormField | FormFieldsGroup>>([
@@ -47,15 +49,40 @@ const formFields = ref<Array<FormField | FormFieldsGroup>>([
         name: 'stage',
         label: 'Stage',
         value: '',
-        variants: [
-          { value: 'Lead', title: 'Lead' },
-          { value: 'Prospect', title: 'Prospect' },
-        ],
+        variants: [],
         rules: yup.string().required('Stage is required'),
       },
     ],
   },
 ])
+
+onBeforeMount(async () => {
+  const processFormField = async (field: FormField) => {
+    if (field.type === 'select') {
+      const { data } = await getVariants('contacts', field.name)
+
+      watch(data, newVal => {
+        if (newVal === null) {
+          return
+        }
+
+        field.variants = newVal
+      })
+    }
+  }
+
+  const promises = (formFields.value as Array<FormField | FormFieldsGroup>).map(async (val: FormField | FormFieldsGroup) => {
+    if ('fields' in val) {
+      for (const field of val.fields) {
+        await processFormField(field)
+      }
+    } else {
+      await processFormField(val)
+    }
+  })
+
+  await Promise.all(promises)
+})
 
 const fetchContactData = async (id: string) => {
   const { data } = await getContactById(id)

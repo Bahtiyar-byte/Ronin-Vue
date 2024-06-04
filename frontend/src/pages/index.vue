@@ -9,8 +9,9 @@ import { useJobs } from '@/composables/useJobs'
 
 import PipelineCard from '@/components/common/pipelines/PipelineCard.vue'
 import QuickCreateEntity from '@/components/index/QuickCreateEntity.vue'
-import CrmAnalyticsSales from '@/components/dashboards/CrmAnalyticsSales.vue'
-import CrmRevenueGrowth from '@/components/dashboards/CrmRevenueGrowth.vue'
+
+// import CrmAnalyticsSales from '@/components/dashboards/CrmAnalyticsSales.vue'
+// import CrmRevenueGrowth from '@/components/dashboards/CrmRevenueGrowth.vue'
 import ActiveJobs from '@/components/jobs/ActiveJobs.vue'
 
 const currentPipelineItems = ref<PipelineDisplayItem[]>([])
@@ -95,7 +96,7 @@ watchEffect(() => {
         class="mb-6"
       />
 
-      <CrmRevenueGrowth />
+      <!-- <CrmRevenueGrowth /> -->
     </VCol>
     <VCol
       cols="12"
@@ -103,7 +104,7 @@ watchEffect(() => {
     >
       <QuickCreateEntity class="mb-6" />
 
-      <CrmAnalyticsSales />
+      <!-- <CrmAnalyticsSales /> -->
     </VCol>
   </VRow>
 </template>

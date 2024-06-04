@@ -3,7 +3,9 @@ import { onBeforeMount, ref, watch } from 'vue'
 import * as yup from 'yup'
 import { useRoute } from 'vue-router'
 import { useJobs } from '@/composables/useJobs'
+import { useContacts } from '@/composables/useContacts'
 import { hasKey } from '@core/utils/helpers'
+import { useFilters } from '@/composables/useFilters'
 
 import ItemUpdate from '@/components/common/CRUD/ItemUpdate.vue'
 import type FormField from '@/types/forms/FormField'
@@ -11,6 +13,8 @@ import type FormFieldsGroup from '@/types/forms/FormFieldsGroup'
 import type Job from '@/types/jobs/Job'
 
 const { create: createJob, getById: getJobById, update: updateJob } = useJobs()
+const { autocomplete: autocompleteContacts } = useContacts()
+
 const route = useRoute()
 
 const isUpdateMode = ref(false)
@@ -22,6 +26,7 @@ const breadcrumbs = ref([
   { title: 'New job', disabled: true },
 ])
 
+const { getVariants } = useFilters()
 const jobRef = ref<Job>()
 
 const formFields = ref<Array<FormField | FormFieldsGroup>>([
@@ -40,6 +45,7 @@ const formFields = ref<Array<FormField | FormFieldsGroup>>([
         name: 'category',
         label: 'Category',
         value: '',
+        variants: [],
         rules: yup.string().required('Category is required'),
       },
       {
@@ -47,15 +53,64 @@ const formFields = ref<Array<FormField | FormFieldsGroup>>([
         name: 'status',
         label: 'Status',
         value: '',
-        variants: [
-          // { value: 'Lead', title: 'Lead' },
-          // { value: 'Prospect', title: 'Prospect' },
-        ],
+        variants: [],
         rules: yup.string().required('Status is required'),
+      },
+      {
+        type: 'select',
+        name: 'type',
+        label: 'Type',
+        value: '',
+        variants: [],
+        rules: yup.string(),
+      },
+      {
+        type: 'autocomplete',
+        name: 'related_contactId',
+        label: 'Related contact',
+        value: '',
+        autocomplete_function: async (query: string = '') => {
+          const { data } = await autocompleteContacts(query)
+
+          if (data.value === null) {
+            return
+          }
+
+          return data.value.map(item => ({ value: item.id, title: item.label }))
+        },
+        rules: yup.string(),
       },
     ],
   },
 ])
+
+onBeforeMount(async () => {
+  const processFormField = async (field: FormField) => {
+    if (field.type === 'select') {
+      const { data } = await getVariants('jobs', field.name)
+
+      watch(data, newVal => {
+        if (newVal === null) {
+          return
+        }
+
+        field.variants = newVal
+      })
+    }
+  }
+
+  const promises = (formFields.value as Array<FormField | FormFieldsGroup>).map(async (val: FormField | FormFieldsGroup) => {
+    if ('fields' in val) {
+      for (const field of val.fields) {
+        await processFormField(field)
+      }
+    } else {
+      await processFormField(val)
+    }
+  })
+
+  await Promise.all(promises)
+})
 
 const fetchJobData = async (id: string) => {
   const { data } = await getJobById(id)
