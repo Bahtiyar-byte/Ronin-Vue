@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { onBeforeMount, ref, watch } from 'vue'
+import { useHead } from '@unhead/vue'
 import * as yup from 'yup'
 import { useRoute } from 'vue-router'
 import { useJobs } from '@/composables/useJobs'
@@ -145,6 +146,12 @@ onBeforeMount(async () => {
   }
 
   dataLoaded.value = true
+})
+
+useHead({
+  title: computed(() => {
+    return isUpdateMode.value && jobRef.value !== undefined ? `Edit ${jobRef.value.name}` : 'Create new job'
+  }),
 })
 
 const submitForm = async (values: Record<string, any>) => {
