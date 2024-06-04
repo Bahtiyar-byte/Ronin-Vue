@@ -84,34 +84,6 @@ const formFields = ref<Array<FormField | FormFieldsGroup>>([
   },
 ])
 
-onBeforeMount(async () => {
-  const processFormField = async (field: FormField) => {
-    if (field.type === 'select') {
-      const { data } = await getVariants('jobs', field.name)
-
-      watch(data, newVal => {
-        if (newVal === null) {
-          return
-        }
-
-        field.variants = newVal
-      })
-    }
-  }
-
-  const promises = (formFields.value as Array<FormField | FormFieldsGroup>).map(async (val: FormField | FormFieldsGroup) => {
-    if ('fields' in val) {
-      for (const field of val.fields) {
-        await processFormField(field)
-      }
-    } else {
-      await processFormField(val)
-    }
-  })
-
-  await Promise.all(promises)
-})
-
 const fetchJobData = async (id: string) => {
   const { data } = await getJobById(id)
 
@@ -139,12 +111,40 @@ const fetchJobData = async (id: string) => {
   })
 }
 
+const dataLoaded = ref<boolean>(false)
+
 onBeforeMount(async () => {
+  const processFormField = async (field: FormField) => {
+    if (field.type === 'select') {
+      const { data } = await getVariants('jobs', field.name)
+
+      if (data.value === null) {
+        return
+      }
+
+      field.variants = data.value
+    }
+  }
+
+  const promises = (formFields.value as Array<FormField | FormFieldsGroup>).map(async (val: FormField | FormFieldsGroup) => {
+    if ('fields' in val) {
+      for (const field of val.fields) {
+        await processFormField(field)
+      }
+    } else {
+      await processFormField(val)
+    }
+  })
+
+  await Promise.all(promises)
+
   const jobId = route.params.id as string
   if (jobId) {
     isUpdateMode.value = true
     await fetchJobData(jobId)
   }
+
+  dataLoaded.value = true
 })
 
 const submitForm = async (values: Record<string, any>) => {
@@ -165,6 +165,7 @@ const submitForm = async (values: Record<string, any>) => {
 
 <template>
   <ItemUpdate
+    v-if="dataLoaded"
     :title="pageTitle"
     :breadcrumbs="breadcrumbs"
     :fields="formFields as FormField[]"

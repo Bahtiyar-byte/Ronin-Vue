@@ -41,13 +41,11 @@ onBeforeMount(async () => {
     if (val.options !== undefined && val.options.length === 0) {
       const { data } = await getVariants('contacts', val.key)
 
-      watch(data, newVal => {
-        if (newVal === null) {
-          return
-        }
+      if (data.value === null) {
+        return
+      }
 
-        val.options = newVal
-      })
+      val.options = data.value
     }
   })
 

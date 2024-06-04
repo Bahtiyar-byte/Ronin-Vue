@@ -5,7 +5,7 @@ export const useFilters = () => {
     const {
       data,
       isFetching,
-    } = useApi(`/filters/variants?entity=${entity}&column=${column}`).get().json<string[]>()
+    } = await useApi(`/filters/variants?entity=${entity}&column=${column}`).get().json<string[]>()
 
     return {
       data,
