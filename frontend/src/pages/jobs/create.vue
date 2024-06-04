@@ -2,7 +2,7 @@
 import { onBeforeMount, ref, watch } from 'vue'
 import { useHead } from '@unhead/vue'
 import * as yup from 'yup'
-import { useRoute } from 'vue-router'
+import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router'
 import { useJobs } from '@/composables/useJobs'
 import { useContacts } from '@/composables/useContacts'
 import { hasKey } from '@core/utils/helpers'
@@ -16,7 +16,7 @@ import type Job from '@/types/jobs/Job'
 const { create: createJob, getById: getJobById, update: updateJob } = useJobs()
 const { autocomplete: autocompleteContacts } = useContacts()
 
-const route = useRoute()
+const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } }
 
 const isUpdateMode = ref(false)
 const pageTitle = ref('Create Job')

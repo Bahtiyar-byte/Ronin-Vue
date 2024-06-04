@@ -7,7 +7,6 @@ const widgets = ref<WidgetCardProps[]>([
     widget: {
       title: 'Jobs',
       value: 0,
-      desc: 'Jobs connected to this contact',
       icon: 'material-symbols-task-outline',
       action: {
         title: 'Add job for this contact',
@@ -22,7 +21,6 @@ const widgets = ref<WidgetCardProps[]>([
     widget: {
       title: 'Invoices',
       value: 0,
-      desc: 'Invoices issued to this contact',
       icon: 'ph-invoice-light',
       iconColor: 'success',
       action: {
@@ -38,7 +36,6 @@ const widgets = ref<WidgetCardProps[]>([
     widget: {
       title: 'Documents',
       value: 0,
-      desc: 'Documents attached to this customer',
       icon: 'ph-invoice-light',
       iconColor: 'info',
       action: {

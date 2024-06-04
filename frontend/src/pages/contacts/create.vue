@@ -2,7 +2,7 @@
 import { onBeforeMount, ref, watch } from 'vue'
 import { useHead } from '@unhead/vue'
 import * as yup from 'yup'
-import { useRoute } from 'vue-router'
+import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router'
 import { useContacts } from '@/composables/useContacts'
 import { useFilters } from '@/composables/useFilters'
 import { hasKey } from '@core/utils/helpers'
@@ -13,7 +13,7 @@ import type FormFieldsGroup from '@/types/forms/FormFieldsGroup'
 import type Contact from '@/types/contacts/Contact'
 
 const { create: createContact, getById: getContactById, update: updateContact } = useContacts()
-const route = useRoute()
+const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } }
 
 const isUpdateMode = ref(false)
 const pageTitle = ref('Create Contact')

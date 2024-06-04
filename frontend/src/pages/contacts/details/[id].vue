@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useHead } from '@unhead/vue'
+import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router'
 import { useContacts } from '@/composables/useContacts'
 import type Contact from '@/types/contacts/Contact'
 
@@ -8,7 +9,7 @@ import ContactInfoPanel from '@/components/contacts/ContactInfoPanel.vue'
 import ActivityTab from '@/components/contacts/details/ActivityTab.vue'
 import RelatedTab from '@/components/contacts/details/RelatedTab.vue'
 
-const route = useRoute()
+const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } }
 
 const contactTab = ref(null)
 
@@ -36,6 +37,12 @@ onMounted(async () => {
   watch(isFetching, newVal => {
     isLoading.value = newVal
   }, { immediate: true })
+})
+
+useHead({
+  title: computed(() => {
+    return contactData.value !== undefined ? `${contactData.value.name} details` : null
+  }),
 })
 </script>
 

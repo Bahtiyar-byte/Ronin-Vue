@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useHead } from '@unhead/vue'
+import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router'
 import { useJobs } from '@/composables/useJobs'
 import type Job from '@/types/jobs/Job'
 
@@ -8,7 +9,7 @@ import JobInfoPanel from '@/components/jobs/JobInfoPanel.vue'
 import ActivityTab from '@/components/jobs/details/ActivityTab.vue'
 import RelatedTab from '@/components/jobs/details/RelatedTab.vue'
 
-const route = useRoute()
+const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } }
 
 const jobTab = ref(null)
 
@@ -36,6 +37,12 @@ onMounted(async () => {
   watch(isFetching, newVal => {
     isLoading.value = newVal
   }, { immediate: true })
+})
+
+useHead({
+  title: computed(() => {
+    return jobData.value !== undefined ? `${jobData.value.name} details` : null
+  }),
 })
 </script>
 
