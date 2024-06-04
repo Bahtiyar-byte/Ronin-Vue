@@ -167,7 +167,7 @@ const submitForm = async (values: Record<string, any>) => {
   <ItemUpdate
     :title="pageTitle"
     :breadcrumbs="breadcrumbs"
-    :fields="formFields"
+    :fields="formFields as FormField[]"
     :submit-handler="submitForm"
   />
 </template>
