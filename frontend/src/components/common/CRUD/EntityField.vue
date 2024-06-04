@@ -30,12 +30,16 @@ const getComponentType = (type: string) => {
 </script>
 
 <template>
-  <Component
-    :is="getComponentType(field.type)"
-    v-model="value"
-    :label="field.label"
-    v-bind="attrs"
-    :items="field.variants"
-    :error-messages="errorMessages"
-  />
+  <div class="flex items-end">
+    <slot name="prepend" />
+    <Component
+      :is="getComponentType(field.type)"
+      v-model="value"
+      :label="field.label"
+      v-bind="attrs"
+      :items="field.variants"
+      :error-messages="errorMessages"
+    />
+    <slot name="append" />
+  </div>
 </template>

@@ -170,5 +170,20 @@ const submitForm = async (values: Record<string, any>) => {
     :breadcrumbs="breadcrumbs"
     :fields="formFields as FormField[]"
     :submit-handler="submitForm"
-  />
+  >
+    <template #append_related_contactId>
+      <VTooltip text="Add new contact">
+        <template #activator="{ props }">
+          <IconBtn
+            v-bind="props"
+            :to="{ name: 'contacts-create' }"
+            target="_blank"
+            class="ml-2"
+          >
+            <VIcon icon="tabler-plus" />
+          </IconBtn>
+        </template>
+      </VTooltip>
+    </template>
+  </ItemUpdate>
 </template>

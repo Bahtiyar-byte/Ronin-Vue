@@ -16,48 +16,49 @@ const props = defineProps<{
   submitHandler: (values: Record<string, any>) => Promise<void>
 }>()
 
-const formData = ref(
-  props.fields.reduce((acc, field) => {
+const initializeFormData = (fields: Array<FormField | FormFieldsGroup>) => {
+  const data = {} as Record<string, any>
+
+  fields.forEach(field => {
     if ('fields' in field) {
-      field?.fields.forEach((subField: FormField) => {
-        acc[subField.name] = subField.value || ''
+      field.fields.forEach(subField => {
+        data[subField.name] = subField.value || ''
       })
     } else {
-      acc[field.name] = field.value || ''
+      data[field.name] = field.value || ''
     }
+  })
 
-    return acc
-  }, {} as Record<string, any>),
-)
+  return data
+}
 
-const validationSchema = computed(() =>
-  toTypedSchema(
-    yup.object().shape(
-      props.fields.reduce((acc, field) => {
-        if ('fields' in field) {
-          field.fields.forEach(subField => {
-            if (subField.rules !== undefined) {
-              acc[subField.name] = subField.rules
-            }
-          })
-        } else {
-          if (field.rules !== undefined) {
-            acc[field.name] = field.rules
-          }
+const initializeValidationSchema = (fields: Array<FormField | FormFieldsGroup>) => {
+  const schema = {} as Record<string, yup.Schema>
+
+  fields.forEach(field => {
+    if ('fields' in field) {
+      field.fields.forEach(subField => {
+        if (subField.rules !== undefined) {
+          schema[subField.name] = subField.rules
         }
+      })
+    } else if (field.rules !== undefined) {
+      schema[field.name] = field.rules
+    }
+  })
 
-        return acc
-      }, {} as Record<string, yup.Schema>),
-    ),
-  ),
-)
+  return yup.object().shape(schema)
+}
+
+const formData = ref(initializeFormData(props.fields))
+const validationSchema = computed(() => toTypedSchema(initializeValidationSchema(props.fields)))
 
 const { errors, handleSubmit, defineField, setFieldValue } = useForm({
   validationSchema,
 })
 
-watch(props.fields, newFields => {
-  newFields.forEach(field => {
+const updateFieldValues = (fields: Array<FormField | FormFieldsGroup>) => {
+  fields.forEach(field => {
     if ('fields' in field) {
       field.fields.forEach(subField => {
         setFieldValue(subField.name, subField.value)
@@ -66,12 +67,16 @@ watch(props.fields, newFields => {
       setFieldValue(field.name, field.value)
     }
   })
+}
+
+watch(props.fields, newFields => {
+  updateFieldValues(newFields)
 }, { deep: true })
 
 const fieldAttrs = ref<Record<string, any>>({})
 
-onMounted(() => {
-  props.fields.forEach(field => {
+const setupFieldAttributes = (fields: Array<FormField | FormFieldsGroup>) => {
+  fields.forEach(field => {
     if ('fields' in field) {
       field.fields.forEach(subField => {
         const [value, attrs] = defineField(subField.name, { validateOnBlur: true })
@@ -86,6 +91,10 @@ onMounted(() => {
       fieldAttrs.value[field.name] = attrs
     }
   })
+}
+
+onMounted(() => {
+  setupFieldAttributes(props.fields)
 })
 
 const onSubmit = handleSubmit(async (values: Record<string, any>) => {
@@ -120,9 +129,16 @@ const onSubmit = handleSubmit(async (values: Record<string, any>) => {
                 <EntityField
                   v-model="formData[subField.name]"
                   :field="subField"
-                  :error-messages="errors[subField.name]"
+                  :error-messages="errors[subField.name] as string"
                   :attrs="fieldAttrs[subField.name]"
-                />
+                >
+                  <template
+                    v-if="$slots[`append_${subField.name}`]"
+                    #append
+                  >
+                    <slot :name="`append_${subField.name}`" />
+                  </template>
+                </EntityField>
               </VCol>
             </VRow>
             <VDivider v-if="index < fields.length - 1" />
@@ -132,9 +148,16 @@ const onSubmit = handleSubmit(async (values: Record<string, any>) => {
             v-else
             v-model="formData[field.name]"
             :field="field"
-            :error-messages="errors[field.name]"
+            :error-messages="errors[field.name] as string"
             :attrs="fieldAttrs[field.name]"
-          />
+          >
+            <template
+              v-if="$slots[`prepend_${fieldAttrs.name}`]"
+              #append
+            >
+              <slot :name="`append_${fieldAttrs.name}`" />
+            </template>
+          </EntityField>
         </div>
       </VCardText>
       <VCardActions>
