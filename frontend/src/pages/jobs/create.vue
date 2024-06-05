@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onBeforeMount, ref, watch } from 'vue'
+import { type UnwrapRef, onBeforeMount, ref, watch } from 'vue'
 import { useHead } from '@unhead/vue'
 import * as yup from 'yup'
 import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router'
@@ -67,7 +67,7 @@ const formFields = ref<Array<FormField | FormFieldsGroup>>([
       },
       {
         type: 'autocomplete',
-        name: 'related_contactId',
+        name: 'related_contact',
         label: 'Related contact',
         value: '',
         autocomplete_function: async (query: string = '') => {
@@ -93,17 +93,25 @@ const fetchJobData = async (id: string) => {
       return
     }
 
+    const assignFieldValue = (field: UnwrapRef<FormField>, value: string | { id: string }) => {
+      if (typeof value === 'object' && hasKey(value, 'id')) {
+        field.value = value.id as string
+      } else {
+        field.value = value as string
+      }
+    }
+
     jobRef.value = job
     formFields.value.forEach(field => {
       if ('fields' in field) {
         // Если поле является группой, обрабатываем вложенные поля
         field.fields.forEach(subField => {
           if (hasKey(job, subField.name)) {
-            subField.value = job[subField.name] as string
+            assignFieldValue(subField, job[subField.name])
           }
         })
       } else if (hasKey(job, field.name)) {
-        field.value = job[field.name] as string
+        assignFieldValue(field, job[field.name])
       }
     })
 

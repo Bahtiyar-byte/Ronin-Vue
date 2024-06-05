@@ -50,8 +50,8 @@ const getComponentType = (type: string) => {
       v-bind="attrs"
       :items="field.variants"
       :error-messages="errorMessages"
-      @update:search="debouncedFetchVariants"
     />
+    <!-- @update:search="debouncedFetchVariants" -->
     <slot name="append" />
   </div>
 </template>
