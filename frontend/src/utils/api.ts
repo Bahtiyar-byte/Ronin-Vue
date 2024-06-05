@@ -34,3 +34,21 @@ export const getResponseText = async (res: Response): Promise<string> => {
 
   return result
 }
+
+export const prepareEntityToUpdate = (entity: Record<string, any>): Record<string, any> => {
+  const updatedEntity: Record<string, any> = {}
+
+  for (const key in entity) {
+    if (Object.prototype.hasOwnProperty.call(entity, key)) {
+      if (key.endsWith('Id') && (key.startsWith('related_') || key.startsWith('assigned_'))) {
+        const newKey = key.slice(0, -2)
+
+        updatedEntity[newKey] = entity[key]
+      } else if (updatedEntity[key] === undefined) {
+        updatedEntity[key] = entity[key]
+      }
+    }
+  }
+
+  return updatedEntity
+}

@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { toRaw } from 'vue'
 import type Job from '@/types/jobs/Job'
 import { useFilters } from '@/composables/useFilters'
 import { useJobs } from '@/composables/useJobs'
-import EditEnumField from '@/components/common/CRUD/EditEnumField.vue'
 
 const props = defineProps<{
   jobData: Job
@@ -14,6 +14,23 @@ const contactEditVisible = defineModel<boolean>('jobEditVisible', {
 
 const { getVariants } = useFilters()
 const { update } = useJobs()
+
+const fetchEnumItems = async (type: string) => {
+  const { data } = await getVariants('jobs', type)
+
+  return data.value
+}
+
+const saveItem = async (type: string, newValue: string) => {
+  const updatedData = {
+    ...prepareEntityToUpdate(toRaw(props.jobData)),
+    [type]: newValue,
+  }
+
+  const { isFetching } = await update(updatedData)
+
+  return isFetching
+}
 </script>
 
 <template>
@@ -53,39 +70,29 @@ const { update } = useJobs()
               </VListItemTitle>
             </VListItem>
 
-            <VListItem>
-              <VListItemTitle>
-                <span class="font-medium">
-                  Type:
-                </span>
-                <div class="d-inline-block text-body-1">
-                  {{ jobData.type }}
-                </div>
-              </VListItemTitle>
-            </VListItem>
+            <EditableInfoItem
+              label="Category"
+              :value="jobData.category as string"
+              title="Update job category"
+              :fetch-items="() => fetchEnumItems('category')"
+              :on-save="(newValue: string) => saveItem('category', newValue)"
+            />
 
-            <VListItem>
-              <VListItemTitle class="flex items-center gap-1">
-                <span class="font-medium">
-                  Status:
-                </span>
-                <EditEnumField
-                  :value="jobData.status as string"
-                  title="Update job status"
-                  :fetch-items="async () => {
-                    const { data } = await getVariants('jobs', 'status')
+            <EditableInfoItem
+              label="Type"
+              :value="jobData.type as string"
+              title="Update job type"
+              :fetch-items="() => fetchEnumItems('type')"
+              :on-save="(newValue: string) => saveItem('type', newValue)"
+            />
 
-                    return data.value
-                  }"
-                  :on-save="async () => {
-                    const { isFetching } = await update(jobData)
-
-                    return isFetching
-                  }"
-                  class="d-inline-block text-body-1 text-capitalize"
-                />
-              </VListItemTitle>
-            </VListItem>
+            <EditableInfoItem
+              label="Status"
+              :value="jobData.status as string"
+              title="Update job status"
+              :fetch-items="() => fetchEnumItems('status')"
+              :on-save="(newValue: string) => saveItem('status', newValue)"
+            />
           </VList>
 
           <h5 class="text-[1.05rem] leading-[1.5] font-medium mt-6">
@@ -95,20 +102,23 @@ const { update } = useJobs()
           <VDivider class="my-4 !opacity-60" />
 
           <VList class="card-list mt-2">
-            <VListItem>
-              <VListItemTitle>
-                <span class="font-medium">
-                  Contact:
-                </span>
-              </VListItemTitle>
-            </VListItem>
-            <VListItem>
-              <VListItemTitle>
-                <span class="font-medium">
-                  Assigned to:
-                </span>
-              </VListItemTitle>
-            </VListItem>
+            <EditableInfoItem
+              label="Related contact"
+              type="autocomplete"
+              :value="jobData.related_contactId as string"
+              title="Update job related contact"
+              :fetch-items="() => fetchEnumItems('status')"
+              :on-save="(newValue: string) => saveItem('related_contact', newValue)"
+            />
+
+            <EditableInfoItem
+              label="Assigned to"
+              type="autocomplete"
+              :value="jobData.assigned_toId as string"
+              title="Update job assigned user"
+              :fetch-items="() => fetchEnumItems('status')"
+              :on-save="(newValue: string) => saveItem('assigned_to', newValue)"
+            />
           </VList>
         </VCardText>
 
