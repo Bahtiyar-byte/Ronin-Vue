@@ -153,6 +153,12 @@ const sources: BundleScriptConfig = {
       ],
     },
     {
+      filename: require.resolve('@iconify-json/material-symbols-light/icons.json'),
+      icons: [
+        'save-outline',
+      ],
+    },
+    {
       filename: require.resolve('@iconify-json/fa/icons.json'),
       icons: [
         'circle',

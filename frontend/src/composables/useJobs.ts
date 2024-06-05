@@ -62,13 +62,13 @@ export const useJobs = () => {
     }
   }
 
-  const create = async (contact: Job) => {
+  const create = async (job: Job) => {
     const {
       data,
       isFetching,
       error,
     } = useApi('/jobs/').post({
-      data: contact,
+      data: job,
     }).json<boolean>()
 
     return {
@@ -78,14 +78,14 @@ export const useJobs = () => {
     }
   }
 
-  const update = async (contact: Job) => {
+  const update = async (job: Job) => {
     const {
       data,
       isFetching,
       error,
-    } = useApi(`/jobs/${contact.id}`).put({
-      id: contact.id,
-      data: contact,
+    } = useApi(`/jobs/${job.id}`).put({
+      id: job.id,
+      data: job,
     }).json<boolean>()
 
     return {
@@ -95,12 +95,12 @@ export const useJobs = () => {
     }
   }
 
-  const deleteJob = async (contact: Job) => {
+  const deleteJob = async (job: Job) => {
     const {
       data,
       isFetching,
       error,
-    } = useApi(`/jobs/${contact.id}`).delete().json<boolean>()
+    } = useApi(`/jobs/${job.id}`).delete().json<boolean>()
 
     return {
       data,
