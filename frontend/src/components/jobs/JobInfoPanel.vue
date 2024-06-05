@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import type Job from '@/types/jobs/Job'
 
-defineProps<{
+const props = defineProps<{
   jobData: Job
 }>()
 
 const contactEditVisible = defineModel<boolean>('jobEditVisible', {
   default: true,
 })
+
+console.log(props.jobData)
 </script>
 
 <template>
@@ -36,33 +38,27 @@ const contactEditVisible = defineModel<boolean>('jobEditVisible', {
               </VListItemTitle>
             </VListItem>
 
-<!--            <VListItem>-->
-<!--              <VListItemTitle>-->
-<!--                <span class="font-medium">-->
-<!--                  Email:-->
-<!--                </span>-->
-<!--                <a-->
-<!--                  :href="`mailto:${jobData.email}`"-->
-<!--                  class="text-primary"-->
-<!--                >-->
-<!--                  {{ jobData.email }}-->
-<!--                </a>-->
-<!--              </VListItemTitle>-->
-<!--            </VListItem>-->
+            <VListItem v-if="jobData.address">
+              <VListItemTitle>
+                <span class="font-medium">
+                  Address:
+                </span>
+                <div class="d-inline-block text-body-1">
+                  {{ jobData.address }}
+                </div>
+              </VListItemTitle>
+            </VListItem>
 
-<!--            <VListItem>-->
-<!--              <VListItemTitle>-->
-<!--                <span class="font-medium">-->
-<!--                  Phone:-->
-<!--                </span>-->
-<!--                <a-->
-<!--                  :href="`tel:${jobData.phone}`"-->
-<!--                  class="text-primary"-->
-<!--                >-->
-<!--                  {{ jobData.phone }}-->
-<!--                </a>-->
-<!--              </VListItemTitle>-->
-<!--            </VListItem>-->
+            <VListItem>
+              <VListItemTitle>
+                <span class="font-medium">
+                  Type:
+                </span>
+                <div class="d-inline-block text-body-1">
+                  {{ jobData.type }}
+                </div>
+              </VListItemTitle>
+            </VListItem>
 
             <VListItem>
               <VListItemTitle>

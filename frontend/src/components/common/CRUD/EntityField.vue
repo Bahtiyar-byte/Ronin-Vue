@@ -22,6 +22,10 @@ const fetchAutocompleteVariants = async (query: string = '') => {
 }
 
 const debouncedFetchVariants = debounce((query: string) => {
+  if (value.value?.length) {
+    return
+  }
+
   fetchAutocompleteVariants(query)
 }, 400)
 
@@ -50,8 +54,8 @@ const getComponentType = (type: string) => {
       v-bind="attrs"
       :items="field.variants"
       :error-messages="errorMessages"
+      @update:search="debouncedFetchVariants"
     />
-    <!-- @update:search="debouncedFetchVariants" -->
     <slot name="append" />
   </div>
 </template>
