@@ -22,24 +22,13 @@ const fetchEnumItems = async (type: string) => {
   return data.value
 }
 
-const fetchContactsAutocomplete = async (query: string) => {
-  const { data } = await autocompleteContacts(query)
-
+const fetchAutocomplete = async (query: string, autocompleteFn: (query: string) => Promise<any>) => {
+  const { data } = await autocompleteFn(query)
   if (data.value === null) {
     return
   }
 
-  return data.value.map(item => ({ value: item.id, title: item.label }))
-}
-
-const fetchUserssAutocomplete = async (query: string) => {
-  const { data } = await autocompleteUsers(query)
-
-  if (data.value === null) {
-    return
-  }
-
-  return data.value.map(item => ({ value: item.id, title: item.label }))
+  return data.value.map((item: any) => ({ value: item.id, title: item.label }))
 }
 
 const saveItem = async (type: string, newValue: string) => {
@@ -54,8 +43,6 @@ const saveItem = async (type: string, newValue: string) => {
     if (newVal === null) {
       return
     }
-
-    console.log(newVal)
 
     jobData.value = newVal
   })
@@ -138,7 +125,7 @@ const saveItem = async (type: string, newValue: string) => {
               type="autocomplete"
               :value="jobData.related_contactId as string"
               title="Update job related contact"
-              :fetch-autocomplete-items="fetchContactsAutocomplete"
+              :fetch-autocomplete-items="(query: string) => fetchAutocomplete(query, autocompleteContacts)"
               :on-save="(newValue: string) => saveItem('related_contact', newValue)"
             />
 
@@ -147,7 +134,7 @@ const saveItem = async (type: string, newValue: string) => {
               type="autocomplete"
               :value="jobData.assigned_toId as string"
               title="Update job assigned user"
-              :fetch-autocomplete-items="fetchUserssAutocomplete"
+              :fetch-autocomplete-items="(query: string) => fetchAutocomplete(query, autocompleteUsers)"
               :on-save="(newValue: string) => saveItem('assigned_to', newValue)"
             />
           </VList>
