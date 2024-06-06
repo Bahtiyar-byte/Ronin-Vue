@@ -150,6 +150,7 @@ const sources: BundleScriptConfig = {
         'work-alert-outline',
         'request-quote-outline',
         'task-outline',
+        'video-call-outline',
       ],
     },
     {

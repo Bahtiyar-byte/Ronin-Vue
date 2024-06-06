@@ -41,6 +41,10 @@ declare module 'vue-router/auto/routes' {
   export interface RouteNamedMap {
     'root': RouteRecordInfo<'root', '/', Record<never, never>, Record<never, never>>,
     '$error': RouteRecordInfo<'$error', '/:error(.*)', { error: ParamValue<true> }, { error: ParamValue<false> }>,
+    'appointments': RouteRecordInfo<'appointments', '/appointments', Record<never, never>, Record<never, never>>,
+    'appointments-create': RouteRecordInfo<'appointments-create', '/appointments/create', Record<never, never>, Record<never, never>>,
+    'appointments-details-id': RouteRecordInfo<'appointments-details-id', '/appointments/details/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    'appointments-update-id': RouteRecordInfo<'appointments-update-id', '/appointments/update/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'auth-login': RouteRecordInfo<'auth-login', '/auth/login', Record<never, never>, Record<never, never>>,
     'contacts': RouteRecordInfo<'contacts', '/contacts', Record<never, never>, Record<never, never>>,
     'contacts-create': RouteRecordInfo<'contacts-create', '/contacts/create', Record<never, never>, Record<never, never>>,

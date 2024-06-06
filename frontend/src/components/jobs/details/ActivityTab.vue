@@ -5,11 +5,25 @@ import WidgetCard from '@/components/widgets/WidgetCard.vue'
 const widgets = ref<WidgetCardProps[]>([
   {
     widget: {
-      title: 'Jobs',
+      title: 'Appointments',
+      value: 0,
+      icon: 'material-symbols-video-call-outline',
+      action: {
+        title: 'Add appointment for this job',
+        icon: 'tabler-plus',
+        to: {
+          name: 'root',
+        },
+      },
+    },
+  },
+  {
+    widget: {
+      title: 'Estimates',
       value: 0,
       icon: 'material-symbols-task-outline',
       action: {
-        title: 'Add job for this contact',
+        title: 'Add estimate for this job',
         icon: 'tabler-plus',
         to: {
           name: 'root',
