@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { type Ref } from 'vue'
+import { debounce } from 'lodash'
 
 const props = defineProps<{
   title: string
-  fetchItems: () => Promise<string[] | { value: string; title: string }[] | null>
+  fetchItems: (query: string) => Promise<string[] | { value: string; title: string }[] | null | undefined>
   onSave: (newValue: string) => void | Promise<void | Ref<boolean>>
 }>()
 
@@ -12,9 +13,17 @@ const loading = defineModel<boolean>('loading')
 
 const items = ref<string[] | { value: string; title: string } | null>()
 
-const startEditing = async () => {
-  items.value = await props.fetchItems()
-}
+onBeforeMount(async () => {
+  items.value = await props.fetchItems('')
+})
+
+const debouncedFetchVariants = debounce(async (query: string) => {
+  if (value.value?.length) {
+    return
+  }
+
+  items.value = await props.fetchItems(query)
+}, 400)
 
 const save = async (newValue: string) => {
   const isLoading = await props.onSave(newValue)
@@ -37,8 +46,8 @@ const save = async (newValue: string) => {
           }"
           :loading="loading"
           density="compact"
-          @click.once="startEditing"
           @update:model-value="save"
+          @update:search="debouncedFetchVariants"
         />
       </template>
     </VTooltip>

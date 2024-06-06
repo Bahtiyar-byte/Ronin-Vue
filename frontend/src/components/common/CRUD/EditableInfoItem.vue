@@ -7,7 +7,8 @@ const props = withDefaults(defineProps<{
   label: string
   value: string
   title: string
-  fetchItems: () => Promise<string[] | null>
+  fetchItems?: () => Promise<string[] | null>
+  fetchAutocompleteItems?: (query: string) => Promise<string[] | { value: string; title: string }[] | undefined>
   onSave: (newValue: string) => Promise<Ref<boolean>>
   type: 'select' | 'autocomplete'
 }>(), {
@@ -32,7 +33,7 @@ const props = withDefaults(defineProps<{
         v-else
         :value="value"
         :title="title"
-        :fetch-items="fetchItems"
+        :fetch-items="fetchAutocompleteItems"
         :on-save="onSave"
       />
     </VListItemTitle>

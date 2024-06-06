@@ -3,6 +3,8 @@ import { toRaw } from 'vue'
 import type Job from '@/types/jobs/Job'
 import { useFilters } from '@/composables/useFilters'
 import { useJobs } from '@/composables/useJobs'
+import { useContacts } from '@/composables/useContacts'
+import { useUsers } from '@/composables/useUsers'
 
 const props = defineProps<{
   jobData: Job
@@ -14,11 +16,33 @@ const contactEditVisible = defineModel<boolean>('jobEditVisible', {
 
 const { getVariants } = useFilters()
 const { update } = useJobs()
+const { autocomplete: autocompleteContacts } = useContacts()
+const { autocomplete: autocompleteUsers } = useUsers()
 
 const fetchEnumItems = async (type: string) => {
   const { data } = await getVariants('jobs', type)
 
   return data.value
+}
+
+const fetchContactsAutocomplete = async (query: string) => {
+  const { data } = await autocompleteContacts(query)
+
+  if (data.value === null) {
+    return
+  }
+
+  return data.value.map(item => ({ value: item.id, title: item.label }))
+}
+
+const fetchUserssAutocomplete = async (query: string) => {
+  const { data } = await autocompleteUsers(query)
+
+  if (data.value === null) {
+    return
+  }
+
+  return data.value.map(item => ({ value: item.id, title: item.label }))
 }
 
 const saveItem = async (type: string, newValue: string) => {
@@ -107,7 +131,7 @@ const saveItem = async (type: string, newValue: string) => {
               type="autocomplete"
               :value="jobData.related_contactId as string"
               title="Update job related contact"
-              :fetch-items="() => fetchEnumItems('status')"
+              :fetch-autocomplete-items="fetchContactsAutocomplete"
               :on-save="(newValue: string) => saveItem('related_contact', newValue)"
             />
 
@@ -116,7 +140,7 @@ const saveItem = async (type: string, newValue: string) => {
               type="autocomplete"
               :value="jobData.assigned_toId as string"
               title="Update job assigned user"
-              :fetch-items="() => fetchEnumItems('status')"
+              :fetch-autocomplete-items="fetchUserssAutocomplete"
               :on-save="(newValue: string) => saveItem('assigned_to', newValue)"
             />
           </VList>
