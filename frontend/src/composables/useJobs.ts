@@ -109,6 +109,18 @@ export const useJobs = () => {
     }
   }
 
+  const autocomplete = async (query: string, limit: number = 100) => {
+    const {
+      data,
+      isFetching,
+    } = await useApi(`/jobs/autocomplete/?query=${query}&limit=${limit}`).json<{ id: string; label: string }[]>()
+
+    return {
+      data,
+      isFetching,
+    }
+  }
+
   return {
     count,
     getList,
@@ -116,5 +128,6 @@ export const useJobs = () => {
     create,
     update,
     deleteJob,
+    autocomplete,
   }
 }

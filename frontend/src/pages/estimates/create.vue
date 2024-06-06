@@ -2,11 +2,12 @@
 import { type UnwrapRef, onBeforeMount, ref, watch } from 'vue'
 import { useHead } from '@unhead/vue'
 
-// import * as yup from 'yup'
+import * as yup from 'yup'
 import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router'
 import { useEstimates } from '@/composables/useEstimates'
 
-// import { useContacts } from '@/composables/useContacts'
+import { useJobs } from '@/composables/useJobs'
+import { useContacts } from '@/composables/useContacts'
 import { hasKey } from '@core/utils/helpers'
 import { useFilters } from '@/composables/useFilters'
 
@@ -17,7 +18,8 @@ import type Estimate from '@/types/estimates/Estimate'
 
 const { create: createEstimate, getById: getEstimateById, update: updateEstimate } = useEstimates()
 
-// const { autocomplete: autocompleteContacts } = useContacts()
+const { autocomplete: autocompleteContacts } = useContacts()
+const { autocomplete: autocompleteJobs } = useJobs()
 
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } }
 
@@ -36,7 +38,40 @@ const estimateRef = ref<Estimate>()
 const formFields = ref<Array<FormField | FormFieldsGroup>>([
   {
     title: 'General',
-    fields: [],
+    fields: [
+      {
+        type: 'autocomplete',
+        name: 'related_job',
+        label: 'Related job',
+        value: '',
+        autocomplete_function: async (query: string = '') => {
+          const { data } = await autocompleteJobs(query)
+
+          if (data.value === null) {
+            return
+          }
+
+          return data.value.map(item => ({ value: item.id, title: item.label }))
+        },
+        rules: yup.string(),
+      },
+      {
+        type: 'autocomplete',
+        name: 'related_contact',
+        label: 'Related contact',
+        value: '',
+        autocomplete_function: async (query: string = '') => {
+          const { data } = await autocompleteContacts(query)
+
+          if (data.value === null) {
+            return
+          }
+
+          return data.value.map(item => ({ value: item.id, title: item.label }))
+        },
+        rules: yup.string(),
+      },
+    ],
   },
 ])
 
