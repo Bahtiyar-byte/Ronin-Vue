@@ -2,36 +2,36 @@
 import { watch } from 'vue'
 import { useHead } from '@unhead/vue'
 import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router'
-import { useJobs } from '@/composables/useJobs'
-import type Job from '@/types/jobs/Job'
+import { useEstimates } from '@/composables/useEstimates'
+import type Estimate from '@/types/estimates/Estimate'
 
-import JobInfoPanel from '@/components/jobs/JobInfoPanel.vue'
-import ActivityTab from '@/components/jobs/details/ActivityTab.vue'
-import RelatedTab from '@/components/jobs/details/RelatedTab.vue'
+import EstimateInfoPanel from '@/components/estimates/EstimateInfoPanel.vue'
+import ActivityTab from '@/components/estimates/details/ActivityTab.vue'
+import RelatedTab from '@/components/estimates/details/RelatedTab.vue'
 
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } }
 
-const jobTab = ref(null)
+const estimateTab = ref(null)
 
 const tabs = [
   { icon: 'tabler-activity', title: 'Activity' },
   { icon: 'ph-link-light', title: 'Related' },
 ]
 
-const jobData = ref<Job>()
-const jobName = ref<string>('')
+const estimateData = ref<Estimate>()
+const estimateName = ref<string>('')
 const isLoading = ref<boolean>(false)
 
 onMounted(async () => {
-  const { data, isFetching } = await useJobs().getById(route.params.id)
+  const { data, isFetching } = await useEstimates().getById(route.params.id)
 
   watch(data, newVal => {
     if (newVal === null) {
       return
     }
 
-    jobName.value = newVal.name
-    jobData.value = newVal
+    estimateName.value = newVal.id
+    estimateData.value = newVal
   })
 
   watch(isFetching, newVal => {
@@ -41,7 +41,7 @@ onMounted(async () => {
 
 useHead({
   title: computed(() => {
-    return jobData.value !== undefined ? `${jobData.value.name} details` : null
+    return estimateData.value !== undefined ? `${estimateData.value.id} details` : null
   }),
 })
 </script>
@@ -54,23 +54,23 @@ useHead({
         to: { name: 'root' },
       },
       {
-        title: 'Jobs',
-        to: { name: 'jobs' },
+        title: 'Estimates',
+        to: { name: 'estimates' },
       },
       {
-        title: jobName,
+        title: estimateName,
         disabled: true,
       },
     ]"
     class="!pl-0"
   />
-  <VRow v-if="jobData">
+  <VRow v-if="estimateData">
     <VCol
       cols="12"
       md="5"
       lg="4"
     >
-      <JobInfoPanel :job-data="jobData" />
+      <EstimateInfoPanel :estimate-data="estimateData" />
     </VCol>
 
     <VCol
@@ -79,7 +79,7 @@ useHead({
       lg="8"
     >
       <VTabs
-        v-model="jobTab"
+        v-model="estimateTab"
         class="v-tabs-pill"
       >
         <VTab
@@ -96,12 +96,12 @@ useHead({
       </VTabs>
 
       <VWindow
-        v-model="jobTab"
+        v-model="estimateTab"
         class="mt-6 disable-tab-transition"
         :touch="false"
       >
         <VWindowItem>
-          <ActivityTab :job-data="jobData" />
+          <ActivityTab />
         </VWindowItem>
 
         <VWindowItem>
@@ -115,7 +115,7 @@ useHead({
       type="error"
       variant="tonal"
     >
-      Job with ID  {{ route.params.id }} not found!
+      Estimate with ID  {{ route.params.id }} not found!
     </VAlert>
   </div>
 </template>

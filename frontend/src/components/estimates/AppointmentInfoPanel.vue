@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type Appointment from '@/types/appointments/Appointment'
+import type Estimate from '@/types/estimates/Estimate'
 
 defineProps<{
-  appointmentData: Appointment
+  estimateData: Estimate
 }>()
 
-const appointmentEditVisible = defineModel<boolean>('appointmentEditVisible', {
+const estimateEditVisible = defineModel<boolean>('estimateEditVisible', {
   default: true,
 })
 </script>
@@ -14,7 +14,7 @@ const appointmentEditVisible = defineModel<boolean>('appointmentEditVisible', {
   <VRow>
     <!-- SECTION User Details -->
     <VCol cols="12">
-      <VCard :title="appointmentData.id">
+      <VCard :title="estimateData.id">
         <VCardText>
           <!-- 👉 Details -->
           <h5 class="text-[1.05rem] leading-[1.5] font-medium">
@@ -23,17 +23,17 @@ const appointmentEditVisible = defineModel<boolean>('appointmentEditVisible', {
 
           <VDivider class="my-4 !opacity-60" />
 
-          <!-- 👉 Appointment Details list -->
+          <!-- 👉 Estimate Details list -->
           <VList class="card-list mt-2" />
         </VCardText>
 
         <!-- 👉 Edit and Suspend button -->
         <VCardText
-          v-if="appointmentEditVisible"
+          v-if="estimateEditVisible"
           class="d-flex justify-center gap-x-4"
         >
           <VBtn
-            :to="{ name: 'appointments-update-id', params: { id: appointmentData.id } }"
+            :to="{ name: 'estimates-update-id', params: { id: estimateData.id } }"
             variant="elevated"
             class="w-full"
           >

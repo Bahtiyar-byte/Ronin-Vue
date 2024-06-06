@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import type WidgetCardProps from '@/types/widgets/WidgetCardProps'
 import WidgetCard from '@/components/widgets/WidgetCard.vue'
+import Job from '@/types/jobs/Job'
+
+const props = defineProps<{
+  jobData: Job
+}>()
 
 const widgets = ref<WidgetCardProps[]>([
   {
@@ -26,7 +31,11 @@ const widgets = ref<WidgetCardProps[]>([
         title: 'Add estimate for this job',
         icon: 'tabler-plus',
         to: {
-          name: 'root',
+          name: 'estimates-create',
+          query: {
+            job: props.jobData.id,
+            contact: props.jobData.related_contact?.id,
+          },
         },
       },
     },
