@@ -86,7 +86,7 @@ export const useJobs = () => {
     } = useApi(`/jobs/${job.id}`).put({
       id: job.id,
       data: job,
-    }).json<boolean>()
+    }).json<Job>()
 
     return {
       data,

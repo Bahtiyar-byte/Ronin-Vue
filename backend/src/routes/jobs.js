@@ -1,6 +1,6 @@
 const express = require('express');
 
-const JobsService = require('../services/jobs');
+const JobsService = require('../roninServices/jobs');
 const JobsDBApi = require('../db/api/jobs');
 const wrapAsync = require('../helpers').wrapAsync;
 
@@ -30,9 +30,9 @@ router.use(checkCrudPermissions('jobs'));
  *            type: string
  *            default: address
 
- *          
- *          
- *          
+ *
+ *
+ *
  */
 
 /**
@@ -148,9 +148,11 @@ router.post(
 router.put(
   '/:id',
   wrapAsync(async (req, res) => {
-    await JobsService.update(req.body.data, req.body.id, req.currentUser);
-    const payload = true;
-    res.status(200).send(payload);
+    const job = await JobsService.update(req.body.data, req.body.id, req.currentUser);
+
+    console.log(job)
+
+    res.status(200).send(job);
   }),
 );
 

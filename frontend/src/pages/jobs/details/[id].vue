@@ -26,12 +26,8 @@ onMounted(async () => {
   const { data, isFetching } = await useJobs().getById(route.params.id)
 
   watch(data, newVal => {
-    if (newVal === null) {
-      return
-    }
-
-    jobName.value = newVal.name
-    jobData.value = newVal
+    jobName.value = newVal.name as string
+    jobData.value = newVal as Job
   })
 
   watch(isFetching, newVal => {
@@ -70,7 +66,7 @@ useHead({
       md="5"
       lg="4"
     >
-      <JobInfoPanel :job-data="jobData" />
+      <JobInfoPanel @update:job-data="(j) => jobData = j" :job-data="jobData" />
     </VCol>
 
     <VCol

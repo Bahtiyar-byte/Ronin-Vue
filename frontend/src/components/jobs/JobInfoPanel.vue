@@ -1,14 +1,11 @@
 <script setup lang="ts">
-import { toRaw } from 'vue'
 import type Job from '@/types/jobs/Job'
 import { useFilters } from '@/composables/useFilters'
 import { useJobs } from '@/composables/useJobs'
 import { useContacts } from '@/composables/useContacts'
 import { useUsers } from '@/composables/useUsers'
 
-const props = defineProps<{
-  jobData: Job
-}>()
+const jobData = defineModel<Job>('jobData', { required: true })
 
 const contactEditVisible = defineModel<boolean>('jobEditVisible', {
   default: true,
@@ -47,11 +44,21 @@ const fetchUserssAutocomplete = async (query: string) => {
 
 const saveItem = async (type: string, newValue: string) => {
   const updatedData = {
-    ...prepareEntityToUpdate(toRaw(props.jobData)),
+    ...prepareEntityToUpdate(jobData.value),
     [type]: newValue,
   }
 
-  const { isFetching } = await update(updatedData)
+  const { data, isFetching } = await update(updatedData)
+
+  watch(data, newVal => {
+    if (newVal === null) {
+      return
+    }
+
+    console.log(newVal)
+
+    jobData.value = newVal
+  })
 
   return isFetching
 }
