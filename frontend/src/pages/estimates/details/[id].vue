@@ -30,7 +30,7 @@ onMounted(async () => {
       return
     }
 
-    estimateName.value = newVal.id
+    estimateName.value = newVal.name as string
     estimateData.value = newVal
   })
 
@@ -41,7 +41,7 @@ onMounted(async () => {
 
 useHead({
   title: computed(() => {
-    return estimateData.value !== undefined ? `${estimateData.value.id} details` : null
+    return estimateData.value !== undefined ? `${estimateData.value.name} details` : null
   }),
 })
 </script>

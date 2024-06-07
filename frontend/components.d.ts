@@ -56,6 +56,7 @@ declare module 'vue' {
     EnableOneTimePasswordDialog: typeof import('./src/components/dialogs/EnableOneTimePasswordDialog.vue')['default']
     EntityField: typeof import('./src/components/common/CRUD/EntityField.vue')['default']
     ErrorHeader: typeof import('./src/components/ErrorHeader.vue')['default']
+    EstimateInfoPanel: typeof import('./src/components/estimates/EstimateInfoPanel.vue')['default']
     FiltersList: typeof import('./src/components/common/filters/FiltersList.vue')['default']
     GeneralTab: typeof import('./src/components/profile/tabs/GeneralTab.vue')['default']
     I18n: typeof import('./src/@core/components/I18n.vue')['default']

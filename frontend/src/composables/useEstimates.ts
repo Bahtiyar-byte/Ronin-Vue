@@ -69,7 +69,7 @@ export const useEstimates = () => {
       error,
     } = useApi('/estimates/').post({
       data: estimate,
-    }).json<boolean>()
+    }).json<Estimate>()
 
     return {
       data,
@@ -86,7 +86,7 @@ export const useEstimates = () => {
     } = useApi(`/estimates/${estimate.id}`).put({
       id: estimate.id,
       data: estimate,
-    }).json<boolean>()
+    }).json<Estimate>()
 
     return {
       data,

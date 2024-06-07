@@ -251,6 +251,8 @@ if (fs.existsSync(publicDir)) {
   });
 }
 
+require('./subscribers/index')
+
 const PORT = process.env.PORT || 8080;
 
 db.sequelize.sync().then(function () {

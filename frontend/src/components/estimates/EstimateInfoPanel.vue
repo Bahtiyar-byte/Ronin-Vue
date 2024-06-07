@@ -14,7 +14,7 @@ const estimateEditVisible = defineModel<boolean>('estimateEditVisible', {
   <VRow>
     <!-- SECTION User Details -->
     <VCol cols="12">
-      <VCard :title="estimateData.id">
+      <VCard :title="estimateData.name as string">
         <VCardText>
           <!-- 👉 Details -->
           <h5 class="text-[1.05rem] leading-[1.5] font-medium">

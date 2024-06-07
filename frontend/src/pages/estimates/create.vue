@@ -21,6 +21,7 @@ const { create: createEstimate, getById: getEstimateById, update: updateEstimate
 const { autocomplete: autocompleteContacts } = useContacts()
 const { autocomplete: autocompleteJobs } = useJobs()
 
+const router = useRouter()
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } }
 
 const isUpdateMode = ref(false)
@@ -38,6 +39,25 @@ const estimateRef = ref<Estimate>()
 const formFields = ref<Array<FormField | FormFieldsGroup>>([
   {
     title: 'General',
+    fields: [
+      {
+        type: 'input',
+        name: 'name',
+        label: 'Name',
+        value: '',
+        rules: yup.string().required('Name is required'),
+      },
+      {
+        type: 'textarea',
+        name: 'description',
+        label: 'Description',
+        value: '',
+        rules: yup.string(),
+      },
+    ],
+  },
+  {
+    title: 'Related',
     fields: [
       {
         type: 'autocomplete',
@@ -105,8 +125,8 @@ const fetchEstimateData = async (id: string) => {
       }
     })
 
-    pageTitle.value = `Update ${estimate.id}`
-    breadcrumbs.value[2] = { title: `Update ${estimate.id}`, disabled: true }
+    pageTitle.value = `Update ${estimate.name}`
+    breadcrumbs.value[2] = { title: `Update ${estimate.name}`, disabled: true }
   })
 }
 
@@ -160,7 +180,7 @@ onBeforeMount(async () => {
 
 useHead({
   title: computed(() => {
-    return isUpdateMode.value && estimateRef.value !== undefined ? 'Edit estimate' : 'Create new estimate'
+    return isUpdateMode.value && estimateRef.value !== undefined ? `Edit ${estimateRef.value.name}` : 'Create new estimate'
   }),
 })
 
@@ -175,7 +195,7 @@ const submitForm = async (values: Record<string, any>) => {
   const { data } = await action(_estimateData)
 
   watch(data, newVal => {
-    console.log(newVal)
+    router.push({ name: 'estimates-details-id', params: { id: newVal?.id as string } })
   })
 }
 </script>

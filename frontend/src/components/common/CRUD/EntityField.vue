@@ -3,6 +3,7 @@ import { debounce } from 'lodash'
 import AppTextField from '@core/components/app-form-elements/AppTextField.vue'
 import AppSelect from '@core/components/app-form-elements/AppSelect.vue'
 import AppAutocomplete from '@core/components/app-form-elements/AppAutocomplete.vue'
+import AppTextarea from '@core/components/app-form-elements/AppTextarea.vue'
 import type FormField from '@/types/forms/FormField'
 
 const props = defineProps<{
@@ -38,6 +39,8 @@ const getComponentType = (type: string) => {
     return AppSelect
   } else if (type === 'autocomplete') {
     return AppAutocomplete
+  } else if (type === 'textarea') {
+    return AppTextarea
   }
 
   return AppTextField
