@@ -25,6 +25,7 @@ const pagination = ref({
 const sortBy = ref<SortItem[]>([])
 
 const headers = ref([
+  { title: 'Name', key: 'name' },
   { title: 'Created at', key: 'createdAt' },
   { title: 'Actions', key: 'actions', sortable: false },
 ])

@@ -94,6 +94,25 @@ const errors = {
         <p>Your {0} team</p>
       `,
     },
+    estimate: {
+      created: {
+        subject: '{0}: Estimate created',
+        body: `
+<h1>Dear, {0}</h1>
+<p>We created a new estimate with the following details:</p>
+<ul>
+  <li><strong>Name:</strong> {1}</li>
+  <li><strong>Description:</strong> {2}</li>
+  <li><strong>Trade:</strong> {3}</li>
+  <li><strong>Material Cost:</strong> {4}</li>
+  <li><strong>Labor Cost:</strong> {5}</li>
+  <li><strong>Total Price:</strong> {6}</li>
+</ul>
+<p>If you confirm this estimate, please click the link below:</p>
+<a href="{7}" target="_blank" class="button w-100">Confirm Estimate</a>
+        `,
+      }
+    }
   },
 };
 
