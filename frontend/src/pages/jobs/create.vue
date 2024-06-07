@@ -16,6 +16,7 @@ import type Job from '@/types/jobs/Job'
 const { create: createJob, getById: getJobById, update: updateJob } = useJobs()
 const { autocomplete: autocompleteContacts } = useContacts()
 
+const router = useRouter()
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } }
 
 const isUpdateMode = ref(false)
@@ -173,7 +174,7 @@ const submitForm = async (values: Record<string, any>) => {
   const { data } = await action(_jobData)
 
   watch(data, newVal => {
-    console.log(newVal)
+    router.push({ name: 'jobs-details-id', params: { id: newVal?.id as string } })
   })
 }
 </script>

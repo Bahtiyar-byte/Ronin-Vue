@@ -141,6 +141,18 @@ onBeforeMount(async () => {
   if (estimateId) {
     isUpdateMode.value = true
     await fetchEstimateData(estimateId)
+  } else {
+    formFields.value.forEach(field => {
+      if ('fields' in field) {
+        field.fields.forEach(subField => {
+          if (route.query[subField.name]) {
+            subField.value = route.query[subField.name] as string
+          }
+        })
+      } else if (route.query[field.name]) {
+        field.value = route.query[field.name] as string
+      }
+    })
   }
 
   dataLoaded.value = true

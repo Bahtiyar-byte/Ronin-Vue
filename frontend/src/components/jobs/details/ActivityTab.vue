@@ -32,8 +32,8 @@ const widgets = ref<WidgetCardProps[]>([
           name: 'estimates-create',
           query: computed(() => {
             return {
-              job: jobData.value?.id || '',
-              contact: jobData.value?.related_contact?.id || '',
+              related_job: jobData.value?.id || '',
+              related_contact: jobData.value?.related_contact?.id || '',
             }
           }),
         },

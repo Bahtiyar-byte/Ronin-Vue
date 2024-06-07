@@ -69,7 +69,7 @@ export const useJobs = () => {
       error,
     } = useApi('/jobs/').post({
       data: job,
-    }).json<boolean>()
+    }).json<Job>()
 
     return {
       data,
