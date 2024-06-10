@@ -2,8 +2,11 @@
 import type WidgetCardProps from '@/types/widgets/WidgetCardProps'
 import WidgetCard from '@/components/widgets/WidgetCard.vue'
 import type Job from '@/types/jobs/Job'
+import { useEstimates } from '@/composables/useEstimates'
 
 const jobData = defineModel<Job>('jobData', { required: true })
+
+const { count: estimatesCount } = useEstimates()
 
 const widgets = ref<WidgetCardProps[]>([
   {
@@ -21,9 +24,10 @@ const widgets = ref<WidgetCardProps[]>([
     },
   },
   {
+    to: { name: 'estimates', query: { related_job: jobData.value.id } },
     widget: {
       title: 'Estimates',
-      value: 0,
+      value: (await estimatesCount({ related_job: jobData.value.id })).data.value?.count,
       icon: 'material-symbols-task-outline',
       action: {
         title: 'Add estimate for this job',

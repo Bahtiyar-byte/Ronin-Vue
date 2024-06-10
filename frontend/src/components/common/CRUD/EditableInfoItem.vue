@@ -10,7 +10,7 @@ const props = withDefaults(defineProps<{
   fetchItems?: () => Promise<string[] | null>
   fetchAutocompleteItems?: (query: string) => Promise<string[] | { value: string; title: string }[] | undefined>
   onSave: (newValue: string) => Promise<Ref<boolean>>
-  type: 'select' | 'autocomplete'
+  type?: 'select' | 'autocomplete'
 }>(), {
   type: 'select',
 })

@@ -16,7 +16,7 @@ export const useJobs = () => {
       isFetching,
       error,
       response,
-    } = useApi(url.value).get().json<CountResponse>()
+    } = await useApi(url.value).get().json<CountResponse>()
 
     return {
       data,

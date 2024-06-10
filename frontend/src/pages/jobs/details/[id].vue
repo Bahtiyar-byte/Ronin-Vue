@@ -114,7 +114,7 @@ useHead({
       type="error"
       variant="tonal"
     >
-      Job with ID  {{ route.params.id }} not found!
+      Job with ID {{ route.params.id }} not found!
     </VAlert>
   </div>
 </template>

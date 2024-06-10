@@ -1,24 +1,22 @@
 <script setup lang="ts">
-const emit = defineEmits(['confirm', 'cancel'])
-
-const isVisible = defineModel<boolean>('isVisible', { required: true })
-
-interface Props {
+const props = withDefaults(defineProps<{
   title: string
-  showCancel: boolean
-  showAccept: boolean
-  showClose: boolean
-  onCancel: () => Promise<void>
-  onAccept: () => Promise<void>
-}
-
-const props = withDefaults(defineProps<Props>(), {
+  showCancel?: boolean
+  showAccept?: boolean
+  showClose?: boolean
+  onCancel?: () => Promise<void>
+  onAccept?: () => Promise<void>
+}>(), {
   showCancel: true,
   showAccept: true,
   showClose: false,
   onCancel: async () => {},
   onAccept: async () => {},
 })
+
+const emit = defineEmits(['confirm', 'cancel'])
+
+const isVisible = defineModel<boolean>('isVisible', { required: true })
 
 const acceptBtn = ref()
 
@@ -41,7 +39,6 @@ const onAccept = async () => {
   await props.onAccept()
   isVisible.value = false
 }
-
 </script>
 
 <template>

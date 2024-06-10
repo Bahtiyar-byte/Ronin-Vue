@@ -19,7 +19,7 @@ function prefixWithPlus(value: number): string {
   >
     <VCard>
       <VCardText>
-        <div class="d-flex justify-space-between">
+        <div class="d-flex gap-2 justify-space-between">
           <div class="d-flex flex-column gap-y-1">
             <div class="text-body-1 font-semibold">
               {{ widget.title }}

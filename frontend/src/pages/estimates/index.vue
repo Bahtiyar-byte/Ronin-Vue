@@ -64,6 +64,7 @@ const searchQuery = ref<string>('')
 
 const fetchData = async () => {
   const requestParams = {
+    ...route.query,
     limit: pagination.value.itemsPerPage,
     offset: (pagination.value.page - 1) * pagination.value.itemsPerPage,
     sortBy: '',

@@ -38,7 +38,7 @@ const updatePipelineCount = async (fetchCount: FetchCountFunction, params: objec
       ...currentPipelineCounts.value,
       [key]: newValue.count,
     }
-  })
+  }, { immediate: true })
 }
 
 const createPipelineItem = (title: string, countKey: keyof typeof currentPipelineCounts.value, routeQuery: RouteLocationRaw, icon: string) => {
