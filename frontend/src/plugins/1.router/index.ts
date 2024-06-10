@@ -42,7 +42,7 @@ router.beforeEach(async to => {
 
   const userStore = useCurrentUserStore()
 
-  if (!userStore.user) {
+  if (!isAuthRoute && !userStore.user) {
     const { response } = await userStore.fetchUser()
 
     watch(response, (newVal: Response | null) => {
