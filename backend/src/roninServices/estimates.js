@@ -10,13 +10,14 @@ module.exports = class RoninEstimatesService extends EstimatesService {
     static async create(data, currentUser) {
         const transaction = await db.sequelize.transaction();
         try {
-            const estimates = await EstimatesDBApi.create(data, {
+            let estimates = await EstimatesDBApi.create(data, {
                 currentUser,
                 transaction,
             });
 
             await transaction.commit();
 
+            estimates = await EstimatesDBApi.findBy({ id: estimates.id });
             eventEmitter.emit('estimateCreated', estimates);
 
             return estimates;

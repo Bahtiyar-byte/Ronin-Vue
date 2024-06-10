@@ -9,8 +9,8 @@ import type FormField from '@/types/forms/FormField'
 const props = defineProps<{
   field: FormField
   modelValue: string | string[]
-  errorMessages: string | string[]
-  attrs: Record<string, any>
+  errorMessages?: string | string[]
+  attrs?: Record<string, any>
 }>()
 
 const value = defineModel<string | string[]>()

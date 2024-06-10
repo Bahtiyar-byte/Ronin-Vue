@@ -65,5 +65,6 @@ config.apiUrl = `${config.host}${config.port ? `:${config.port}` : ``}/api`;
 config.swaggerUrl = `${config.swaggerUI}${config.swaggerPort}`;
 config.uiUrl = `${config.hostUI}${config.portUI ? `:${config.portUI}` : ``}/#`;
 config.backUrl = `${config.hostUI}${config.portUI ? `:${config.portUI}` : ``}`;
+config.frontendUrl = config.host + (process.env.NODE_ENV === 'production' ? '' : ':5173');
 
 module.exports = config;

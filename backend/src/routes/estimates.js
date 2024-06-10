@@ -98,14 +98,11 @@ router.use(checkCrudPermissions('estimates'));
 router.post(
   '/',
   wrapAsync(async (req, res) => {
-    const link = new URL(req.headers.referer);
-    await EstimatesService.create(
+    const payload = await EstimatesService.create(
       req.body.data,
       req.currentUser,
-      true,
-      link.host,
     );
-    const payload = true;
+
     res.status(200).send(payload);
   }),
 );

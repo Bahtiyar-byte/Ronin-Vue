@@ -1,6 +1,8 @@
 const { getNotification } = require('../../../notifications/helpers');
 const EmailUtils = require('../../utils')
 
+const config = require('../../../../config');
+
 module.exports = class EstimateCreatedEmail {
     constructor(estimate) {
         // this.to = estimate.related_contact.contact.email;
@@ -31,7 +33,7 @@ module.exports = class EstimateCreatedEmail {
                     this.estimate.total_price,
 
                     // ToDo: generate correct link with token
-                    'https://example.com/accept-estimate'
+                    (new URL(`${config.frontendUrl}/auth/accept-estimate/${this.estimate.id}`))
                 )
             );
         } catch (error) {

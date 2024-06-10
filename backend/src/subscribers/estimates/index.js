@@ -3,6 +3,8 @@ const EstimateCreatedEmail = require('../../services/email/list/estimates/estima
 const EmailSender = require('../../services/email');
 
 eventEmitter.on('estimateCreated', async (estimate) => {
+    console.log(estimate)
+
     if (estimate.related_contact) {
         const estimateCreatedEmail = new EstimateCreatedEmail(estimate);
         await new EmailSender(estimateCreatedEmail).send();

@@ -2,8 +2,8 @@
 import type { RouteLocationRaw } from 'vue-router'
 
 interface Props {
-  title: string
-  entities: {
+  title?: string
+  entities?: {
     title: string
     icon: string
     to: RouteLocationRaw
@@ -16,12 +16,12 @@ const props = withDefaults(defineProps<Props>(), {
     {
       title: 'Contact',
       icon: 'mdi-account-box-outline',
-      to: { name: 'contacts-create' },
+      to: { name: 'contacts-create' } as RouteLocationRaw,
     },
     {
       title: 'Job',
       icon: 'material-symbols-task-outline',
-      to: { name: 'jobs-create' },
+      to: { name: 'jobs-create' } as RouteLocationRaw,
     },
   ],
 })
@@ -33,7 +33,7 @@ const props = withDefaults(defineProps<Props>(), {
       <RouterLink
         v-for="(val, key) in props.entities"
         :key="`quick-create-${key}`"
-        :to="val.to"
+        :to="val.to as object"
         class="flex flex-column items-center gap-1"
       >
         <div class="font-medium">
