@@ -141,7 +141,10 @@ const saveItem = async (type: string, newValue: string) => {
           </VList>
         </VCardText>
 
-        <InfoPanelActions :job-data="jobData" />
+        <InfoPanelActions
+          :job-data="jobData"
+          @update:job-data="(newVal: Job) => jobData = newVal"
+        />
 
         <!-- 👉 Edit and Suspend button -->
         <VCardText
