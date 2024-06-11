@@ -11,8 +11,8 @@ interface Props {
   searchSettings?: {
     placeholder: string
   }
-  showTitle: boolean
-  showItemsPerPage: boolean
+  showTitle?: boolean
+  showItemsPerPage?: boolean
   cardTitle?: string
 }
 

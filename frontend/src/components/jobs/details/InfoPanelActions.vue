@@ -15,20 +15,23 @@ onBeforeMount(async () => {
 
 <template>
   <VCardText v-if="estimatesCount">
-    <VAlert
-      variant="tonal"
-      color="primary"
-      title="Estimate Acceptance"
-      text="There are related estimates for this job. Please use the button below to review and accept the estimates."
-      icon="material-symbols-task-outline"
-    >
-      <template #default>
-        <div class="mt-3">
-          <VBtn
-            text="Accept Estimates"
-          />
-        </div>
-      </template>
-    </VAlert>
+    <VForm>
+      <VAlert
+        variant="tonal"
+        color="primary"
+        title="Estimate Acceptance"
+        text="There are related estimates for this job. Please use the button below to review and accept the estimates."
+        icon="material-symbols-task-outline"
+      >
+        <template #default>
+          <div class="mt-3">
+            <VBtn
+              type="submit"
+              text="Accept Estimates"
+            />
+          </div>
+        </template>
+      </VAlert>
+    </VForm>
   </VCardText>
 </template>

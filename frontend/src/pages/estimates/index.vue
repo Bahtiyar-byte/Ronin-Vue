@@ -141,7 +141,6 @@ const handleItemDeletion = async (estimate: Estimate) => {
 <template>
   <ItemsManage
     v-model:items-per-page="pagination.itemsPerPage"
-    v-model:filters="filters"
     v-model:search-query="searchQuery"
     items-title="Estimates"
     :search-settings="{ placeholder: 'Search estimates' }"

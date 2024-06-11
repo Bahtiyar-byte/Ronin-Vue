@@ -139,7 +139,6 @@ const handleItemDeletion = async (appointment: Appointment) => {
 <template>
   <ItemsManage
     v-model:items-per-page="pagination.itemsPerPage"
-    v-model:filters="filters"
     v-model:search-query="searchQuery"
     items-title="Appointments"
     :search-settings="{ placeholder: 'Search appointments' }"

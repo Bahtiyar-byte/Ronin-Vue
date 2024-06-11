@@ -141,7 +141,6 @@ const handleItemDeletion = async (job: Job) => {
 <template>
   <ItemsManage
     v-model:items-per-page="pagination.itemsPerPage"
-    v-model:filters="filters"
     v-model:search-query="searchQuery"
     items-title="Jobs"
     :search-settings="{ placeholder: 'Search jobs' }"

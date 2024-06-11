@@ -142,7 +142,6 @@ const handleItemDeletion = async (contact: Contact) => {
   <ItemsManage
     v-model:items-per-page="pagination.itemsPerPage"
     v-model:search-query="searchQuery"
-    v-model:filters="filters"
     items-title="Contacts"
     :search-settings="{ placeholder: 'Search contacts' }"
     :breadcrumbs="[
