@@ -1,4 +1,5 @@
 import type Contact from '@/types/contacts/Contact'
+import type User from '@/types/users/User';
 
 export default interface Job {
   id?: string // Undefined if new job creation
@@ -18,7 +19,7 @@ export default interface Job {
   related_contact?: Contact | null
   related_estimateId?: string | null
   assigned_toId?: string | null
-  assigned_to?: any | null
+  assigned_to?: User | null
   related_estimate?: any | null
   start_date?: string | null
   end_date?: string | null

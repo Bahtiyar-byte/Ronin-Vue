@@ -8,6 +8,8 @@ const jobData = defineModel<Job>('jobData', { required: true })
 
 const { count: estimatesCount } = useEstimates()
 
+console.log(jobData.value)
+
 const widgets = ref<WidgetCardProps[]>([
   {
     widget: {
@@ -18,7 +20,15 @@ const widgets = ref<WidgetCardProps[]>([
         title: 'Add appointment for this job',
         icon: 'tabler-plus',
         to: {
-          name: 'root',
+          name: 'appointments-create',
+          query: computed(() => {
+            return {
+              assigned_to: jobData.value?.assigned_to?.id || '',
+              related_contact: jobData.value?.related_contact?.id || '',
+
+              // related_job: jobData.value?.id || '',
+            }
+          }),
         },
       },
     },
