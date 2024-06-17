@@ -3,17 +3,6 @@ import type Estimate from '@/types/estimates/Estimate'
 
 export interface GetEstimatesRequest extends GetListRequest
 {
-  id?: string
-  name?: string
-  email?: string
-  phone?: string
-  address?: string
-  firstName?: string
-  lastName?: string
-  active?: boolean
-  stage?: string
-  createdAtRange?: string[]
-  countOnly?: boolean
   related_job?: string
 }
 

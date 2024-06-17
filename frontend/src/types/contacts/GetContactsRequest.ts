@@ -3,7 +3,6 @@ import type Contact from '@/types/contacts/Contact'
 
 export interface GetContactsRequest extends GetListRequest
 {
-  id?: string
   name?: string
   email?: string
   phone?: string
@@ -11,9 +10,8 @@ export interface GetContactsRequest extends GetListRequest
   firstName?: string
   lastName?: string
   active?: boolean
-  stage?: string
+  status?: string
   createdAtRange?: string[]
-  countOnly?: boolean
 }
 
 export interface GetContactsResponse extends GetListResponse
