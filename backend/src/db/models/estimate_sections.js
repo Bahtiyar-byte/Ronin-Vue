@@ -5,8 +5,8 @@ const bcrypt = require('bcrypt');
 const moment = require('moment');
 
 module.exports = function (sequelize, DataTypes) {
-  const amendments = sequelize.define(
-    'amendments',
+  const estimate_sections = sequelize.define(
+    'estimate_sections',
     {
       id: {
         type: DataTypes.UUID,
@@ -14,24 +14,20 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
       },
 
-      type: {
-        type: DataTypes.ENUM,
-
-        values: [
-          'Change Order',
-
-          'Discount',
-
-          'Insurance Claim',
-
-          'Supplement',
-
-          'Upgrade',
-        ],
-      },
-
       amount: {
         type: DataTypes.DECIMAL,
+      },
+
+      material_price: {
+        type: DataTypes.DECIMAL,
+      },
+
+      labor_price: {
+        type: DataTypes.DECIMAL,
+      },
+
+      name: {
+        type: DataTypes.TEXT,
       },
 
       description: {
@@ -51,27 +47,35 @@ module.exports = function (sequelize, DataTypes) {
     },
   );
 
-  amendments.associate = (db) => {
+  estimate_sections.associate = (db) => {
     /// loop through entities and it's fields, and if ref === current e[name] and create relation has many on parent entity
 
     //end loop
 
-    db.amendments.belongsTo(db.jobs, {
-      as: 'related_job',
+    db.estimate_sections.belongsTo(db.estimates, {
+      as: 'related_estimate',
       foreignKey: {
-        name: 'related_jobId',
+        name: 'related_estimateId',
       },
       constraints: false,
     });
 
-    db.amendments.belongsTo(db.users, {
+    db.estimate_sections.belongsTo(db.templates, {
+      as: 'related_template',
+      foreignKey: {
+        name: 'related_templateId',
+      },
+      constraints: false,
+    });
+
+    db.estimate_sections.belongsTo(db.users, {
       as: 'createdBy',
     });
 
-    db.amendments.belongsTo(db.users, {
+    db.estimate_sections.belongsTo(db.users, {
       as: 'updatedBy',
     });
   };
 
-  return amendments;
+  return estimate_sections;
 };

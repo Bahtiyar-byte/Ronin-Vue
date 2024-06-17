@@ -60,31 +60,7 @@ module.exports = {
       ];
     }
 
-    const entities = [
-      'templates',
-
-      'trades',
-
-      'invoices',
-
-      'orders',
-
-      'images',
-
-      'documents',
-
-      'emails',
-
-      'chats',
-
-      'appointments',
-
-      'tasks',
-
-      'contracts',
-
-      'amendments',
-    ];
+    const entities = ['estimate_sections'];
 
     const createdPermissions = entities.flatMap(createPermissions);
 

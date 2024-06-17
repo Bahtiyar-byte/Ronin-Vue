@@ -21,6 +21,8 @@ module.exports = class JobsDBApi {
         type: data.type || null,
         status: data.status || null,
         address: data.address || null,
+        start_date: data.start_date || null,
+        end_date: data.end_date || null,
         importHash: data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
@@ -36,17 +38,13 @@ module.exports = class JobsDBApi {
       transaction,
     });
 
-    await jobs.setRelated_estimate(data.related_estimate || null, {
-      transaction,
-    });
-
     await FileDBApi.replaceRelationFiles(
       {
         belongsTo: db.jobs.getTableName(),
-        belongsToColumn: 'images',
+        belongsToColumn: 'main_image',
         belongsToId: jobs.id,
       },
-      data.images,
+      data.main_image,
       options,
     );
 
@@ -77,6 +75,8 @@ module.exports = class JobsDBApi {
       type: item.type || null,
       status: item.status || null,
       address: item.address || null,
+      start_date: item.start_date || null,
+      end_date: item.end_date || null,
       importHash: item.importHash || null,
       createdById: currentUser.id,
       updatedById: currentUser.id,
@@ -92,10 +92,10 @@ module.exports = class JobsDBApi {
       await FileDBApi.replaceRelationFiles(
         {
           belongsTo: db.jobs.getTableName(),
-          belongsToColumn: 'images',
+          belongsToColumn: 'main_image',
           belongsToId: jobs[i].id,
         },
-        data[i].images,
+        data[i].main_image,
         options,
       );
     }
@@ -129,6 +129,8 @@ module.exports = class JobsDBApi {
         type: data.type || null,
         status: data.status || null,
         address: data.address || null,
+        start_date: data.start_date || null,
+        end_date: data.end_date || null,
         updatedById: currentUser.id,
       },
       { transaction },
@@ -142,17 +144,13 @@ module.exports = class JobsDBApi {
       transaction,
     });
 
-    await jobs.setRelated_estimate(data.related_estimate || null, {
-      transaction,
-    });
-
     await FileDBApi.replaceRelationFiles(
       {
         belongsTo: db.jobs.getTableName(),
-        belongsToColumn: 'images',
+        belongsToColumn: 'main_image',
         belongsToId: jobs.id,
       },
-      data.images,
+      data.main_image,
       options,
     );
 
@@ -231,6 +229,46 @@ module.exports = class JobsDBApi {
       transaction,
     });
 
+    output.invoices_related_job = await jobs.getInvoices_related_job({
+      transaction,
+    });
+
+    output.orders_related_job = await jobs.getOrders_related_job({
+      transaction,
+    });
+
+    output.images_related_job = await jobs.getImages_related_job({
+      transaction,
+    });
+
+    output.documents_related_job = await jobs.getDocuments_related_job({
+      transaction,
+    });
+
+    output.emails_related_job = await jobs.getEmails_related_job({
+      transaction,
+    });
+
+    output.chats_related_job = await jobs.getChats_related_job({
+      transaction,
+    });
+
+    output.appointments_related_job = await jobs.getAppointments_related_job({
+      transaction,
+    });
+
+    output.tasks_related_job = await jobs.getTasks_related_job({
+      transaction,
+    });
+
+    output.contracts_related_job = await jobs.getContracts_related_job({
+      transaction,
+    });
+
+    output.amendments_related_job = await jobs.getAmendments_related_job({
+      transaction,
+    });
+
     output.assigned_to = await jobs.getAssigned_to({
       transaction,
     });
@@ -239,11 +277,7 @@ module.exports = class JobsDBApi {
       transaction,
     });
 
-    output.related_estimate = await jobs.getRelated_estimate({
-      transaction,
-    });
-
-    output.images = await jobs.getImages({
+    output.main_image = await jobs.getMain_image({
       transaction,
     });
 
@@ -277,13 +311,8 @@ module.exports = class JobsDBApi {
       },
 
       {
-        model: db.estimates,
-        as: 'related_estimate',
-      },
-
-      {
         model: db.file,
-        as: 'images',
+        as: 'main_image',
       },
 
       {
@@ -319,6 +348,54 @@ module.exports = class JobsDBApi {
           ...where,
           [Op.and]: Utils.ilike('jobs', 'address', filter.address),
         };
+      }
+
+      if (filter.start_dateRange) {
+        const [start, end] = filter.start_dateRange;
+
+        if (start !== undefined && start !== null && start !== '') {
+          where = {
+            ...where,
+            start_date: {
+              ...where.start_date,
+              [Op.gte]: start,
+            },
+          };
+        }
+
+        if (end !== undefined && end !== null && end !== '') {
+          where = {
+            ...where,
+            start_date: {
+              ...where.start_date,
+              [Op.lte]: end,
+            },
+          };
+        }
+      }
+
+      if (filter.end_dateRange) {
+        const [start, end] = filter.end_dateRange;
+
+        if (start !== undefined && start !== null && start !== '') {
+          where = {
+            ...where,
+            end_date: {
+              ...where.end_date,
+              [Op.gte]: start,
+            },
+          };
+        }
+
+        if (end !== undefined && end !== null && end !== '') {
+          where = {
+            ...where,
+            end_date: {
+              ...where.end_date,
+              [Op.lte]: end,
+            },
+          };
+        }
       }
 
       if (
@@ -373,17 +450,6 @@ module.exports = class JobsDBApi {
         where = {
           ...where,
           related_contactId: { [Op.or]: listItems },
-        };
-      }
-
-      if (filter.related_estimate) {
-        var listItems = filter.related_estimate.split('|').map((item) => {
-          return Utils.uuid(item);
-        });
-
-        where = {
-          ...where,
-          related_estimateId: { [Op.or]: listItems },
         };
       }
 

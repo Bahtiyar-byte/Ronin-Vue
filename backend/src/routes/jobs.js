@@ -75,17 +75,51 @@ router.use(checkCrudPermissions('jobs'));
  *        500:
  *          description: Some server error
  */
-
 router.post(
   '/',
   wrapAsync(async (req, res) => {
     const link = new URL(req.headers.referer);
-    const job = await JobsService.create(req.body.data, req.currentUser, true, link.host);
-
-    res.status(200).send(job);
+    await JobsService.create(req.body.data, req.currentUser, true, link.host);
+    const payload = true;
+    res.status(200).send(payload);
   }),
 );
 
+/**
+ * @swagger
+ * /api/budgets/bulk-import:
+ *  post:
+ *    security:
+ *      - bearerAuth: []
+ *    tags: [Jobs]
+ *    summary: Bulk import items
+ *    description: Bulk import items
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *         schema:
+ *          properties:
+ *            data:
+ *              description: Data of the updated items
+ *              type: array
+ *              items:
+ *                $ref: "#/components/schemas/Jobs"
+ *    responses:
+ *      200:
+ *        description: The items were successfully imported
+ *    content:
+ *      application/json:
+ *        schema:
+ *          $ref: "#/components/schemas/Jobs"
+ *      401:
+ *        $ref: "#/components/responses/UnauthorizedError"
+ *      405:
+ *        description: Invalid input data
+ *      500:
+ *        description: Some server error
+ *
+ */
 router.post(
   '/bulk-import',
   wrapAsync(async (req, res) => {
@@ -144,15 +178,12 @@ router.post(
  *        500:
  *          description: Some server error
  */
-
 router.put(
   '/:id',
   wrapAsync(async (req, res) => {
-    const job = await JobsService.update(req.body.data, req.body.id, req.currentUser);
-
-    console.log(job)
-
-    res.status(200).send(job);
+    await JobsService.update(req.body.data, req.body.id, req.currentUser);
+    const payload = true;
+    res.status(200).send(payload);
   }),
 );
 
@@ -188,7 +219,6 @@ router.put(
  *        500:
  *          description: Some server error
  */
-
 router.delete(
   '/:id',
   wrapAsync(async (req, res) => {
@@ -200,7 +230,7 @@ router.delete(
 
 /**
  *  @swagger
- *  /api/jobs:
+ *  /api/jobs/deleteByIds:
  *    post:
  *      security:
  *        - bearerAuth: []
@@ -230,7 +260,6 @@ router.delete(
  *        500:
  *          description: Some server error
  */
-
 router.post(
   '/deleteByIds',
   wrapAsync(async (req, res) => {
@@ -265,7 +294,6 @@ router.post(
  *        500:
  *          description: Some server error
  */
-
 router.get(
   '/',
   wrapAsync(async (req, res) => {
@@ -273,7 +301,15 @@ router.get(
 
     const payload = await JobsDBApi.findAll(req.query);
     if (filetype && filetype === 'csv') {
-      const fields = ['id', 'name', 'description', 'address'];
+      const fields = [
+        'id',
+        'name',
+        'description',
+        'address',
+
+        'start_date',
+        'end_date',
+      ];
       const opts = { fields };
       try {
         const csv = parse(payload.rows, opts);
@@ -392,7 +428,6 @@ router.get('/autocomplete', async (req, res) => {
  *        500:
  *          description: Some server error
  */
-
 router.get(
   '/:id',
   wrapAsync(async (req, res) => {

@@ -1,7 +1,7 @@
 const express = require('express');
 
-const ContractsService = require('../services/contracts');
-const ContractsDBApi = require('../db/api/contracts');
+const Estimate_sectionsService = require('../services/estimate_sections');
+const Estimate_sectionsDBApi = require('../db/api/estimate_sections');
 const wrapAsync = require('../helpers').wrapAsync;
 
 const router = express.Router();
@@ -10,24 +10,30 @@ const { parse } = require('json2csv');
 
 const { checkCrudPermissions } = require('../middlewares/check-permissions');
 
-router.use(checkCrudPermissions('contracts'));
+router.use(checkCrudPermissions('estimate_sections'));
 
 /**
  *  @swagger
  *  components:
  *    schemas:
- *      Contracts:
+ *      Estimate_sections:
  *        type: object
  *        properties:
 
  *          name:
  *            type: string
  *            default: name
- *          body:
+ *          description:
  *            type: string
- *            default: body
+ *            default: description
 
  *          amount:
+ *            type: integer
+ *            format: int64
+ *          material_price:
+ *            type: integer
+ *            format: int64
+ *          labor_price:
  *            type: integer
  *            format: int64
 
@@ -36,17 +42,17 @@ router.use(checkCrudPermissions('contracts'));
 /**
  *  @swagger
  * tags:
- *   name: Contracts
- *   description: The Contracts managing API
+ *   name: Estimate_sections
+ *   description: The Estimate_sections managing API
  */
 
 /**
  *  @swagger
- *  /api/contracts:
+ *  /api/estimate_sections:
  *    post:
  *      security:
  *        - bearerAuth: []
- *      tags: [Contracts]
+ *      tags: [Estimate_sections]
  *      summary: Add new item
  *      description: Add new item
  *      requestBody:
@@ -58,14 +64,14 @@ router.use(checkCrudPermissions('contracts'));
  *                data:
  *                  description: Data of the updated item
  *                  type: object
- *                  $ref: "#/components/schemas/Contracts"
+ *                  $ref: "#/components/schemas/Estimate_sections"
  *      responses:
  *        200:
  *          description: The item was successfully added
  *          content:
  *            application/json:
  *              schema:
- *                $ref: "#/components/schemas/Contracts"
+ *                $ref: "#/components/schemas/Estimate_sections"
  *        401:
  *          $ref: "#/components/responses/UnauthorizedError"
  *        405:
@@ -77,7 +83,7 @@ router.post(
   '/',
   wrapAsync(async (req, res) => {
     const link = new URL(req.headers.referer);
-    await ContractsService.create(
+    await Estimate_sectionsService.create(
       req.body.data,
       req.currentUser,
       true,
@@ -94,7 +100,7 @@ router.post(
  *  post:
  *    security:
  *      - bearerAuth: []
- *    tags: [Contracts]
+ *    tags: [Estimate_sections]
  *    summary: Bulk import items
  *    description: Bulk import items
  *    requestBody:
@@ -107,14 +113,14 @@ router.post(
  *              description: Data of the updated items
  *              type: array
  *              items:
- *                $ref: "#/components/schemas/Contracts"
+ *                $ref: "#/components/schemas/Estimate_sections"
  *    responses:
  *      200:
  *        description: The items were successfully imported
  *    content:
  *      application/json:
  *        schema:
- *          $ref: "#/components/schemas/Contracts"
+ *          $ref: "#/components/schemas/Estimate_sections"
  *      401:
  *        $ref: "#/components/responses/UnauthorizedError"
  *      405:
@@ -127,7 +133,7 @@ router.post(
   '/bulk-import',
   wrapAsync(async (req, res) => {
     const link = new URL(req.headers.referer);
-    await ContractsService.bulkImport(req, res, true, link.host);
+    await Estimate_sectionsService.bulkImport(req, res, true, link.host);
     const payload = true;
     res.status(200).send(payload);
   }),
@@ -135,11 +141,11 @@ router.post(
 
 /**
  *  @swagger
- *  /api/contracts/{id}:
+ *  /api/estimate_sections/{id}:
  *    put:
  *      security:
  *        - bearerAuth: []
- *      tags: [Contracts]
+ *      tags: [Estimate_sections]
  *      summary: Update the data of the selected item
  *      description: Update the data of the selected item
  *      parameters:
@@ -162,7 +168,7 @@ router.post(
  *                data:
  *                  description: Data of the updated item
  *                  type: object
- *                  $ref: "#/components/schemas/Contracts"
+ *                  $ref: "#/components/schemas/Estimate_sections"
  *              required:
  *                - id
  *      responses:
@@ -171,7 +177,7 @@ router.post(
  *          content:
  *            application/json:
  *              schema:
- *                $ref: "#/components/schemas/Contracts"
+ *                $ref: "#/components/schemas/Estimate_sections"
  *        400:
  *          description: Invalid ID supplied
  *        401:
@@ -184,7 +190,11 @@ router.post(
 router.put(
   '/:id',
   wrapAsync(async (req, res) => {
-    await ContractsService.update(req.body.data, req.body.id, req.currentUser);
+    await Estimate_sectionsService.update(
+      req.body.data,
+      req.body.id,
+      req.currentUser,
+    );
     const payload = true;
     res.status(200).send(payload);
   }),
@@ -192,11 +202,11 @@ router.put(
 
 /**
  * @swagger
- *  /api/contracts/{id}:
+ *  /api/estimate_sections/{id}:
  *    delete:
  *      security:
  *        - bearerAuth: []
- *      tags: [Contracts]
+ *      tags: [Estimate_sections]
  *      summary: Delete the selected item
  *      description: Delete the selected item
  *      parameters:
@@ -212,7 +222,7 @@ router.put(
  *          content:
  *            application/json:
  *              schema:
- *                $ref: "#/components/schemas/Contracts"
+ *                $ref: "#/components/schemas/Estimate_sections"
  *        400:
  *          description: Invalid ID supplied
  *        401:
@@ -225,7 +235,7 @@ router.put(
 router.delete(
   '/:id',
   wrapAsync(async (req, res) => {
-    await ContractsService.remove(req.params.id, req.currentUser);
+    await Estimate_sectionsService.remove(req.params.id, req.currentUser);
     const payload = true;
     res.status(200).send(payload);
   }),
@@ -233,11 +243,11 @@ router.delete(
 
 /**
  *  @swagger
- *  /api/contracts/deleteByIds:
+ *  /api/estimate_sections/deleteByIds:
  *    post:
  *      security:
  *        - bearerAuth: []
- *      tags: [Contracts]
+ *      tags: [Estimate_sections]
  *      summary: Delete the selected item list
  *      description: Delete the selected item list
  *      requestBody:
@@ -255,7 +265,7 @@ router.delete(
  *          content:
  *            application/json:
  *              schema:
- *                $ref: "#/components/schemas/Contracts"
+ *                $ref: "#/components/schemas/Estimate_sections"
  *        401:
  *          $ref: "#/components/responses/UnauthorizedError"
  *        404:
@@ -266,7 +276,7 @@ router.delete(
 router.post(
   '/deleteByIds',
   wrapAsync(async (req, res) => {
-    await ContractsService.deleteByIds(req.body.data, req.currentUser);
+    await Estimate_sectionsService.deleteByIds(req.body.data, req.currentUser);
     const payload = true;
     res.status(200).send(payload);
   }),
@@ -274,22 +284,22 @@ router.post(
 
 /**
  *  @swagger
- *  /api/contracts:
+ *  /api/estimate_sections:
  *    get:
  *      security:
  *        - bearerAuth: []
- *      tags: [Contracts]
- *      summary: Get all contracts
- *      description: Get all contracts
+ *      tags: [Estimate_sections]
+ *      summary: Get all estimate_sections
+ *      description: Get all estimate_sections
  *      responses:
  *        200:
- *          description: Contracts list successfully received
+ *          description: Estimate_sections list successfully received
  *          content:
  *            application/json:
  *              schema:
  *                type: array
  *                items:
- *                  $ref: "#/components/schemas/Contracts"
+ *                  $ref: "#/components/schemas/Estimate_sections"
  *        401:
  *          $ref: "#/components/responses/UnauthorizedError"
  *        404:
@@ -302,9 +312,17 @@ router.get(
   wrapAsync(async (req, res) => {
     const filetype = req.query.filetype;
 
-    const payload = await ContractsDBApi.findAll(req.query);
+    const payload = await Estimate_sectionsDBApi.findAll(req.query);
     if (filetype && filetype === 'csv') {
-      const fields = ['id', 'name', 'body', 'amount', 'signed_date'];
+      const fields = [
+        'id',
+        'name',
+        'description',
+
+        'amount',
+        'material_price',
+        'labor_price',
+      ];
       const opts = { fields };
       try {
         const csv = parse(payload.rows, opts);
@@ -321,22 +339,22 @@ router.get(
 
 /**
  *  @swagger
- *  /api/contracts/count:
+ *  /api/estimate_sections/count:
  *    get:
  *      security:
  *        - bearerAuth: []
- *      tags: [Contracts]
- *      summary: Count all contracts
- *      description: Count all contracts
+ *      tags: [Estimate_sections]
+ *      summary: Count all estimate_sections
+ *      description: Count all estimate_sections
  *      responses:
  *        200:
- *          description: Contracts count successfully received
+ *          description: Estimate_sections count successfully received
  *          content:
  *            application/json:
  *              schema:
  *                type: array
  *                items:
- *                  $ref: "#/components/schemas/Contracts"
+ *                  $ref: "#/components/schemas/Estimate_sections"
  *        401:
  *          $ref: "#/components/responses/UnauthorizedError"
  *        404:
@@ -347,7 +365,7 @@ router.get(
 router.get(
   '/count',
   wrapAsync(async (req, res) => {
-    const payload = await ContractsDBApi.findAll(
+    const payload = await Estimate_sectionsDBApi.findAll(
       req.query,
 
       { countOnly: true },
@@ -359,22 +377,22 @@ router.get(
 
 /**
  *  @swagger
- *  /api/contracts/autocomplete:
+ *  /api/estimate_sections/autocomplete:
  *    get:
  *      security:
  *        - bearerAuth: []
- *      tags: [Contracts]
- *      summary: Find all contracts that match search criteria
- *      description: Find all contracts that match search criteria
+ *      tags: [Estimate_sections]
+ *      summary: Find all estimate_sections that match search criteria
+ *      description: Find all estimate_sections that match search criteria
  *      responses:
  *        200:
- *          description: Contracts list successfully received
+ *          description: Estimate_sections list successfully received
  *          content:
  *            application/json:
  *              schema:
  *                type: array
  *                items:
- *                  $ref: "#/components/schemas/Contracts"
+ *                  $ref: "#/components/schemas/Estimate_sections"
  *        401:
  *          $ref: "#/components/responses/UnauthorizedError"
  *        404:
@@ -383,7 +401,7 @@ router.get(
  *          description: Some server error
  */
 router.get('/autocomplete', async (req, res) => {
-  const payload = await ContractsDBApi.findAllAutocomplete(
+  const payload = await Estimate_sectionsDBApi.findAllAutocomplete(
     req.query.query,
     req.query.limit,
   );
@@ -393,11 +411,11 @@ router.get('/autocomplete', async (req, res) => {
 
 /**
  * @swagger
- *  /api/contracts/{id}:
+ *  /api/estimate_sections/{id}:
  *    get:
  *      security:
  *        - bearerAuth: []
- *      tags: [Contracts]
+ *      tags: [Estimate_sections]
  *      summary: Get selected item
  *      description: Get selected item
  *      parameters:
@@ -413,7 +431,7 @@ router.get('/autocomplete', async (req, res) => {
  *          content:
  *            application/json:
  *              schema:
- *                $ref: "#/components/schemas/Contracts"
+ *                $ref: "#/components/schemas/Estimate_sections"
  *        400:
  *          description: Invalid ID supplied
  *        401:
@@ -426,7 +444,7 @@ router.get('/autocomplete', async (req, res) => {
 router.get(
   '/:id',
   wrapAsync(async (req, res) => {
-    const payload = await ContractsDBApi.findBy({ id: req.params.id });
+    const payload = await Estimate_sectionsDBApi.findBy({ id: req.params.id });
 
     res.status(200).send(payload);
   }),

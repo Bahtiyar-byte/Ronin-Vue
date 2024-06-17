@@ -15,12 +15,28 @@ module.exports = class AppointmentsDBApi {
       {
         id: data.id || undefined,
 
+        subject: data.subject || null,
+        start_time: data.start_time || null,
+        end_time: data.end_time || null,
+        notes: data.notes || null,
         importHash: data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
       },
       { transaction },
     );
+
+    await appointments.setAssigned_to(data.assigned_to || null, {
+      transaction,
+    });
+
+    await appointments.setRelated_job(data.related_job || null, {
+      transaction,
+    });
+
+    await appointments.setRelated_contact(data.related_contact || null, {
+      transaction,
+    });
 
     return appointments;
   }
@@ -33,6 +49,10 @@ module.exports = class AppointmentsDBApi {
     const appointmentsData = data.map((item, index) => ({
       id: item.id || undefined,
 
+      subject: item.subject || null,
+      start_time: item.start_time || null,
+      end_time: item.end_time || null,
+      notes: item.notes || null,
       importHash: item.importHash || null,
       createdById: currentUser.id,
       updatedById: currentUser.id,
@@ -61,10 +81,26 @@ module.exports = class AppointmentsDBApi {
 
     await appointments.update(
       {
+        subject: data.subject || null,
+        start_time: data.start_time || null,
+        end_time: data.end_time || null,
+        notes: data.notes || null,
         updatedById: currentUser.id,
       },
       { transaction },
     );
+
+    await appointments.setAssigned_to(data.assigned_to || null, {
+      transaction,
+    });
+
+    await appointments.setRelated_job(data.related_job || null, {
+      transaction,
+    });
+
+    await appointments.setRelated_contact(data.related_contact || null, {
+      transaction,
+    });
 
     return appointments;
   }
@@ -130,6 +166,18 @@ module.exports = class AppointmentsDBApi {
 
     const output = appointments.get({ plain: true });
 
+    output.assigned_to = await appointments.getAssigned_to({
+      transaction,
+    });
+
+    output.related_job = await appointments.getRelated_job({
+      transaction,
+    });
+
+    output.related_contact = await appointments.getRelated_contact({
+      transaction,
+    });
+
     return output;
   }
 
@@ -144,7 +192,22 @@ module.exports = class AppointmentsDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [];
+    let include = [
+      {
+        model: db.users,
+        as: 'assigned_to',
+      },
+
+      {
+        model: db.jobs,
+        as: 'related_job',
+      },
+
+      {
+        model: db.contacts,
+        as: 'related_contact',
+      },
+    ];
 
     if (filter) {
       if (filter.id) {
@@ -152,6 +215,68 @@ module.exports = class AppointmentsDBApi {
           ...where,
           ['id']: Utils.uuid(filter.id),
         };
+      }
+
+      if (filter.subject) {
+        where = {
+          ...where,
+          [Op.and]: Utils.ilike('appointments', 'subject', filter.subject),
+        };
+      }
+
+      if (filter.notes) {
+        where = {
+          ...where,
+          [Op.and]: Utils.ilike('appointments', 'notes', filter.notes),
+        };
+      }
+
+      if (filter.start_timeRange) {
+        const [start, end] = filter.start_timeRange;
+
+        if (start !== undefined && start !== null && start !== '') {
+          where = {
+            ...where,
+            start_time: {
+              ...where.start_time,
+              [Op.gte]: start,
+            },
+          };
+        }
+
+        if (end !== undefined && end !== null && end !== '') {
+          where = {
+            ...where,
+            start_time: {
+              ...where.start_time,
+              [Op.lte]: end,
+            },
+          };
+        }
+      }
+
+      if (filter.end_timeRange) {
+        const [start, end] = filter.end_timeRange;
+
+        if (start !== undefined && start !== null && start !== '') {
+          where = {
+            ...where,
+            end_time: {
+              ...where.end_time,
+              [Op.gte]: start,
+            },
+          };
+        }
+
+        if (end !== undefined && end !== null && end !== '') {
+          where = {
+            ...where,
+            end_time: {
+              ...where.end_time,
+              [Op.lte]: end,
+            },
+          };
+        }
       }
 
       if (
@@ -163,6 +288,39 @@ module.exports = class AppointmentsDBApi {
         where = {
           ...where,
           active: filter.active === true || filter.active === 'true',
+        };
+      }
+
+      if (filter.assigned_to) {
+        var listItems = filter.assigned_to.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
+        where = {
+          ...where,
+          assigned_toId: { [Op.or]: listItems },
+        };
+      }
+
+      if (filter.related_job) {
+        var listItems = filter.related_job.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
+        where = {
+          ...where,
+          related_jobId: { [Op.or]: listItems },
+        };
+      }
+
+      if (filter.related_contact) {
+        var listItems = filter.related_contact.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
+        where = {
+          ...where,
+          related_contactId: { [Op.or]: listItems },
         };
       }
 

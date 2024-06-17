@@ -1,6 +1,6 @@
 const { getNotification } = require('../../notifications/helpers');
-const path = require('node:path');
-const { promises: fs } = require('node:fs');
+const path = require('path');
+const { promises: fs } = require('fs');
 
 module.exports = class PasswordResetEmail {
   constructor(to, link) {

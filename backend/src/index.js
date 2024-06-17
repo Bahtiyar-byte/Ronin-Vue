@@ -1,5 +1,3 @@
-require('dotenv').config()
-
 const express = require('express');
 const cors = require('cors');
 const app = express();
@@ -55,7 +53,7 @@ const contractsRoutes = require('./routes/contracts');
 
 const amendmentsRoutes = require('./routes/amendments');
 
-const filterRoutes = require('./routes/filters');
+const estimate_sectionsRoutes = require('./routes/estimate_sections');
 
 const options = {
   definition: {
@@ -224,6 +222,12 @@ app.use(
 );
 
 app.use(
+  '/api/estimate_sections',
+  passport.authenticate('jwt', { session: false }),
+  estimate_sectionsRoutes,
+);
+
+app.use(
   '/api/openai',
   passport.authenticate('jwt', { session: false }),
   openaiRoutes,
@@ -235,12 +239,6 @@ app.use(
   searchRoutes,
 );
 
-app.use(
-    '/api/filters',
-    passport.authenticate('jwt', { session: false }),
-    filterRoutes,
-);
-
 const publicDir = path.join(__dirname, '../public');
 
 if (fs.existsSync(publicDir)) {
@@ -250,8 +248,6 @@ if (fs.existsSync(publicDir)) {
     response.sendFile(path.resolve(publicDir, 'index.html'));
   });
 }
-
-require('./subscribers/index')
 
 const PORT = process.env.PORT || 8080;
 
