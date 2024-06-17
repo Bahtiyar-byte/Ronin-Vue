@@ -26,14 +26,14 @@ const headers = ref([
   { title: 'Name', key: 'name' },
   { title: 'Email', key: 'email' },
   { title: 'Phone', key: 'phone', sortable: false },
-  { title: 'Stage', key: 'stage' },
+  { title: 'Status', key: 'status' },
   { title: 'Actions', key: 'actions', sortable: false },
 ])
 
 const route = useRoute()
 
 const filters = ref<(CheckboxFilterItem)[]>([
-  { type: 'checkbox', key: 'stage', label: 'Stage', options: [], value: [] },
+  { type: 'checkbox', key: 'status', label: 'Status', options: [], value: [] },
 ])
 
 onBeforeMount(async () => {

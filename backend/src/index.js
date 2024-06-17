@@ -55,6 +55,8 @@ const amendmentsRoutes = require('./routes/amendments');
 
 const estimate_sectionsRoutes = require('./routes/estimate_sections');
 
+const filtersRoutes = require('./routes/filters');
+
 const options = {
   definition: {
     openapi: '3.0.0',
@@ -237,6 +239,12 @@ app.use(
   '/api/search',
   passport.authenticate('jwt', { session: false }),
   searchRoutes,
+);
+
+app.use(
+    '/api/filters',
+    passport.authenticate('jwt', { session: false }),
+    filtersRoutes,
 );
 
 const publicDir = path.join(__dirname, '../public');

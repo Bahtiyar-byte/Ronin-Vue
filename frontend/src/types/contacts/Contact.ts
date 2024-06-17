@@ -6,7 +6,7 @@ export default interface Contact {
   address: string
   firstName: string
   lastName: string
-  stage: string
+  status: string
   importHash: string | null
   createdAt: string
   updatedAt: string

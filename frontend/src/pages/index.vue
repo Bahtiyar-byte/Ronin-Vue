@@ -52,8 +52,8 @@ const createPipelineItem = (title: string, countKey: keyof typeof currentPipelin
 
 onMounted(() => {
   const fetchData = async () => {
-    await updatePipelineCount(contactsCount, { stage: 'Lead' }, 'leadContacts')
-    await updatePipelineCount(contactsCount, { stage: 'Prospect' }, 'prospectContacts')
+    await updatePipelineCount(contactsCount, { status: 'Lead' }, 'leadContacts')
+    await updatePipelineCount(contactsCount, { status: 'Prospect' }, 'prospectContacts')
     await updatePipelineCount(jobsCount, { status: 'Approved' }, 'approvedJobs')
     await updatePipelineCount(jobsCount, { status: 'Completed' }, 'completedJobs')
     await updatePipelineCount(jobsCount, { status: 'Invoiced' }, 'invoicedJobs')
