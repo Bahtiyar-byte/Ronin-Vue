@@ -1,6 +1,6 @@
 const express = require('express');
 
-const ContactsService = require('../services/contacts');
+const ContactsService = require('../roninServices/contacts');
 const ContactsDBApi = require('../db/api/contacts');
 const wrapAsync = require('../helpers').wrapAsync;
 
@@ -39,8 +39,8 @@ router.use(checkCrudPermissions('contacts'));
  *            type: string
  *            default: lastName
 
- *          
- *          
+ *
+ *
  */
 
 /**
@@ -194,8 +194,8 @@ router.post(
 router.put(
   '/:id',
   wrapAsync(async (req, res) => {
-    await ContactsService.update(req.body.data, req.body.id, req.currentUser);
-    const payload = true;
+    const payload = await ContactsService.update(req.body.data, req.body.id, req.currentUser);
+
     res.status(200).send(payload);
   }),
 );

@@ -86,7 +86,7 @@ export const useContacts = () => {
     } = useApi(`/contacts/${contact.id}`).put({
       id: contact.id,
       data: contact,
-    }).json<boolean>()
+    }).json<Contact>()
 
     return {
       data,

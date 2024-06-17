@@ -96,13 +96,13 @@ router.post(
   '/',
   wrapAsync(async (req, res) => {
     const link = new URL(req.headers.referer);
-    await EstimatesService.create(
+    const payload = await EstimatesService.create(
       req.body.data,
       req.currentUser,
       true,
       link.host,
     );
-    const payload = true;
+
     res.status(200).send(payload);
   }),
 );
@@ -203,8 +203,8 @@ router.post(
 router.put(
   '/:id',
   wrapAsync(async (req, res) => {
-    await EstimatesService.update(req.body.data, req.body.id, req.currentUser);
-    const payload = true;
+    const payload = await EstimatesService.update(req.body.data, req.body.id, req.currentUser);
+
     res.status(200).send(payload);
   }),
 );

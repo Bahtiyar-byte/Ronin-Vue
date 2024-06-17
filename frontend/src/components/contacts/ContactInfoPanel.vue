@@ -1,13 +1,41 @@
 <script setup lang="ts">
 import type Contact from '@/types/contacts/Contact'
+import { useFilters } from '@/composables/useFilters'
+import { useContacts } from '@/composables/useContacts'
 
-defineProps<{
-  contactData: Contact
-}>()
+const { getVariants } = useFilters()
+const { update } = useContacts()
+
+const contactData = defineModel<Contact>('contactData', { required: true })
 
 const contactEditVisible = defineModel<boolean>('contactEditVisible', {
   default: true,
 })
+
+const fetchEnumItems = async (type: string) => {
+  const { data } = await getVariants('contacts', type)
+
+  return data.value
+}
+
+const saveItem = async (type: string, newValue: string) => {
+  const updatedData = {
+    ...prepareEntityToUpdate(contactData.value),
+    [type]: newValue,
+  } as Contact
+
+  const { data, isFetching } = await update(updatedData)
+
+  watch(data, newVal => {
+    if (newVal === null) {
+      return
+    }
+
+    contactData.value = newVal
+  })
+
+  return isFetching
+}
 </script>
 
 <template>
@@ -64,16 +92,13 @@ const contactEditVisible = defineModel<boolean>('contactEditVisible', {
               </VListItemTitle>
             </VListItem>
 
-            <VListItem>
-              <VListItemTitle>
-                <span class="font-medium">
-                  Stage:
-                </span>
-                <div class="d-inline-block text-body-1 text-capitalize">
-                  {{ contactData.stage }}
-                </div>
-              </VListItemTitle>
-            </VListItem>
+            <EditableInfoItem
+              label="Stage"
+              :value="contactData.status"
+              title="Update contact status"
+              :fetch-items="() => fetchEnumItems('status')"
+              :on-save="(newValue: string) => saveItem('status', newValue)"
+            />
           </VList>
         </VCardText>
 
