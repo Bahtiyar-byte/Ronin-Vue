@@ -5,7 +5,7 @@ const config = require('../../../../config');
 
 module.exports = class EstimateCreatedEmail {
     constructor(estimate) {
-        this.to = estimate.related_contact.contact.email;
+        this.to = estimate.related_contact.email;
         this.estimate = estimate;
 
         // ToDo: remove this shit

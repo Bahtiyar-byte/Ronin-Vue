@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const express = require('express');
 const cors = require('cors');
 const app = express();
@@ -256,6 +258,8 @@ if (fs.existsSync(publicDir)) {
     response.sendFile(path.resolve(publicDir, 'index.html'));
   });
 }
+
+require('./subscribers/index')
 
 const PORT = process.env.PORT || 8080;
 

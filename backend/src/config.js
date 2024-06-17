@@ -36,15 +36,15 @@ const config = {
   },
   uploadDir: os.tmpdir(),
   email: {
-    from: 'Evans CRM <app@flatlogic.app>',
-    host: 'email-smtp.us-east-1.amazonaws.com',
+    from: 'Evans CRM <info@thedigitalronin.com>',
+    host: 'smtp.gmail.com',
     port: 587,
     auth: {
-      user: 'AKIAVEW7G4PQUBGM52OF',
+      user: 'info@thedigitalronin.com',
       pass: process.env.EMAIL_PASS,
     },
     tls: {
-      rejectUnauthorized: false,
+      rejectUnauthorized: true
     },
   },
   roles: {
@@ -65,5 +65,6 @@ config.apiUrl = `${config.host}${config.port ? `:${config.port}` : ``}/api`;
 config.swaggerUrl = `${config.swaggerUI}${config.swaggerPort}`;
 config.uiUrl = `${config.hostUI}${config.portUI ? `:${config.portUI}` : ``}/#`;
 config.backUrl = `${config.hostUI}${config.portUI ? `:${config.portUI}` : ``}`;
+config.frontendUrl = config.host + (process.env.NODE_ENV === 'production' ? '' : ':5173');
 
 module.exports = config;
