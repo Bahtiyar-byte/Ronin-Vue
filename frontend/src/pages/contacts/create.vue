@@ -13,6 +13,8 @@ import type FormFieldsGroup from '@/types/forms/FormFieldsGroup'
 import type Contact from '@/types/contacts/Contact'
 
 const { create: createContact, getById: getContactById, update: updateContact } = useContacts()
+
+const router = useRouter()
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } }
 
 const isUpdateMode = ref(false)
@@ -127,17 +129,17 @@ useHead({
 })
 
 const submitForm = async (values: Record<string, any>) => {
-  const _contactData = {
+  const _contactData = prepareEntityToUpdate({
     ...contactRef.value,
     ...values,
-  } as Contact
+  }) as Contact
 
   const action = _contactData.id ? updateContact : createContact
 
   const { data } = await action(_contactData)
 
   watch(data, newVal => {
-    console.log(newVal)
+    router.push({ name: 'contacts-details-id', params: { id: newVal?.id as string } })
   })
 }
 </script>

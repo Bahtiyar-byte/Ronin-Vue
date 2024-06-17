@@ -69,7 +69,7 @@ export const useContacts = () => {
       error,
     } = useApi('/contacts/').post({
       data: contact,
-    }).json<boolean>()
+    }).json<Contact>()
 
     return {
       data,

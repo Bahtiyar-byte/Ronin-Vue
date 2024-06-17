@@ -93,7 +93,7 @@ const saveItem = async (type: string, newValue: string) => {
             </VListItem>
 
             <EditableInfoItem
-              label="Stage"
+              label="Status"
               :value="contactData.status"
               title="Update contact status"
               :fetch-items="() => fetchEnumItems('status')"
