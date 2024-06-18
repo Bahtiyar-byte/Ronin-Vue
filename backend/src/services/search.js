@@ -41,7 +41,7 @@ module.exports = class SearchService {
         throw new ValidationError('iam.errors.searchQueryRequired');
       }
       const tableColumns = {
-        users: ['firstName', 'lastName', 'phoneNumber', 'email', 'userName'],
+        users: ['firstName', 'lastName', 'phoneNumber', 'email'],
 
         contacts: [
           'firstName',

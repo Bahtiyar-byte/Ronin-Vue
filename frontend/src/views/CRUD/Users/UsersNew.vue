@@ -22,7 +22,9 @@ const router = useRouter();
 const notification = computed(() => usersStore.notify)
 const titleStack = ref(['Admin', 'Users'])
 
-        const optionsRoleId = computed(() => usersStore.searchResultRoleId);
+        const optionsApp_role = computed(() => usersStore.searchResultApp_role);
+
+        const optionsCustom_permissions = computed(() => usersStore.searchResultCustom_permissions);
 
 const form = reactive({
 
@@ -38,22 +40,26 @@ const form = reactive({
 
       avatar: [],
 
-      userName: '',
+      app_role: '',
 
-      roleId: '',
+      custom_permissions: [],
 
 })
 
 onBeforeMount(async () => {
 
-  await searchRoleId();
+  await searchApp_role();
+
+  await searchCustom_permissions();
 
 })
 
 const submit = async () => {
   try {
 
-            form.roleId = form.roleId.id;
+            form.app_role = form.app_role.id;
+
+            form.custom_permissions = form.custom_permissions.map(item => item.id);
 
     await usersStore.newItem({ ...form })
     router.push('/users');
@@ -76,9 +82,9 @@ const reset = () => {
 
         form.avatar = [];
 
-        form.userName = '';
+        form.app_role = '';
 
-        form.roleId = '';
+        form.custom_permissions = [];
 
 }
 
@@ -86,8 +92,12 @@ const cancel = () => {
   router.push('/users')
 }
 
-    async function searchRoleId(val) {
-      await usersStore.searchRoleId(val);
+    async function searchApp_role(val) {
+      await usersStore.searchApp_role(val);
+    }
+
+    async function searchCustom_permissions(val) {
+      await usersStore.searchCustom_permissions(val);
     }
 
 watch(() => usersStore.notify.showNotification, (newValue, oldValue) => {
@@ -165,24 +175,26 @@ watch(() => usersStore.notify.showNotification, (newValue, oldValue) => {
       <FormFilePicker v-model="form.avatar" url="users/avatar"/>
     </FormField>
 
-    <FormField
-      label="User Name"
-    >
-      <FormControl
-        v-model="form.userName"
-        placeholder="Your User Name"
-      />
-    </FormField>
-
   <FormField
-      label="Role "
+      label="App Role"
     >
         <v-select
-          v-model="form.roleId"
-          :options="optionsRoleId"
-          @input="searchRoleId($event.target.value)"
+          v-model="form.app_role"
+          :options="optionsApp_role"
+          @input="searchApp_role($event.target.value)"
         />
   </FormField>
+
+    <FormField
+        label="Custom Permissions"
+      >
+        <v-select
+          v-model="form.custom_permissions"
+          :options="optionsCustom_permissions"
+          multiple
+          @input="searchCustom_permissions($event.target.value)"
+        />
+    </FormField>
 
     <BaseDivider />
 

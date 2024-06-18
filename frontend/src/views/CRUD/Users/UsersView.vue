@@ -22,9 +22,9 @@ const notification = computed(() => usersStore.notify)
 const titleStack = ref(['Admin', 'Users'])
 
 const filters = ref([]);
-const filtersList = [{label: 'First Name', title: 'firstName'},{label: 'Last Name', title: 'lastName'},{label: 'Phone Number', title: 'phoneNumber'},{label: 'E-Mail', title: 'email'},{label: 'User Name', title: 'userName'},
+const filtersList = [{label: 'First Name', title: 'firstName'},{label: 'Last Name', title: 'lastName'},{label: 'Phone Number', title: 'phoneNumber'},{label: 'E-Mail', title: 'email'},
 
-          {label: 'Role ', title: 'roleId'},];
+          {label: 'App Role', title: 'app_role'},];
 const showFilters = ref(false);
 
 const query = ref('');

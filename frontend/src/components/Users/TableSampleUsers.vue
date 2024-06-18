@@ -40,8 +40,8 @@ const headers = [
 { text: 'E-Mail', value: 'email'},
 { text: 'Disabled', value: 'disabled'},
 { text: 'Avatar', value: 'avatar'},
-{ text: 'User Name', value: 'userName'},
-{ text: 'Role ', value: 'roleId'},]
+{ text: 'App Role', value: 'app_role'},
+{ text: 'Custom Permissions', value: 'custom_permissions'},]
 const isModalActive = ref(false)
 
 const isModalDangerActive = ref(false)
@@ -187,14 +187,14 @@ const sort = (title) => {
       >Avatar</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'userName' && props.sortDirection]"
-        @click="sort('userName')"
-      >User Name</th>
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'app_role' && props.sortDirection]"
+        @click="sort('app_role')"
+      >App Role</th>
 
       <th
-        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'roleId' && props.sortDirection]"
-        @click="sort('roleId')"
-      >Role </th>
+        :class="['sortable uppercase text-sm font-normal text-pavitra-600', props.sortTitle === 'custom_permissions' && props.sortDirection]"
+        @click="sort('custom_permissions')"
+      >Custom Permissions</th>
 
         <th />
       </tr>
@@ -241,13 +241,19 @@ const sort = (title) => {
                 />
               </td>
 
-              <td data-label="userName">
-                {{ client.userName }}
+              <td data-label="app_role">
+                {{ dataFormatter.rolesOneListFormatter(client.app_role) }}
               </td>
 
-              <td data-label="roleId">
-                {{ dataFormatter.rolesOneListFormatter(client.roleId) }}
-              </td>
+              <td data-label="custom_permissions">
+                  <span
+                    v-for="(i, idx) in dataFormatter.permissionsManyListFormatter(client.custom_permissions)"
+                    :key="idx + client.custom_permissions"
+                    class="block"
+                  >
+                      {{ i }}
+                  </span>
+              </td>  
 
         <td class="before:hidden lg:w-1 whitespace-nowrap">
           <BaseButtons

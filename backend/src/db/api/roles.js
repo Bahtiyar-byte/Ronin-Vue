@@ -124,7 +124,7 @@ module.exports = class RolesDBApi {
 
     const output = roles.get({ plain: true });
 
-    output.users_roleId = await roles.getUsers_roleId({
+    output.users_app_role = await roles.getUsers_app_role({
       transaction,
     });
 

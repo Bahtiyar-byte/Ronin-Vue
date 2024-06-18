@@ -24,7 +24,9 @@ const usersStore = useUsersStore()
 const titleStack = ref(['Admin', 'Users'])
 const notification = computed(() => usersStore.notify)
 
-        const optionsRoleId = computed(() => usersStore.searchResultRoleId);
+        const optionsApp_role = computed(() => usersStore.searchResultApp_role);
+
+        const optionsCustom_permissions = computed(() => usersStore.searchResultCustom_permissions);
 
 const usersItem = computed(() => usersStore.data);
 
@@ -42,16 +44,18 @@ const form = reactive({
 
       avatar: [],
 
-    userName: '',
+      app_role: '',
 
-      roleId: '',
+      custom_permissions: [],
 
 })
 
 const submit = async () => {
   try {
 
-            form.roleId = form.roleId?.id;
+            form.app_role = form.app_role?.id;
+
+            form.custom_permissions = form.custom_permissions.map(item => item.id);
 
     await usersStore.edit({id: route.params.id, data: {...form} })
     router.push('/users');
@@ -63,7 +67,9 @@ const submit = async () => {
 onBeforeMount(async () => {
   try {
 
-  await searchRoleId();
+  await searchApp_role();
+
+  await searchCustom_permissions();
 
     await usersStore.fetch(route.params.id)
     formatData();
@@ -73,8 +79,12 @@ onBeforeMount(async () => {
   }
 })
 
-    async function searchRoleId(val) {
-      await usersStore.searchRoleId(val);
+    async function searchApp_role(val) {
+      await usersStore.searchApp_role(val);
+    }
+
+    async function searchCustom_permissions(val) {
+      await usersStore.searchCustom_permissions(val);
     }
 
 const formatData = () => {
@@ -89,9 +99,9 @@ const formatData = () => {
 
     form.avatar = usersItem.value.avatar
 
-    form.userName = usersItem.value.userName
+    form.app_role = dataFormatter.rolesOneListFormatterEdit(usersItem.value.app_role)
 
-    form.roleId = dataFormatter.rolesOneListFormatterEdit(usersItem.value.roleId)
+    form.custom_permissions = dataFormatter.permissionsManyListFormatterEdit(usersItem.value.custom_permissions)
 
 form.password = usersItem.value.password
 
@@ -180,24 +190,26 @@ const cancel = () => {
         <FormFilePicker v-model="form.avatar" url="users/avatar"/>
       </FormField>
 
-    <FormField
-      label="User Name"
-    >
-      <FormControl
-        v-model="form.userName"
-        placeholder="Your User Name"
-        />
-    </FormField>
-
   <FormField
-      label="Role "
+      label="App Role"
     >
       <v-select
-        v-model="form.roleId"
-        :options="optionsRoleId"
-        @input="searchRoleId($event.target.value)"
+        v-model="form.app_role"
+        :options="optionsApp_role"
+        @input="searchApp_role($event.target.value)"
       />
   </FormField>
+
+    <FormField
+        label="Custom Permissions"
+      >
+        <v-select
+          v-model="form.custom_permissions"
+          :options="optionsCustom_permissions"
+          multiple
+          @input="searchCustom_permissions($event.target.value)"
+        />
+    </FormField>
 
     <BaseDivider />
 
