@@ -118,6 +118,7 @@ const sources: BundleScriptConfig = {
         'activity',
         'users',
         'files',
+        'calendar',
       ],
     },
     {

@@ -47,6 +47,7 @@ declare module 'vue-router/auto/routes' {
     'appointments-update-id': RouteRecordInfo<'appointments-update-id', '/appointments/update/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'auth-accept-estimate-id': RouteRecordInfo<'auth-accept-estimate-id', '/auth/accept-estimate/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'auth-login': RouteRecordInfo<'auth-login', '/auth/login', Record<never, never>, Record<never, never>>,
+    'calendar': RouteRecordInfo<'calendar', '/calendar', Record<never, never>, Record<never, never>>,
     'contacts': RouteRecordInfo<'contacts', '/contacts', Record<never, never>, Record<never, never>>,
     'contacts-create': RouteRecordInfo<'contacts-create', '/contacts/create', Record<never, never>, Record<never, never>>,
     'contacts-details-id': RouteRecordInfo<'contacts-details-id', '/contacts/details/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,

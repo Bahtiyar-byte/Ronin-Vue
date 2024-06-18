@@ -38,7 +38,7 @@ export const useAppointments = () => {
       isFetching,
       error,
       response,
-    } = useApi(url.value).get().json<GetAppointmentsResponse>()
+    } = await useApi(url.value).get().json<GetAppointmentsResponse>()
 
     return {
       data,

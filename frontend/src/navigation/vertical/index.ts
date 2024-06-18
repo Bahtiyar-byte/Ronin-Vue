@@ -14,4 +14,9 @@ export default [
     to: { name: 'contacts' },
     icon: { icon: 'mdi-account-box-outline' },
   },
+  {
+    title: 'Calendar',
+    to: { name: 'calendar' },
+    icon: { icon: 'tabler-calendar' },
+  },
 ]
