@@ -34,7 +34,6 @@ module.exports = class UsersDBApi {
         passwordResetTokenExpiresAt:
           data.data.passwordResetTokenExpiresAt || null,
         provider: data.data.provider || null,
-        userName: data.data.userName || null,
         importHash: data.data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
@@ -42,11 +41,22 @@ module.exports = class UsersDBApi {
       { transaction },
     );
 
-    await users.setImageId(data.data.imageId || null, {
-      transaction,
-    });
+    if (!data.data.app_role) {
+      const role = await db.roles.findOne({
+        where: { name: 'User' },
+      });
+      if (role) {
+        await users.setApp_role(role, {
+          transaction,
+        });
+      }
+    } else {
+      await users.setApp_role(data.data.app_role || null, {
+        transaction,
+      });
+    }
 
-    await users.setRoleId(data.data.roleId || null, {
+    await users.setCustom_permissions(data.data.custom_permissions || [], {
       transaction,
     });
 
@@ -86,7 +96,6 @@ module.exports = class UsersDBApi {
       passwordResetToken: item.passwordResetToken || null,
       passwordResetTokenExpiresAt: item.passwordResetTokenExpiresAt || null,
       provider: item.provider || null,
-      userName: item.userName || null,
       importHash: item.importHash || null,
       createdById: currentUser.id,
       updatedById: currentUser.id,
@@ -151,17 +160,16 @@ module.exports = class UsersDBApi {
         passwordResetToken: data.passwordResetToken || null,
         passwordResetTokenExpiresAt: data.passwordResetTokenExpiresAt || null,
         provider: data.provider || null,
-        userName: data.userName || null,
         updatedById: currentUser.id,
       },
       { transaction },
     );
 
-    await users.setImageId(data.imageId || null, {
+    await users.setApp_role(data.app_role || null, {
       transaction,
     });
 
-    await users.setRoleId(data.roleId || null, {
+    await users.setCustom_permissions(data.custom_permissions || [], {
       transaction,
     });
 
@@ -273,11 +281,17 @@ module.exports = class UsersDBApi {
       transaction,
     });
 
-    output.imageId = await users.getImageId({
+    output.app_role = await users.getApp_role({
       transaction,
     });
 
-    output.roleId = await users.getRoleId({
+    if (output.app_role) {
+      output.app_role_permissions = await output.app_role.getPermissions({
+        transaction,
+      });
+    }
+
+    output.custom_permissions = await users.getCustom_permissions({
       transaction,
     });
 
@@ -297,13 +311,23 @@ module.exports = class UsersDBApi {
     let where = {};
     let include = [
       {
-        model: db.images,
-        as: 'imageId',
+        model: db.roles,
+        as: 'app_role',
       },
 
       {
-        model: db.roles,
-        as: 'roleId',
+        model: db.permissions,
+        as: 'custom_permissions',
+        through: filter.custom_permissions
+          ? {
+              where: {
+                [Op.or]: filter.custom_permissions.split('|').map((item) => {
+                  return { ['Id']: Utils.uuid(item) };
+                }),
+              },
+            }
+          : null,
+        required: filter.custom_permissions ? true : null,
       },
 
       {
@@ -384,13 +408,6 @@ module.exports = class UsersDBApi {
         };
       }
 
-      if (filter.userName) {
-        where = {
-          ...where,
-          [Op.and]: Utils.ilike('users', 'userName', filter.userName),
-        };
-      }
-
       if (filter.emailVerificationTokenExpiresAtRange) {
         const [start, end] = filter.emailVerificationTokenExpiresAtRange;
 
@@ -465,25 +482,14 @@ module.exports = class UsersDBApi {
         };
       }
 
-      if (filter.imageId) {
-        var listItems = filter.imageId.split('|').map((item) => {
+      if (filter.app_role) {
+        var listItems = filter.app_role.split('|').map((item) => {
           return Utils.uuid(item);
         });
 
         where = {
           ...where,
-          imageIdId: { [Op.or]: listItems },
-        };
-      }
-
-      if (filter.roleId) {
-        var listItems = filter.roleId.split('|').map((item) => {
-          return Utils.uuid(item);
-        });
-
-        where = {
-          ...where,
-          roleIdId: { [Op.or]: listItems },
+          app_roleId: { [Op.or]: listItems },
         };
       }
 

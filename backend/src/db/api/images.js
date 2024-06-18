@@ -148,10 +148,6 @@ module.exports = class ImagesDBApi {
 
     const output = images.get({ plain: true });
 
-    output.users_imageId = await images.getUsers_imageId({
-      transaction,
-    });
-
     output.jobId = await images.getJobId({
       transaction,
     });

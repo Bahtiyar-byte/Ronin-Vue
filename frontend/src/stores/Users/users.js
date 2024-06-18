@@ -11,7 +11,9 @@ export const useUsersStore = defineStore('users', {
       typeNotification: 'warn',
     },
 
-            searchResultRoleId: [],
+            searchResultApp_role: [],
+
+            searchResultCustom_permissions: [],
 
   }),
   actions: {
@@ -65,20 +67,37 @@ export const useUsersStore = defineStore('users', {
       }
     },
 
-            async searchRoleId(val) {
+            async searchApp_role(val) {
               try {
                 if (val) {
                   const result = await axios(
                     `/roles/autocomplete?query=${val}&limit=100`,
                   );
-                  this.setRoleId(result.data);
+                  this.setApp_role(result.data);
                 } else {
                   const result = await axios(`/roles/autocomplete?limit=100`);
-                  this.setRoleId(result.data);
+                  this.setApp_role(result.data);
                 }
               } catch (e) {
                 this.showNotification(e, 'error')
-                this.setRoleId([]);
+                this.setApp_role([]);
+              }
+            },
+
+            async searchCustom_permissions(val) {
+              try {
+                if (val) {
+                  const result = await axios(
+                    `/permissions/autocomplete?query=${val}&limit=100`,
+                  );
+                  this.setCustom_permissions(result.data);
+                } else {
+                  const result = await axios(`/permissions/autocomplete?limit=100`);
+                  this.setCustom_permissions(result.data);
+                }
+              } catch (e) {
+                this.showNotification(e, 'error')
+                this.setCustom_permissions([]);
               }
             },
 
@@ -101,8 +120,12 @@ export const useUsersStore = defineStore('users', {
       this.notify.textNotification = ''
     },
 
-        setRoleId(payload) {
-            this.searchResultRoleId = payload
+        setApp_role(payload) {
+            this.searchResultApp_role = payload
+        },
+
+        setCustom_permissions(payload) {
+            this.searchResultCustom_permissions = payload
         },
 
   }

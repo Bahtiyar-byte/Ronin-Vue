@@ -68,10 +68,6 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.TEXT,
       },
 
-      userName: {
-        type: DataTypes.TEXT,
-      },
-
       importHash: {
         type: DataTypes.STRING(255),
         allowNull: true,
@@ -86,6 +82,15 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   users.associate = (db) => {
+    db.users.belongsToMany(db.permissions, {
+      as: 'custom_permissions',
+      foreignKey: {
+        name: 'users_custom_permissionsId',
+      },
+      constraints: false,
+      through: 'usersCustom_permissionsPermissions',
+    });
+
     /// loop through entities and it's fields, and if ref === current e[name] and create relation has many on parent entity
 
     db.users.hasMany(db.contacts, {
@@ -154,18 +159,10 @@ module.exports = function (sequelize, DataTypes) {
 
     //end loop
 
-    db.users.belongsTo(db.images, {
-      as: 'imageId',
-      foreignKey: {
-        name: 'imageIdId',
-      },
-      constraints: false,
-    });
-
     db.users.belongsTo(db.roles, {
-      as: 'roleId',
+      as: 'app_role',
       foreignKey: {
-        name: 'roleIdId',
+        name: 'app_roleId',
       },
       constraints: false,
     });
