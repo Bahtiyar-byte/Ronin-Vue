@@ -4,13 +4,6 @@ import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import { VForm } from 'vuetify/components/VForm'
 
 import type { Event, NewEvent } from './types'
-import { useCalendarStore } from './useCalendarStore'
-import avatar1 from '@images/avatars/avatar-1.png'
-import avatar2 from '@images/avatars/avatar-2.png'
-import avatar3 from '@images/avatars/avatar-3.png'
-import avatar5 from '@images/avatars/avatar-5.png'
-import avatar6 from '@images/avatars/avatar-6.png'
-import avatar7 from '@images/avatars/avatar-7.png'
 
 const props = defineProps<Props>()
 
@@ -26,8 +19,6 @@ interface Props {
   event: (Event | NewEvent)
 }
 
-// 👉 store
-const store = useCalendarStore()
 const refForm = ref<VForm>()
 
 // 👉 Event
@@ -54,26 +45,20 @@ const handleSubmit = () => {
     .then(({ valid }) => {
       if (valid) {
         // If id exist on id => Update event
-        if ('id' in event.value)
+        if ('id' in event.value) {
           emit('updateEvent', event.value)
+        }
 
         // Else => add new event
-        else emit('addEvent', event.value)
+        else {
+          emit('addEvent', event.value)
+        }
 
         // Close drawer
         emit('update:isDrawerOpen', false)
       }
     })
 }
-
-const guestsOptions = [
-  { avatar: avatar1, name: 'Jane Foster' },
-  { avatar: avatar3, name: 'Donna Frank' },
-  { avatar: avatar5, name: 'Gabrielle Robertson' },
-  { avatar: avatar7, name: 'Lori Spears' },
-  { avatar: avatar6, name: 'Sandy Vega' },
-  { avatar: avatar2, name: 'Cheryl May' },
-]
 
 // 👉 Form
 
@@ -110,6 +95,17 @@ const endDateTimePickerConfig = computed(() => {
 const dialogModelValueUpdate = (val: boolean) => {
   emit('update:isDrawerOpen', val)
 }
+
+const eventStart = ref<string | Date>('')
+const eventEnd = ref<string | Date>('')
+
+watch(event, newVal => {
+  eventStart.value = newVal.start
+})
+
+watch(event, newVal => {
+  eventEnd.value = newVal.end
+})
 </script>
 
 <template>
@@ -165,11 +161,12 @@ const dialogModelValueUpdate = (val: boolean) => {
               <VCol cols="12">
                 <AppDateTimePicker
                   :key="JSON.stringify(startDateTimePickerConfig)"
-                  v-model="event.start"
+                  v-model="eventStart"
                   :rules="[requiredValidator]"
                   label="Start date"
                   placeholder="Select Date"
                   :config="startDateTimePickerConfig"
+                  @update:date="(d: Date) => { event.start = d }"
                 />
               </VCol>
 
@@ -177,11 +174,12 @@ const dialogModelValueUpdate = (val: boolean) => {
               <VCol cols="12">
                 <AppDateTimePicker
                   :key="JSON.stringify(endDateTimePickerConfig)"
-                  v-model="event.end"
+                  v-model="eventEnd"
                   :rules="[requiredValidator]"
                   label="End date"
                   placeholder="Select End Date"
                   :config="endDateTimePickerConfig"
+                  @update:date="(d: Date) => { event.end = d }"
                 />
               </VCol>
 

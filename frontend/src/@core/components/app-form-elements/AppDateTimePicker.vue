@@ -44,6 +44,8 @@ const props = defineProps({
 
 const emit = defineEmits<Emit>()
 
+const date = defineModel<Date>('date')
+
 interface Emit {
   (e: 'click:control', val: MouseEvent): true
   (e: 'mousedown:control', val: MouseEvent): true
@@ -181,7 +183,10 @@ const elementId = computed(() => {
                 :disabled="isReadonly.value"
                 @on-open="isCalendarOpen = true"
                 @on-close="isCalendarOpen = false"
-                @update:model-value="emitModelValue"
+                @update:model-value="(dateStr) => {
+                  date = refFlatPicker.fp.latestSelectedDateObj
+                  emitModelValue(dateStr)
+                }"
               />
 
               <!-- simple input for inline prop -->

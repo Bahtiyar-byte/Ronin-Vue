@@ -28,10 +28,18 @@ export const useCalendarStore = defineStore('calendar', {
 
       const appointment = prepareEntityToUpdate(event.extendedProps.objectData) as Appointment
 
-      console.log(event.start)
+      if (event.start instanceof Date) {
+        appointment.start_time = event.start.toISOString()
+      } else {
+        appointment.start_time = event.start
+      }
 
-      appointment.start_time = (<Date>event.start).toISOString()
-      appointment.end_time = (<Date>event.end).toISOString()
+      if (event.end instanceof Date) {
+        appointment.end_time = event.end.toISOString()
+      } else {
+        appointment.end_time = event.end
+      }
+
       appointment.subject = event.title as string
 
       return await updateAppointment(appointment)
