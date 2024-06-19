@@ -1,12 +1,11 @@
 import type { Except } from 'type-fest'
 import type { CalendarEvent } from '@/types/calendar/types'
+import type Appointment from '@/types/appointments/Appointment'
 
 export interface Event extends CalendarEvent {
   extendedProps: {
-    calendar?: string
-    location: string
     description: string
-    guests: string[]
+    objectData?: Appointment
   }
 }
 

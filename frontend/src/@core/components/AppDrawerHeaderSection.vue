@@ -9,8 +9,8 @@ defineEmits<{
 </script>
 
 <template>
-  <div class="pa-6 d-flex align-center">
-    <h5 class="text-h5">
+  <div class="p-6 d-flex align-center">
+    <h5 class="text-lg font-medium">
       {{ props.title }}
     </h5>
     <VSpacer />

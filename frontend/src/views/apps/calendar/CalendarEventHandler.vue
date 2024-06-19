@@ -88,19 +88,21 @@ const onCancel = () => {
 }
 
 const startDateTimePickerConfig = computed(() => {
-  const config: Options = { enableTime: !event.value.allDay, dateFormat: `Y-m-d${event.value.allDay ? '' : ' H:i'}` }
+  const config: Options = { enableTime: true, dateFormat: 'Y-m-d H:i' }
 
-  if (event.value.end)
+  if (event.value.end) {
     config.maxDate = event.value.end
+  }
 
   return config
 })
 
 const endDateTimePickerConfig = computed(() => {
-  const config: Options = { enableTime: !event.value.allDay, dateFormat: `Y-m-d${event.value.allDay ? '' : ' H:i'}` }
+  const config: Options = { enableTime: true, dateFormat: 'Y-m-d H:i' }
 
-  if (event.value.start)
+  if (event.value.start) {
     config.minDate = event.value.start
+  }
 
   return config
 })
@@ -159,47 +161,6 @@ const dialogModelValueUpdate = (val: boolean) => {
                 />
               </VCol>
 
-              <!-- 👉 Calendar -->
-              <VCol cols="12">
-                <AppSelect
-                  v-model="event.extendedProps.calendar"
-                  label="Label"
-                  placeholder="Select Event Label"
-                  :rules="[requiredValidator]"
-                  :items="store.availableCalendars"
-                  :item-title="item => item.label"
-                  :item-value="item => item.label"
-                >
-                  <template #selection="{ item }">
-                    <div
-                      v-show="event.extendedProps.calendar"
-                      class="align-center"
-                      :class="event.extendedProps.calendar ? 'd-flex' : ''"
-                    >
-                      <VIcon
-                        :color="item.raw.color"
-                        icon="tabler-circle-filled"
-                        size="8"
-                        class="me-2"
-                      />
-                      <span>{{ item.raw.label }}</span>
-                    </div>
-                  </template>
-
-                  <template #item="{ item, props: itemProps }">
-                    <VListItem v-bind="itemProps">
-                      <template #prepend>
-                        <VIcon
-                          size="8"
-                          icon="tabler-circle-filled"
-                          :color="item.raw.color"
-                        />
-                      </template>
-                    </VListItem>
-                  </template>
-                </AppSelect>
-              </VCol>
-
               <!-- 👉 Start date -->
               <VCol cols="12">
                 <AppDateTimePicker
@@ -221,49 +182,6 @@ const dialogModelValueUpdate = (val: boolean) => {
                   label="End date"
                   placeholder="Select End Date"
                   :config="endDateTimePickerConfig"
-                />
-              </VCol>
-
-              <!-- 👉 All day -->
-              <VCol cols="12">
-                <VSwitch
-                  v-model="event.allDay"
-                  label="All day"
-                />
-              </VCol>
-
-              <!-- 👉 Event URL -->
-              <VCol cols="12">
-                <AppTextField
-                  v-model="event.url"
-                  label="Event URL"
-                  placeholder="https://event.com/meeting"
-                  :rules="[urlValidator]"
-                  type="url"
-                />
-              </VCol>
-
-              <!-- 👉 Guests -->
-              <VCol cols="12">
-                <AppSelect
-                  v-model="event.extendedProps.guests"
-                  label="Guests"
-                  placeholder="Select guests"
-                  :items="guestsOptions"
-                  :item-title="item => item.name"
-                  :item-value="item => item.name"
-                  chips
-                  multiple
-                  eager
-                />
-              </VCol>
-
-              <!-- 👉 Location -->
-              <VCol cols="12">
-                <AppTextField
-                  v-model="event.extendedProps.location"
-                  label="Location"
-                  placeholder="Meeting room"
                 />
               </VCol>
 

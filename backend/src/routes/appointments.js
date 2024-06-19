@@ -1,6 +1,6 @@
 const express = require('express');
 
-const AppointmentsService = require('../services/appointments');
+const AppointmentsService = require('../roninServices/appointments');
 const AppointmentsDBApi = require('../db/api/appointments');
 const wrapAsync = require('../helpers').wrapAsync;
 
@@ -73,13 +73,13 @@ router.post(
   '/',
   wrapAsync(async (req, res) => {
     const link = new URL(req.headers.referer);
-    await AppointmentsService.create(
+    const payload = await AppointmentsService.create(
       req.body.data,
       req.currentUser,
       true,
       link.host,
     );
-    const payload = true;
+
     res.status(200).send(payload);
   }),
 );
@@ -180,12 +180,12 @@ router.post(
 router.put(
   '/:id',
   wrapAsync(async (req, res) => {
-    await AppointmentsService.update(
+    const payload = await AppointmentsService.update(
       req.body.data,
       req.body.id,
       req.currentUser,
     );
-    const payload = true;
+
     res.status(200).send(payload);
   }),
 );

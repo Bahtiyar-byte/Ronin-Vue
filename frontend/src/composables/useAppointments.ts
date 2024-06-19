@@ -69,7 +69,7 @@ export const useAppointments = () => {
       error,
     } = useApi('/appointments/').post({
       data: appointment,
-    }).json<boolean>()
+    }).json<Appointment>()
 
     return {
       data,
@@ -86,7 +86,7 @@ export const useAppointments = () => {
     } = useApi(`/appointments/${appointment.id}`).put({
       id: appointment.id,
       data: appointment,
-    }).json<boolean>()
+    }).json<Appointment>()
 
     return {
       data,

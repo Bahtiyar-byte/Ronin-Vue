@@ -47,7 +47,7 @@ watch(() => props.modelValue, () => {
 </script>
 
 <template>
-  <div class="pa-6 productDescriptionEditor">
+  <div class="px-6 productDescriptionEditor">
     <!-- buttons -->
     <div
       v-if="editor"

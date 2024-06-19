@@ -12,16 +12,7 @@ export const blankEvent: Event | NewEvent = {
   title: '',
   start: '',
   end: '',
-  allDay: false,
-  url: '',
   extendedProps: {
-    /*
-      ℹ️ We have to use undefined here because if we have blank string as value then select placeholder will be active (moved to top).
-      Hence, we need to set it to undefined or null
-    */
-    calendar: undefined,
-    guests: [],
-    location: '',
     description: '',
   },
 }
@@ -35,15 +26,6 @@ export const useCalendar = (event: Ref<Event | NewEvent>, isEventHandlerSidebarA
   // 👉 Calendar template ref
   const refCalendar = ref()
 
-  // 👉 Calendar colors
-  const calendarsColor = {
-    Business: 'primary',
-    Holiday: 'success',
-    Personal: 'error',
-    Family: 'warning',
-    ETC: 'info',
-  }
-
   // ℹ️ Extract event data from event API
   const extractEventDataFromEventApi = (eventApi: EventApi) => {
     // @ts-expect-error EventApi has extendProps type Dictionary (Record<string, any>) and we have fully typed extended props => Type conflict
@@ -52,9 +34,7 @@ export const useCalendar = (event: Ref<Event | NewEvent>, isEventHandlerSidebarA
       title,
       start,
       end,
-      url,
-      extendedProps: { calendar, guests, location, description },
-      allDay,
+      extendedProps: { description, objectData },
     }: Event = eventApi
 
     return {
@@ -62,26 +42,36 @@ export const useCalendar = (event: Ref<Event | NewEvent>, isEventHandlerSidebarA
       title,
       start,
       end,
-      url,
       extendedProps: {
-        calendar,
-        guests,
-        location,
         description,
+        objectData,
       },
-      allDay,
     }
   }
 
   // @ts-expect-error for nuxt workaround
-  if (typeof process !== 'undefined' && process.server)
+  if (typeof process !== 'undefined' && process.server) {
     store.fetchEvents()
+  }
+
+  const appointmentToRawEvent = (a: Appointment) => {
+    return {
+      id: a.id,
+      title: a.subject,
+
+      // Convert string representation of date to Date object
+      start: new Date(a.start_time),
+      end: new Date(a.end_time),
+      objectData: a,
+    }
+  }
 
   // 👉 Fetch events
   const fetchEvents: EventSourceFunc = (info, successCallback) => {
     // If there's no info => Don't make useless API call
-    if (!info)
+    if (!info) {
       return
+    }
 
     store.fetchEvents()
       .then(r => {
@@ -89,13 +79,7 @@ export const useCalendar = (event: Ref<Event | NewEvent>, isEventHandlerSidebarA
           return
         }
 
-        successCallback(r.rows.map((a: Appointment) => ({
-          title: a.subject,
-
-          // Convert string representation of date to Date object
-          start: new Date(a.start_time),
-          end: new Date(a.end_time),
-        })))
+        successCallback(r.rows.map((a: Appointment) => appointmentToRawEvent(a)))
       })
       .catch(e => {
         console.error('Error occurred while fetching calendar events', e)
@@ -126,7 +110,7 @@ export const useCalendar = (event: Ref<Event | NewEvent>, isEventHandlerSidebarA
 
     // --- Set date related props
     // ? Docs: https://fullcalendar.io/docs/Event-setDates
-    existingEvent.setDates(updatedEventData.start, updatedEventData.end, { allDay: updatedEventData.allDay })
+    existingEvent.setDates(updatedEventData.start, updatedEventData.end)
 
     // --- Set event's extendedProps
     // ? Docs: https://fullcalendar.io/docs/Event-setExtendedProp
@@ -141,16 +125,15 @@ export const useCalendar = (event: Ref<Event | NewEvent>, isEventHandlerSidebarA
   const removeEventInCalendar = (eventId: string) => {
     const _event = calendarApi.value?.getEventById(eventId)
 
-    if (_event)
+    if (_event) {
       _event.remove()
+    }
   }
 
   // 👉 refetch events
   const refetchEvents = () => {
     calendarApi.value?.refetchEvents()
   }
-
-  watch(() => store.selectedCalendars, refetchEvents)
 
   // 👉 Add event
   const addEvent = (_event: NewEvent) => {
@@ -165,10 +148,26 @@ export const useCalendar = (event: Ref<Event | NewEvent>, isEventHandlerSidebarA
     // ℹ️ Making API call using $api('', { method: ... })
     store.updateEvent(_event)
       .then(r => {
-        const propsToUpdate = ['id', 'title', 'url'] as (keyof Event)[]
-        const extendedPropsToUpdate = ['calendar', 'guests', 'location', 'description'] as (keyof Event['extendedProps'])[]
+        const { data } = r
 
-        updateEventInCalendar(r, propsToUpdate, extendedPropsToUpdate)
+        watch(data, newVal => {
+          if (newVal === null) {
+            throw new Error('Error on updating appointment')
+          }
+
+          const propsToUpdate = ['id', 'title'] as (keyof Event)[]
+          const extendedPropsToUpdate = ['description', 'objectData'] as (keyof Event['extendedProps'])[]
+
+          const rawEvent = {
+            ...appointmentToRawEvent(newVal),
+            extendedProps: {
+              description: newVal.notes,
+              objectData: newVal,
+            },
+          } as Event
+
+          updateEventInCalendar(rawEvent, propsToUpdate, extendedPropsToUpdate)
+        })
       })
     refetchEvents()
   }
@@ -223,12 +222,10 @@ export const useCalendar = (event: Ref<Event | NewEvent>, isEventHandlerSidebarA
   */
     navLinks: true,
 
-    eventClassNames({ event: calendarEvent }) {
-      const colorName = calendarsColor[calendarEvent._def.extendedProps.calendar as keyof typeof calendarsColor]
-
+    eventClassNames() {
       return [
         // Background Color
-        `bg-light-${colorName} text-${colorName}`,
+        'bg-light-primary text-primary',
       ]
     },
 
@@ -269,8 +266,9 @@ export const useCalendar = (event: Ref<Event | NewEvent>, isEventHandlerSidebarA
       Docs: https://fullcalendar.io/docs/eventResize
     */
     eventResize({ event: resizedEvent }) {
-      if (resizedEvent.start && resizedEvent.end)
+      if (resizedEvent.start && resizedEvent.end) {
         updateEvent(extractEventDataFromEventApi(resizedEvent))
+      }
     },
 
     customButtons: {
