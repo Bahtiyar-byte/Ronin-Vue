@@ -54,15 +54,18 @@ export const useCalendar = (event: Ref<Event | NewEvent>, isEventHandlerSidebarA
     store.fetchEvents()
   }
 
-  const appointmentToRawEvent = (a: Appointment) => {
+  const appointmentToRawEvent = (a: Appointment): Event => {
     return {
       id: a.id,
       title: a.subject,
 
       // Convert string representation of date to Date object
-      start: new Date(a.start_time),
-      end: new Date(a.end_time),
-      objectData: a,
+      start: new Date(<string>a.start_time),
+      end: new Date(<string>a.end_time),
+      extendedProps: {
+        description: a.notes as string,
+        objectData: a,
+      },
     }
   }
 
@@ -138,8 +141,10 @@ export const useCalendar = (event: Ref<Event | NewEvent>, isEventHandlerSidebarA
   // 👉 Add event
   const addEvent = (_event: NewEvent) => {
     store.addEvent(_event)
-      .then(() => {
-        refetchEvents()
+      .then(({ isFetching }) => {
+        watch(isFetching, () => {
+          refetchEvents()
+        })
       })
   }
 
@@ -169,7 +174,9 @@ export const useCalendar = (event: Ref<Event | NewEvent>, isEventHandlerSidebarA
           updateEventInCalendar(rawEvent, propsToUpdate, extendedPropsToUpdate)
         })
       })
-    refetchEvents()
+      .finally(() => {
+        refetchEvents()
+      })
   }
 
   // 👉 Remove event

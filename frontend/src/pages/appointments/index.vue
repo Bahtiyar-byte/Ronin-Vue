@@ -25,15 +25,13 @@ const pagination = ref({
 const sortBy = ref<SortItem[]>([])
 
 const headers = ref([
-  { title: 'Created at', key: 'createdAt' },
+  { title: 'Subject', key: 'subject' },
   { title: 'Actions', key: 'actions', sortable: false },
 ])
 
 const route = useRoute()
 
-const filters = ref<(CheckboxFilterItem)[]>([
-  { type: 'checkbox', key: 'status', label: 'Status', options: [], value: [] },
-])
+const filters = ref<(CheckboxFilterItem)[]>([])
 
 onBeforeMount(async () => {
   const promises = Object.values(filters.value).map(async val => {
@@ -97,7 +95,7 @@ const fetchData = async () => {
     }
 
     items.value = newVal.rows
-  })
+  }, { immediate: true })
 }
 
 const debouncedFetchData = debounce(fetchData, 400)
