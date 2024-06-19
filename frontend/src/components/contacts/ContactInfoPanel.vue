@@ -36,6 +36,7 @@ const saveItem = async (type: string, newValue: string) => {
 
   return isFetching
 }
+
 </script>
 
 <template>
