@@ -1,22 +1,20 @@
 // jobs/create.vue
 <script lang="ts" setup>
-import { ref, onBeforeMount, watch, computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { computed, onBeforeMount, ref, watch } from 'vue'
+import { type RouteLocationNormalizedLoaded, useRoute, useRouter } from 'vue-router'
 import { useHead } from '@unhead/vue'
-import * as yup from 'yup'
 import { useJobs } from '@/composables/useJobs'
-import { useContacts } from '@/composables/useContacts'
 import { hasKey } from '@core/utils/helpers'
 import type Job from '@/types/jobs/Job'
 import { useFormFields } from '@/utils/forms/useFormFields'
 import { initialFieldsJobs } from '@/utils/initial_data/initialFieldsJobs'
 
 const { create: createJob, getById: getJobById, update: updateJob } = useJobs()
-const { autocomplete: autocompleteContacts } = useContacts()
 const router = useRouter()
-const route = useRoute()
+const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } }
 const isUpdateMode = ref(false)
 const pageTitle = ref('Create Job')
+
 const breadcrumbs = ref([
   { title: 'Home', to: { name: 'root' } },
   { title: 'Jobs', to: { name: 'jobs' } },
@@ -26,15 +24,22 @@ const breadcrumbs = ref([
 const { formFields, initializeFields } = useFormFields('jobs')
 const jobRef = ref<Job>()
 const dataLoaded = ref(false)
+
 const fetchJobData = async (id: string) => {
   const { data } = await getJobById(id)
+
   watch(data, (job: Job | null) => {
-    if (job === null) return
+    if (job === null) {
+      return
+    }
+
     jobRef.value = job
     formFields.value.forEach(field => {
       if ('fields' in field) {
         field.fields.forEach(subField => {
-          if (hasKey(job, subField.name)) subField.value = job[subField.name]
+          if (hasKey(job, subField.name)) {
+            subField.value = job[subField.name]
+          }
         })
       } else if (hasKey(job, field.name)) {
         field.value = job[field.name]
@@ -47,6 +52,7 @@ const fetchJobData = async (id: string) => {
 
 onBeforeMount(async () => {
   await initializeFields(initialFieldsJobs)
+
   const jobId = route.params.id as string
   if (jobId) {
     isUpdateMode.value = true
@@ -63,8 +69,9 @@ const submitForm = async (values: Record<string, any>) => {
   const jobData = { ...jobRef.value, ...values } as Job
   const action = jobData.id ? updateJob : createJob
   const { data } = await action(jobData)
+
   watch(data, newVal => {
-    router.push({ name: 'jobs-details-id', params: { id: newVal?.id } })
+    router.push({ name: 'jobs-details-id', params: { id: newVal?.id as string } })
   })
 }
 </script>
