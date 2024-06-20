@@ -263,10 +263,10 @@ db.sequelize.sync().then(function () {
     console.log(`Listening on port ${PORT}`);
   });
 
-  const NotificationsWebSocketManager = require('./websockets/NotificationsWebSocketManager');
+  const WebSocketManager = require('./websockets/WebSocketManager');
 
   // Initialize the WebSocket server
-  NotificationsWebSocketManager.initialize(server);
+  WebSocketManager.initialize(server);
 });
 
 module.exports = app;

@@ -1,16 +1,30 @@
 const WebSocket = require('ws');
 const authenticateWebSocket = require('./middlewares/authenticateWebSocket');
 
-module.exports = class NotificationsWebSocketManager {
+const NotificationsService = require('./../app/notifications/NotificationsService');
+
+module.exports = class WebSocketManager {
     static initialize(server) {
         if (!this.wss) {
             this.wss = new WebSocket.Server({
                 noServer: true,
-                path: '/ws/notifications',
             });
 
             this.wss.on('connection', (ws, req) => {
-                console.log('Client connected: ', req.user);
+                const userId = req.user.id;
+
+                if (req.url === '/ws/notifications') {
+                    NotificationsService.addClient(userId, ws);
+                    ws.on('close', () => NotificationsService.removeClient(userId));
+
+                    setInterval(() => {
+                        NotificationsService.sendRandomNotification(userId);
+                    }, 2500);
+                }
+
+                ws.on('message', (message) => {
+                    console.log('received: %s', message);
+                });
             });
 
             server.on('upgrade', (request, socket, head) => {
