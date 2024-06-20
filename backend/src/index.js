@@ -57,8 +57,6 @@ const amendmentsRoutes = require('./routes/amendments');
 
 const estimate_sectionsRoutes = require('./routes/estimate_sections');
 
-const filtersRoutes = require('./routes/filters');
-
 const options = {
   definition: {
     openapi: '3.0.0',
@@ -243,11 +241,10 @@ app.use(
   searchRoutes,
 );
 
-app.use(
-    '/api/filters',
-    passport.authenticate('jwt', { session: false }),
-    filtersRoutes,
-);
+const RoninAppInitialise = require('./init');
+const roninApp = new RoninAppInitialise(app, passport);
+
+roninApp.initApp();
 
 const publicDir = path.join(__dirname, '../public');
 
@@ -259,14 +256,17 @@ if (fs.existsSync(publicDir)) {
   });
 }
 
-require('./subscribers/index')
-
 const PORT = process.env.PORT || 8080;
 
 db.sequelize.sync().then(function () {
-  app.listen(PORT, () => {
+  const server = app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
   });
+
+  const NotificationsWebSocketManager = require('./websockets/NotificationsWebSocketManager');
+
+  // Initialize the WebSocket server
+  NotificationsWebSocketManager.initialize(server);
 });
 
 module.exports = app;

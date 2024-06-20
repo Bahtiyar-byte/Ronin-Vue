@@ -1,6 +1,5 @@
 const express = require('express');
 
-const FiltersService = require('../roninServices/filters');
 const FiltersDBApi = require('../db/api/filters');
 
 const wrapAsync = require('../helpers').wrapAsync;
