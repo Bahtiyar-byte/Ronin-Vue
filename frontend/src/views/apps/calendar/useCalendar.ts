@@ -8,6 +8,8 @@ import { useConfigStore } from '@core/stores/config'
 import { useCalendarStore } from '@/views/apps/calendar/useCalendarStore'
 import type Appointment from '@/types/appointments/Appointment'
 
+
+
 export const blankEvent: Event | NewEvent = {
   title: '',
   start: '',
@@ -15,6 +17,8 @@ export const blankEvent: Event | NewEvent = {
   extendedProps: {
     description: '',
   },
+  related_contact: "",
+  assigned_to: null
 }
 
 export const useCalendar = (event: Ref<Event | NewEvent>, isEventHandlerSidebarActive: Ref<boolean>, isLeftSidebarOpen: Ref<boolean>) => {
@@ -35,6 +39,8 @@ export const useCalendar = (event: Ref<Event | NewEvent>, isEventHandlerSidebarA
       start,
       end,
       extendedProps: { description, objectData },
+      related_contact,
+      assigned_to
     }: Event = eventApi
 
     return {
@@ -46,6 +52,8 @@ export const useCalendar = (event: Ref<Event | NewEvent>, isEventHandlerSidebarA
         description,
         objectData,
       },
+      related_contact,
+      assigned_to
     }
   }
 
@@ -66,6 +74,8 @@ export const useCalendar = (event: Ref<Event | NewEvent>, isEventHandlerSidebarA
         description: a.notes as string,
         objectData: a,
       },
+      related_contact: a.related_contact,
+      assigned_to: a.assigned_to
     }
   }
 

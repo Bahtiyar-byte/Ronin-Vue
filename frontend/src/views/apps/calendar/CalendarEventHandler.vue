@@ -4,6 +4,7 @@ import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import { VForm } from 'vuetify/components/VForm'
 
 import type { Event, NewEvent } from './types'
+import EditableInfoItem from '@/components/common/CRUD/EditableInfoItem.vue';
 
 const props = defineProps<Props>()
 
@@ -15,9 +16,27 @@ const emit = defineEmits<{
 }>()
 
 interface Props {
+  contact: string,
   isDrawerOpen: boolean
   event: (Event | NewEvent)
 }
+// 👉from contact
+onMounted(async () => {
+  if (props.contact) {
+    const { data } = await useContacts().getById(props.contact)
+    watch(data, newVal => {
+      if (newVal === null) {
+        return
+      } else {
+        console.log(data.value);
+
+        event.value.related_contact = data.value?.name
+      }
+    })
+  } else {
+    return
+  }
+})
 
 const refForm = ref<VForm>()
 
@@ -106,32 +125,30 @@ watch(event, newVal => {
 watch(event, newVal => {
   eventEnd.value = newVal.end
 })
+const { autocomplete: autocompleteContacts } = useContacts()
+const { autocomplete: autocompleteUsers } = useUsers()
+
+const fetchAutocomplete = async (query: string, autocompleteFn: (query: string) => Promise<any>) => {
+  const { data } = await autocompleteFn(query)
+  if (data.value === null) {
+    return
+  }
+
+  return data.value.map((item: any) => ({ value: item.id, title: item.label }))
+}
+
+
 </script>
 
 <template>
-  <VNavigationDrawer
-    temporary
-    location="end"
-    :model-value="props.isDrawerOpen"
-    width="370"
-    :border="0"
-    class="scrollable-content"
-    @update:model-value="dialogModelValueUpdate"
-  >
+  <VNavigationDrawer temporary location="end" :model-value="props.isDrawerOpen" width="370" :border="0"
+    class="scrollable-content" @update:model-value="dialogModelValueUpdate">
     <!-- 👉 Header -->
-    <AppDrawerHeaderSection
-      :title="event.id ? 'Update Event' : 'Add Event'"
-      @cancel="$emit('update:isDrawerOpen', false)"
-    >
+    <AppDrawerHeaderSection :title="event.id ? 'Update Event' : 'Add Event'"
+      @cancel="$emit('update:isDrawerOpen', false)">
       <template #beforeClose>
-        <IconBtn
-          v-show="event.id"
-          @click="removeEvent"
-        >
-          <VIcon
-            size="18"
-            icon="tabler-trash"
-          />
+        <IconBtn v-show="event.id" @click="removeEvent">
+          <VIcon size="18" icon="tabler-trash" />
         </IconBtn>
       </template>
     </AppDrawerHeaderSection>
@@ -142,75 +159,58 @@ watch(event, newVal => {
       <VCard flat>
         <VCardText>
           <!-- SECTION Form -->
-          <VForm
-            ref="refForm"
-            @submit.prevent="handleSubmit"
-          >
+          <VForm ref="refForm" @submit.prevent="handleSubmit">
             <VRow>
               <!-- 👉 Title -->
               <VCol cols="12">
-                <AppTextField
-                  v-model="event.title"
-                  label="Title"
-                  placeholder="Meeting with Jane"
-                  :rules="[requiredValidator]"
-                />
+                <AppTextField v-model="event.title" label="Title" placeholder="Meeting with Jane"
+                  :rules="[requiredValidator]" />
               </VCol>
 
               <!-- 👉 Start date -->
               <VCol cols="12">
-                <AppDateTimePicker
-                  :key="JSON.stringify(startDateTimePickerConfig)"
-                  v-model="eventStart"
-                  :rules="[requiredValidator]"
-                  label="Start date"
-                  placeholder="Select Date"
-                  :config="startDateTimePickerConfig"
-                  @update:date="(d: Date) => { event.start = d }"
-                />
+                <AppDateTimePicker :key="JSON.stringify(startDateTimePickerConfig)" v-model="eventStart"
+                  :rules="[requiredValidator]" label="Start date" placeholder="Select Date"
+                  :config="startDateTimePickerConfig" @update:date="(d: Date) => { event.start = d }" />
               </VCol>
 
               <!-- 👉 End date -->
               <VCol cols="12">
-                <AppDateTimePicker
-                  :key="JSON.stringify(endDateTimePickerConfig)"
-                  v-model="eventEnd"
-                  :rules="[requiredValidator]"
-                  label="End date"
-                  placeholder="Select End Date"
-                  :config="endDateTimePickerConfig"
-                  @update:date="(d: Date) => { event.end = d }"
-                />
+                <AppDateTimePicker :key="JSON.stringify(endDateTimePickerConfig)" v-model="eventEnd"
+                  :rules="[requiredValidator]" label="End date" placeholder="Select End Date"
+                  :config="endDateTimePickerConfig" @update:date="(d: Date) => { event.end = d }" />
               </VCol>
 
               <!-- 👉 Description -->
               <VCol cols="12">
-                <AppTextarea
-                  v-model="event.extendedProps.description"
-                  label="Description"
-                  placeholder="Meeting description"
-                />
+                <AppTextarea v-model="event.extendedProps.description" label="Description"
+                  placeholder="Meeting description" />
+              </VCol>
+              <!-- 👉 Contacts -->
+              <VCol cols="12" class="w-full">
+              <EditableInfoItem label="Related contact" type="autocomplete" :value="event.related_contact"
+                title="Update related contact"
+                :fetch-autocomplete-items="(query) => fetchAutocomplete(query, autocompleteContacts)"
+                :calendar="true" />
               </VCol>
 
+              <!-- 👉 Assigned Told -->
+              <VCol cols="12">
+                <AppAutocomplete v-model="event.assigned_to" label="Assigned Told" placeholder="Select User"
+                  :items="[]" />
+              </VCol>
               <!-- 👉 Form buttons -->
               <VCol cols="12">
-                <VBtn
-                  type="submit"
-                  class="me-3"
-                >
+                <VBtn type="submit" class="me-3">
                   Submit
                 </VBtn>
-                <VBtn
-                  variant="outlined"
-                  color="secondary"
-                  @click="onCancel"
-                >
+                <VBtn variant="outlined" color="secondary" @click="onCancel">
                   Cancel
                 </VBtn>
               </VCol>
             </VRow>
           </VForm>
-        <!-- !SECTION -->
+          <!-- !SECTION -->
         </VCardText>
       </VCard>
     </PerfectScrollbar>

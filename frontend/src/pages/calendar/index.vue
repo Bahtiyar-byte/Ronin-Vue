@@ -4,11 +4,12 @@ import { blankEvent, useCalendar } from '@/views/apps/calendar/useCalendar'
 
 // Components
 import CalendarEventHandler from '@/views/apps/calendar/CalendarEventHandler.vue'
+import { RouteLocationNormalizedLoaded } from 'vue-router';
+const route = useRoute() as RouteLocationNormalizedLoaded & { query: { create_event: boolean, contact_id: string } }
 
 // 👉 Event
 const event = ref(structuredClone(blankEvent))
 const isEventHandlerSidebarActive = ref(false)
-
 watch(isEventHandlerSidebarActive, val => {
   if (!val) {
     event.value = structuredClone(blankEvent)
@@ -23,6 +24,20 @@ const { refCalendar, calendarOptions, addEvent, updateEvent, removeEvent, jumpTo
 const jumpToDateFn = (date: string) => {
   jumpToDate(date)
 }
+const contactId = ref<string>("")
+watch(
+  () => route,
+  (newVal) => {
+    if (newVal.query.contact_id) {
+      contactId.value = newVal.query.contact_id
+    }
+    if (newVal.query.create_event) {
+      isEventHandlerSidebarActive.value = true;
+    }
+  }, { immediate: true }
+);
+
+
 </script>
 
 <template>
@@ -31,21 +46,10 @@ const jumpToDateFn = (date: string) => {
       <!-- `z-index: 0` Allows overlapping vertical nav on calendar -->
       <VLayout style="z-index: 0;">
         <!-- 👉 Navigation drawer -->
-        <VNavigationDrawer
-          v-model="isLeftSidebarOpen"
-          width="292"
-          absolute
-          touchless
-          location="start"
-          class="calendar-add-event-drawer"
-          :temporary="$vuetify.display.mdAndDown"
-        >
+        <VNavigationDrawer v-model="isLeftSidebarOpen" width="292" absolute touchless location="start"
+          class="calendar-add-event-drawer" :temporary="$vuetify.display.mdAndDown">
           <div style="margin: 1.5rem;">
-            <VBtn
-              block
-              prepend-icon="tabler-plus"
-              @click="isEventHandlerSidebarActive = true"
-            >
+            <VBtn block prepend-icon="tabler-plus" @click="isEventHandlerSidebarActive = true">
               Add event
             </VBtn>
           </div>
@@ -53,32 +57,20 @@ const jumpToDateFn = (date: string) => {
           <VDivider />
 
           <div class="d-flex align-center justify-center pa-2">
-            <AppDateTimePicker
-              :model-value="new Date().toJSON().slice(0, 10)"
-              :config="{ inline: true }"
-              class="calendar-date-picker"
-              @update:model-value="jumpToDateFn"
-            />
+            <AppDateTimePicker :model-value="new Date().toJSON().slice(0, 10)" :config="{ inline: true }"
+              class="calendar-date-picker" @update:model-value="jumpToDateFn" />
           </div>
         </VNavigationDrawer>
 
         <VMain>
           <VCard flat>
-            <FullCalendar
-              ref="refCalendar"
-              :options="calendarOptions"
-            />
+            <FullCalendar ref="refCalendar" :options="calendarOptions" />
           </VCard>
         </VMain>
       </VLayout>
     </VCard>
-    <CalendarEventHandler
-      v-model:isDrawerOpen="isEventHandlerSidebarActive"
-      :event="event"
-      @add-event="addEvent"
-      @update-event="updateEvent"
-      @remove-event="removeEvent"
-    />
+    <CalendarEventHandler v-model:isDrawerOpen="isEventHandlerSidebarActive" :event="event" @add-event="addEvent"
+      @update-event="updateEvent" @remove-event="removeEvent" :contact="contactId" />
   </div>
 </template>
 
@@ -113,7 +105,7 @@ const jumpToDateFn = (date: string) => {
     }
   }
 
-  & ~ .flatpickr-calendar .flatpickr-weekdays {
+  &~.flatpickr-calendar .flatpickr-weekdays {
     margin-block: 0 4px;
   }
 }

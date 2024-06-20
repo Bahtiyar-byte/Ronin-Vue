@@ -101,7 +101,7 @@ useHead({
         :touch="false"
       >
         <VWindowItem>
-          <ActivityTab />
+          <ActivityTab :id = "route.params.id" />
         </VWindowItem>
 
         <VWindowItem>

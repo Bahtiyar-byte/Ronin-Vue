@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type WidgetCardProps from '@/types/widgets/WidgetCardProps'
 import WidgetCard from '@/components/widgets/WidgetCard.vue'
-
+const props = defineProps<{
+  id: any
+}>()
 const widgets = ref<WidgetCardProps[]>([
   {
     widget: {
@@ -11,9 +13,7 @@ const widgets = ref<WidgetCardProps[]>([
       action: {
         title: 'Create appointment with this contact',
         icon: 'tabler-plus',
-        to: {
-          name: 'root',
-        },
+        to: `/calendar?create_event=1&contact_id=${props.id}`
       },
     },
   },
@@ -81,13 +81,7 @@ const widgets = ref<WidgetCardProps[]>([
 <template>
   <div class="mb-6">
     <VRow>
-      <VCol
-        v-for="(widgetData, id) in widgets"
-        :key="`activity-widget-${id}`"
-        cols="12"
-        md="4"
-        sm="6"
-      >
+      <VCol v-for="(widgetData, id) in widgets" :key="`activity-widget-${id}`" cols="12" md="4" sm="6">
         <WidgetCard v-bind="widgetData" />
       </VCol>
     </VRow>
