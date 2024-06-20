@@ -6,7 +6,7 @@ import { useContacts } from '@/composables/useContacts'
 
 const { autocomplete: autocompleteContacts } = useContacts()
 
-export const initialFieldsJobs: Array<FormField | FormFieldsGroup> = [
+export const initialFieldsJobs: (FormField | FormFieldsGroup)[] = [
   {
     title: 'General',
     fields: [

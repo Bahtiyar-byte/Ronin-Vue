@@ -1,4 +1,3 @@
-// jobs/create.vue
 <script lang="ts" setup>
 import { computed, onBeforeMount, ref, watch } from 'vue'
 import { type RouteLocationNormalizedLoaded, useRoute, useRouter } from 'vue-router'
@@ -8,6 +7,7 @@ import { hasKey } from '@core/utils/helpers'
 import type Job from '@/types/jobs/Job'
 import { useFormFields } from '@/utils/forms/useFormFields'
 import { initialFieldsJobs } from '@/utils/initial_data/initialFieldsJobs'
+import FormField from '@/types/forms/FormField'
 
 const { create: createJob, getById: getJobById, update: updateJob } = useJobs()
 const router = useRouter()
@@ -38,7 +38,7 @@ const fetchJobData = async (id: string) => {
       if ('fields' in field) {
         field.fields.forEach(subField => {
           if (hasKey(job, subField.name)) {
-            subField.value = job[subField.name]
+            subField.value = job[subField.name].id
           }
         })
       } else if (hasKey(job, field.name)) {
@@ -81,7 +81,7 @@ const submitForm = async (values: Record<string, any>) => {
     v-if="dataLoaded"
     :title="pageTitle"
     :breadcrumbs="breadcrumbs"
-    :fields="formFields"
+    :fields="formFields as FormField[]"
     :submit-handler="submitForm"
   >
     <template #append_related_contactId>

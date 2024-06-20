@@ -1,11 +1,9 @@
-// composables/useFormFields.ts
 import { ref } from 'vue'
-import * as yup from 'yup'
 import type FormField from '@/types/forms/FormField'
 import type FormFieldsGroup from '@/types/forms/FormFieldsGroup'
 import { useFilters } from '@/composables/useFilters'
 
-export const useFormFields = (formType: 'jobs' | 'contacts') => {
+export const useFormFields = (formType: 'estimates' | 'jobs' | 'contacts' | "appointments") => {
   const { getVariants } = useFilters()
   const formFields = ref<Array<FormField | FormFieldsGroup>>([])
 
