@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { type UnwrapRef, onBeforeMount, ref, watch, computed } from 'vue'
+import { type UnwrapRef, computed, onBeforeMount, ref, watch } from 'vue'
 import { useHead } from '@unhead/vue'
 import { type RouteLocationNormalizedLoaded, useRoute, useRouter } from 'vue-router'
 import { useEstimates } from '@/composables/useEstimates'
@@ -8,7 +8,7 @@ import { hasKey } from '@core/utils/helpers'
 import ItemUpdate from '@/components/common/CRUD/ItemUpdate.vue'
 import type Estimate from '@/types/estimates/Estimate'
 import { useFormFields } from '@/utils/forms/useFormFields'
-import FormField from '@/types/forms/FormField'
+import type FormField from '@/types/forms/FormField'
 import { initialFieldEstimates } from '@/utils/initial_data/initialFieldsEstimates'
 
 const { create: createEstimate, getById: getEstimateById, update: updateEstimate } = useEstimates()
@@ -28,6 +28,7 @@ const breadcrumbs = ref([
 const estimateRef = ref<Estimate>()
 
 const { formFields, initializeFields } = useFormFields('estimates')
+
 const assignFieldValue = (field: UnwrapRef<FormField>, value: string | { id: string }) => {
   if (typeof value === 'object' && value !== null && hasKey(value, 'id')) {
     field.value = (value as { id: string }).id
@@ -55,6 +56,7 @@ const processFieldValues = (estimate: Estimate) => {
     }
   })
 }
+
 const fetchEstimateData = async (id: string) => {
   const { data } = await getEstimateById(id)
 
@@ -70,11 +72,10 @@ const fetchEstimateData = async (id: string) => {
     breadcrumbs.value[2] = { title: `Update ${estimate.name}`, disabled: true }
   })
 }
+
 const dataLoaded = ref<boolean>(false)
 
 onBeforeMount(async () => {
-
-
   await initializeFields(initialFieldEstimates)
 
   const estimateId = route.params.id as string
@@ -121,12 +122,22 @@ const submitForm = async (values: Record<string, any>) => {
 </script>
 
 <template>
-  <ItemUpdate v-if="dataLoaded" :title="pageTitle" :breadcrumbs="breadcrumbs" :fields="formFields as FormField[]"
-    :submit-handler="submitForm">
+  <ItemUpdate
+    v-if="dataLoaded"
+    :title="pageTitle"
+    :breadcrumbs="breadcrumbs"
+    :fields="formFields as FormField[]"
+    :submit-handler="submitForm"
+  >
     <template #append_related_contactId>
       <VTooltip text="Add new contact">
         <template #activator="{ props }">
-          <IconBtn v-bind="props" :to="{ name: 'contacts-create' }" target="_blank" class="ml-2">
+          <IconBtn
+            v-bind="props"
+            :to="{ name: 'contacts-create' }"
+            target="_blank"
+            class="ml-2"
+          >
             <VIcon icon="tabler-plus" />
           </IconBtn>
         </template>
