@@ -119,6 +119,9 @@ const sources: BundleScriptConfig = {
         'users',
         'files',
         'calendar',
+        'bell',
+        'mail',
+        'mail-opened',
       ],
     },
     {
