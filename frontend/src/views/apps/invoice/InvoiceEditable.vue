@@ -1,40 +1,26 @@
 <script setup lang="ts">
-import type { Client } from '@db/apps/invoice/types'
-import InvoiceProductEdit from './InvoiceProductEdit.vue'
-import type { InvoiceData, PurchasedProduct } from './types'
+import type { PurchasedProduct } from './types'
+
+// import InvoiceProductEdit from './InvoiceProductEdit.vue'
+
+import type Estimate from '@/types/estimates/Estimate'
+
 import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
 import { themeConfig } from '@themeConfig'
 
-interface Props {
-  data: InvoiceData
-}
-
-const props = defineProps<Props>()
+import coreConfig from '@core/config'
 
 const emit = defineEmits<{
   (e: 'push', value: PurchasedProduct): void
   (e: 'remove', id: number): void
 }>()
 
-const invoice = ref(props.data.invoice)
-const salesperson = ref(props.data.salesperson)
-const thanksNote = ref(props.data.thanksNote)
-const note = ref(props.data.note)
+const data = defineModel<Estimate>('data', { required: true })
 
-// 👉 Clients
-const clients = ref<Client[]>([])
-
-// 👉 fetchClients
-const fetchClients = async () => {
-  const { data, error } = await useApi<any>('/apps/invoice/clients')
-
-  if (error.value)
-  { console.log(error.value) }
-  else
-  { clients.value = data.value }
-}
-
-fetchClients()
+// const invoice = ref(props.data.invoice)
+// const salesperson = ref(props.data.salesperson)
+// const thanksNote = ref(props.data.thanksNote)
+// const note = ref(props.data.note)
 
 // 👉 Add item function
 const addItem = () => {
@@ -69,35 +55,17 @@ const removeProduct = (id: number) => {
         </div>
 
         <!-- 👉 Address -->
-        <p class="text-high-emphasis mb-0">
-          Office 149, 450 South Brand Brooklyn
-        </p>
-        <p class="text-high-emphasis mb-0">
-          San Diego County, CA 91905, USA
-        </p>
-        <p class="text-high-emphasis mb-0">
-          +1 (123) 456 7891, +44 (876) 543 2198
+        <p
+          v-for="(address, addressKey) in coreConfig.company.address.split('\n')"
+          :key="`estimate-address-${addressKey}`"
+          class="text-high-emphasis mb-0"
+        >
+          {{ address }}
         </p>
       </div>
 
       <!-- 👉 Right Content -->
-      <div class="d-flex flex-column gap-2">
-        <!-- 👉 Invoice Id -->
-        <div class="d-flex align-start align-sm-center gap-x-4 font-weight-medium text-lg flex-column flex-sm-row">
-          <span
-            class="text-high-emphasis text-sm-end"
-            style="inline-size: 5.625rem ;"
-          >Invoice:</span>
-          <span>
-            <AppTextField
-              v-model="invoice.id"
-              disabled
-              prefix="#"
-              style="inline-size: 9.5rem;"
-            />
-          </span>
-        </div>
-
+      <div class="d-flex flex-column justify-center gap-2">
         <!-- 👉 Issue Date -->
         <div class="d-flex gap-x-4 align-start align-sm-center flex-column flex-sm-row">
           <span
@@ -107,22 +75,6 @@ const removeProduct = (id: number) => {
 
           <span style="inline-size: 9.5rem;">
             <AppDateTimePicker
-              v-model="invoice.issuedDate"
-              placeholder="YYYY-MM-DD"
-              :config="{ position: 'auto right' }"
-            />
-          </span>
-        </div>
-
-        <!-- 👉 Due Date -->
-        <div class="d-flex gap-x-4 align-start align-sm-center flex-column flex-sm-row">
-          <span
-            class="text-high-emphasis text-sm-end"
-            style="inline-size: 5.625rem;"
-          >Due Date:</span>
-          <span style="min-inline-size: 9.5rem;">
-            <AppDateTimePicker
-              v-model="invoice.dueDate"
               placeholder="YYYY-MM-DD"
               :config="{ position: 'auto right' }"
             />
@@ -132,188 +84,188 @@ const removeProduct = (id: number) => {
     </div>
     <!-- !SECTION -->
 
-    <VRow>
-      <VCol class="text-no-wrap">
-        <h6 class="text-h6 mb-4">
-          Invoice To:
-        </h6>
+<!--    <VRow>-->
+<!--      <VCol class="text-no-wrap">-->
+<!--        <h6 class="text-h6 mb-4">-->
+<!--          Invoice To:-->
+<!--        </h6>-->
 
-        <VSelect
-          v-model="invoice.client"
-          :items="clients"
-          item-title="name"
-          item-value="name"
-          placeholder="Select Client"
-          return-object
-          class="mb-4"
-          style="inline-size: 11.875rem;"
-        />
-        <p class="mb-0">
-          {{ invoice.client.name }}
-        </p>
-        <p class="mb-0">
-          {{ invoice.client.company }}
-        </p>
-        <p
-          v-if="invoice.client.address"
-          class="mb-0"
-        >
-          {{ invoice.client.address }}, {{ invoice.client.country }}
-        </p>
-        <p class="mb-0">
-          {{ invoice.client.contact }}
-        </p>
-        <p class="mb-0">
-          {{ invoice.client.companyEmail }}
-        </p>
-      </VCol>
+<!--        <VSelect-->
+<!--          v-model="invoice.client"-->
+<!--          :items="clients"-->
+<!--          item-title="name"-->
+<!--          item-value="name"-->
+<!--          placeholder="Select Client"-->
+<!--          return-object-->
+<!--          class="mb-4"-->
+<!--          style="inline-size: 11.875rem;"-->
+<!--        />-->
+<!--        <p class="mb-0">-->
+<!--          {{ invoice.client.name }}-->
+<!--        </p>-->
+<!--        <p class="mb-0">-->
+<!--          {{ invoice.client.company }}-->
+<!--        </p>-->
+<!--        <p-->
+<!--          v-if="invoice.client.address"-->
+<!--          class="mb-0"-->
+<!--        >-->
+<!--          {{ invoice.client.address }}, {{ invoice.client.country }}-->
+<!--        </p>-->
+<!--        <p class="mb-0">-->
+<!--          {{ invoice.client.contact }}-->
+<!--        </p>-->
+<!--        <p class="mb-0">-->
+<!--          {{ invoice.client.companyEmail }}-->
+<!--        </p>-->
+<!--      </VCol>-->
 
-      <VCol class="text-no-wrap">
-        <h6 class="text-h6 mb-4">
-          Bill To:
-        </h6>
+<!--      <VCol class="text-no-wrap">-->
+<!--        <h6 class="text-h6 mb-4">-->
+<!--          Bill To:-->
+<!--        </h6>-->
 
-        <table>
-          <tbody>
-            <tr>
-              <td class="pe-4">
-                Total Due:
-              </td>
-              <td>{{ props.data.paymentDetails.totalDue }}</td>
-            </tr>
-            <tr>
-              <td class="pe-4">
-                Bank Name:
-              </td>
-              <td>{{ props.data.paymentDetails.bankName }}</td>
-            </tr>
-            <tr>
-              <td class="pe-4">
-                Country:
-              </td>
-              <td>{{ props.data.paymentDetails.country }}</td>
-            </tr>
-            <tr>
-              <td class="pe-4">
-                IBAN:
-              </td>
-              <td>
-                <p class="text-wrap me-4">
-                  {{ props.data.paymentDetails.iban }}
-                </p>
-              </td>
-            </tr>
-            <tr>
-              <td class="pe-4">
-                SWIFT Code:
-              </td>
-              <td>{{ props.data.paymentDetails.swiftCode }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </VCol>
-    </VRow>
+<!--        <table>-->
+<!--          <tbody>-->
+<!--            <tr>-->
+<!--              <td class="pe-4">-->
+<!--                Total Due:-->
+<!--              </td>-->
+<!--              <td>{{ props.data.paymentDetails.totalDue }}</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--              <td class="pe-4">-->
+<!--                Bank Name:-->
+<!--              </td>-->
+<!--              <td>{{ props.data.paymentDetails.bankName }}</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--              <td class="pe-4">-->
+<!--                Country:-->
+<!--              </td>-->
+<!--              <td>{{ props.data.paymentDetails.country }}</td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--              <td class="pe-4">-->
+<!--                IBAN:-->
+<!--              </td>-->
+<!--              <td>-->
+<!--                <p class="text-wrap me-4">-->
+<!--                  {{ props.data.paymentDetails.iban }}-->
+<!--                </p>-->
+<!--              </td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--              <td class="pe-4">-->
+<!--                SWIFT Code:-->
+<!--              </td>-->
+<!--              <td>{{ props.data.paymentDetails.swiftCode }}</td>-->
+<!--            </tr>-->
+<!--          </tbody>-->
+<!--        </table>-->
+<!--      </VCol>-->
+<!--    </VRow>-->
 
     <VDivider class="my-6 border-dashed" />
     <!-- 👉 Add purchased products -->
-    <div class="add-products-form">
-      <div
-        v-for="(product, index) in props.data.purchasedProducts"
-        :key="product.title"
-        class="mb-4"
-      >
-        <InvoiceProductEdit
-          :id="index"
-          :data="product"
-          @remove-product="removeProduct"
-        />
-      </div>
+<!--    <div class="add-products-form">-->
+<!--      <div-->
+<!--        v-for="(product, index) in props.data.purchasedProducts"-->
+<!--        :key="product.title"-->
+<!--        class="mb-4"-->
+<!--      >-->
+<!--        <InvoiceProductEdit-->
+<!--          :id="index"-->
+<!--          :data="product"-->
+<!--          @remove-product="removeProduct"-->
+<!--        />-->
+<!--      </div>-->
 
-      <VBtn
-        size="small"
-        prepend-icon="tabler-plus"
-        @click="addItem"
-      >
-        Add Item
-      </VBtn>
-    </div>
+<!--      <VBtn-->
+<!--        size="small"-->
+<!--        prepend-icon="tabler-plus"-->
+<!--        @click="addItem"-->
+<!--      >-->
+<!--        Add Item-->
+<!--      </VBtn>-->
+<!--    </div>-->
 
     <VDivider class="my-6 border-dashed" />
 
     <!-- 👉 Total Amount -->
-    <div class="d-flex justify-space-between flex-wrap flex-column flex-sm-row">
-      <div class="mb-6 mb-sm-0">
-        <div class="d-flex align-center mb-4">
-          <h6 class="text-h6 me-2">
-            Salesperson:
-          </h6>
-          <AppTextField
-            v-model="salesperson"
-            style="inline-size: 8rem;"
-            placeholder="John Doe"
-          />
-        </div>
+<!--    <div class="d-flex justify-space-between flex-wrap flex-column flex-sm-row">-->
+<!--      <div class="mb-6 mb-sm-0">-->
+<!--        <div class="d-flex align-center mb-4">-->
+<!--          <h6 class="text-h6 me-2">-->
+<!--            Salesperson:-->
+<!--          </h6>-->
+<!--          <AppTextField-->
+<!--            v-model="salesperson"-->
+<!--            style="inline-size: 8rem;"-->
+<!--            placeholder="John Doe"-->
+<!--          />-->
+<!--        </div>-->
 
-        <AppTextField
-          v-model="thanksNote"
-          placeholder="Thanks for your business"
-        />
-      </div>
+<!--        <AppTextField-->
+<!--          v-model="thanksNote"-->
+<!--          placeholder="Thanks for your business"-->
+<!--        />-->
+<!--      </div>-->
 
-      <div>
-        <table class="w-100">
-          <tbody>
-            <tr>
-              <td class="pe-16">
-                Subtotal:
-              </td>
-              <td :class="$vuetify.locale.isRtl ? 'text-start' : 'text-end'">
-                <h6 class="text-h6">
-                  $1800
-                </h6>
-              </td>
-            </tr>
-            <tr>
-              <td class="pe-16">
-                Discount:
-              </td>
-              <td :class="$vuetify.locale.isRtl ? 'text-start' : 'text-end'">
-                <h6 class="text-h6">
-                  $28
-                </h6>
-              </td>
-            </tr>
-            <tr>
-              <td class="pe-16">
-                Tax:
-              </td>
-              <td :class="$vuetify.locale.isRtl ? 'text-start' : 'text-end'">
-                <h6 class="text-h6">
-                  21%
-                </h6>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+<!--      <div>-->
+<!--        <table class="w-100">-->
+<!--          <tbody>-->
+<!--            <tr>-->
+<!--              <td class="pe-16">-->
+<!--                Subtotal:-->
+<!--              </td>-->
+<!--              <td :class="$vuetify.locale.isRtl ? 'text-start' : 'text-end'">-->
+<!--                <h6 class="text-h6">-->
+<!--                  $1800-->
+<!--                </h6>-->
+<!--              </td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--              <td class="pe-16">-->
+<!--                Discount:-->
+<!--              </td>-->
+<!--              <td :class="$vuetify.locale.isRtl ? 'text-start' : 'text-end'">-->
+<!--                <h6 class="text-h6">-->
+<!--                  $28-->
+<!--                </h6>-->
+<!--              </td>-->
+<!--            </tr>-->
+<!--            <tr>-->
+<!--              <td class="pe-16">-->
+<!--                Tax:-->
+<!--              </td>-->
+<!--              <td :class="$vuetify.locale.isRtl ? 'text-start' : 'text-end'">-->
+<!--                <h6 class="text-h6">-->
+<!--                  21%-->
+<!--                </h6>-->
+<!--              </td>-->
+<!--            </tr>-->
+<!--          </tbody>-->
+<!--        </table>-->
 
-        <VDivider class="mt-4 mb-3" />
+<!--        <VDivider class="mt-4 mb-3" />-->
 
-        <table class="w-100">
-          <tbody>
-            <tr>
-              <td class="pe-16">
-                Total:
-              </td>
-              <td :class="$vuetify.locale.isRtl ? 'text-start' : 'text-end'">
-                <h6 class="text-h6">
-                  $1690
-                </h6>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+<!--        <table class="w-100">-->
+<!--          <tbody>-->
+<!--            <tr>-->
+<!--              <td class="pe-16">-->
+<!--                Total:-->
+<!--              </td>-->
+<!--              <td :class="$vuetify.locale.isRtl ? 'text-start' : 'text-end'">-->
+<!--                <h6 class="text-h6">-->
+<!--                  $1690-->
+<!--                </h6>-->
+<!--              </td>-->
+<!--            </tr>-->
+<!--          </tbody>-->
+<!--        </table>-->
+<!--      </div>-->
+<!--    </div>-->
 
     <VDivider class="my-6 border-dashed" />
 
@@ -322,7 +274,7 @@ const removeProduct = (id: number) => {
         Note:
       </h6>
       <VTextarea
-        v-model="note"
+        v-model="data.description"
         placeholder="Write note here..."
         :rows="2"
       />

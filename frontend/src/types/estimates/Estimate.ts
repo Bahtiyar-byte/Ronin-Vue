@@ -2,7 +2,7 @@ import type Contact from '@/types/contacts/Contact'
 import type Job from '@/types/jobs/Job'
 
 export default interface Estimate {
-  id: string
+  id?: string
   createdById?: string | null
   updatedById?: string | null
   createdAt?: string | null
