@@ -4,9 +4,10 @@ import navItems from '@/navigation/horizontal'
 import { themeConfig } from '@themeConfig'
 
 // Components
-import Footer from '@/layouts/components/Footer.vue'
-import NavbarThemeSwitcher from '@/layouts/components/NavbarThemeSwitcher.vue'
 import UserProfile from '@/components/common/UserProfile.vue'
+import Footer from '@/layouts/components/Footer.vue'
+import NavBarNotifications from '@/layouts/components/NavBarNotifications.vue'
+import NavbarThemeSwitcher from '@/layouts/components/NavbarThemeSwitcher.vue'
 import NavBarI18n from '@core/components/I18n.vue'
 import { HorizontalNavLayout } from '@layouts'
 import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
@@ -17,11 +18,9 @@ const refLoadingIndicator = ref<any>(null)
 
 // watching if the fallback state is active and the refLoadingIndicator component is available
 watch([isFallbackStateActive, refLoadingIndicator], () => {
-  if (isFallbackStateActive.value && refLoadingIndicator.value)
-  { refLoadingIndicator.value.fallbackHandle() }
+  if (isFallbackStateActive.value && refLoadingIndicator.value) { refLoadingIndicator.value.fallbackHandle() }
 
-  if (!isFallbackStateActive.value && refLoadingIndicator.value)
-  { refLoadingIndicator.value.resolveHandle() }
+  if (!isFallbackStateActive.value && refLoadingIndicator.value) { refLoadingIndicator.value.resolveHandle() }
 }, { immediate: true })
 // !SECTION
 </script>
@@ -48,6 +47,8 @@ watch([isFallbackStateActive, refLoadingIndicator], () => {
       />
 
       <NavbarThemeSwitcher class="me-2" />
+      <NavBarNotifications class="me-2" />
+
       <UserProfile />
     </template>
 
