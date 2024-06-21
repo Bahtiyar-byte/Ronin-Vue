@@ -53,6 +53,7 @@ declare module 'vue-router/auto/routes' {
     'contacts-details-id': RouteRecordInfo<'contacts-details-id', '/contacts/details/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'contacts-update-id': RouteRecordInfo<'contacts-update-id', '/contacts/update/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'estimates': RouteRecordInfo<'estimates', '/estimates', Record<never, never>, Record<never, never>>,
+    'estimates-builder': RouteRecordInfo<'estimates-builder', '/estimates/builder', Record<never, never>, Record<never, never>>,
     'estimates-create': RouteRecordInfo<'estimates-create', '/estimates/create', Record<never, never>, Record<never, never>>,
     'estimates-details-id': RouteRecordInfo<'estimates-details-id', '/estimates/details/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'estimates-update-id': RouteRecordInfo<'estimates-update-id', '/estimates/update/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,

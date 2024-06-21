@@ -15,7 +15,7 @@ const widgets = ref<WidgetCardProps[]>([
       action: {
         title: 'Create appointment with this contact',
         icon: 'tabler-plus',
-        to: `/calendar?create_event=1&contact_id=${props.id}`,
+        to: { name: 'calendar', query: { create_event: 1, contact_id: props.id } },
       },
     },
   },
@@ -27,9 +27,7 @@ const widgets = ref<WidgetCardProps[]>([
       action: {
         title: 'Create appointment with this contact',
         icon: 'tabler-plus',
-        to: {
-          name: 'root',
-        },
+        to: { name: 'estimates-builder', query: { contact_id: props.id } },
       },
     },
   },
