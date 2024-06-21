@@ -23,7 +23,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<Emit>()
 
 const isAllMarkRead = computed(() =>
-  props.notifications.some(item => item.isSeen === false),
+  props.notifications.some(item => !item.isSeen),
 )
 
 const markAllReadOrUnread = () => {
@@ -130,7 +130,10 @@ const toggleReadUnread = (isSeen: boolean, Id: number) => {
               >
                 <div class="d-flex align-start gap-3">
                   <div>
-                    <p class="text-sm font-weight-medium mb-1">
+                    <p
+                      v-if="notification.title"
+                      class="text-sm font-weight-medium mb-1"
+                    >
                       {{ notification.title }}
                     </p>
                     <p
@@ -140,6 +143,7 @@ const toggleReadUnread = (isSeen: boolean, Id: number) => {
                       {{ notification.message }}
                     </p>
                     <p
+                      v-if="notification.time"
                       class="text-sm text-disabled mb-0"
                       style=" letter-spacing: 0.4px !important; line-height: 18px;"
                     >
