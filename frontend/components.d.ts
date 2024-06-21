@@ -65,6 +65,8 @@ declare module 'vue' {
     ItemUpdate: typeof import('./src/components/common/CRUD/ItemUpdate.vue')['default']
     JobInfoPanel: typeof import('./src/components/jobs/JobInfoPanel.vue')['default']
     MoreBtn: typeof import('./src/@core/components/MoreBtn.vue')['default']
+    NavBarNotifications: typeof import('./src/components/notification/NavBarNotifications.vue')['default']
+    Notifcations: typeof import('./src/components/notification/Notifcations.vue')['default']
     Notifications: typeof import('./src/@core/components/Notifications.vue')['default']
     PageHeader: typeof import('./src/components/common/PageHeader.vue')['default']
     PaymentProvidersDialog: typeof import('./src/components/dialogs/PaymentProvidersDialog.vue')['default']

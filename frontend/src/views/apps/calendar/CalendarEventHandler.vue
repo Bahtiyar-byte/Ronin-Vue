@@ -2,9 +2,9 @@
 import type { Options } from 'flatpickr/dist/types/options'
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import { VForm } from 'vuetify/components/VForm'
+import type { Event, NewEvent } from './types'
 import { useCurrentUserStore } from '@/@core/stores/auth/currentUser'
 
-import type { Event, NewEvent } from './types'
 import CalendarAutocompleteField from '@/views/apps/calendar/edit/CalendarAutocompleteField.vue'
 
 const props = defineProps<Props>()

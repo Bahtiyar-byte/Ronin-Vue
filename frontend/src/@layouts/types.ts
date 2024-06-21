@@ -1,13 +1,19 @@
 import type { OffsetOptions } from '@floating-ui/dom'
 import type { RouteLocationRaw } from 'vue-router'
-import type { AppContentLayoutNav, ContentWidth, FooterType, HorizontalNavType, NavbarType } from '@layouts/enums'
+import type {
+  AppContentLayoutNav,
+  ContentWidth,
+  FooterType,
+  HorizontalNavType,
+  NavbarType,
+} from '@layouts/enums'
 
 export interface LayoutConfig {
   app: {
     title: Lowercase<string>
     logo: VNode
-    contentWidth: typeof ContentWidth[keyof typeof ContentWidth]
-    contentLayoutNav: typeof AppContentLayoutNav[keyof typeof AppContentLayoutNav]
+    contentWidth: (typeof ContentWidth)[keyof typeof ContentWidth]
+    contentLayoutNav: (typeof AppContentLayoutNav)[keyof typeof AppContentLayoutNav]
     overlayNavFromBreakpoint: number
 
     // isRTL: boolean
@@ -17,18 +23,18 @@ export interface LayoutConfig {
     iconRenderer: Component
   }
   navbar: {
-    type: typeof NavbarType[keyof typeof NavbarType]
+    type: (typeof NavbarType)[keyof typeof NavbarType]
     navbarBlur: boolean
   }
   footer: {
-    type: typeof FooterType[keyof typeof FooterType]
+    type: (typeof FooterType)[keyof typeof FooterType]
   }
   verticalNav: {
     isVerticalNavCollapsed: boolean
     defaultNavItemIconProps: unknown
   }
   horizontalNav: {
-    type: typeof HorizontalNavType[keyof typeof HorizontalNavType]
+    type: (typeof HorizontalNavType)[keyof typeof HorizontalNavType]
     transition: string | Component
     popoverOffset?: OffsetOptions
   }
@@ -53,7 +59,12 @@ export interface NavSectionTitle extends Partial<AclProperties> {
 }
 
 // 👉 Vertical nav link
-declare type ATagTargetAttrValues = '_blank' | '_self' | '_parent' | '_top' | 'framename'
+declare type ATagTargetAttrValues =
+  | '_blank'
+  | '_self'
+  | '_parent'
+  | '_top'
+  | 'framename'
 declare type ATagRelAttrValues =
   | 'alternate'
   | 'author'
@@ -110,14 +121,14 @@ export interface I18nLanguage {
 export type Notification = {
   id: number
   title: string
-  subtitle: string
+  message: string
   time: string
   color?: string
   isSeen: boolean
 } & (
-  | { img: string; text?: never; icon?: never }
-  | { img?: never; text: string; icon?: never }
-  | { img?: never; text?: never; icon: string }
+  | { text?: never; icon?: never }
+  | { text: string; icon?: never }
+  | { text?: never; icon: string }
 )
 
 export interface ThemeSwitcherTheme {

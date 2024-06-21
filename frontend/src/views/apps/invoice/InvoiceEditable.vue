@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import type { Client } from '@db/apps/invoice/types'
 import InvoiceProductEdit from './InvoiceProductEdit.vue'
 import type { InvoiceData, PurchasedProduct } from './types'
-import type { Client } from '@db/apps/invoice/types'
 import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
 import { themeConfig } from '@themeConfig'
 
@@ -29,9 +29,9 @@ const fetchClients = async () => {
   const { data, error } = await useApi<any>('/apps/invoice/clients')
 
   if (error.value)
-    console.log(error.value)
+  { console.log(error.value) }
   else
-    clients.value = data.value
+  { clients.value = data.value }
 }
 
 fetchClients()
