@@ -20,7 +20,7 @@ export const getComputedNavLinkToProp = computed(() => (link: NavLink) => {
   // If route is string => it assumes string is route name => Create route object from route name
   // If route is not string => It assumes it's route object => returns passed route object
   if (link.to)
-    props.to = typeof link.to === 'string' ? { name: link.to } : link.to
+  { props.to = typeof link.to === 'string' ? { name: link.to } : link.to }
   else props.href = link.href
 
   return props
@@ -34,10 +34,10 @@ export const getComputedNavLinkToProp = computed(() => (link: NavLink) => {
  */
 export const resolveNavLinkRouteName = (link: NavLink, router: Router) => {
   if (!link.to)
-    return null
+  { return null }
 
   if (typeof link.to === 'string')
-    return link.to
+  { return link.to }
 
   return router.resolve(link.to).name
 }
@@ -54,7 +54,7 @@ export const isNavLinkActive = (link: NavLink, router: Router) => {
   const resolveRoutedName = resolveNavLinkRouteName(link, router)
 
   if (!resolveRoutedName)
-    return false
+  { return false }
 
   return matchedRoutes.some(route => {
     return route.name === resolveRoutedName || route.meta.navActiveLink === resolveRoutedName
@@ -69,7 +69,7 @@ export const isNavGroupActive = (children: (NavLink | NavGroup)[], router: Route
   children.some(child => {
     // If child have children => It's group => Go deeper(recursive)
     if ('children' in child)
-      return isNavGroupActive(child.children, router)
+    { return isNavGroupActive(child.children, router) }
 
     // else it's link => Check for matched Route
     return isNavLinkActive(child, router)
@@ -82,7 +82,7 @@ export const isNavGroupActive = (children: (NavLink | NavGroup)[], router: Route
 export const _setDirAttr = (dir: 'ltr' | 'rtl') => {
   // Check if document exists for SSR
   if (typeof document !== 'undefined')
-    document.documentElement.setAttribute('dir', dir)
+  { document.documentElement.setAttribute('dir', dir) }
 }
 
 /**
@@ -92,7 +92,7 @@ export const _setDirAttr = (dir: 'ltr' | 'rtl') => {
  */
 export const getDynamicI18nProps = (key: string, tag = 'span') => {
   if (!layoutConfig.app.i18n.enable)
-    return {}
+  { return {} }
 
   return {
     keypath: key,
@@ -129,7 +129,7 @@ export const switchToVerticalNavOnLtOverlayNavBreakpoint = () => {
     () => configStore.appContentLayoutNav,
     value => {
       if (!configStore.isLessThanOverlayNavBreakpoint)
-        lgAndUpNav.value = value
+      { lgAndUpNav.value = value }
     },
   )
 

@@ -8,7 +8,7 @@ defineProps<{
 
 const resolveNavItemComponent = (item: NavLink | NavGroup) => {
   if ('children' in item)
-    return HorizontalNavGroup
+  { return HorizontalNavGroup }
 
   return HorizontalNavLink
 }

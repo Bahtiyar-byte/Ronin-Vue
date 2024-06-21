@@ -49,6 +49,7 @@ const initializeValidationSchema = (fields: Array<FormField | FormFieldsGroup>) 
 
   return yup.object().shape(schema)
 }
+
 const formData = ref(initializeFormData(props.fields))
 const validationSchema = computed(() => toTypedSchema(initializeValidationSchema(props.fields)))
 

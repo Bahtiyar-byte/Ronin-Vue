@@ -1,5 +1,5 @@
 import type Contact from '@/types/contacts/Contact'
-import type User from '@/types/users/User';
+import type User from '@/types/users/User'
 
 export default interface Job {
   id?: string // Undefined if new job creation

@@ -37,7 +37,7 @@ export const useCookie = <T = string | null | undefined>(name: string, _opts?: C
 
 function serializeCookie(name: string, value: any, opts: CookieSerializeOptions = {}) {
   if (value === null || value === undefined)
-    return serialize(name, value, { ...opts, maxAge: -1 })
+  { return serialize(name, value, { ...opts, maxAge: -1 }) }
 
   return serialize(name, value, opts)
 }

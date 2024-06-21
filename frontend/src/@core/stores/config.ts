@@ -13,7 +13,7 @@ export const useConfigStore = defineStore('config', () => {
     userPreferredColorScheme,
     val => {
       if (val !== 'no-preference')
-        cookieColorScheme.value = val
+      { cookieColorScheme.value = val }
     },
     { immediate: true },
   )
@@ -74,7 +74,7 @@ export const initConfigStore = () => {
 
   onMounted(() => {
     if (configStore.theme === 'system')
-      vuetifyTheme.global.name.value = userPreferredColorScheme.value
+    { vuetifyTheme.global.name.value = userPreferredColorScheme.value }
   })
 }
 // !SECTION

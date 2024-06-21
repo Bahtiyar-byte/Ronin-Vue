@@ -17,7 +17,7 @@ export default interface Appointment {
   related_contactId?: string
   createdById?: string | null
   updatedById?: string | null
-  assigned_to?: User
-  related_job?: Job
-  related_contact?: Contact
+  assigned_to?: User | string
+  related_job?: Job | string
+  related_contact?: Contact | string
 }

@@ -13,6 +13,14 @@ const eventToAppointment = (e: Event): Appointment => {
     }
   }
 
+  if (e.extendedProps.assignedTo !== undefined) {
+    appointment.assigned_to = e.extendedProps.assignedTo
+  }
+
+  if (e.extendedProps.relatedContact !== undefined) {
+    appointment.related_contact = e.extendedProps.relatedContact
+  }
+
   if (e.start instanceof Date) {
     appointment.start_time = e.start.toISOString()
   } else {

@@ -54,7 +54,9 @@ export const initialFieldsJobs: (FormField | FormFieldsGroup)[] = [
         value: '',
         autocomplete_function: async (query: string = '') => {
           const { data } = await autocompleteContacts(query)
-          if (data.value === null) return
+          if (data.value === null)
+          { return }
+
           return data.value.map(item => ({ value: item.id, title: item.label }))
         },
         rules: yup.string(),

@@ -3,7 +3,7 @@ import type FormField from '@/types/forms/FormField'
 import type FormFieldsGroup from '@/types/forms/FormFieldsGroup'
 import { useFilters } from '@/composables/useFilters'
 
-export const useFormFields = (formType: 'estimates' | 'jobs' | 'contacts' | "appointments") => {
+export const useFormFields = (formType: 'estimates' | 'jobs' | 'contacts' | 'appointments') => {
   const { getVariants } = useFilters()
   const formFields = ref<Array<FormField | FormFieldsGroup>>([])
 
@@ -17,7 +17,7 @@ export const useFormFields = (formType: 'estimates' | 'jobs' | 'contacts' | "app
       }
     }
 
-    const promises = fields.map(async (val) => {
+    const promises = fields.map(async val => {
       if ('fields' in val) {
         for (const field of val.fields) {
           await processFormField(field)

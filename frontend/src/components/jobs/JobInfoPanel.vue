@@ -4,7 +4,7 @@ import { useFilters } from '@/composables/useFilters'
 import { useJobs } from '@/composables/useJobs'
 import { useContacts } from '@/composables/useContacts'
 import { useUsers } from '@/composables/useUsers'
-import InfoPanelActions from "@/components/jobs/details/InfoPanelActions.vue";
+import InfoPanelActions from '@/components/jobs/details/InfoPanelActions.vue'
 
 const jobData = defineModel<Job>('jobData', { required: true })
 

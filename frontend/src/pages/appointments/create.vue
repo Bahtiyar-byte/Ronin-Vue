@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { type UnwrapRef, onBeforeMount, ref, watch, computed } from 'vue'
+import { type UnwrapRef, computed, onBeforeMount, ref, watch } from 'vue'
 import { useHead } from '@unhead/vue'
 import { type RouteLocationNormalizedLoaded, useRoute, useRouter } from 'vue-router'
 import { useAppointments } from '@/composables/useAppointments'
@@ -8,7 +8,7 @@ import { useFormFields } from '@/utils/forms/useFormFields'
 import { initialFieldAppointment } from '@/utils/initial_data/initialFieldAppointment'
 import ItemUpdate from '@/components/common/CRUD/ItemUpdate.vue'
 import type Appointment from '@/types/appointments/Appointment'
-import FormField from '@/types/forms/FormField'
+import type FormField from '@/types/forms/FormField'
 
 const { create: createAppointment, getById: getAppointmentById, update: updateAppointment } = useAppointments()
 const { formFields, initializeFields } = useFormFields('appointments')
@@ -82,7 +82,7 @@ onBeforeMount(async () => {
 
 useHead({
   title: computed(() => {
-    return isUpdateMode.value && appointmentRef.value !== undefined ? `Edit appointment` : `Create new appointment`
+    return isUpdateMode.value && appointmentRef.value !== undefined ? 'Edit appointment' : 'Create new appointment'
   }),
 })
 
@@ -103,12 +103,22 @@ const submitForm = async (values: Record<string, any>) => {
 </script>
 
 <template>
-  <ItemUpdate v-if="dataLoaded" :title="pageTitle" :breadcrumbs="breadcrumbs" :fields="formFields as FormField[]"
-    :submit-handler="submitForm">
+  <ItemUpdate
+    v-if="dataLoaded"
+    :title="pageTitle"
+    :breadcrumbs="breadcrumbs"
+    :fields="formFields as FormField[]"
+    :submit-handler="submitForm"
+  >
     <template #append_related_contactId>
       <VTooltip text="Add new contact">
         <template #activator="{ props }">
-          <IconBtn v-bind="props" :to="{ name: 'contacts-create' }" target="_blank" class="ml-2">
+          <IconBtn
+            v-bind="props"
+            :to="{ name: 'contacts-create' }"
+            target="_blank"
+            class="ml-2"
+          >
             <VIcon icon="tabler-plus" />
           </IconBtn>
         </template>

@@ -2,7 +2,7 @@ import { isToday } from './helpers'
 
 export const avatarText = (value: string) => {
   if (!value)
-    return ''
+  { return '' }
   const nameArray = value.split(' ')
 
   return nameArray.map(word => word.charAt(0).toUpperCase()).join('')
@@ -24,7 +24,7 @@ export const kFormatter = (num: number) => {
  */
 export const formatDate = (value: string, formatting: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric', year: 'numeric' }) => {
   if (!value)
-    return value
+  { return value }
 
   return new Intl.DateTimeFormat('en-US', formatting).format(new Date(value))
 }
@@ -40,7 +40,7 @@ export const formatDateToMonthShort = (value: string, toTimeForCurrentDay = true
   let formatting: Record<string, string> = { month: 'short', day: 'numeric' }
 
   if (toTimeForCurrentDay && isToday(date))
-    formatting = { hour: 'numeric', minute: 'numeric' }
+  { formatting = { hour: 'numeric', minute: 'numeric' } }
 
   return new Intl.DateTimeFormat('en-US', formatting).format(new Date(value))
 }

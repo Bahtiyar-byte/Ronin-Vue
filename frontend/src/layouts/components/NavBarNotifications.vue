@@ -53,7 +53,7 @@ const notifications = ref<Notification[]>([
 const removeNotification = (notificationId: number) => {
   notifications.value.forEach((item, index) => {
     if (notificationId === item.id)
-      notifications.value.splice(index, 1)
+    { notifications.value.splice(index, 1) }
   })
 }
 
@@ -61,7 +61,7 @@ const markRead = (notificationId: number[]) => {
   notifications.value.forEach(item => {
     notificationId.forEach(id => {
       if (id === item.id)
-        item.isSeen = true
+      { item.isSeen = true }
     })
   })
 }
@@ -70,14 +70,14 @@ const markUnRead = (notificationId: number[]) => {
   notifications.value.forEach(item => {
     notificationId.forEach(id => {
       if (id === item.id)
-        item.isSeen = false
+      { item.isSeen = false }
     })
   })
 }
 
 const handleNotificationClick = (notification: Notification) => {
   if (!notification.isSeen)
-    markRead([notification.id])
+  { markRead([notification.id]) }
 }
 </script>
 

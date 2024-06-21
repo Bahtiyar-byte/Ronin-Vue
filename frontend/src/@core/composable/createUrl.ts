@@ -7,7 +7,7 @@ interface Options {
 
 export const createUrl = (url: MaybeRefOrGetter<string>, options?: Options) => computed(() => {
   if (!options?.query)
-    return toValue(url)
+  { return toValue(url) }
 
   const _url = toValue(url)
   const _query = toValue(options?.query)

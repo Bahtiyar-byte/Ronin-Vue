@@ -61,16 +61,16 @@ const onAccept = async () => {
         <VBtn
           v-if="props.showCancel"
           color="error"
-          @click="onClose"
           class="flex-1"
+          @click="onClose"
         >
           Cancel
         </VBtn>
         <VBtn
           v-if="props.showAccept"
           ref="acceptBtn"
-          @click="onAccept"
           class="flex-1"
+          @click="onAccept"
         >
           Confirm
         </VBtn>

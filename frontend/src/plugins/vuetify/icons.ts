@@ -56,7 +56,7 @@ export const iconify = {
       const iconComponent = customIcons[props.icon]
 
       if (iconComponent)
-        return h(iconComponent)
+      { return h(iconComponent) }
     }
 
     return h(

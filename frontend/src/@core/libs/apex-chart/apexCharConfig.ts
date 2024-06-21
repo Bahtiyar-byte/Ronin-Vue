@@ -286,9 +286,9 @@ export const getRadialBarChartConfig = (themeColors: ThemeInstance['themes']['va
                 }, 0) / w.globals.series.length
 
               if (totalValue % 1 === 0)
-                return `${totalValue}%`
+              { return `${totalValue}%` }
               else
-                return `${totalValue.toFixed(2)}%`
+              { return `${totalValue.toFixed(2)}%` }
             },
           },
         },

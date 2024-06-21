@@ -1,8 +1,8 @@
 import * as yup from 'yup'
 import { useContacts } from '@/composables/useContacts'
 import { useJobs } from '@/composables/useJobs'
-import FormFieldsGroup from '@/types/forms/FormFieldsGroup'
-import FormField from '@/types/forms/FormField'
+import type FormFieldsGroup from '@/types/forms/FormFieldsGroup'
+import type FormField from '@/types/forms/FormField'
 
 const { autocomplete: autocompleteContacts } = useContacts()
 const { autocomplete: autocompleteJobs } = useJobs()

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useTheme } from 'vuetify'
+import { useHead } from '@unhead/vue'
 import ScrollToTop from '@core/components/ScrollToTop.vue'
 import initCore from '@core/initCore'
 import { initConfigStore, useConfigStore } from '@core/stores/config'
 import { hexToRgb } from '@layouts/utils'
-import { useHead } from '@unhead/vue'
 
 const { global } = useTheme()
 

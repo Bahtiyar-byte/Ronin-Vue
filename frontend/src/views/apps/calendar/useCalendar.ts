@@ -8,8 +8,6 @@ import { useConfigStore } from '@core/stores/config'
 import { useCalendarStore } from '@/views/apps/calendar/useCalendarStore'
 import type Appointment from '@/types/appointments/Appointment'
 
-
-
 export const blankEvent: Event | NewEvent = {
   title: '',
   start: '',
@@ -17,8 +15,6 @@ export const blankEvent: Event | NewEvent = {
   extendedProps: {
     description: '',
   },
-  related_contact: "",
-  assigned_to: null
 }
 
 export const useCalendar = (event: Ref<Event | NewEvent>, isEventHandlerSidebarActive: Ref<boolean>, isLeftSidebarOpen: Ref<boolean>) => {
@@ -38,9 +34,7 @@ export const useCalendar = (event: Ref<Event | NewEvent>, isEventHandlerSidebarA
       title,
       start,
       end,
-      extendedProps: { description, objectData },
-      related_contact,
-      assigned_to
+      extendedProps: { description, objectData, relatedContact, assignedTo },
     }: Event = eventApi
 
     return {
@@ -51,9 +45,9 @@ export const useCalendar = (event: Ref<Event | NewEvent>, isEventHandlerSidebarA
       extendedProps: {
         description,
         objectData,
+        relatedContact,
+        assignedTo,
       },
-      related_contact,
-      assigned_to
     }
   }
 
@@ -63,6 +57,14 @@ export const useCalendar = (event: Ref<Event | NewEvent>, isEventHandlerSidebarA
   }
 
   const appointmentToRawEvent = (a: Appointment): Event => {
+    const getEntityId = (relatedEntity: string | { id?: string } | undefined): string => {
+      if (typeof relatedEntity === 'string') {
+        return relatedEntity
+      }
+
+      return relatedEntity?.id ?? ''
+    }
+
     return {
       id: a.id,
       title: a.subject,
@@ -73,9 +75,9 @@ export const useCalendar = (event: Ref<Event | NewEvent>, isEventHandlerSidebarA
       extendedProps: {
         description: a.notes as string,
         objectData: a,
+        relatedContact: getEntityId(a.related_contact) as string,
+        assignedTo: getEntityId(a.assigned_to) as string,
       },
-      related_contact: a.related_contact,
-      assigned_to: a.assigned_to
     }
   }
 

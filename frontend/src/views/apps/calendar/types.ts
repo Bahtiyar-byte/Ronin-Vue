@@ -5,7 +5,9 @@ import type Appointment from '@/types/appointments/Appointment'
 export interface Event extends CalendarEvent {
   extendedProps: {
     description: string
-    objectData?: Appointment,
+    objectData?: Appointment
+    relatedContact?: string
+    assignedTo?: string
   }
 }
 

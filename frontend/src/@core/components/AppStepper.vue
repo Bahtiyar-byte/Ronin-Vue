@@ -58,7 +58,7 @@ watchEffect(() => {
     && props.currentStep < props.items.length
     && props.currentStep >= 0
   )
-    currentStep.value = props.currentStep
+  { currentStep.value = props.currentStep }
 
   emit('update:currentStep', currentStep.value)
 })

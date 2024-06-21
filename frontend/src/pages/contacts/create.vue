@@ -6,7 +6,7 @@ import { useContacts } from '@/composables/useContacts'
 import type Contact from '@/types/contacts/Contact'
 import { useFormFields } from '@/utils/forms/useFormFields'
 import { initialFieldsContacts } from '@/utils/initial_data/initialFieldsContacts'
-import FormField from '@/types/forms/FormField'
+import type FormField from '@/types/forms/FormField'
 
 const { create: createContact, getById: getContactById, update: updateContact } = useContacts()
 const router = useRouter()

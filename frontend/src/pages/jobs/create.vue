@@ -7,7 +7,7 @@ import { hasKey } from '@core/utils/helpers'
 import type Job from '@/types/jobs/Job'
 import { useFormFields } from '@/utils/forms/useFormFields'
 import { initialFieldsJobs } from '@/utils/initial_data/initialFieldsJobs'
-import FormField from '@/types/forms/FormField'
+import type FormField from '@/types/forms/FormField'
 
 const { create: createJob, getById: getJobById, update: updateJob } = useJobs()
 const router = useRouter()
@@ -87,7 +87,12 @@ const submitForm = async (values: Record<string, any>) => {
     <template #append_related_contactId>
       <VTooltip text="Add new contact">
         <template #activator="{ props }">
-          <IconBtn v-bind="props" :to="{ name: 'contacts-create' }" target="_blank" class="ml-2">
+          <IconBtn
+            v-bind="props"
+            :to="{ name: 'contacts-create' }"
+            target="_blank"
+            class="ml-2"
+          >
             <VIcon icon="tabler-plus" />
           </IconBtn>
         </template>
