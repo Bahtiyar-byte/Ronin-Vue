@@ -120,9 +120,9 @@ export interface I18nLanguage {
 // Thanks: https://stackoverflow.com/a/60617060/10796681
 export type Notification = {
   id: number
-  title: string
+  title?: string
   message: string
-  time: string
+  time?: string
   color?: string
   isSeen: boolean
 } & (

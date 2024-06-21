@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
-import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
-import type { Notification } from '@layouts/types'
+import type { Notification } from '@layouts/types';
+import { computed } from 'vue';
+import { PerfectScrollbar } from 'vue3-perfect-scrollbar';
 
 interface Props {
   notifications: Notification[]
@@ -23,7 +23,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<Emit>()
 
 const isAllMarkRead = computed(() =>
-  props.notifications.some(item => item.isSeen === false),
+  props.notifications.some(item => !item.isSeen),
 )
 
 const markAllReadOrUnread = () => {
@@ -53,27 +53,12 @@ const toggleReadUnread = (isSeen: boolean, Id: number) => {
 
 <template>
   <IconBtn id="notification-btn">
-    <VBadge
-      v-bind="props.badgeProps"
-      :model-value="props.notifications.some(n => !n.isSeen)"
-      color="error"
-      dot
-      offset-x="2"
-      offset-y="3"
-    >
-      <VIcon
-        size="24"
-        icon="tabler-bell"
-      />
+    <VBadge v-bind="props.badgeProps" :model-value="props.notifications.some(n => !n.isSeen)" color="error" dot
+      offset-x="2" offset-y="3">
+      <VIcon size="24" icon="tabler-bell" />
     </VBadge>
 
-    <VMenu
-      activator="parent"
-      width="380px"
-      :location="props.location"
-      offset="12px"
-      :close-on-content-click="false"
-    >
+    <VMenu activator="parent" width="380px" :location="props.location" offset="12px" :close-on-content-click="false">
       <VCard class="d-flex flex-column">
         <VCardItem class="notification-section">
           <VCardTitle class="text-h6">
@@ -81,28 +66,12 @@ const toggleReadUnread = (isSeen: boolean, Id: number) => {
           </VCardTitle>
 
           <template #append>
-            <VChip
-              v-show="props.notifications.some(n => !n.isSeen)"
-              size="small"
-              color="primary"
-              class="me-2"
-            >
+            <VChip v-show="props.notifications.some(n => !n.isSeen)" size="small" color="primary" class="me-2">
               {{ totalUnseenNotifications }} New
             </VChip>
-            <IconBtn
-              v-show="props.notifications.length"
-              size="34"
-              @click="markAllReadOrUnread"
-            >
-              <VIcon
-                size="20"
-                color="high-emphasis"
-                :icon="!isAllMarkRead ? 'tabler-mail' : 'tabler-mail-opened'"
-              />
-              <VTooltip
-                activator="parent"
-                location="start"
-              >
+            <IconBtn v-show="props.notifications.length" size="34" @click="markAllReadOrUnread">
+              <VIcon size="20" color="high-emphasis" :icon="!isAllMarkRead ? 'tabler-mail' : 'tabler-mail-opened'" />
+              <VTooltip activator="parent" location="start">
                 {{ !isAllMarkRead ? 'Mark all as unread' : 'Mark all as read' }}
               </VTooltip>
             </IconBtn>
@@ -111,69 +80,41 @@ const toggleReadUnread = (isSeen: boolean, Id: number) => {
 
         <VDivider />
 
-        <PerfectScrollbar
-          :options="{ wheelPropagation: false }"
-          style="max-block-size: 23.75rem;"
-        >
+        <PerfectScrollbar :options="{ wheelPropagation: false }" style="max-block-size: 23.75rem;">
           <VList class="notification-list rounded-0 py-0">
-            <template
-              v-for="(notification, index) in props.notifications"
-              :key="notification.title"
-            >
+            <template v-for="(notification, index) in props.notifications" :key="notification.title">
               <VDivider v-if="index > 0" />
-              <VListItem
-                link
-                lines="one"
-                min-height="66px"
-                class="list-item-hover-class"
-                @click="$emit('click:notification', notification)"
-              >
+              <VListItem link lines="one" min-height="66px" class="list-item-hover-class"
+                @click="$emit('click:notification', notification)">
                 <div class="d-flex align-start gap-3">
                   <div>
-                    <p class="text-sm font-weight-medium mb-1">
+                    <p v-if="notification.title" class="text-sm font-weight-medium mb-1">
                       {{ notification.title }}
                     </p>
-                    <p
-                      class="text-body-2 mb-2"
-                      style=" letter-spacing: 0.4px !important; line-height: 18px;"
-                    >
+                    <p class="text-body-2 mb-2" style=" letter-spacing: 0.4px !important; line-height: 18px;">
                       {{ notification.message }}
                     </p>
-                    <p
-                      class="text-sm text-disabled mb-0"
-                      style=" letter-spacing: 0.4px !important; line-height: 18px;"
-                    >
+                    <p v-if="notification.time" class="text-sm text-disabled mb-0"
+                      style=" letter-spacing: 0.4px !important; line-height: 18px;">
                       {{ notification.time }}
                     </p>
                   </div>
                   <VSpacer />
 
                   <div class="d-flex flex-column align-end">
-                    <VIcon
-                      size="10"
-                      icon="tabler-circle-filled"
-                      :color="!notification.isSeen ? 'primary' : '#a8aaae'"
-                      :class="`${notification.isSeen ? 'visible-in-hover' : ''}`"
-                      class="mb-2"
-                      @click.stop="toggleReadUnread(notification.isSeen, notification.id)"
-                    />
+                    <VIcon size="10" icon="tabler-circle-filled" :color="!notification.isSeen ? 'primary' : '#a8aaae'"
+                      :class="`${notification.isSeen ? 'visible-in-hover' : ''}`" class="mb-2"
+                      @click.stop="toggleReadUnread(notification.isSeen, notification.id)" />
 
-                    <VIcon
-                      size="20"
-                      icon="tabler-x"
-                      class="visible-in-hover"
-                      @click="$emit('remove', notification.id)"
-                    />
+                    <VIcon size="20" icon="tabler-x" class="visible-in-hover"
+                      @click="$emit('remove', notification.id)" />
                   </div>
                 </div>
               </VListItem>
             </template>
 
-            <VListItem
-              v-show="!props.notifications.length"
-              class="text-center text-medium-emphasis"
-              style="block-size: 56px;"
-            >
+            <VListItem v-show="!props.notifications.length" class="text-center text-medium-emphasis"
+              style="block-size: 56px;">
               <VListItemTitle>No Notification Found!</VListItemTitle>
             </VListItem>
           </VList>
@@ -181,14 +122,8 @@ const toggleReadUnread = (isSeen: boolean, Id: number) => {
 
         <VDivider />
 
-        <VCardText
-          v-show="props.notifications.length"
-          class="pa-4"
-        >
-          <VBtn
-            block
-            size="small"
-          >
+        <VCardText v-show="props.notifications.length" class="pa-4">
+          <VBtn block size="small">
             View All Notifications
           </VBtn>
         </VCardText>
