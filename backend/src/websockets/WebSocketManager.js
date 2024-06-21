@@ -13,7 +13,7 @@ module.exports = class WebSocketManager {
             this.wss.on('connection', (ws, req) => {
                 const userId = req.user.id;
 
-                if (req.url === '/ws/notifications') {
+                if (req.url.indexOf('/ws/notifications') === 0) {
                     NotificationsService.addClient(userId, ws);
                     ws.on('close', () => NotificationsService.removeClient(userId));
 
