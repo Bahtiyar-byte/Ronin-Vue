@@ -125,6 +125,7 @@ export type Notification = {
   time?: string
   color?: string
   isSeen: boolean
+  type: string
 } & (
   | { text?: never; icon?: never }
   | { text: string; icon?: never }

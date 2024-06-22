@@ -1,33 +1,37 @@
-import { useFilters } from '@/composables/useFilters'
-import type { CheckboxFilterItem } from '@/types/filters/interfaces'
-import { IDeletionDialogOptions } from '@/types/forms/tableManagment'
-import type { SortItem } from '@core/types'
 import { debounce } from 'lodash'
 import { onBeforeMount, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import { useFilters } from '@/composables/useFilters'
+import type { CheckboxFilterItem } from '@/types/filters/interfaces'
+import type { IDeletionDialogOptions } from '@/types/forms/tableManagment'
+import type { SortItem } from '@core/types'
 
 export function useTableManagement<T>(
   resourceType: string,
   getListFunction: (params: any) => Promise<any>,
   deleteFunction: (item: T) => Promise<any>,
-  headersDefinition: { title: string, key: string, sortable?: boolean }[]
+  headersDefinition: { title: string; key: string; sortable?: boolean }[],
 ) {
   const items = ref<T[]>([])
+
   const pagination = ref({
     page: 1,
     itemsPerPage: 10,
     totalItems: 0,
   })
+
   const sortBy = ref<SortItem[]>([])
   const headers = ref(headersDefinition)
+
   const filters = ref<CheckboxFilterItem[]>([
     { type: 'checkbox', key: 'status', label: 'Status', options: [], value: [] },
   ])
+
   const isLoading = ref<boolean>(false)
   const searchQuery = ref<string>('')
 
   const { getVariants } = useFilters()
-  const route = useRoute() 
+  const route = useRoute()
 
   const fetchData = async () => {
     const requestParams = {
@@ -48,8 +52,8 @@ export function useTableManagement<T>(
 
     const { data, isFetching } = await getListFunction(requestParams)
 
-    watch(isFetching, (newVal) => {
-      if(typeof newVal === "boolean"){
+    watch(isFetching, newVal => {
+      if (typeof newVal === 'boolean') {
         isLoading.value = newVal
       }
     }, { immediate: true })
@@ -80,7 +84,6 @@ export function useTableManagement<T>(
 
   const selectedItems = ref<[]>([])
 
-  
   const deletionDialogOptions = ref<IDeletionDialogOptions>({
     visible: false,
     onAccept: async () => {},

@@ -133,6 +133,9 @@ const sources: BundleScriptConfig = {
         'account-filter-outline',
         'sale-outline',
         'account-box-outline',
+        'alert-circle',
+        'check-circle',
+        'alert',
       ],
     },
     {

@@ -1,12 +1,12 @@
 <script setup lang="ts">
+import { debounce } from 'lodash'
+import { ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { useAppointments } from '@/composables/useAppointments'
 import { useFilters } from '@/composables/useFilters'
 import type Appointment from '@/types/appointments/Appointment'
 import type { CheckboxFilterItem } from '@/types/filters/interfaces'
 import type { SortItem } from '@core/types'
-import { debounce } from 'lodash'
-import { ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
 
 import ItemsManage from '@/components/common/CRUD/ItemsManage.vue'
 import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
@@ -135,8 +135,12 @@ const handleItemDeletion = async (appointment: Appointment) => {
 </script>
 
 <template>
-  <ItemsManage v-model:items-per-page="pagination.itemsPerPage" v-model:search-query="searchQuery"
-    items-title="Appointments" :search-settings="{ placeholder: 'Search appointments' }" :breadcrumbs="[
+  <ItemsManage
+    v-model:items-per-page="pagination.itemsPerPage"
+    v-model:search-query="searchQuery"
+    items-title="Appointments"
+    :search-settings="{ placeholder: 'Search appointments' }"
+    :breadcrumbs="[
       {
         title: 'Home',
         to: { name: 'root' },
@@ -145,30 +149,52 @@ const handleItemDeletion = async (appointment: Appointment) => {
         title: 'Appointments',
         disabled: true,
       },
-    ]">
+    ]"
+  >
     <template #filters>
-      <FiltersList :filters="filters" class="flex gap-2" />
+      <FiltersList
+        :filters="filters"
+        class="flex gap-2"
+      />
     </template>
 
     <template #buttons>
-      <VBtn :to="{ name: 'appointments-create' }" prepend-icon="tabler-plus">
+      <VBtn
+        :to="{ name: 'appointments-create' }"
+        prepend-icon="tabler-plus"
+      >
         Create appointment
       </VBtn>
     </template>
 
     <template #table>
-      <VDataTable v-model="selectedItems" v-model:sort-by="sortBy" :items="items" :headers="headers"
-        :loading="isLoading" show-select>
+      <VDataTable
+        v-model="selectedItems"
+        v-model:sort-by="sortBy"
+        :items="items"
+        :headers="headers"
+        :loading="isLoading"
+        show-select
+      >
         <template #bottom>
-          <TablePagination v-model:page="pagination.page" :items-per-page="pagination.itemsPerPage"
-            :total-items="pagination.totalItems" />
+          <TablePagination
+            v-model:page="pagination.page"
+            :items-per-page="pagination.itemsPerPage"
+            :total-items="pagination.totalItems"
+          />
         </template>
 
         <template #item.actions="{ item }">
-          <IconBtn :to="{ name: 'appointments-details-id', params: { id: item.id } }" title="View">
+          <IconBtn
+            :to="{ name: 'appointments-details-id', params: { id: item.id } }"
+            title="View"
+          >
             <VIcon icon="tabler-eye" />
           </IconBtn>
-          <IconBtn :to="{ name: 'appointments-update-id', params: { id: item.id } }" title="Edit">
+          <IconBtn
+            :to="{ name: 'appointments-update-id', params: { id: item.id } }"
+            title="Edit"
+          >
             <VIcon icon="tabler-edit" />
           </IconBtn>
           <IconBtn @click="() => handleItemDeletion(item)">
@@ -179,6 +205,9 @@ const handleItemDeletion = async (appointment: Appointment) => {
     </template>
   </ItemsManage>
 
-  <ConfirmDialog v-model:is-visible="deletionDialogOptions.visible" :on-accept="deletionDialogOptions.onAccept"
-    title="Are you sure you want to delete this appointment?" />
+  <ConfirmDialog
+    v-model:is-visible="deletionDialogOptions.visible"
+    :on-accept="deletionDialogOptions.onAccept"
+    title="Are you sure you want to delete this appointment?"
+  />
 </template>

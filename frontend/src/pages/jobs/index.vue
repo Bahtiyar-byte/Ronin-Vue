@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useJobs } from '@/composables/useJobs';
-import type Job from '@/types/jobs/Job';
-import { useTableManagement } from '@/utils/forms/useTableManagement';
+import { useJobs } from '@/composables/useJobs'
+import type Job from '@/types/jobs/Job'
+import { useTableManagement } from '@/utils/forms/useTableManagement'
 
 const { getList, deleteJob } = useJobs()
 
@@ -25,8 +25,12 @@ const {
 </script>
 
 <template>
-  <ItemsManage v-model:items-per-page="pagination.itemsPerPage" v-model:search-query="searchQuery" items-title="Jobs"
-    :search-settings="{ placeholder: 'Search jobs' }" :breadcrumbs="[
+  <ItemsManage
+    v-model:items-per-page="pagination.itemsPerPage"
+    v-model:search-query="searchQuery"
+    items-title="Jobs"
+    :search-settings="{ placeholder: 'Search jobs' }"
+    :breadcrumbs="[
       {
         title: 'Home',
         to: { name: 'root' },
@@ -35,30 +39,52 @@ const {
         title: 'Jobs',
         disabled: true,
       },
-    ]">
+    ]"
+  >
     <template #filters>
-      <FiltersList :filters="filters" class="flex gap-2" />
+      <FiltersList
+        :filters="filters"
+        class="flex gap-2"
+      />
     </template>
 
     <template #buttons>
-      <VBtn :to="{ name: 'jobs-create' }" prepend-icon="tabler-plus">
+      <VBtn
+        :to="{ name: 'jobs-create' }"
+        prepend-icon="tabler-plus"
+      >
         Create job
       </VBtn>
     </template>
 
     <template #table>
-      <VDataTable v-model="selectedItems" v-model:sort-by="sortBy" :items="items" :headers="headers"
-        :loading="isLoading" show-select>
+      <VDataTable
+        v-model="selectedItems"
+        v-model:sort-by="sortBy"
+        :items="items"
+        :headers="headers"
+        :loading="isLoading"
+        show-select
+      >
         <template #bottom>
-          <TablePagination v-model:page="pagination.page" :items-per-page="pagination.itemsPerPage"
-            :total-items="pagination.totalItems" />
+          <TablePagination
+            v-model:page="pagination.page"
+            :items-per-page="pagination.itemsPerPage"
+            :total-items="pagination.totalItems"
+          />
         </template>
 
         <template #item.actions="{ item }">
-          <IconBtn :to="{ name: 'jobs-details-id', params: { id: item.id } }" title="View">
+          <IconBtn
+            :to="{ name: 'jobs-details-id', params: { id: item.id } }"
+            title="View"
+          >
             <VIcon icon="tabler-eye" />
           </IconBtn>
-          <IconBtn :to="{ name: 'jobs-update-id', params: { id: item.id } }" title="Edit">
+          <IconBtn
+            :to="{ name: 'jobs-update-id', params: { id: item.id } }"
+            title="Edit"
+          >
             <VIcon icon="tabler-edit" />
           </IconBtn>
           <IconBtn @click="() => handleItemDeletion(item)">
@@ -69,6 +95,9 @@ const {
     </template>
   </ItemsManage>
 
-  <ConfirmDialog v-model:is-visible="deletionDialogOptions.visible" :on-accept="deletionDialogOptions.onAccept"
-    title="Are you sure you want to delete this job?" />
+  <ConfirmDialog
+    v-model:is-visible="deletionDialogOptions.visible"
+    :on-accept="deletionDialogOptions.onAccept"
+    title="Are you sure you want to delete this job?"
+  />
 </template>
