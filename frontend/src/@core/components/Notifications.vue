@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
+import { getNotificationColor, getNotificationIcon } from '../libs/notification/NotificationStyles'
 import type { Notification } from '@layouts/types'
 
 interface Props {
@@ -9,10 +10,10 @@ interface Props {
   location?: any
 }
 interface Emit {
-  (e: 'read', value: number[]): void
-  (e: 'unread', value: number[]): void
-  (e: 'remove', value: number): void
-  (e: 'click:notification', value: Notification): void
+  (e: 'read', value?: number[]): void
+  (e: 'unread', value?: number[]): void
+  (e: 'remove', value?: number): void
+  (e: 'click:notification', value?: Notification): void
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -121,56 +122,52 @@ const toggleReadUnread = (isSeen: boolean, Id: number) => {
               :key="notification.title"
             >
               <VDivider v-if="index > 0" />
-              <VListItem
-                link
-                lines="one"
-                min-height="66px"
+              <VAlert
+                variant="tonal"
+                :color="getNotificationColor(notification)"
+                title="Title for messages"
                 class="list-item-hover-class"
+                min-height="66px"
+                closable
+                :icon="getNotificationIcon(notification)"
+                style="border-radius: 0;"
                 @click="$emit('click:notification', notification)"
               >
                 <div class="d-flex align-start gap-3">
-                  <div>
-                    <p
-                      v-if="notification.title"
-                      class="text-sm font-weight-medium mb-1"
-                    >
-                      {{ notification.title }}
-                    </p>
-                    <p
-                      class="text-body-2 mb-2"
-                      style=" letter-spacing: 0.4px !important; line-height: 18px;"
-                    >
-                      {{ notification.message }}
-                    </p>
-                    <p
-                      v-if="notification.time"
-                      class="text-sm text-disabled mb-0"
-                      style=" letter-spacing: 0.4px !important; line-height: 18px;"
-                    >
-                      {{ notification.time }}
-                    </p>
-                  </div>
-                  <VSpacer />
-
-                  <div class="d-flex flex-column align-end">
-                    <VIcon
-                      size="10"
-                      icon="tabler-circle-filled"
-                      :color="!notification.isSeen ? 'primary' : '#a8aaae'"
-                      :class="`${notification.isSeen ? 'visible-in-hover' : ''}`"
-                      class="mb-2"
-                      @click.stop="toggleReadUnread(notification.isSeen, notification.id)"
-                    />
-
-                    <VIcon
-                      size="20"
-                      icon="tabler-x"
-                      class="visible-in-hover"
-                      @click="$emit('remove', notification.id)"
-                    />
-                  </div>
+                  <p
+                    class="text-body-2 mb-2"
+                    style=" letter-spacing: 0.4px !important; line-height: 18px;"
+                  >
+                    {{ notification.message }}
+                  </p>
+                  <p
+                    v-if="notification.time"
+                    class="text-sm text-disabled mb-0"
+                    style=" letter-spacing: 0.4px !important; line-height: 18px;"
+                  >
+                    {{ notification.time }}
+                  </p>
                 </div>
-              </VListItem>
+                <VSpacer />
+
+                <div class="d-flex flex-column align-end">
+                  <VIcon
+                    size="10"
+                    icon="tabler-circle-filled"
+                    :color="!notification.isSeen ? 'primary' : '#a8aaae'"
+                    :class="`${notification.isSeen ? 'visible-in-hover' : ''}`"
+                    class="mb-2"
+                    @click.stop="toggleReadUnread(notification.isSeen, notification.id)"
+                  />
+
+                  <VIcon
+                    size="20"
+                    icon="tabler-x"
+                    class="visible-in-hover"
+                    @click="$emit('remove', notification.id)"
+                  />
+                </div>
+              </VAlert>
             </template>
 
             <VListItem
@@ -202,6 +199,14 @@ const toggleReadUnread = (isSeen: boolean, Id: number) => {
 </template>
 
 <style lang="scss">
+.v-list-item.error {
+  background-color: #F97066;
+}
+
+.v-list-item.success {
+  background-color: #32D583;
+}
+
 .notification-section {
   padding-block: 0.75rem;
   padding-inline: 1rem;
@@ -212,11 +217,6 @@ const toggleReadUnread = (isSeen: boolean, Id: number) => {
     display: none;
   }
 
-  &:hover {
-    .visible-in-hover {
-      display: block;
-    }
-  }
 }
 
 .notification-list.v-list {

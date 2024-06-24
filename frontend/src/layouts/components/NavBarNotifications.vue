@@ -24,7 +24,7 @@ watchEffect(() => {
   }
 })
 
-const removeNotification = (notificationId: number) => {
+const removeNotification = (notificationId: string) => {
   notifications.forEach((item, index) => {
     if (notificationId === item.id) { notifications.splice(index, 1) }
   })
@@ -46,10 +46,9 @@ const removeNotification = (notificationId: number) => {
 //   })
 // }
 
-// const handleNotificationClick = (notification: Notification) => {
-//   if (!notification.isSeen) { markRead([notification.id]) }
-// }
-console.log(notifications)
+const handleNotificationClick = (notification: Notification) => {
+  if (!notification.isSeen) { markRead([notification.id]) }
+}
 </script>
 
 <template>

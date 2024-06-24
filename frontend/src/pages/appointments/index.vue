@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
 import { debounce } from 'lodash'
+import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAppointments } from '@/composables/useAppointments'
 import { useFilters } from '@/composables/useFilters'
-import type { SortItem } from '@core/types'
 import type Appointment from '@/types/appointments/Appointment'
 import type { CheckboxFilterItem } from '@/types/filters/interfaces'
+import type { SortItem } from '@core/types'
 
 import ItemsManage from '@/components/common/CRUD/ItemsManage.vue'
 import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
@@ -117,7 +117,7 @@ interface IDeletionDialogOptions {
 
 const deletionDialogOptions = ref<IDeletionDialogOptions>({
   visible: false,
-  onAccept: async () => {},
+  onAccept: async () => { },
 })
 
 const handleItemDeletion = async (appointment: Appointment) => {

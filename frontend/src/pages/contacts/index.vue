@@ -1,141 +1,32 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import { debounce } from 'lodash'
-import { useRoute } from 'vue-router'
 import { useContacts } from '@/composables/useContacts'
-import { useFilters } from '@/composables/useFilters'
-import type { SortItem } from '@core/types'
 import type Contact from '@/types/contacts/Contact'
-import type { CheckboxFilterItem } from '@/types/filters/interfaces'
-
 import ItemsManage from '@/components/common/CRUD/ItemsManage.vue'
 import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
+import { useTableManagement } from '@/utils/forms/useTableManagement'
 
-const items = ref<Contact[]>([])
 const { getList, deleteContact } = useContacts()
 
-const { getVariants } = useFilters()
-
-const pagination = ref({
-  page: 1,
-  itemsPerPage: 10,
-  totalItems: 0,
-})
-
-const headers = ref([
+const headersDefinition = [
   { title: 'Name', key: 'name' },
   { title: 'Email', key: 'email' },
   { title: 'Phone', key: 'phone', sortable: false },
   { title: 'Status', key: 'status' },
   { title: 'Actions', key: 'actions', sortable: false },
-])
+]
 
-const route = useRoute()
-
-const filters = ref<(CheckboxFilterItem)[]>([
-  { type: 'checkbox', key: 'status', label: 'Status', options: [], value: [] },
-])
-
-onBeforeMount(async () => {
-  const promises = Object.values(filters.value).map(async val => {
-    if (val.options !== undefined && val.options.length === 0) {
-      const { data } = await getVariants('contacts', val.key)
-
-      if (data.value === null) {
-        return
-      }
-
-      val.options = data.value
-    }
-  })
-
-  await Promise.all(promises)
-
-  Object.entries(route.query).forEach(([key, val]) => {
-    const filter = filters.value.find(f => f.key === key)
-    if (filter && val?.length) {
-      filter.value = val as string
-    }
-  })
-})
-
-const isLoading = ref(false)
-const sortBy = ref<SortItem[]>([])
-const searchQuery = ref<string>((route.query?.q ?? '') as string)
-
-const fetchData = async () => {
-  const requestParams = {
-    limit: pagination.value.itemsPerPage,
-    offset: (pagination.value.page - 1) * pagination.value.itemsPerPage,
-    sortBy: '',
-    sortDesc: '',
-    ...Object.fromEntries(filters.value.map(filter => [filter.key, filter?.value ?? ''])),
-    q: searchQuery?.value ?? '',
-
-    // ToDo: Remove this after implement search by 'q' on backend
-    name: searchQuery?.value ?? '',
-  }
-
-  const [_sortBy] = sortBy.value
-  if (_sortBy !== undefined) {
-    requestParams.sortBy = _sortBy.key
-    requestParams.sortDesc = (_sortBy?.order ?? 'desc') as string
-  }
-
-  const { data, isFetching } = await getList(requestParams)
-
-  watch(isFetching, newVal => {
-    isLoading.value = newVal
-  }, { immediate: true })
-
-  watch(data, newVal => {
-    if (newVal === null) {
-      return
-    }
-
-    pagination.value = {
-      ...pagination.value,
-      totalItems: newVal.count,
-    }
-
-    items.value = newVal.rows
-  })
-}
-
-const debouncedFetchData = debounce(fetchData, 400)
-
-watch([
-  () => pagination.value.page,
-  () => pagination.value.itemsPerPage,
-  () => JSON.stringify(filters.value.map(filter => filter.value)),
+const {
+  items,
+  pagination,
   sortBy,
+  headers,
+  filters,
+  isLoading,
   searchQuery,
-], debouncedFetchData, { immediate: true })
-
-const selectedItems = ref<[]>()
-
-interface IDeletionDialogOptions {
-  visible: boolean
-  onAccept: () => Promise<void>
-}
-
-const deletionDialogOptions = ref<IDeletionDialogOptions>({
-  visible: false,
-  onAccept: async () => {},
-})
-
-const handleItemDeletion = async (contact: Contact) => {
-  deletionDialogOptions.value = {
-    visible: true,
-    onAccept: async () => {
-      const { isFetching } = await deleteContact(contact)
-
-      watch(isFetching, async () => {
-        await fetchData()
-      })
-    },
-  }
-}
+  selectedItems,
+  deletionDialogOptions,
+  handleItemDeletion,
+} = useTableManagement<Contact>('contacts', getList, deleteContact, headersDefinition)
 </script>
 
 <template>

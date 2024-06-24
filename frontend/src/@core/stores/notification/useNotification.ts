@@ -6,6 +6,7 @@ interface Notification {
   id: string
   message: string
   timestamp: string
+  type: string
 }
 
 interface WebSocketOptions {
@@ -29,10 +30,6 @@ export const useNotificationStore = defineStore('notification', () => {
 
     ws.value = new WebSocket(url)
 
-    ws.value.onopen = () => {
-      console.log('WebSocket connection opened')
-    }
-
     ws.value.onmessage = (event: MessageEvent) => {
       const data = JSON.parse(event.data)
 
@@ -40,6 +37,7 @@ export const useNotificationStore = defineStore('notification', () => {
         id: data.id,
         message: data.message,
         timestamp: data.timestamp,
+        type: data.type,
       })
     }
 
@@ -48,7 +46,6 @@ export const useNotificationStore = defineStore('notification', () => {
     }
 
     ws.value.onclose = () => {
-      console.log('WebSocket connection closed')
       ws.value = null
     }
   }
