@@ -126,24 +126,17 @@ const toggleReadUnread = (isSeen: boolean, Id: number) => {
                 variant="tonal"
                 :color="getNotificationColor(notification)"
                 title="Title for messages"
-                class="list-item-hover-class"
-                min-height="66px"
-                closable
                 :icon="getNotificationIcon(notification)"
                 style="border-radius: 0;"
                 @click="$emit('click:notification', notification)"
               >
                 <div class="d-flex align-start gap-3">
-                  <p
-                    class="text-body-2 mb-2"
-                    style=" letter-spacing: 0.4px !important; line-height: 18px;"
-                  >
+                  <p class="text-body-2 mb-2 tracking-wide">
                     {{ notification.message }}
                   </p>
                   <p
                     v-if="notification.time"
-                    class="text-sm text-disabled mb-0"
-                    style=" letter-spacing: 0.4px !important; line-height: 18px;"
+                    class="text-sm text-disabled mb-0 tracking-wide"
                   >
                     {{ notification.time }}
                   </p>
