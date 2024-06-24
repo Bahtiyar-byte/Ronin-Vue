@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
-import { getNotificationColor, getNotificationIcon } from '../libs/notification/NotificationStyles'
+import { getNotificationColor, getNotificationIcon } from '@/utils/notification/NotificationStyles'
 import type { Notification } from '@layouts/types'
 
 interface Props {

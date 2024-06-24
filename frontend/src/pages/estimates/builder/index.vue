@@ -5,7 +5,7 @@ import InvoiceEditable from '@/views/apps/invoice/InvoiceEditable.vue'
 // Type: Invoice data
 import type { PurchasedProduct } from '@/views/apps/invoice/types'
 
-const estimateData = ref<Estimate>({})
+const estimateData = ref<Estimate>()
 
 // 👉 Default Blank Data
 // const invoiceData = ref<InvoiceData>({

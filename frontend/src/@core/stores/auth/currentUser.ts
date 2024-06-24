@@ -33,4 +33,7 @@ export const useCurrentUserStore = defineStore('currentUser', {
       this.user = null
     },
   },
+  hydrate: (storeState, initialState) => {
+    console.log(initialState)
+  },
 })

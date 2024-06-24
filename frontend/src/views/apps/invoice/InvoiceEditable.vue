@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
 import type { PurchasedProduct } from './types'
+import { useCurrentUserStore } from '@/@core/stores/auth/currentUser'
 
 // import InvoiceProductEdit from './InvoiceProductEdit.vue'
 
@@ -15,7 +17,19 @@ const emit = defineEmits<{
   (e: 'remove', id: number): void
 }>()
 
-const data = defineModel<Estimate>('data', { required: true })
+const { user: currentUser } = storeToRefs(useCurrentUserStore())
+
+const data = defineModel<Estimate>('data', {
+  default: {
+    createdAt: new Date(),
+  },
+})
+
+onBeforeMount(() => {
+
+})
+
+console.log(data.value)
 
 // const invoice = ref(props.data.invoice)
 // const salesperson = ref(props.data.salesperson)
@@ -50,7 +64,7 @@ const removeProduct = (id: number) => {
 
           <!-- 👉 Title -->
           <h6 class="app-logo-title">
-            {{ themeConfig.app.title }}
+            {{ coreConfig.company.name }}
           </h6>
         </div>
 
@@ -62,6 +76,13 @@ const removeProduct = (id: number) => {
         >
           {{ address }}
         </p>
+
+        <template v-if="currentUser">
+          <p class="font-semibold mt-4">
+            Company representative:
+          </p>
+          <p>{{ currentUser.firstName }}</p>
+        </template>
       </div>
 
       <!-- 👉 Right Content -->
@@ -75,6 +96,7 @@ const removeProduct = (id: number) => {
 
           <span style="inline-size: 9.5rem;">
             <AppDateTimePicker
+              v-model="data.createdAt"
               placeholder="YYYY-MM-DD"
               :config="{ position: 'auto right' }"
             />
