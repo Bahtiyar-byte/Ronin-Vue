@@ -2,6 +2,7 @@
 import { storeToRefs } from 'pinia'
 import type { PurchasedProduct } from './types'
 import { useCurrentUserStore } from '@/@core/stores/auth/currentUser'
+import { useContacts } from '@/composables/useContacts'
 
 // import InvoiceProductEdit from './InvoiceProductEdit.vue'
 
@@ -11,13 +12,14 @@ import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
 import { themeConfig } from '@themeConfig'
 
 import coreConfig from '@core/config'
+import { debounce } from 'lodash'
 
 const emit = defineEmits<{
   (e: 'push', value: PurchasedProduct): void
   (e: 'remove', id: number): void
 }>()
 
-const { user: currentUser } = storeToRefs(useCurrentUserStore())
+const { user: currentUser, userName: currentUserName } = storeToRefs(useCurrentUserStore())
 
 const data = defineModel<Estimate>('data', {
   default: {
@@ -25,11 +27,24 @@ const data = defineModel<Estimate>('data', {
   },
 })
 
-onBeforeMount(() => {
+const { autocomplete: autocompleteContacts } = useContacts()
 
-})
+const fetchAutocomplete = async (query: string, autocompleteFn: (query: string) => Promise<any>) => {
+  const { data } = await autocompleteFn(query)
+  if (data.value === null) {
+    return
+  }
 
-console.log(data.value)
+  return data.value.map((item: any) => ({ value: item.id, title: item.label }))
+}
+
+// const debouncedFetchVariants = debounce(async (query: string) => {
+//   if (value.value?.length) {
+//     return
+//   }
+//
+//   items.value = await props.fetchItems(query)
+// }, 400)
 
 // const invoice = ref(props.data.invoice)
 // const salesperson = ref(props.data.salesperson)
@@ -81,7 +96,13 @@ const removeProduct = (id: number) => {
           <p class="font-semibold mt-4">
             Company representative:
           </p>
-          <p>{{ currentUser.firstName }}</p>
+          <p>{{ currentUserName }}</p>
+          <p v-if="currentUser.phoneNumber">
+            Phone: <a :href="`tel:${currentUser.phoneNumber}`">{{ currentUser.phoneNumber }}</a>
+          </p>
+          <p v-if="currentUser.email">
+            <a :href="`mailto:${currentUser.email}`">{{ currentUser.email }}</a>
+          </p>
         </template>
       </div>
 
@@ -106,22 +127,21 @@ const removeProduct = (id: number) => {
     </div>
     <!-- !SECTION -->
 
-<!--    <VRow>-->
-<!--      <VCol class="text-no-wrap">-->
-<!--        <h6 class="text-h6 mb-4">-->
-<!--          Invoice To:-->
-<!--        </h6>-->
+    <VRow>
+      <VCol class="text-no-wrap">
+        <h6 class="font-medium text-body mb-4">
+          Estimate To:
+        </h6>
+        <VAutocomplete
+          v-model="data.related_contact"
+          placeholder="Select contact"
+          class="mb-4"
+          return-object
+          style="inline-size: 11.875rem;"
+          :items="[]"
+          @update:search="(query: string) => fetchAutocomplete(query, autocompleteContacts)"
+        />
 
-<!--        <VSelect-->
-<!--          v-model="invoice.client"-->
-<!--          :items="clients"-->
-<!--          item-title="name"-->
-<!--          item-value="name"-->
-<!--          placeholder="Select Client"-->
-<!--          return-object-->
-<!--          class="mb-4"-->
-<!--          style="inline-size: 11.875rem;"-->
-<!--        />-->
 <!--        <p class="mb-0">-->
 <!--          {{ invoice.client.name }}-->
 <!--        </p>-->
@@ -140,9 +160,9 @@ const removeProduct = (id: number) => {
 <!--        <p class="mb-0">-->
 <!--          {{ invoice.client.companyEmail }}-->
 <!--        </p>-->
-<!--      </VCol>-->
+      </VCol>
 
-<!--      <VCol class="text-no-wrap">-->
+      <VCol class="text-no-wrap">
 <!--        <h6 class="text-h6 mb-4">-->
 <!--          Bill To:-->
 <!--        </h6>-->
@@ -185,8 +205,8 @@ const removeProduct = (id: number) => {
 <!--            </tr>-->
 <!--          </tbody>-->
 <!--        </table>-->
-<!--      </VCol>-->
-<!--    </VRow>-->
+      </VCol>
+    </VRow>
 
     <VDivider class="my-6 border-dashed" />
     <!-- 👉 Add purchased products -->

@@ -8,21 +8,9 @@ import '@webzlodimir/vue-avatar/dist/style.css'
 
 const router = useRouter()
 
-const user = useCurrentUserStore().user
+const currentUserStore = useCurrentUserStore()
 
-const userName = computed(() => {
-  if (!user) {
-    return ''
-  }
-
-  const { name, firstName, lastName } = user
-
-  if (name) {
-    return name
-  }
-
-  return [firstName, lastName].filter(Boolean).join(' ')
-})
+const { user, userName } = storeToRefs(currentUserStore)
 </script>
 
 <template>

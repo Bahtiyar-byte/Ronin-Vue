@@ -6,6 +6,21 @@ export const useCurrentUserStore = defineStore('currentUser', {
   state: () => ({
     user: null as User | null,
   }),
+  getters: {
+    userName: state => {
+      if (!state.user) {
+        return ''
+      }
+
+      const { name, firstName, lastName } = state.user
+
+      if (name) {
+        return name
+      }
+
+      return [firstName, lastName].filter(Boolean).join(' ')
+    },
+  },
   actions: {
     async fetchUser() {
       const { data, response } = await useAuth().me()
@@ -32,8 +47,5 @@ export const useCurrentUserStore = defineStore('currentUser', {
     clearUser() {
       this.user = null
     },
-  },
-  hydrate: (storeState, initialState) => {
-    console.log(initialState)
   },
 })

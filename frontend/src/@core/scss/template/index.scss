@@ -1,5 +1,6 @@
 @use "sass:map";
 @use "@core/scss/base";
+@use "@styles/variables/_vuetify.scss" as vuetify;
 
 // Layout
 @use "vertical-nav";
@@ -25,4 +26,8 @@
   transition: inherit;
   border-style: solid;
   border-width: thin 0 0 0;
+}
+
+.text-body {
+  font-family: vuetify.$body-font-family;
 }
