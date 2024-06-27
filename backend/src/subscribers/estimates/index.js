@@ -10,8 +10,5 @@ eventEmitter.on('estimateCreated', async (estimate) => {
 });
 
 eventEmitter.on('estimateUpdated', async (estimate, oldEstimate) => {
-    // if (estimate.related_contact) {
-    //     const estimateCreatedEmail = new EstimateCreatedEmail(estimate);
-    //     await new EmailSender(estimateCreatedEmail).send();
-    // }
+
 });

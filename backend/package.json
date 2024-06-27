@@ -3,7 +3,7 @@
   "description": "Evans CRM - template backend",
   "scripts": {
     "start": "npm run db:migrate && npm run db:seed && nodemon ./src/index.js",
-    "dev": "nodemon ./src/index.js localhost 8080",
+    "dev": "nodemon --watch src --ext js,ts --exec ts-node src/index.js",
     "db:migrate": "sequelize-cli db:migrate",
     "db:seed": "sequelize-cli db:seed:all",
     "db:drop": "sequelize-cli db:drop",
@@ -49,6 +49,10 @@
     "mocha": "10.5.2",
     "node-mocks-http": "1.9.0",
     "nodemon": "3.1.4",
-    "sequelize-cli": "6.6.2"
+    "sequelize-cli": "6.6.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.2",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.14.9"
   }
 }

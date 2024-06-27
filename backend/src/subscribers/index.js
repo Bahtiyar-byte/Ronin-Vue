@@ -1,3 +1,3 @@
 
-require('./appointments/index');
+require('./appointments/index.ts');
 require('./estimates/index');
