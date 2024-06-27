@@ -7,8 +7,6 @@ import type { PurchasedProduct } from '@/views/apps/invoice/types'
 
 const estimateData = ref<Estimate>()
 
-
-
 const addProduct = (value: PurchasedProduct) => {
   console.log(value)
 
@@ -25,21 +23,39 @@ const removeProduct = (id: number) => {
 <template>
   <VRow>
     <!-- 👉 InvoiceEditable -->
-    <VCol cols="12" md="9">
-      <InvoiceEditable :data="estimateData" @push="addProduct" @remove="removeProduct" />
+    <VCol
+      cols="12"
+      md="9"
+    >
+      <InvoiceEditable
+        :data="estimateData"
+        @push="addProduct"
+        @remove="removeProduct"
+      />
     </VCol>
 
     <!-- 👉 Right Column: Invoice Action -->
-    <VCol cols="12" md="3">
+    <VCol
+      cols="12"
+      md="3"
+    >
       <VCard class="mb-8">
         <VCardText>
           <!-- 👉 Send Invoice -->
-          <VBtn block prepend-icon="tabler-send" class="mb-4">
+          <VBtn
+            block
+            prepend-icon="tabler-send"
+            class="mb-4"
+          >
             Send Esimate
           </VBtn>
 
           <!-- 👉 Save -->
-          <VBtn block color="secondary" variant="tonal">
+          <VBtn
+            block
+            color="secondary"
+            variant="tonal"
+          >
             Save
           </VBtn>
         </VCardText>

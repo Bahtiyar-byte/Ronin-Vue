@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
+import type { RouteLocationNormalizedLoaded } from 'vue-router'
 import type { PurchasedProduct } from './types'
+import InvoiceAutoComplete from './InvoiceAutoComplete.vue'
 import { useCurrentUserStore } from '@/@core/stores/auth/currentUser'
 import { useContacts } from '@/composables/useContacts'
-
-// import InvoiceProductEdit from './InvoiceProductEdit.vue'
 
 import type Estimate from '@/types/estimates/Estimate'
 
@@ -12,8 +12,6 @@ import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
 import { themeConfig } from '@themeConfig'
 
 import coreConfig from '@core/config'
-import { debounce } from 'lodash'
-import { RouteLocationNormalizedLoaded } from 'vue-router'
 
 const emit = defineEmits<{
   (e: 'push', value: PurchasedProduct): void
@@ -22,59 +20,65 @@ const emit = defineEmits<{
 
 const { user: currentUser, userName: currentUserName } = storeToRefs(useCurrentUserStore())
 const { autocomplete: autocompleteContacts, getById } = useContacts()
+const { autocomplete: autocompleteUsers } = useUsers()
+
 const estimate_data = defineModel<Estimate>('data', {
   default: {
-    id: "est-001",
-    createdById: "user-123",
-    updatedById: "user-456",
-    createdAt: "2024-01-15T10:30:00Z",
-    updatedAt: "2024-06-20T14:00:00Z",
+    id: 'est-001',
+    createdById: 'user-123',
+    updatedById: 'user-456',
+    createdAt: '2024-01-15T10:30:00Z',
+    updatedAt: '2024-06-20T14:00:00Z',
     deletedAt: null,
     labor_cost: 2500,
     markup: 15,
     profit_margin: 20,
     total_price: 12000,
     related_contact: {
-      id: "cont-789",
-      name: "John Doe",
-      email: "john.doe@example.com",
-      phone: "123-456-7890",
-      address: "123 Main St, Springfield, IL",
+      id: 'cont-789',
+      name: 'John Doe',
+      email: 'john.doe@example.com',
+      phone: '123-456-7890',
+      address: '123 Main St, Springfield, IL',
     },
-    related_contactId: "cont-789",
+    related_contactId: 'cont-789',
     related_job: {
-      id: "job-456",
-      title: "Office Renovation",
-      description: "Renovation of the main office building",
-      startDate: "2024-02-01",
-      endDate: "2024-05-30",
-      status: "In Progress",
+      id: 'job-456',
+      title: 'Office Renovation',
+      description: 'Renovation of the main office building',
+      startDate: '2024-02-01',
+      endDate: '2024-05-30',
+      status: 'In Progress',
     },
-    related_jobId: "job-456",
+    related_jobId: 'job-456',
     material_cost: 5000,
-    importHash: "import-hash-001",
-    name: "Office Renovation Estimate",
-    description: "Detailed estimate for the renovation of the main office building, including labor, materials, and markup.",
-    trade: "Construction",
-    template_used: "Standard Renovation Template",
-    unit_of_measurement: "Square Feet",
+    importHash: 'import-hash-001',
+    name: 'Office Renovation Estimate',
+    description: 'Detailed estimate for the renovation of the main office building, including labor, materials, and markup.',
+    trade: 'Construction',
+    template_used: 'Standard Renovation Template',
+    unit_of_measurement: 'Square Feet',
   },
 })
+
+const contactID = ref<string>()
+const userID = ref<string>()
 const route = useRoute() as RouteLocationNormalizedLoaded & { query: { contact_id: string } }
+
 onMounted(async () => {
-  const { data, isFetching } = await getById(route.query.contact_id)
+  const { data } = await getById(route.query.contact_id)
 
   watch(data, newVal => {
-    if (newVal === null) {
-      return
+    if (newVal) {
+      estimate_data.value.related_contact = newVal
+      contactID.value = data.value?.id
     }
-    estimate_data.value.related_contact = newVal
-    console.log(newVal);
 
+    if (currentUser) {
+      userID.value = currentUser.value?.id
+    }
   })
 })
-
-
 
 const fetchAutocomplete = async (query: string, autocompleteFn: (query: string) => Promise<any>) => {
   const { data } = await autocompleteFn(query)
@@ -85,13 +89,7 @@ const fetchAutocomplete = async (query: string, autocompleteFn: (query: string) 
   return data.value.map((item: any) => ({ value: item.id, title: item.label }))
 }
 
-// const debouncedFetchVariants = debounce(async (query: string) => {
-//   if (value.value?.length) {
-//     return
-//   }
-//
-//   items.value = await props.fetchItems(query)
-// }, 400)
+const value = defineModel<string>('value', { default: '' })
 
 // const invoice = ref(props.data.invoice)
 // const salesperson = ref(props.data.salesperson)
@@ -112,15 +110,12 @@ const addItem = () => {
 const removeProduct = (id: number) => {
   emit('remove', id)
 }
-console.log(estimate_data.value);
-
 </script>
 
 <template>
   <VCard class="md:!p-6 !p-12">
     <!-- SECTION Header -->
-    <div
-      class="d-flex flex-wrap justify-space-between flex-column rounded bg-var-theme-background flex-sm-row gap-6 p-6 mb-6">
+    <div class="d-flex flex-wrap justify-space-between flex-column rounded bg-var-theme-background flex-sm-row gap-6 p-6 mb-6">
       <!-- 👉 Left Content -->
       <div>
         <div class="d-flex align-center app-logo mb-6">
@@ -134,8 +129,11 @@ console.log(estimate_data.value);
         </div>
 
         <!-- 👉 Address -->
-        <p v-for="(address, addressKey) in coreConfig.company.address.split('\n')"
-          :key="`estimate-address-${addressKey}`" class="text-high-emphasis mb-0">
+        <p
+          v-for="(address, addressKey) in coreConfig.company.address.split('\n')"
+          :key="`estimate-address-${addressKey}`"
+          class="text-high-emphasis mb-0"
+        >
           {{ address }}
         </p>
 
@@ -143,7 +141,12 @@ console.log(estimate_data.value);
           <p class="font-semibold mt-4">
             Company representative:
           </p>
-          <p>{{ currentUserName }}</p>
+          <InvoiceAutoComplete
+            v-model:value="userID"
+            label=""
+            title="Update Users"
+            :fetch-items="(query) => fetchAutocomplete(query, autocompleteUsers)"
+          />
           <p v-if="currentUser.phoneNumber">
             Phone: <a :href="`tel:${currentUser.phoneNumber}`">{{ currentUser.phoneNumber }}</a>
           </p>
@@ -157,11 +160,17 @@ console.log(estimate_data.value);
       <div class="d-flex flex-column justify-center gap-2">
         <!-- 👉 Issue Date -->
         <div class="d-flex gap-x-4 align-start align-sm-center flex-column flex-sm-row">
-          <span class="text-high-emphasis text-sm-end" style="inline-size: 5.625rem;">Date Issued:</span>
+          <span
+            class="text-high-emphasis text-sm-end"
+            style="inline-size: 5.625rem;"
+          >Date Issued:</span>
 
           <span style="inline-size: 9.5rem;">
-            <AppDateTimePicker v-model="estimate_data.createdAt" placeholder="YYYY-MM-DD"
-              :config="{ position: 'auto right' }" />
+            <AppDateTimePicker
+              v-model="estimate_data.createdAt"
+              placeholder="YYYY-MM-DD"
+              :config="{ position: 'auto right' }"
+            />
           </span>
         </div>
       </div>
@@ -173,15 +182,22 @@ console.log(estimate_data.value);
         <h6 class="font-medium text-body mb-4">
           Estimate To:
         </h6>
-        <VSelect v-model="estimate_data.related_contact" :items="[]" item-title="name" item-value="id"
-          placeholder="Select Client" return-object class="mb-4" style="inline-size: 11.875rem" />
+        <InvoiceAutoComplete
+          v-model:value="contactID"
+          label=""
+          title="Update related contact"
+          :fetch-items="(query) => fetchAutocomplete(query, autocompleteContacts)"
+        />
         <p class="mb-0">
           {{ estimate_data.related_contact?.name }}
         </p>
         <p class="mb-0">
           {{ estimate_data.related_contact?.phone }}
         </p>
-        <p v-if="estimate_data.related_contact?.address" class="mb-0">
+        <p
+          v-if="estimate_data.related_contact?.address"
+          class="mb-0"
+        >
           {{ estimate_data.related_contact.address }}, {{ estimate_data.related_contact?.job }}
         </p>
         <p class="mb-0">
@@ -193,151 +209,151 @@ console.log(estimate_data.value);
       </VCol>
 
       <VCol class="text-no-wrap">
-        <!--        <h6 class="text-h6 mb-4">-->
-        <!--          Bill To:-->
-        <!--        </h6>-->
+        <!--        <h6 class="text-h6 mb-4"> -->
+        <!--          Bill To: -->
+        <!--        </h6> -->
 
-        <!--        <table>-->
-        <!--          <tbody>-->
-        <!--            <tr>-->
-        <!--              <td class="pe-4">-->
-        <!--                Total Due:-->
-        <!--              </td>-->
-        <!--              <td>{{ props.data.paymentDetails.totalDue }}</td>-->
-        <!--            </tr>-->
-        <!--            <tr>-->
-        <!--              <td class="pe-4">-->
-        <!--                Bank Name:-->
-        <!--              </td>-->
-        <!--              <td>{{ props.data.paymentDetails.bankName }}</td>-->
-        <!--            </tr>-->
-        <!--            <tr>-->
-        <!--              <td class="pe-4">-->
-        <!--                Country:-->
-        <!--              </td>-->
-        <!--              <td>{{ props.data.paymentDetails.country }}</td>-->
-        <!--            </tr>-->
-        <!--            <tr>-->
-        <!--              <td class="pe-4">-->
-        <!--                IBAN:-->
-        <!--              </td>-->
-        <!--              <td>-->
-        <!--                <p class="text-wrap me-4">-->
-        <!--                  {{ props.data.paymentDetails.iban }}-->
-        <!--                </p>-->
-        <!--              </td>-->
-        <!--            </tr>-->
-        <!--            <tr>-->
-        <!--              <td class="pe-4">-->
-        <!--                SWIFT Code:-->
-        <!--              </td>-->
-        <!--              <td>{{ props.data.paymentDetails.swiftCode }}</td>-->
-        <!--            </tr>-->
-        <!--          </tbody>-->
-        <!--        </table>-->
+        <!--        <table> -->
+        <!--          <tbody> -->
+        <!--            <tr> -->
+        <!--              <td class="pe-4"> -->
+        <!--                Total Due: -->
+        <!--              </td> -->
+        <!--              <td>{{ props.data.paymentDetails.totalDue }}</td> -->
+        <!--            </tr> -->
+        <!--            <tr> -->
+        <!--              <td class="pe-4"> -->
+        <!--                Bank Name: -->
+        <!--              </td> -->
+        <!--              <td>{{ props.data.paymentDetails.bankName }}</td> -->
+        <!--            </tr> -->
+        <!--            <tr> -->
+        <!--              <td class="pe-4"> -->
+        <!--                Country: -->
+        <!--              </td> -->
+        <!--              <td>{{ props.data.paymentDetails.country }}</td> -->
+        <!--            </tr> -->
+        <!--            <tr> -->
+        <!--              <td class="pe-4"> -->
+        <!--                IBAN: -->
+        <!--              </td> -->
+        <!--              <td> -->
+        <!--                <p class="text-wrap me-4"> -->
+        <!--                  {{ props.data.paymentDetails.iban }} -->
+        <!--                </p> -->
+        <!--              </td> -->
+        <!--            </tr> -->
+        <!--            <tr> -->
+        <!--              <td class="pe-4"> -->
+        <!--                SWIFT Code: -->
+        <!--              </td> -->
+        <!--              <td>{{ props.data.paymentDetails.swiftCode }}</td> -->
+        <!--            </tr> -->
+        <!--          </tbody> -->
+        <!--        </table> -->
       </VCol>
     </VRow>
 
     <VDivider class="my-6 border-dashed" />
     <!-- 👉 Add purchased products -->
-    <!--    <div class="add-products-form">-->
-    <!--      <div-->
-    <!--        v-for="(product, index) in props.data.purchasedProducts"-->
-    <!--        :key="product.title"-->
-    <!--        class="mb-4"-->
-    <!--      >-->
-    <!--        <InvoiceProductEdit-->
-    <!--          :id="index"-->
-    <!--          :data="product"-->
-    <!--          @remove-product="removeProduct"-->
-    <!--        />-->
-    <!--      </div>-->
+    <!--    <div class="add-products-form"> -->
+    <!--      <div -->
+    <!--        v-for="(product, index) in props.data.purchasedProducts" -->
+    <!--        :key="product.title" -->
+    <!--        class="mb-4" -->
+    <!--      > -->
+    <!--        <InvoiceProductEdit -->
+    <!--          :id="index" -->
+    <!--          :data="product" -->
+    <!--          @remove-product="removeProduct" -->
+    <!--        /> -->
+    <!--      </div> -->
 
-    <!--      <VBtn-->
-    <!--        size="small"-->
-    <!--        prepend-icon="tabler-plus"-->
-    <!--        @click="addItem"-->
-    <!--      >-->
-    <!--        Add Item-->
-    <!--      </VBtn>-->
-    <!--    </div>-->
+    <!--      <VBtn -->
+    <!--        size="small" -->
+    <!--        prepend-icon="tabler-plus" -->
+    <!--        @click="addItem" -->
+    <!--      > -->
+    <!--        Add Item -->
+    <!--      </VBtn> -->
+    <!--    </div> -->
 
     <VDivider class="my-6 border-dashed" />
 
     <!-- 👉 Total Amount -->
-    <!--    <div class="d-flex justify-space-between flex-wrap flex-column flex-sm-row">-->
-    <!--      <div class="mb-6 mb-sm-0">-->
-    <!--        <div class="d-flex align-center mb-4">-->
-    <!--          <h6 class="text-h6 me-2">-->
-    <!--            Salesperson:-->
-    <!--          </h6>-->
-    <!--          <AppTextField-->
-    <!--            v-model="salesperson"-->
-    <!--            style="inline-size: 8rem;"-->
-    <!--            placeholder="John Doe"-->
-    <!--          />-->
-    <!--        </div>-->
+    <!--    <div class="d-flex justify-space-between flex-wrap flex-column flex-sm-row"> -->
+    <!--      <div class="mb-6 mb-sm-0"> -->
+    <!--        <div class="d-flex align-center mb-4"> -->
+    <!--          <h6 class="text-h6 me-2"> -->
+    <!--            Salesperson: -->
+    <!--          </h6> -->
+    <!--          <AppTextField -->
+    <!--            v-model="salesperson" -->
+    <!--            style="inline-size: 8rem;" -->
+    <!--            placeholder="John Doe" -->
+    <!--          /> -->
+    <!--        </div> -->
 
-    <!--        <AppTextField-->
-    <!--          v-model="thanksNote"-->
-    <!--          placeholder="Thanks for your business"-->
-    <!--        />-->
-    <!--      </div>-->
+    <!--        <AppTextField -->
+    <!--          v-model="thanksNote" -->
+    <!--          placeholder="Thanks for your business" -->
+    <!--        /> -->
+    <!--      </div> -->
 
-    <!--      <div>-->
-    <!--        <table class="w-100">-->
-    <!--          <tbody>-->
-    <!--            <tr>-->
-    <!--              <td class="pe-16">-->
-    <!--                Subtotal:-->
-    <!--              </td>-->
-    <!--              <td :class="$vuetify.locale.isRtl ? 'text-start' : 'text-end'">-->
-    <!--                <h6 class="text-h6">-->
-    <!--                  $1800-->
-    <!--                </h6>-->
-    <!--              </td>-->
-    <!--            </tr>-->
-    <!--            <tr>-->
-    <!--              <td class="pe-16">-->
-    <!--                Discount:-->
-    <!--              </td>-->
-    <!--              <td :class="$vuetify.locale.isRtl ? 'text-start' : 'text-end'">-->
-    <!--                <h6 class="text-h6">-->
-    <!--                  $28-->
-    <!--                </h6>-->
-    <!--              </td>-->
-    <!--            </tr>-->
-    <!--            <tr>-->
-    <!--              <td class="pe-16">-->
-    <!--                Tax:-->
-    <!--              </td>-->
-    <!--              <td :class="$vuetify.locale.isRtl ? 'text-start' : 'text-end'">-->
-    <!--                <h6 class="text-h6">-->
-    <!--                  21%-->
-    <!--                </h6>-->
-    <!--              </td>-->
-    <!--            </tr>-->
-    <!--          </tbody>-->
-    <!--        </table>-->
+    <!--      <div> -->
+    <!--        <table class="w-100"> -->
+    <!--          <tbody> -->
+    <!--            <tr> -->
+    <!--              <td class="pe-16"> -->
+    <!--                Subtotal: -->
+    <!--              </td> -->
+    <!--              <td :class="$vuetify.locale.isRtl ? 'text-start' : 'text-end'"> -->
+    <!--                <h6 class="text-h6"> -->
+    <!--                  $1800 -->
+    <!--                </h6> -->
+    <!--              </td> -->
+    <!--            </tr> -->
+    <!--            <tr> -->
+    <!--              <td class="pe-16"> -->
+    <!--                Discount: -->
+    <!--              </td> -->
+    <!--              <td :class="$vuetify.locale.isRtl ? 'text-start' : 'text-end'"> -->
+    <!--                <h6 class="text-h6"> -->
+    <!--                  $28 -->
+    <!--                </h6> -->
+    <!--              </td> -->
+    <!--            </tr> -->
+    <!--            <tr> -->
+    <!--              <td class="pe-16"> -->
+    <!--                Tax: -->
+    <!--              </td> -->
+    <!--              <td :class="$vuetify.locale.isRtl ? 'text-start' : 'text-end'"> -->
+    <!--                <h6 class="text-h6"> -->
+    <!--                  21% -->
+    <!--                </h6> -->
+    <!--              </td> -->
+    <!--            </tr> -->
+    <!--          </tbody> -->
+    <!--        </table> -->
 
-    <!--        <VDivider class="mt-4 mb-3" />-->
+    <!--        <VDivider class="mt-4 mb-3" /> -->
 
-    <!--        <table class="w-100">-->
-    <!--          <tbody>-->
-    <!--            <tr>-->
-    <!--              <td class="pe-16">-->
-    <!--                Total:-->
-    <!--              </td>-->
-    <!--              <td :class="$vuetify.locale.isRtl ? 'text-start' : 'text-end'">-->
-    <!--                <h6 class="text-h6">-->
-    <!--                  $1690-->
-    <!--                </h6>-->
-    <!--              </td>-->
-    <!--            </tr>-->
-    <!--          </tbody>-->
-    <!--        </table>-->
-    <!--      </div>-->
-    <!--    </div>-->
+    <!--        <table class="w-100"> -->
+    <!--          <tbody> -->
+    <!--            <tr> -->
+    <!--              <td class="pe-16"> -->
+    <!--                Total: -->
+    <!--              </td> -->
+    <!--              <td :class="$vuetify.locale.isRtl ? 'text-start' : 'text-end'"> -->
+    <!--                <h6 class="text-h6"> -->
+    <!--                  $1690 -->
+    <!--                </h6> -->
+    <!--              </td> -->
+    <!--            </tr> -->
+    <!--          </tbody> -->
+    <!--        </table> -->
+    <!--      </div> -->
+    <!--    </div> -->
 
     <VDivider class="my-6 border-dashed" />
 
@@ -345,7 +361,11 @@ console.log(estimate_data.value);
       <h6 class="text-h6 mb-2">
         Note:
       </h6>
-      <VTextarea v-model="estimate_data.description" placeholder="Write note here..." :rows="2" />
+      <VTextarea
+        v-model="estimate_data.description"
+        placeholder="Write note here..."
+        :rows="2"
+      />
     </div>
   </VCard>
 </template>

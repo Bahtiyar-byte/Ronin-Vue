@@ -54,12 +54,27 @@ const toggleReadUnread = (isSeen: boolean, Id: number) => {
 
 <template>
   <IconBtn id="notification-btn">
-    <VBadge v-bind="props.badgeProps" :model-value="props.notifications.some(n => !n.isSeen)" color="error" dot
-      offset-x="2" offset-y="3">
-      <VIcon size="24" icon="tabler-bell" />
+    <VBadge
+      v-bind="props.badgeProps"
+      :model-value="props.notifications.some(n => !n.isSeen)"
+      color="error"
+      dot
+      offset-x="2"
+      offset-y="3"
+    >
+      <VIcon
+        size="24"
+        icon="tabler-bell"
+      />
     </VBadge>
 
-    <VMenu activator="parent" width="380px" :location="props.location" offset="12px" :close-on-content-click="false">
+    <VMenu
+      activator="parent"
+      width="380px"
+      :location="props.location"
+      offset="12px"
+      :close-on-content-click="false"
+    >
       <VCard class="d-flex flex-column">
         <VCardItem class="notification-section">
           <VCardTitle class="text-h6">
@@ -67,12 +82,28 @@ const toggleReadUnread = (isSeen: boolean, Id: number) => {
           </VCardTitle>
 
           <template #append>
-            <VChip v-show="props.notifications.some(n => !n.isSeen)" size="small" color="primary" class="me-2">
+            <VChip
+              v-show="props.notifications.some(n => !n.isSeen)"
+              size="small"
+              color="primary"
+              class="me-2"
+            >
               {{ totalUnseenNotifications }} New
             </VChip>
-            <IconBtn v-show="props.notifications.length" size="34" @click="markAllReadOrUnread">
-              <VIcon size="20" color="high-emphasis" :icon="!isAllMarkRead ? 'tabler-mail' : 'tabler-mail-opened'" />
-              <VTooltip activator="parent" location="start">
+            <IconBtn
+              v-show="props.notifications.length"
+              size="34"
+              @click="markAllReadOrUnread"
+            >
+              <VIcon
+                size="20"
+                color="high-emphasis"
+                :icon="!isAllMarkRead ? 'tabler-mail' : 'tabler-mail-opened'"
+              />
+              <VTooltip
+                activator="parent"
+                location="start"
+              >
                 {{ !isAllMarkRead ? 'Mark all as unread' : 'Mark all as read' }}
               </VTooltip>
             </IconBtn>
@@ -81,35 +112,63 @@ const toggleReadUnread = (isSeen: boolean, Id: number) => {
 
         <VDivider />
 
-        <PerfectScrollbar :options="{ wheelPropagation: false }" style="max-block-size: 23.75rem;">
+        <PerfectScrollbar
+          :options="{ wheelPropagation: false }"
+          style="max-block-size: 23.75rem;"
+        >
           <VList class="notification-list rounded-0 py-0">
-            <template v-for="(notification, index) in props.notifications" :key="notification.title">
+            <template
+              v-for="(notification, index) in props.notifications"
+              :key="notification.title"
+            >
               <VDivider v-if="index > 0" />
-              <VAlert variant="text" :color="getNotificationColor(notification)" title="Title for messages"
-                min-height="66px" :icon="getNotificationIcon(notification)" style="border-radius: 0;" class="flex"
-                @click="$emit('click:notification', notification)">
+              <VAlert
+                variant="text"
+                :color="getNotificationColor(notification)"
+                title="Title for messages"
+                min-height="66px"
+                :icon="getNotificationIcon(notification)"
+                style="border-radius: 0;"
+                class="flex"
+                @click="$emit('click:notification', notification)"
+              >
                 <VSpacer />
                 <div class="d-flex align-start gap-3">
                   <p class="text-body-2 mb-2 tracking-wide">
                     {{ notification.message }}
                   </p>
-                  <p v-if="notification.time" class="text-sm text-disabled mb-0 tracking-wide">
+                  <p
+                    v-if="notification.time"
+                    class="text-sm text-disabled mb-0 tracking-wide"
+                  >
                     {{ notification.time }}
                   </p>
                 </div>
                 <VSpacer />
 
                 <div class="d-flex flex-column align-end">
-                  <VIcon size="10" icon="tabler-circle-filled" :color="!notification.isSeen ? 'primary' : '#a8aaae'"
-                    :class="`${notification.isSeen ? 'visible-in-hover' : ''}`" class="mb-2"
-                    @click.stop="toggleReadUnread(notification.isSeen, notification.id)" />
-                  <VIcon size="20" icon="tabler-x" class="absolute top-3 right-3 icon"
-                    @click.stop="$emit('remove', notification.message)" />
+                  <VIcon
+                    size="10"
+                    icon="tabler-circle-filled"
+                    :color="!notification.isSeen ? 'primary' : '#a8aaae'"
+                    :class="`${notification.isSeen ? 'visible-in-hover' : ''}`"
+                    class="mb-2"
+                    @click.stop="toggleReadUnread(notification.isSeen, notification.id)"
+                  />
+                  <VIcon
+                    size="20"
+                    icon="tabler-x"
+                    class="absolute top-3 right-3 icon"
+                    @click.stop="$emit('remove', notification.message)"
+                  />
                 </div>
               </VAlert>
             </template>
-            <VListItem v-show="!props.notifications.length" class="text-center text-medium-emphasis"
-              style="block-size: 56px;">
+            <VListItem
+              v-show="!props.notifications.length"
+              class="text-center text-medium-emphasis"
+              style="block-size: 56px;"
+            >
               <VListItemTitle>No Notification Found!</VListItemTitle>
             </VListItem>
           </VList>
@@ -117,8 +176,14 @@ const toggleReadUnread = (isSeen: boolean, Id: number) => {
 
         <VDivider />
 
-        <VCardText v-show="props.notifications.length" class="pa-4">
-          <VBtn block size="small">
+        <VCardText
+          v-show="props.notifications.length"
+          class="pa-4"
+        >
+          <VBtn
+            block
+            size="small"
+          >
             View All Notifications
           </VBtn>
         </VCardText>
