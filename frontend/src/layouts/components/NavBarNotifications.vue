@@ -18,7 +18,7 @@ watchEffect(() => {
   if (notifications.length > 0) {
     notificationCount++
     if (notificationCount === maxNotifications) {
-      console.log('Disconnecting WebSocket after 10 notifications')
+      console.log('Disconnecting WebSocket after 10 Notifications')
       disconnectWebSocket()
     }
   }
@@ -31,7 +31,7 @@ const removeNotification = (notificationId: string) => {
 }
 
 // const markRead = (notificationId: number[]) => {
-//   notifications.value.forEach(item => {
+//   Notifications.value.forEach(item => {
 //     notificationId.forEach(id => {
 //       if (id === item.id) { item.isSeen = true }
 //     })
@@ -39,7 +39,7 @@ const removeNotification = (notificationId: string) => {
 // }
 
 // const markUnRead = (notificationId: number[]) => {
-//   notifications.value.forEach(item => {
+//   Notifications.value.forEach(item => {
 //     notificationId.forEach(id => {
 //       if (id === item.id) { item.isSeen = false }
 //     })
