@@ -2,11 +2,12 @@
 import FullCalendar from '@fullcalendar/vue3'
 import type { RouteLocationNormalizedLoaded } from 'vue-router'
 import { blankEvent, useCalendar } from '@/views/apps/calendar/useCalendar'
+import { useCurrentUserStore } from '@/@core/stores/auth/currentUser'
 
 // Components
 import CalendarEventHandler from '@/views/apps/calendar/CalendarEventHandler.vue'
 
-const route = useRoute() as RouteLocationNormalizedLoaded & { query: { create_event: boolean; contact_id: string } }
+const route = useRoute() as RouteLocationNormalizedLoaded & { query: Partial<{ create_event: boolean; contact_id: string; user_id: string }> }
 
 // 👉 Event
 const event = ref(structuredClone(blankEvent))
@@ -19,6 +20,8 @@ watch(isEventHandlerSidebarActive, val => {
 })
 
 const { isLeftSidebarOpen } = useResponsiveLeftSidebar()
+
+const { user: currentUser } = storeToRefs(useCurrentUserStore())
 
 // 👉 useCalendar
 const { refCalendar, calendarOptions, addEvent, updateEvent, removeEvent, jumpToDate } = useCalendar(event, isEventHandlerSidebarActive, isLeftSidebarOpen)
@@ -38,7 +41,7 @@ watch(
     }
 
     if (newVal.user_id) {
-      userId.value = newVal.contact_id
+      userId.value = newVal.user_id
     }
 
     if (newVal.create_event) {

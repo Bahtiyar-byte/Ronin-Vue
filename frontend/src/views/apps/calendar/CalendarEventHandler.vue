@@ -3,18 +3,8 @@ import type { Options } from 'flatpickr/dist/types/options'
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import { VForm } from 'vuetify/components/VForm'
 import type { Event, NewEvent } from './types'
-import { useCurrentUserStore } from '@/@core/stores/auth/currentUser'
 
 import CalendarAutocompleteField from '@/views/apps/calendar/edit/CalendarAutocompleteField.vue'
-
-const props = defineProps<Props>()
-
-const emit = defineEmits<{
-  (e: 'update:isDrawerOpen', val: boolean): void
-  (e: 'addEvent', val: NewEvent): void
-  (e: 'updateEvent', val: Event): void
-  (e: 'removeEvent', eventId: string): void
-}>()
 
 interface Props {
   contact: string
@@ -23,27 +13,28 @@ interface Props {
   event: (Event | NewEvent)
 }
 
-const refForm = ref<VForm>()
+const props = defineProps<Partial<Props>>()
 
-const { user: currentUser } = useCurrentUserStore()
+const emit = defineEmits<{
+  (e: 'update:isDrawerOpen', val: boolean): void
+  (e: 'addEvent', val: NewEvent): void
+  (e: 'updateEvent', val: Event): void
+  (e: 'removeEvent', eventId: string): void
+}>()
+
+const refForm = ref<VForm>()
 
 // 👉 Event
 const event = ref<Event>(JSON.parse(JSON.stringify(props.event)))
 
 // 👉 from contact
-onMounted(async () => {
+onBeforeMount(async () => {
   if (props.contact) {
-    const { data } = await useContacts().getById(props.contact)
-
-    watch(data, newVal => {
-      if (newVal !== null) {
-        event.value.extendedProps.relatedContact = data.value?.id
-      }
-    })
+    event.value.extendedProps.relatedContact = props.contact
   }
 
-  if (!props.user.length && currentUser !== null) {
-    event.value.extendedProps.assignedTo = currentUser.id
+  if (props.user) {
+    event.value.extendedProps.assignedTo = props.user
   }
 })
 

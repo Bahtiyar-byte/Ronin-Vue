@@ -7,6 +7,9 @@ import type { Event, NewEvent } from './types'
 import { useConfigStore } from '@core/stores/config'
 import { useCalendarStore } from '@/views/apps/calendar/useCalendarStore'
 import type Appointment from '@/types/appointments/Appointment'
+import { useCurrentUserStore } from '@/@core/stores/auth/currentUser'
+
+const { user: currentUser } = storeToRefs(useCurrentUserStore())
 
 export const blankEvent: Event | NewEvent = {
   title: '',
@@ -14,6 +17,8 @@ export const blankEvent: Event | NewEvent = {
   end: '',
   extendedProps: {
     description: '',
+    relatedContact: '',
+    assignedTo: currentUser.value?.id ?? '',
   },
 }
 

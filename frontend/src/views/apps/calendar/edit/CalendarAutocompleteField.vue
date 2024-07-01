@@ -9,7 +9,7 @@ const props = defineProps<{
 const value = defineModel<string>('value', { default: '' })
 const loading = defineModel<boolean>('loading')
 
-const items = ref<string[] | { value: string; title: string } | null>()
+const items = ref<string[] | { value: string; title: string }[] | null>()
 
 onBeforeMount(async () => {
   items.value = await props.fetchItems('')
