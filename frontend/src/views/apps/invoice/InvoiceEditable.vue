@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import type { RouteLocationNormalizedLoaded } from 'vue-router'
-import type { PurchasedProduct } from './types'
 import InvoiceAutoComplete from './InvoiceAutoComplete.vue'
 import { useCurrentUserStore } from '@/@core/stores/auth/currentUser'
 import { useContacts } from '@/composables/useContacts'
@@ -12,70 +11,65 @@ import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
 import { themeConfig } from '@themeConfig'
 
 import coreConfig from '@core/config'
+import type User from '@/types/users/User'
+import type Contact from '@/types/contacts/Contact'
 
-const emit = defineEmits<{
-  (e: 'push', value: PurchasedProduct): void
-  (e: 'remove', id: number): void
-}>()
+// const emit = defineEmits<{
+//   (e: 'push', value: PurchasedProduct): void
+//   (e: 'remove', id: number): void
+// }>()
 
-const { user: currentUser, userName: currentUserName } = storeToRefs(useCurrentUserStore())
-const { autocomplete: autocompleteContacts, getById } = useContacts()
-const { autocomplete: autocompleteUsers } = useUsers()
+const { user: currentUser } = storeToRefs(useCurrentUserStore())
+const { autocomplete: autocompleteContacts, getById: getContactById } = useContacts()
+const { autocomplete: autocompleteUsers, getById: getUserById } = useUsers()
 
-const estimate_data = defineModel<Estimate>('data', {
+const estimateData = defineModel<Estimate>('data', {
   default: {
-    id: 'est-001',
-    createdById: 'user-123',
-    updatedById: 'user-456',
-    createdAt: '2024-01-15T10:30:00Z',
-    updatedAt: '2024-06-20T14:00:00Z',
-    deletedAt: null,
-    labor_cost: 2500,
-    markup: 15,
-    profit_margin: 20,
-    total_price: 12000,
-    related_contact: {
-      id: 'cont-789',
-      name: 'John Doe',
-      email: 'john.doe@example.com',
-      phone: '123-456-7890',
-      address: '123 Main St, Springfield, IL',
-    },
-    related_contactId: 'cont-789',
-    related_job: {
-      id: 'job-456',
-      title: 'Office Renovation',
-      description: 'Renovation of the main office building',
-      startDate: '2024-02-01',
-      endDate: '2024-05-30',
-      status: 'In Progress',
-    },
-    related_jobId: 'job-456',
-    material_cost: 5000,
-    importHash: 'import-hash-001',
-    name: 'Office Renovation Estimate',
-    description: 'Detailed estimate for the renovation of the main office building, including labor, materials, and markup.',
-    trade: 'Construction',
-    template_used: 'Standard Renovation Template',
-    unit_of_measurement: 'Square Feet',
+    createdAt: new Date(),
+    related_contact: null,
   },
 })
 
-const contactID = ref<string>()
-const userID = ref<string>()
-const route = useRoute() as RouteLocationNormalizedLoaded & { query: { contact_id: string } }
+const contactId = ref<string>()
+
+const userId = ref<string>()
+const selectedUser = ref<User>()
+
+const route = useRoute() as RouteLocationNormalizedLoaded & { query: Partial<{ contact_id: string }> }
 
 onMounted(async () => {
-  const { data } = await getById(route.query.contact_id)
+  if (route.query?.contact_id?.length) {
+    const { data } = await getContactById(route.query.contact_id)
 
-  watch(data, newVal => {
-    if (newVal) {
-      estimate_data.value.related_contact = newVal
-      contactID.value = data.value?.id
-    }
+    watch(data, newVal => {
+      if (newVal) {
+        estimateData.value.related_contact = newVal
+        contactId.value = data.value?.id
+      }
 
-    if (currentUser) {
-      userID.value = currentUser.value?.id
+      if (currentUser) {
+        userId.value = currentUser.value?.id
+        selectedUser.value = currentUser.value as User
+      }
+    })
+  }
+})
+
+watch(userId, async newVal => {
+  const { data } = await getUserById(newVal as string)
+
+  watch(data, newUserVal => {
+    selectedUser.value = newUserVal as User
+  })
+})
+
+watch(contactId, async newVal => {
+  const { data } = await getContactById(newVal as string)
+
+  watch(data, newContactVal => {
+    estimateData.value = {
+      ...estimateData.value,
+      related_contact: newContactVal as Contact
     }
   })
 })
@@ -89,27 +83,25 @@ const fetchAutocomplete = async (query: string, autocompleteFn: (query: string) 
   return data.value.map((item: any) => ({ value: item.id, title: item.label }))
 }
 
-const value = defineModel<string>('value', { default: '' })
-
 // const invoice = ref(props.data.invoice)
 // const salesperson = ref(props.data.salesperson)
 // const thanksNote = ref(props.data.thanksNote)
 // const note = ref(props.data.note)
 
 // 👉 Add item function
-const addItem = () => {
-  emit('push', {
-    title: 'App Design',
-    cost: 24,
-    hours: 1,
-    description: 'Designed UI kit & app pages.',
-  })
-}
+// const addItem = () => {
+//   emit('push', {
+//     title: 'App Design',
+//     cost: 24,
+//     hours: 1,
+//     description: 'Designed UI kit & app pages.',
+//   })
+// }
 
 // 👉 Remove Product edit section
-const removeProduct = (id: number) => {
-  emit('remove', id)
-}
+// const removeProduct = (id: number) => {
+//   emit('remove', id)
+// }
 </script>
 
 <template>
@@ -137,23 +129,20 @@ const removeProduct = (id: number) => {
           {{ address }}
         </p>
 
-        <template v-if="currentUser">
-          <p class="font-semibold mt-4">
-            Company representative:
-          </p>
-          <InvoiceAutoComplete
-            v-model:value="userID"
-            label=""
-            title="Update Users"
-            :fetch-items="(query) => fetchAutocomplete(query, autocompleteUsers)"
-          />
-          <p v-if="currentUser.phoneNumber">
-            Phone: <a :href="`tel:${currentUser.phoneNumber}`">{{ currentUser.phoneNumber }}</a>
-          </p>
-          <p v-if="currentUser.email">
-            <a :href="`mailto:${currentUser.email}`">{{ currentUser.email }}</a>
-          </p>
-        </template>
+        <p class="font-semibold mt-4">
+          Company representative:
+        </p>
+        <InvoiceAutoComplete
+          v-model:value="userId"
+          title="Search Users"
+          :fetch-items="(query) => fetchAutocomplete(query, autocompleteUsers)"
+        />
+        <p v-if="selectedUser?.phoneNumber">
+          Phone: <a :href="`tel:${selectedUser.phoneNumber}`">{{ selectedUser.phoneNumber }}</a>
+        </p>
+        <p v-if="selectedUser?.email">
+          <a :href="`mailto:${selectedUser.email}`">{{ selectedUser.email }}</a>
+        </p>
       </div>
 
       <!-- 👉 Right Content -->
@@ -167,7 +156,7 @@ const removeProduct = (id: number) => {
 
           <span style="inline-size: 9.5rem;">
             <AppDateTimePicker
-              v-model="estimate_data.createdAt"
+              v-model="estimateData.createdAt"
               placeholder="YYYY-MM-DD"
               :config="{ position: 'auto right' }"
             />
@@ -183,28 +172,26 @@ const removeProduct = (id: number) => {
           Estimate To:
         </h6>
         <InvoiceAutoComplete
-          v-model:value="contactID"
+          v-model:value="contactId"
           label=""
           title="Update related contact"
           :fetch-items="(query) => fetchAutocomplete(query, autocompleteContacts)"
         />
-        <p class="mb-0">
-          {{ estimate_data.related_contact?.name }}
+        <p v-if="estimateData.related_contact?.name">
+          {{ estimateData.related_contact.name }}
         </p>
-        <p class="mb-0">
-          {{ estimate_data.related_contact?.phone }}
+        <p v-if="estimateData.related_contact?.phone">
+          <a :href="`tel:${estimateData.related_contact.phone}`">
+            {{ estimateData.related_contact.phone }}
+          </a>
         </p>
-        <p
-          v-if="estimate_data.related_contact?.address"
-          class="mb-0"
-        >
-          {{ estimate_data.related_contact.address }}, {{ estimate_data.related_contact?.job }}
+        <p v-if="estimateData.related_contact?.address">
+          {{ estimateData.related_contact.address }}
         </p>
-        <p class="mb-0">
-          <!-- {{ estimate_data.related_contact?. }} -->
-        </p>
-        <p class="mb-0">
-          {{ estimate_data.related_contact?.email }}
+        <p v-if="estimateData.related_contact?.email">
+          <a :href="`mailto:${estimateData.related_contact.email}`">
+            {{ estimateData.related_contact.email }}
+          </a>
         </p>
       </VCol>
 
@@ -362,7 +349,7 @@ const removeProduct = (id: number) => {
         Note:
       </h6>
       <VTextarea
-        v-model="estimate_data.description"
+        v-model="estimateData.description"
         placeholder="Write note here..."
         :rows="2"
       />

@@ -1,5 +1,6 @@
-export default interface Contact {
-  id?: string // Undefined if new contact creation
+import type Entity from '@/types/common/Entity'
+
+export default interface Contact extends Entity {
   name: string
   email: string
   phone: string
@@ -7,12 +8,6 @@ export default interface Contact {
   firstName: string
   lastName: string
   status: string
-  importHash: string | null
-  createdAt: string
-  updatedAt: string
-  deletedAt: string | null
-  createdById: string | null
-  updatedById: string | null
   job: any[]
   estimate: any[]
   appointment: any[]

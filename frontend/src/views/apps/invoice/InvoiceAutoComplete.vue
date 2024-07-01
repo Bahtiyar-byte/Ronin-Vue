@@ -6,7 +6,7 @@ const props = defineProps<{
   fetchItems: (query: string) => Promise<string[] | { value: string; title: string }[] | null | undefined>
 }>()
 
-const value = defineModel<string>('value', { default: '' })
+const value = defineModel<string>('value', { default: undefined })
 const loading = defineModel<boolean>('loading')
 
 const items = ref<string[] | { value: string; title: string } | any>()
@@ -20,7 +20,9 @@ const debouncedFetchVariants = debounce(async (query: string) => {
     return
   }
 
+  loading.value = true
   items.value = await props.fetchItems(query)
+  loading.value = false
 }, 400)
 </script>
 
@@ -28,8 +30,7 @@ const debouncedFetchVariants = debounce(async (query: string) => {
   <AppAutocomplete
     v-model="value"
     class="w-2/4 my-2"
-    label="Assigned Told"
-    placeholder="Select User"
+    :title="title"
     :items="items"
     :loading="loading"
     @update:search="debouncedFetchVariants"

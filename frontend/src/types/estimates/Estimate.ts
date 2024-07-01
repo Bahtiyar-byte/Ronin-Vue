@@ -1,13 +1,8 @@
 import type Contact from '@/types/contacts/Contact'
 import type Job from '@/types/jobs/Job'
+import type Entity from '@/types/common/Entity'
 
-export default interface Estimate {
-  id?: string
-  createdById?: string | null
-  updatedById?: string | null
-  createdAt?: string | null
-  updatedAt?: string | null
-  deletedAt?: string | null
+export default interface Estimate extends Entity {
   labor_cost?: number | null
   markup?: number | null
   profit_margin?: number | null
@@ -17,7 +12,6 @@ export default interface Estimate {
   related_job?: Job | string | null
   related_jobId?: string | null
   material_cost?: number | null
-  importHash?: string | null
   name?: string | null
   description?: string | null
   trade?: string | null

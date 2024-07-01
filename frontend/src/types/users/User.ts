@@ -1,5 +1,6 @@
-export default interface User {
-  id: string
+import type Entity from '@/types/common/Entity'
+
+export default interface User extends Entity {
   firstName: string
   lastName: null | string
   phoneNumber: null | string
@@ -12,12 +13,6 @@ export default interface User {
   passwordResetTokenExpiresAt: null | string
   provider: string
   name: null | string
-  importHash: null | string
-  createdAt: string
-  updatedAt: string
-  deletedAt: string
-  createdById: string
-  updatedById: string
   avatar: []
   roleId: []
 }
