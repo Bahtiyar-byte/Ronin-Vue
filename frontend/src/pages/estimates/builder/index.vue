@@ -7,47 +7,6 @@ import type { PurchasedProduct } from '@/views/apps/invoice/types'
 
 const estimateData = ref<Estimate>()
 
-// 👉 Default Blank Data
-// const invoiceData = ref<InvoiceData>({
-//   invoice: {
-//     id: 5037,
-//     issuedDate: '',
-//     service: '',
-//     total: 0,
-//     avatar: '',
-//     invoiceStatus: '',
-//     dueDate: '',
-//     balance: 0,
-//     client: {
-//       address: '112, Lorem Ipsum, Florida',
-//       company: 'Greeva Inc',
-//       companyEmail: 'johndoe@greeva.com',
-//       contact: '+1 123 3452 12',
-//       country: 'USA',
-//       name: 'John Doe',
-//     },
-//   },
-//   paymentDetails: {
-//     totalDue: '$12,110.55',
-//     bankName: 'American Bank',
-//     country: 'United States',
-//     iban: 'ETD95476213',
-//     swiftCode: 'BR91905',
-//   },
-//   purchasedProducts: [
-//     {
-//       title: '',
-//       cost: 0,
-//       hours: 0,
-//       description: '',
-//     },
-//   ],
-//   note: '',
-//   paymentMethod: '',
-//   salesperson: '',
-//   thanksNote: '',
-// })
-
 const addProduct = (value: PurchasedProduct) => {
   console.log(value)
 

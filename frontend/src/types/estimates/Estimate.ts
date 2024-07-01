@@ -12,7 +12,7 @@ export default interface Estimate {
   markup?: number | null
   profit_margin?: number | null
   total_price?: number | null
-  related_contact?: Contact | string | null
+  related_contact?: Contact | null
   related_contactId?: string | null
   related_job?: Job | string | null
   related_jobId?: string | null

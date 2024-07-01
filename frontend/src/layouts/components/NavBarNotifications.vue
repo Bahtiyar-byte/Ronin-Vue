@@ -18,36 +18,28 @@ watchEffect(() => {
   if (notifications.length > 0) {
     notificationCount++
     if (notificationCount === maxNotifications) {
-      console.log('Disconnecting WebSocket after 10 Notifications')
+      console.log('Disconnecting WebSocket after 10 notifications')
       disconnectWebSocket()
     }
   }
 })
 
-const removeNotification = (notificationId: string) => {
+const removeNotification = (notificationMessage: string) => {
+  // TODO:  delete function for notifications with id
   notifications.forEach((item, index) => {
-    if (notificationId === item.id) { notifications.splice(index, 1) }
+    if (notificationMessage === item.message) { notifications.splice(index, 1) }
   })
 }
 
-// const markRead = (notificationId: number[]) => {
-//   Notifications.value.forEach(item => {
-//     notificationId.forEach(id => {
-//       if (id === item.id) { item.isSeen = true }
-//     })
-//   })
-// }
+const markRead = (notificationId: number[]) => {
+  // TODO:  read function for notifications
+}
 
-// const markUnRead = (notificationId: number[]) => {
-//   Notifications.value.forEach(item => {
-//     notificationId.forEach(id => {
-//       if (id === item.id) { item.isSeen = false }
-//     })
-//   })
-// }
+const markUnRead = (notificationId: number[]) => {
+  // TODO:  unread function for notifications
+}
 
 const handleNotificationClick = (notification: Notification) => {
-  if (!notification.isSeen) { markRead([notification.id]) }
 }
 </script>
 

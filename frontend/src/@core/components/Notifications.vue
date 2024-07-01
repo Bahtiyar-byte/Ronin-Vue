@@ -123,13 +123,16 @@ const toggleReadUnread = (isSeen: boolean, Id: number) => {
             >
               <VDivider v-if="index > 0" />
               <VAlert
-                variant="tonal"
+                variant="text"
                 :color="getNotificationColor(notification)"
                 title="Title for messages"
+                min-height="66px"
                 :icon="getNotificationIcon(notification)"
                 style="border-radius: 0;"
+                class="flex"
                 @click="$emit('click:notification', notification)"
               >
+                <VSpacer />
                 <div class="d-flex align-start gap-3">
                   <p class="text-body-2 mb-2 tracking-wide">
                     {{ notification.message }}
@@ -152,17 +155,15 @@ const toggleReadUnread = (isSeen: boolean, Id: number) => {
                     class="mb-2"
                     @click.stop="toggleReadUnread(notification.isSeen, notification.id)"
                   />
-
                   <VIcon
                     size="20"
                     icon="tabler-x"
-                    class="visible-in-hover"
-                    @click="$emit('remove', notification.id)"
+                    class="absolute top-3 right-3 icon"
+                    @click.stop="$emit('remove', notification.message)"
                   />
                 </div>
               </VAlert>
             </template>
-
             <VListItem
               v-show="!props.notifications.length"
               class="text-center text-medium-emphasis"
@@ -192,6 +193,10 @@ const toggleReadUnread = (isSeen: boolean, Id: number) => {
 </template>
 
 <style lang="scss">
+.icon {
+  color: rgba(var(--v-theme-on-background), var(--v-medium-emphasis-opacity));
+}
+
 .v-list-item.error {
   background-color: #F97066;
 }
@@ -203,13 +208,6 @@ const toggleReadUnread = (isSeen: boolean, Id: number) => {
 .notification-section {
   padding-block: 0.75rem;
   padding-inline: 1rem;
-}
-
-.list-item-hover-class {
-  .visible-in-hover {
-    display: none;
-  }
-
 }
 
 .notification-list.v-list {
