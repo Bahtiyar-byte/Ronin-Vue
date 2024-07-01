@@ -1,21 +1,23 @@
 <script setup lang="ts">
 import type WidgetCardProps from '@/types/widgets/WidgetCardProps'
 import WidgetCard from '@/components/widgets/WidgetCard.vue'
+import { useAppointments } from '@/composables/useAppointments'
+import type Contact from '@/types/contacts/Contact'
 
-const props = defineProps<{
-  id: any
-}>()
+const contactData = defineModel<Contact>('contactData', { required: true })
+
+const { count: appointmentsCount } = useAppointments()
 
 const widgets = ref<WidgetCardProps[]>([
   {
     widget: {
       title: 'Appointments',
-      value: 0,
+      value: (await appointmentsCount({ related_contact: contactData.value.id })).data.value?.count,
       icon: 'material-symbols-video-call-outline',
       action: {
         title: 'Create appointment with this contact',
         icon: 'tabler-plus',
-        to: { name: 'calendar', query: { create_event: 1, contact_id: props.id } },
+        to: { name: 'calendar', query: { create_event: 1, contact_id: contactData.value.id } },
       },
     },
   },
@@ -25,9 +27,9 @@ const widgets = ref<WidgetCardProps[]>([
       value: 0,
       icon: 'material-symbols-task-outline',
       action: {
-        title: 'Create appointment with this contact',
+        title: 'Create estimate for this contact',
         icon: 'tabler-plus',
-        to: { name: 'estimates-builder', query: { contact_id: props.id } },
+        to: { name: 'estimates-builder', query: { contact_id: contactData.value.id } },
       },
     },
   },

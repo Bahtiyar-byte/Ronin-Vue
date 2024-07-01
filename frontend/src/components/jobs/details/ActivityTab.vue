@@ -8,8 +8,6 @@ const jobData = defineModel<Job>('jobData', { required: true })
 
 const { count: estimatesCount } = useEstimates()
 
-console.log(jobData.value)
-
 const widgets = ref<WidgetCardProps[]>([
   {
     widget: {

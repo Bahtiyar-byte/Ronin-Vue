@@ -101,7 +101,7 @@ useHead({
         :touch="false"
       >
         <VWindowItem>
-          <ActivityTab :id="route.params.id" />
+          <ActivityTab :contact-data="contactData" />
         </VWindowItem>
 
         <VWindowItem>
