@@ -3,7 +3,7 @@ import type Appointment from '~/@types/Appointment/Appointment'
 
 import {
     NotificationServiceToken,
-} from "../../app/Notifications/Services/Appointments/NotificationsServicesAppointments";
+} from '../../app/Notifications/Services/Appointments/NotificationsServicesAppointments';
 
 const eventEmitter = require('../../utils/eventEmitter');
 

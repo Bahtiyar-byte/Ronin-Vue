@@ -6,7 +6,7 @@ const EmailUtils = require('../../utils')
 
 const config = require('../../../../config');
 
-export default class AppointmentCreatedUserEmail implements Email {
+export default class AppointmentCreatedContactEmail implements Email {
     public to: string
 
     private appointment: Appointment
@@ -18,7 +18,7 @@ export default class AppointmentCreatedUserEmail implements Email {
 
     get subject() {
         return getNotification(
-            'emails.appointments.created.user.subject',
+            'emails.appointments.created.contact.subject',
             getNotification('app.title'),
         );
     }
@@ -27,7 +27,7 @@ export default class AppointmentCreatedUserEmail implements Email {
         try {
             return (new EmailUtils()).renderDefaultEmail(
                 this.subject,
-                getNotification('emails.appointments.created.user.body')
+                getNotification('emails.appointments.created.contact.body')
             );
         } catch (error) {
             console.error('Error generating estimate creation email HTML:', error);

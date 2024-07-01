@@ -1,7 +1,8 @@
+const { Container } = require('typedi')
 const WebSocket = require('ws');
 const authenticateWebSocket = require('./middlewares/authenticateWebSocket');
 
-const WsNotificationsService = require('../app/Notifications/WsNotificationsService');
+const WsNotificationsService = require('../app/Notifications/WsNotificationsService').default
 
 module.exports = class WebSocketManager {
     static initialize(server) {
@@ -12,10 +13,11 @@ module.exports = class WebSocketManager {
 
             this.wss.on('connection', (ws, req) => {
                 const userId = req.user.id;
+                const notificationService = Container.get(WsNotificationsService)
 
-                if (req.url.indexOf('/ws/Notifications') === 0) {
-                    WsNotificationsService.addClient(userId, ws);
-                    ws.on('close', () => WsNotificationsService.removeClient(userId));
+                if (req.url.indexOf('/ws/notifications') === 0) {
+                    notificationService.addClient(userId, ws);
+                    ws.on('close', () => notificationService.removeClient(userId));
                 }
 
                 ws.on('message', (message) => {

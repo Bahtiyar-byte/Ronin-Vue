@@ -1,15 +1,9 @@
 const Notification = require('./Notification');
+const { WebNotificationTypes } = require('../../../@types/Notification/NotificationTypes')
 
 class WebNotification extends Notification {
-    static TYPES = {
-        NOTICE: 'notice',
-        SUCCESS: 'success',
-        WARNING: 'warning',
-        ERROR: 'error',
-    };
-
     constructor(type, message, userId) {
-        if (!Object.values(WebNotification.TYPES).includes(type)) {
+        if (!Object.values(WebNotificationTypes).includes(type)) {
             throw new Error(`Invalid notification type: ${type}`);
         }
 
