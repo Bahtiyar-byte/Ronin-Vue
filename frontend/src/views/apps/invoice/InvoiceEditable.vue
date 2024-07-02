@@ -13,11 +13,12 @@ import { themeConfig } from '@themeConfig'
 import coreConfig from '@core/config'
 import type User from '@/types/users/User'
 import type Contact from '@/types/contacts/Contact'
+import InvoiceSectionManageDialog from "@/views/apps/invoice/InvoiceSectionManageDialog.vue";
 
-// const emit = defineEmits<{
-//   (e: 'push', value: PurchasedProduct): void
-//   (e: 'remove', id: number): void
-// }>()
+const emit = defineEmits<{
+  (e: 'push', value: any): void
+  (e: 'remove', id: number): void
+}>()
 
 const { user: currentUser } = storeToRefs(useCurrentUserStore())
 const { autocomplete: autocompleteContacts, getById: getContactById } = useContacts()
@@ -69,7 +70,7 @@ watch(contactId, async newVal => {
   watch(data, newContactVal => {
     estimateData.value = {
       ...estimateData.value,
-      related_contact: newContactVal as Contact
+      related_contact: newContactVal as Contact,
     }
   })
 })
@@ -88,15 +89,10 @@ const fetchAutocomplete = async (query: string, autocompleteFn: (query: string) 
 // const thanksNote = ref(props.data.thanksNote)
 // const note = ref(props.data.note)
 
-// 👉 Add item function
-// const addItem = () => {
-//   emit('push', {
-//     title: 'App Design',
-//     cost: 24,
-//     hours: 1,
-//     description: 'Designed UI kit & app pages.',
-//   })
-// }
+const isDialogVisible = ref<boolean>(false)
+const toggleAddSectionDialog = (val: boolean) => {
+  isDialogVisible.value = val
+}
 
 // 👉 Remove Product edit section
 // const removeProduct = (id: number) => {
@@ -195,60 +191,17 @@ const fetchAutocomplete = async (query: string, autocompleteFn: (query: string) 
         </p>
       </VCol>
 
-      <VCol class="text-no-wrap">
-        <!--        <h6 class="text-h6 mb-4"> -->
-        <!--          Bill To: -->
-        <!--        </h6> -->
-
-        <!--        <table> -->
-        <!--          <tbody> -->
-        <!--            <tr> -->
-        <!--              <td class="pe-4"> -->
-        <!--                Total Due: -->
-        <!--              </td> -->
-        <!--              <td>{{ props.data.paymentDetails.totalDue }}</td> -->
-        <!--            </tr> -->
-        <!--            <tr> -->
-        <!--              <td class="pe-4"> -->
-        <!--                Bank Name: -->
-        <!--              </td> -->
-        <!--              <td>{{ props.data.paymentDetails.bankName }}</td> -->
-        <!--            </tr> -->
-        <!--            <tr> -->
-        <!--              <td class="pe-4"> -->
-        <!--                Country: -->
-        <!--              </td> -->
-        <!--              <td>{{ props.data.paymentDetails.country }}</td> -->
-        <!--            </tr> -->
-        <!--            <tr> -->
-        <!--              <td class="pe-4"> -->
-        <!--                IBAN: -->
-        <!--              </td> -->
-        <!--              <td> -->
-        <!--                <p class="text-wrap me-4"> -->
-        <!--                  {{ props.data.paymentDetails.iban }} -->
-        <!--                </p> -->
-        <!--              </td> -->
-        <!--            </tr> -->
-        <!--            <tr> -->
-        <!--              <td class="pe-4"> -->
-        <!--                SWIFT Code: -->
-        <!--              </td> -->
-        <!--              <td>{{ props.data.paymentDetails.swiftCode }}</td> -->
-        <!--            </tr> -->
-        <!--          </tbody> -->
-        <!--        </table> -->
-      </VCol>
+      <VCol />
     </VRow>
 
-    <VDivider class="my-6 border-dashed" />
+    <VDivider class="my-6 border-dashed border-gray-700 !opacity-60" />
     <!-- 👉 Add purchased products -->
-    <!--    <div class="add-products-form"> -->
-    <!--      <div -->
-    <!--        v-for="(product, index) in props.data.purchasedProducts" -->
-    <!--        :key="product.title" -->
-    <!--        class="mb-4" -->
-    <!--      > -->
+    <div class="add-products-form">
+<!--          <div -->
+<!--            v-for="(product, index) in props.data.purchasedProducts" -->
+<!--            :key="product.title" -->
+<!--            class="mb-4" -->
+<!--          > -->
     <!--        <InvoiceProductEdit -->
     <!--          :id="index" -->
     <!--          :data="product" -->
@@ -256,16 +209,21 @@ const fetchAutocomplete = async (query: string, autocompleteFn: (query: string) 
     <!--        /> -->
     <!--      </div> -->
 
-    <!--      <VBtn -->
-    <!--        size="small" -->
-    <!--        prepend-icon="tabler-plus" -->
-    <!--        @click="addItem" -->
-    <!--      > -->
-    <!--        Add Item -->
-    <!--      </VBtn> -->
-    <!--    </div> -->
+      <VBtn
+        size="small"
+        prepend-icon="tabler-plus"
+        @click="toggleAddSectionDialog(!isDialogVisible)"
+      >
+        Add section
+      </VBtn>
 
-    <VDivider class="my-6 border-dashed" />
+      <InvoiceSectionManageDialog
+        :dialog-visible="isDialogVisible"
+        @update:dialog-visible="toggleAddSectionDialog"
+      />
+    </div>
+
+    <VDivider class="my-6 border-dashed border-gray-700 !opacity-60" />
 
     <!-- 👉 Total Amount -->
     <!--    <div class="d-flex justify-space-between flex-wrap flex-column flex-sm-row"> -->
@@ -342,7 +300,7 @@ const fetchAutocomplete = async (query: string, autocompleteFn: (query: string) 
     <!--      </div> -->
     <!--    </div> -->
 
-    <VDivider class="my-6 border-dashed" />
+    <VDivider class="my-6 border-dashed border-gray-700 !opacity-60" />
 
     <div>
       <h6 class="text-h6 mb-2">

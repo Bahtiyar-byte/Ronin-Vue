@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { debounce } from 'lodash'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   title: string
+  class?: string
   fetchItems: (query: string) => Promise<string[] | { value: string; title: string }[] | null | undefined>
-}>()
+}>(), {
+  class: 'w-2/4 my-2',
+})
 
 const value = defineModel<string>('value', { default: undefined })
 const loading = defineModel<boolean>('loading')
@@ -29,7 +32,7 @@ const debouncedFetchVariants = debounce(async (query: string) => {
 <template>
   <AppAutocomplete
     v-model="value"
-    class="w-2/4 my-2"
+    :class="props.class"
     :title="title"
     :items="items"
     :loading="loading"
