@@ -156,8 +156,6 @@ module.exports = class TemplatesDBApi {
 
     offset = currentPage * limit;
 
-    var orderBy = null;
-
     const transaction = (options && options.transaction) || undefined;
     let where = {};
     let include = [

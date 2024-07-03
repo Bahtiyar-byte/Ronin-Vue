@@ -58,6 +58,7 @@ declare module 'vue' {
     FiltersList: typeof import('./src/components/common/filters/FiltersList.vue')['default']
     GeneralTab: typeof import('./src/components/profile/tabs/GeneralTab.vue')['default']
     I18n: typeof import('./src/@core/components/I18n.vue')['default']
+    InDialogCreation: typeof import('./src/components/estimateSectionTemplates/InDialogCreation.vue')['default']
     InfoPanelActions: typeof import('./src/components/jobs/details/InfoPanelActions.vue')['default']
     ItemsManage: typeof import('./src/components/common/CRUD/ItemsManage.vue')['default']
     ItemUpdate: typeof import('./src/components/common/CRUD/ItemUpdate.vue')['default']

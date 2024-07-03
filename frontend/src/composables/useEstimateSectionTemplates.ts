@@ -1,14 +1,14 @@
 import { useApi } from './useApi'
 import type CountResponse from '@/types/common/CountRequestTypes'
-import type { GetEstimateSectionsRequest, GetEstimateSectionsResponse } from '@/types/estimateSections/GetEstimateSectionsRequest'
-import type EstimateSection from '@/types/estimateSections/EstimateSection'
+import type { GetEstimateSectionTemplatesRequest, GetEstimateSectionTemplatesResponse } from '@/types/estimateSectionTemplates/GetEstimateSectionTemplatesRequest'
+import type EstimateSectionTemplate from '@/types/estimateSectionTemplates/EstimateSectionTemplate'
 
-export const useEstimateSections = () => {
+export const useEstimateSectionTemplates = () => {
   const count = async (params: object) => {
     const url = computed(() => {
       const qParams = new URLSearchParams(params as Record<string, string>)
 
-      return `/estimate_sections/count?${qParams.toString()}`
+      return `/templates/count?${qParams.toString()}`
     })
 
     const {
@@ -26,11 +26,11 @@ export const useEstimateSections = () => {
     }
   }
 
-  const getList = async (requestParams: GetEstimateSectionsRequest) => {
+  const getList = async (requestParams: GetEstimateSectionTemplatesRequest) => {
     const url = computed(() => {
       const qParams = new URLSearchParams(requestParams as Record<string, string>)
 
-      return `/estimate_sections/?${qParams.toString()}`
+      return `/templates/?${qParams.toString()}`
     })
 
     const {
@@ -38,7 +38,7 @@ export const useEstimateSections = () => {
       isFetching,
       error,
       response,
-    } = useApi(url.value).get().json<GetEstimateSectionsResponse>()
+    } = useApi(url.value).get().json<GetEstimateSectionTemplatesResponse>()
 
     return {
       data,
@@ -53,7 +53,7 @@ export const useEstimateSections = () => {
       data,
       isFetching,
       error,
-    } = useApi(`/estimate_sections/${id}`).get().json<EstimateSection>()
+    } = useApi(`/templates/${id}`).get().json<EstimateSectionTemplate>()
 
     return {
       data,
@@ -62,14 +62,14 @@ export const useEstimateSections = () => {
     }
   }
 
-  const create = async (estimateSection: EstimateSection) => {
+  const create = async (estimateSectionTemplate: EstimateSectionTemplate) => {
     const {
       data,
       isFetching,
       error,
-    } = useApi('/estimate_sections/').post({
-      data: estimateSection,
-    }).json<EstimateSection>()
+    } = useApi('/templates/').post({
+      data: estimateSectionTemplate,
+    }).json<EstimateSectionTemplate>()
 
     return {
       data,
@@ -78,15 +78,15 @@ export const useEstimateSections = () => {
     }
   }
 
-  const update = async (estimateSection: EstimateSection) => {
+  const update = async (estimateSectionTemplate: EstimateSectionTemplate) => {
     const {
       data,
       isFetching,
       error,
-    } = useApi(`/estimate_sections/${estimateSection.id}`).put({
-      id: estimateSection.id,
-      data: estimateSection,
-    }).json<EstimateSection>()
+    } = useApi(`/templates/${estimateSectionTemplate.id}`).put({
+      id: estimateSectionTemplate.id,
+      data: estimateSectionTemplate,
+    }).json<EstimateSectionTemplate>()
 
     return {
       data,
@@ -95,12 +95,12 @@ export const useEstimateSections = () => {
     }
   }
 
-  const deleteEstimateSection = async (estimateSection: EstimateSection) => {
+  const deleteEstimateSectionTemplate = async (estimateSectionTemplate: EstimateSectionTemplate) => {
     const {
       data,
       isFetching,
       error,
-    } = useApi(`/estimate_sections/${estimateSection.id}`).delete().json<boolean>()
+    } = useApi(`/templates/${estimateSectionTemplate.id}`).delete().json<boolean>()
 
     return {
       data,
@@ -113,7 +113,7 @@ export const useEstimateSections = () => {
     const {
       data,
       isFetching,
-    } = await useApi(`/estimate_sections/autocomplete/?query=${query}&limit=${limit}`).json<{ id: string; label: string }[]>()
+    } = await useApi(`/templates/autocomplete/?query=${query}&limit=${limit}`).json<{ id: string; label: string }[]>()
 
     return {
       data,
@@ -127,7 +127,7 @@ export const useEstimateSections = () => {
     getById,
     create,
     update,
-    deleteEstimateSection,
+    deleteEstimateSectionTemplate,
     autocomplete,
   }
 }

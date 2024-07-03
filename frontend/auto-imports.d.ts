@@ -224,6 +224,7 @@ declare global {
   const useElementHover: typeof import('@vueuse/core')['useElementHover']
   const useElementSize: typeof import('@vueuse/core')['useElementSize']
   const useElementVisibility: typeof import('@vueuse/core')['useElementVisibility']
+  const useEstimateSectionTemplates: typeof import('./src/composables/useEstimateSectionTemplates')['useEstimateSectionTemplates']
   const useEstimateSections: typeof import('./src/composables/useEstimateSections')['useEstimateSections']
   const useEstimates: typeof import('./src/composables/useEstimates')['useEstimates']
   const useEventBus: typeof import('@vueuse/core')['useEventBus']
@@ -594,6 +595,7 @@ declare module 'vue' {
     readonly useElementHover: UnwrapRef<typeof import('@vueuse/core')['useElementHover']>
     readonly useElementSize: UnwrapRef<typeof import('@vueuse/core')['useElementSize']>
     readonly useElementVisibility: UnwrapRef<typeof import('@vueuse/core')['useElementVisibility']>
+    readonly useEstimateSectionTemplates: UnwrapRef<typeof import('./src/composables/useEstimateSectionTemplates')['useEstimateSectionTemplates']>
     readonly useEstimateSections: UnwrapRef<typeof import('./src/composables/useEstimateSections')['useEstimateSections']>
     readonly useEstimates: UnwrapRef<typeof import('./src/composables/useEstimates')['useEstimates']>
     readonly useEventBus: UnwrapRef<typeof import('@vueuse/core')['useEventBus']>
@@ -953,6 +955,7 @@ declare module '@vue/runtime-core' {
     readonly useElementHover: UnwrapRef<typeof import('@vueuse/core')['useElementHover']>
     readonly useElementSize: UnwrapRef<typeof import('@vueuse/core')['useElementSize']>
     readonly useElementVisibility: UnwrapRef<typeof import('@vueuse/core')['useElementVisibility']>
+    readonly useEstimateSectionTemplates: UnwrapRef<typeof import('./src/composables/useEstimateSectionTemplates')['useEstimateSectionTemplates']>
     readonly useEstimateSections: UnwrapRef<typeof import('./src/composables/useEstimateSections')['useEstimateSections']>
     readonly useEstimates: UnwrapRef<typeof import('./src/composables/useEstimates')['useEstimates']>
     readonly useEventBus: UnwrapRef<typeof import('@vueuse/core')['useEventBus']>

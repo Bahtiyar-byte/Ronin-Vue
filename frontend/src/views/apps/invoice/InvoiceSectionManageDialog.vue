@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useEstimateSections } from '@/composables/useEstimateSections'
-import InvoiceAutoComplete from "@/views/apps/invoice/InvoiceAutoComplete.vue";
+import { useEstimateSectionTemplates } from '@/composables/useEstimateSectionTemplates'
+import InvoiceAutoComplete from '@/views/apps/invoice/InvoiceAutoComplete.vue'
 
 interface Props {}
 
 defineProps<Props>()
 
-const { autocomplete: autocompleteSections } = useEstimateSections()
+const { autocomplete: autocompleteTemplates } = useEstimateSectionTemplates()
 
 // const emit = defineEmits<{
 //   (e: 'submit', value: any): void
@@ -18,7 +18,7 @@ const dialogModelValueUpdate = (val: boolean) => {
   isDialogVisible.value = val
 }
 
-const existenceLabel = ref<string>('Select existent estimate section')
+const existenceLabel = ref<string>('Select existent section template')
 
 const fetchAutocomplete = async (query: string, autocompleteFn: (query: string) => Promise<any>) => {
   const { data } = await autocompleteFn(query)
@@ -27,6 +27,16 @@ const fetchAutocomplete = async (query: string, autocompleteFn: (query: string) 
   }
 
   return data.value.map((item: any) => ({ value: item.id, title: item.label }))
+}
+
+const isTemplateCreationVisible = ref<boolean>(false)
+
+const DialogTemplateCreationForm = defineAsyncComponent(() =>
+  import('@/components/estimateSectionTemplates/InDialogCreation.vue'),
+)
+
+const toggleTemplateCreation = () => {
+  isTemplateCreationVisible.value = !isTemplateCreationVisible.value
 }
 </script>
 
@@ -46,7 +56,7 @@ const fetchAutocomplete = async (query: string, autocompleteFn: (query: string) 
         <InvoiceAutoComplete
           :label="existenceLabel"
           :title="existenceLabel"
-          :fetch-items="(query) => fetchAutocomplete(query, autocompleteSections)"
+          :fetch-items="(query) => fetchAutocomplete(query, autocompleteTemplates)"
           class="w-full"
         />
 
@@ -58,8 +68,29 @@ const fetchAutocomplete = async (query: string, autocompleteFn: (query: string) 
           <div class="flex border-gray-200 dark:border-gray-800 w-full border-t border-solid" />
         </div>
 
-        <p>test</p>
+        <VCard
+          v-if="!isTemplateCreationVisible"
+          class="cursor-pointer"
+          @click="toggleTemplateCreation"
+        >
+          <VCardText>
+            <div class="d-flex justify-center items-center gap-x-3">
+              <VIcon
+                icon="tabler-plus"
+                size="28"
+              />
+              <span class="text-high-emphasis">
+                Add new template
+              </span>
+            </div>
+          </VCardText>
+        </VCard>
 
+        <DialogTemplateCreationForm
+          v-if="isTemplateCreationVisible"
+          show-cancel
+          @cancel-creation="toggleTemplateCreation"
+        />
       </VCardText>
     </VCard>
   </VDialog>
