@@ -3,7 +3,7 @@
   "description": "Evans CRM - template backend",
   "scripts": {
     "start": "npm run db:migrate && npm run db:seed && nodemon ./src/index.js",
-    "dev": "nodemon --watch src --ext js,ts --exec ts-node src/index.js",
+    "dev": "npm run db:migrate && npm run db:seed && nodemon --watch src --ext js,ts --exec ts-node src/index.js",
     "db:migrate": "sequelize-cli db:migrate",
     "db:seed": "sequelize-cli db:seed:all",
     "db:drop": "sequelize-cli db:drop",
