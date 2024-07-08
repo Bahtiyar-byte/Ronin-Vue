@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { debounce } from 'lodash'
 import { useEstimateSectionTemplates } from '@/composables/useEstimateSectionTemplates'
 import InvoiceAutoComplete from '@/views/apps/invoice/InvoiceAutoComplete.vue'
+import type EstimateSectionTemplate from '@/types/estimateSectionTemplates/EstimateSectionTemplate'
 
 interface Props {}
 
@@ -29,7 +31,10 @@ const fetchAutocomplete = async (query: string, autocompleteFn: (query: string) 
   return data.value.map((item: any) => ({ value: item.id, title: item.label }))
 }
 
+const debounceFetchAutocomplete = debounce(fetchAutocomplete, 400)
+
 const isTemplateCreationVisible = ref<boolean>(false)
+const showTemplateCreatedSnackbar = ref<boolean>(false)
 
 const DialogTemplateCreationForm = defineAsyncComponent(() =>
   import('@/components/estimateSectionTemplates/InDialogCreation.vue'),
@@ -56,7 +61,7 @@ const toggleTemplateCreation = () => {
         <InvoiceAutoComplete
           :label="existenceLabel"
           :title="existenceLabel"
-          :fetch-items="(query) => fetchAutocomplete(query, autocompleteTemplates)"
+          :fetch-items="(query) => debounceFetchAutocomplete(query, autocompleteTemplates)"
           class="w-full"
         />
 
@@ -90,8 +95,22 @@ const toggleTemplateCreation = () => {
           v-if="isTemplateCreationVisible"
           show-cancel
           @cancel-creation="toggleTemplateCreation"
+          @template-created="(sectionTemplate: Partial<EstimateSectionTemplate>) => {
+            /**
+             * ToDo: Fetch section new section template
+             */
+            debounceFetchAutocomplete('', autocompleteTemplates)
+            showTemplateCreatedSnackbar = true
+          }"
         />
       </VCardText>
     </VCard>
+
+    <VSnackbar
+      v-model="showTemplateCreatedSnackbar"
+      :timeout="3500"
+    >
+      New section template created
+    </VSnackbar>
   </VDialog>
 </template>
