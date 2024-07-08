@@ -58,12 +58,24 @@ const toggleTemplateCreation = () => {
       title="Manage estimate sections"
     >
       <VCardText>
-        <InvoiceAutoComplete
-          :label="existenceLabel"
-          :title="existenceLabel"
-          :fetch-items="(query) => debounceFetchAutocomplete(query, autocompleteTemplates)"
-          class="w-full"
-        />
+        <VRow>
+          <VCol cols="9">
+            <InvoiceAutoComplete
+              :label="existenceLabel"
+              :title="existenceLabel"
+              :fetch-items="(query) => fetchAutocomplete(query, autocompleteTemplates)"
+              class="w-full"
+            />
+          </VCol>
+          <VCol
+            cols="3"
+            class="d-flex items-end"
+          >
+            <VBtn class="w-full">
+              Save
+            </VBtn>
+          </VCol>
+        </VRow>
 
         <div class="flex items-center align-center text-center w-full flex-row my-5">
           <div class="flex border-gray-200 dark:border-gray-800 w-full border-t border-solid" />
