@@ -1,7 +1,7 @@
 const express = require('express');
 
-const TasksService = require('../services/tasks');
-const TasksDBApi = require('../db/api/tasks');
+const TasksService = require('../services/tasks.ts').default;
+const TasksDBApi = require('../db/api/tasks.ts').default;
 const wrapAsync = require('../helpers').wrapAsync;
 
 const router = express.Router();

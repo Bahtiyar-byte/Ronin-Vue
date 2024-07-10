@@ -2,7 +2,7 @@ import { Op } from 'sequelize';
 import { Service } from 'typedi';
 import Utils from '../utils';
 import { ContactDTO } from './dtos/contacts.dto';
-import { IContactsDBApi, Options } from './interfaces/IContactsDBApi';
+import { IContactsDBApi, Options } from './interfaces/IContactsDBApi.interface';
 const db = require('../models');
 
 @Service()

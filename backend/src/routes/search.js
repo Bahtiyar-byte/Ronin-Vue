@@ -1,5 +1,5 @@
 const express = require('express');
-const SearchService = require('../services/search');
+const SearchService = require('../services/search.ts').default;
 
 const router = express.Router();
 

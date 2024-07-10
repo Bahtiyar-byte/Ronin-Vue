@@ -3,8 +3,8 @@ const db = require('../db/models');
 const wrapAsync = require('../helpers').wrapAsync;
 const router = express.Router();
 const sjs = require('sequelize-json-schema');
-const { getWidget } = require('../services/openai');
-const RolesService = require('../services/roles');
+const { getWidget } = require('../services/openai.ts').default;
+const RolesService = require('../services/roles.ts').default;
 
 /**
  * @swagger

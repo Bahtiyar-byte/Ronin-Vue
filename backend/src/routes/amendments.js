@@ -1,7 +1,7 @@
 const express = require('express');
 
-const AmendmentsService = require('../services/amendments');
-const AmendmentsDBApi = require('../db/api/amendments');
+const AmendmentsService = require('../services/amendments.ts').default;
+const AmendmentsDBApi = require('../db/api/amendments.ts').default;
 const wrapAsync = require('../helpers').wrapAsync;
 
 const router = express.Router();

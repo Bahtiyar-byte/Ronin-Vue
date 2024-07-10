@@ -1,7 +1,7 @@
 const express = require('express');
 
-const TemplatesService = require('../services/templates');
-const TemplatesDBApi = require('../db/api/templates');
+const TemplatesService = require('../services/templates.ts').default;
+const TemplatesDBApi = require('../db/api/templates.ts').default;
 const wrapAsync = require('../helpers').wrapAsync;
 
 const router = express.Router();

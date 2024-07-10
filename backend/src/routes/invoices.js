@@ -1,7 +1,7 @@
 const express = require('express');
 
-const InvoicesService = require('../services/invoices');
-const InvoicesDBApi = require('../db/api/invoices');
+const InvoicesService = require('../services/invoices.ts').default;
+const InvoicesDBApi = require('../db/api/invoices.ts').default;
 const wrapAsync = require('../helpers').wrapAsync;
 
 const router = express.Router();

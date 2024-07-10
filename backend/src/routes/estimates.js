@@ -1,7 +1,7 @@
 const express = require('express');
 
 const EstimatesService = require('../roninServices/estimates');
-const EstimatesDBApi = require('../db/api/estimates');
+const EstimatesDBApi = require('../db/api/estimates.ts').default;
 const wrapAsync = require('../helpers').wrapAsync;
 
 const router = express.Router();
@@ -203,7 +203,11 @@ router.post(
 router.put(
   '/:id',
   wrapAsync(async (req, res) => {
-    const payload = await EstimatesService.update(req.body.data, req.body.id, req.currentUser);
+    const payload = await EstimatesService.update(
+      req.body.data,
+      req.body.id,
+      req.currentUser,
+    );
 
     res.status(200).send(payload);
   }),

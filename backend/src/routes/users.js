@@ -1,7 +1,7 @@
 const express = require('express');
 
-const UsersService = require('../services/users');
-const UsersDBApi = require('../db/api/users');
+const UsersService = require('../services/users.ts').default;
+const UsersDBApi = require('../db/api/users.ts').default;
 const wrapAsync = require('../helpers').wrapAsync;
 
 const router = express.Router();

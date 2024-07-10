@@ -6,7 +6,7 @@ import { Service } from 'typedi';
 import { ContactsDBApi } from '../db/api/contacts';
 import db from '../db/models';
 import processFile from '../middlewares/upload';
-import { IContactsService } from './interfaces/IContactsService';
+import { IContactsService } from './interfaces/IContactsService.interface';
 import ValidationError from './notifications/errors/validation';
 interface CurrentUser {
   id: string | null;
