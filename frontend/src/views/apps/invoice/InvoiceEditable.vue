@@ -1,36 +1,39 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import type { RouteLocationNormalizedLoaded } from 'vue-router'
 import InvoiceAutoComplete from './InvoiceAutoComplete.vue'
 import { useCurrentUserStore } from '@/@core/stores/auth/currentUser'
 import { useContacts } from '@/composables/useContacts'
+import { useEstimateSectionTemplates } from '@/composables/useEstimateSectionTemplates'
 
+import type { RouteLocationNormalizedLoaded } from 'vue-router'
+import type User from '@/types/users/User'
+import type Contact from '@/types/contacts/Contact'
+import type EstimateSectionTemplate from '@/types/estimateSectionTemplates/EstimateSectionTemplate'
+import type EstimateSection from '@/types/estimateSections/EstimateSection'
 import type Estimate from '@/types/estimates/Estimate'
 
 import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
 import { themeConfig } from '@themeConfig'
 
 import coreConfig from '@core/config'
-import type User from '@/types/users/User'
-import type Contact from '@/types/contacts/Contact'
-import InvoiceSectionManageDialog from "@/views/apps/invoice/InvoiceSectionManageDialog.vue";
+import InvoiceSectionManageDialog from '@/views/apps/invoice/InvoiceSectionManageDialog.vue'
+import { convertTemplateToSection } from '@/utils/estimates'
+import EstimateSectionEdit from '@/views/apps/invoice/EstimateSectionEdit.vue'
+
+import { resolveUserName } from '@/utils/auth'
 
 const emit = defineEmits<{
-  (e: 'push', value: any): void
-  (e: 'remove', id: number): void
+  (e: 'push', value: Partial<EstimateSection>): void
+  (e: 'removeSection', id: number): void
 }>()
 
 const { user: currentUser } = storeToRefs(useCurrentUserStore())
 const { autocomplete: autocompleteContacts, getById: getContactById } = useContacts()
 const { autocomplete: autocompleteUsers, getById: getUserById } = useUsers()
 
-const estimateData = defineModel<Estimate>('data', {
-  default: {
-    createdAt: new Date(),
-    related_contact: null,
-  },
-})
+const estimateData = defineModel<Partial<Estimate>>('data', { required: true })
 
+const isLoading = ref<boolean>()
 const contactId = ref<string>()
 
 const userId = ref<string>()
@@ -84,24 +87,46 @@ const fetchAutocomplete = async (query: string, autocompleteFn: (query: string) 
   return data.value.map((item: any) => ({ value: item.id, title: item.label }))
 }
 
-// const invoice = ref(props.data.invoice)
-// const salesperson = ref(props.data.salesperson)
-// const thanksNote = ref(props.data.thanksNote)
-// const note = ref(props.data.note)
-
 const isDialogVisible = ref<boolean>(false)
-const toggleAddSectionDialog = (val: boolean) => {
-  isDialogVisible.value = val
+
+const { getById: getEstimateSectionTemplateById } = useEstimateSectionTemplates()
+
+const handleTemplateSectionSelected = async (templateId: string) => {
+  const { data, isFetching } = await getEstimateSectionTemplateById(templateId)
+
+  watch(isFetching, newVal => {
+    isLoading.value = newVal
+  }, { immediate: true })
+
+  watch(data, (newVal: EstimateSectionTemplate | null) => {
+    const section = convertTemplateToSection(newVal as EstimateSectionTemplate)
+
+    emit('push', section)
+  })
 }
 
-// 👉 Remove Product edit section
-// const removeProduct = (id: number) => {
-//   emit('remove', id)
-// }
+const recalculateTotal = () => {
+  const sections = estimateData.value.sections ?? []
+  let total = 0
+
+  sections.forEach(section => {
+    total += (section.material_price ?? 0) * (section.amount ?? 0)
+  })
+
+  estimateData.value.total_price = total
+}
+
+const handleSectionRemove = (sectionNum: number) => {
+  emit('removeSection', sectionNum)
+  recalculateTotal()
+}
 </script>
 
 <template>
-  <VCard class="md:!p-6 !p-12">
+  <VCard
+    class="md:!p-6 !p-12"
+    :loading="isLoading"
+  >
     <!-- SECTION Header -->
     <div class="d-flex flex-wrap justify-space-between flex-column rounded bg-var-theme-background flex-sm-row gap-6 p-6 mb-6">
       <!-- 👉 Left Content -->
@@ -197,108 +222,73 @@ const toggleAddSectionDialog = (val: boolean) => {
     <VDivider class="my-6 border-dashed border-gray-700 !opacity-60" />
     <!-- 👉 Add purchased products -->
     <div class="add-products-form">
-<!--          <div -->
-<!--            v-for="(product, index) in props.data.purchasedProducts" -->
-<!--            :key="product.title" -->
-<!--            class="mb-4" -->
-<!--          > -->
-    <!--        <InvoiceProductEdit -->
-    <!--          :id="index" -->
-    <!--          :data="product" -->
-    <!--          @remove-product="removeProduct" -->
-    <!--        /> -->
-    <!--      </div> -->
+      <div
+        v-for="(section, index) in data.sections"
+        :key="`${section.id}-${index}`"
+        class="mb-4"
+      >
+        <EstimateSectionEdit
+          v-if="data.sections !== undefined"
+          :id="index"
+          v-model:section="data.sections[index]"
+          @remove="(val: number) => handleSectionRemove(val)"
+          @update:total-amount="recalculateTotal"
+        />
+      </div>
 
       <VBtn
         size="small"
         prepend-icon="tabler-plus"
-        @click="toggleAddSectionDialog(!isDialogVisible)"
+        @click="isDialogVisible = !isDialogVisible"
       >
         Add section
       </VBtn>
 
       <InvoiceSectionManageDialog
-        :dialog-visible="isDialogVisible"
-        @update:dialog-visible="toggleAddSectionDialog"
+        v-model:dialog-visible="isDialogVisible"
+        @save-section-clicked="(templateId: string) => {
+          handleTemplateSectionSelected(templateId)
+        }"
       />
     </div>
 
     <VDivider class="my-6 border-dashed border-gray-700 !opacity-60" />
 
     <!-- 👉 Total Amount -->
-    <!--    <div class="d-flex justify-space-between flex-wrap flex-column flex-sm-row"> -->
-    <!--      <div class="mb-6 mb-sm-0"> -->
-    <!--        <div class="d-flex align-center mb-4"> -->
-    <!--          <h6 class="text-h6 me-2"> -->
-    <!--            Salesperson: -->
-    <!--          </h6> -->
-    <!--          <AppTextField -->
-    <!--            v-model="salesperson" -->
-    <!--            style="inline-size: 8rem;" -->
-    <!--            placeholder="John Doe" -->
-    <!--          /> -->
-    <!--        </div> -->
+    <div class="flex justify-space-between flex-wrap flex-column flex-sm-row">
+      <div class="mb-6 sm:mb-0">
+        <div class="d-flex align-center mb-4">
+          <h6 class="font-semibold mx-2">
+            Salesperson:
+          </h6>
+          <AppTextField
+            v-if="selectedUser"
+            :value="resolveUserName(selectedUser)"
+            readonly
+            style="inline-size: 8rem;"
+            placeholder="John Doe"
+          />
+        </div>
+      </div>
 
-    <!--        <AppTextField -->
-    <!--          v-model="thanksNote" -->
-    <!--          placeholder="Thanks for your business" -->
-    <!--        /> -->
-    <!--      </div> -->
-
-    <!--      <div> -->
-    <!--        <table class="w-100"> -->
-    <!--          <tbody> -->
-    <!--            <tr> -->
-    <!--              <td class="pe-16"> -->
-    <!--                Subtotal: -->
-    <!--              </td> -->
-    <!--              <td :class="$vuetify.locale.isRtl ? 'text-start' : 'text-end'"> -->
-    <!--                <h6 class="text-h6"> -->
-    <!--                  $1800 -->
-    <!--                </h6> -->
-    <!--              </td> -->
-    <!--            </tr> -->
-    <!--            <tr> -->
-    <!--              <td class="pe-16"> -->
-    <!--                Discount: -->
-    <!--              </td> -->
-    <!--              <td :class="$vuetify.locale.isRtl ? 'text-start' : 'text-end'"> -->
-    <!--                <h6 class="text-h6"> -->
-    <!--                  $28 -->
-    <!--                </h6> -->
-    <!--              </td> -->
-    <!--            </tr> -->
-    <!--            <tr> -->
-    <!--              <td class="pe-16"> -->
-    <!--                Tax: -->
-    <!--              </td> -->
-    <!--              <td :class="$vuetify.locale.isRtl ? 'text-start' : 'text-end'"> -->
-    <!--                <h6 class="text-h6"> -->
-    <!--                  21% -->
-    <!--                </h6> -->
-    <!--              </td> -->
-    <!--            </tr> -->
-    <!--          </tbody> -->
-    <!--        </table> -->
-
-    <!--        <VDivider class="mt-4 mb-3" /> -->
-
-    <!--        <table class="w-100"> -->
-    <!--          <tbody> -->
-    <!--            <tr> -->
-    <!--              <td class="pe-16"> -->
-    <!--                Total: -->
-    <!--              </td> -->
-    <!--              <td :class="$vuetify.locale.isRtl ? 'text-start' : 'text-end'"> -->
-    <!--                <h6 class="text-h6"> -->
-    <!--                  $1690 -->
-    <!--                </h6> -->
-    <!--              </td> -->
-    <!--            </tr> -->
-    <!--          </tbody> -->
-    <!--        </table> -->
-    <!--      </div> -->
-    <!--    </div> -->
+      <div>
+        <table class="w-100">
+          <tbody>
+            <tr>
+              <td class="pe-16">
+                Total:
+              </td>
+              <td
+                class="font-bold"
+                :class="$vuetify.locale.isRtl ? 'text-start' : 'text-end'"
+              >
+                ${{ estimateData.total_price ?? 0 }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
     <VDivider class="my-6 border-dashed border-gray-700 !opacity-60" />
 

@@ -8,11 +8,11 @@ interface Props {}
 
 defineProps<Props>()
 
-const { autocomplete: autocompleteTemplates } = useEstimateSectionTemplates()
+defineEmits<{
+  (e: 'saveSectionClicked', id: string): void
+}>()
 
-// const emit = defineEmits<{
-//   (e: 'submit', value: any): void
-// }>()
+const { autocomplete: autocompleteTemplates } = useEstimateSectionTemplates()
 
 const isDialogVisible = defineModel<boolean>('dialogVisible', { required: true })
 
@@ -43,6 +43,8 @@ const DialogTemplateCreationForm = defineAsyncComponent(() =>
 const toggleTemplateCreation = () => {
   isTemplateCreationVisible.value = !isTemplateCreationVisible.value
 }
+
+const selectedTemplate = ref<string>()
 </script>
 
 <template>
@@ -61,6 +63,7 @@ const toggleTemplateCreation = () => {
         <VRow>
           <VCol cols="9">
             <InvoiceAutoComplete
+              v-model="selectedTemplate"
               :label="existenceLabel"
               :title="existenceLabel"
               :fetch-items="(query) => fetchAutocomplete(query, autocompleteTemplates)"
@@ -71,7 +74,16 @@ const toggleTemplateCreation = () => {
             cols="3"
             class="d-flex items-end"
           >
-            <VBtn class="w-full">
+            <VBtn
+              type="button"
+              class="w-full"
+              @click="() => {
+                if (selectedTemplate?.length) {
+                  dialogModelValueUpdate(false)
+                  $emit('saveSectionClicked', selectedTemplate)
+                }
+              }"
+            >
               Save
             </VBtn>
           </VCol>

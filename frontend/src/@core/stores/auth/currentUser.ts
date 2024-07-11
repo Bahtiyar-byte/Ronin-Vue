@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { useAuth } from '@/composables/useAuth'
 import type User from '@/types/users/User'
+import { resolveUserName } from '@/utils/auth'
 
 export const useCurrentUserStore = defineStore('currentUser', {
   state: () => ({
@@ -12,13 +13,7 @@ export const useCurrentUserStore = defineStore('currentUser', {
         return ''
       }
 
-      const { name, firstName, lastName } = state.user
-
-      if (name) {
-        return name
-      }
-
-      return [firstName, lastName].filter(Boolean).join(' ')
+      return resolveUserName(state.user)
     },
   },
   actions: {
