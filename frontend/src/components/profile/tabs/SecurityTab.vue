@@ -78,12 +78,6 @@ const onSubmit = handleSubmit(async (values: PasswordUpdateRequest) => {
     errorText.value = await getResponseText(newVal)
   })
 })
-
-// const { data, isFetching } = changePassword(values.currentPassword, values.newPassword, values.newPasswordConfirm)
-//
-// watch(isFetching, newValue => {
-//   console.log(newValue)
-// })
 </script>
 
 <template>
