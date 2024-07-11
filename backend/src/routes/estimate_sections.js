@@ -1,7 +1,9 @@
 const express = require('express');
 
-const Estimate_sectionsService = require('../services/estimate_sections');
-const Estimate_sectionsDBApi = require('../db/api/estimate_sections');
+const Estimate_sectionsService =
+  require('../services/estimate_sections.ts').default;
+const Estimate_sectionsDBApi =
+  require('../db/api/estimate_sections.ts').default;
 const wrapAsync = require('../helpers').wrapAsync;
 
 const router = express.Router();

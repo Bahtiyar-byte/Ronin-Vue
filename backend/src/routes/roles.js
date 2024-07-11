@@ -1,7 +1,7 @@
 const express = require('express');
 
-const RolesService = require('../services/roles');
-const RolesDBApi = require('../db/api/roles');
+const RolesService = require('../services/roles.ts').default;
+const RolesDBApi = require('../db/api/roles.ts').default;
 const wrapAsync = require('../helpers').wrapAsync;
 
 const router = express.Router();

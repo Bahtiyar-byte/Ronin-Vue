@@ -1,7 +1,7 @@
 const express = require('express');
 
-const ImagesService = require('../services/images');
-const ImagesDBApi = require('../db/api/images');
+const ImagesService = require('../services/images.ts').default;
+const ImagesDBApi = require('../db/api/images.ts').default;
 const wrapAsync = require('../helpers').wrapAsync;
 
 const router = express.Router();

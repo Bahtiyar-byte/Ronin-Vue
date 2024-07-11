@@ -1,7 +1,8 @@
 const express = require('express');
 
-const JobsService = require('../roninServices/jobs');
-const JobsDBApi = require('../db/api/jobs');
+// const JobsService = require('../roninServices/jobs');
+const JobsService = require('../services/jobs.ts').default;
+const JobsDBApi = require('../db/api/jobs.ts').default;
 const wrapAsync = require('../helpers').wrapAsync;
 
 const router = express.Router();
@@ -79,7 +80,12 @@ router.post(
   '/',
   wrapAsync(async (req, res) => {
     const link = new URL(req.headers.referer);
-    const payload = await JobsService.create(req.body.data, req.currentUser, true, link.host);
+    const payload = await JobsService.create(
+      req.body.data,
+      req.currentUser,
+      true,
+      link.host,
+    );
 
     res.status(200).send(payload);
   }),
@@ -181,7 +187,11 @@ router.post(
 router.put(
   '/:id',
   wrapAsync(async (req, res) => {
-    const payload = await JobsService.update(req.body.data, req.body.id, req.currentUser);
+    const payload = await JobsService.update(
+      req.body.data,
+      req.body.id,
+      req.currentUser,
+    );
 
     res.status(200).send(payload);
   }),

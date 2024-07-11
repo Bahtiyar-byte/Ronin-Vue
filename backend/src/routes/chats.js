@@ -1,7 +1,8 @@
 const express = require('express');
 
-const ChatsService = require('../services/chats');
-const ChatsDBApi = require('../db/api/chats');
+const ChatsService = require('../services/chats.ts').default;
+const ChatsDBApi = require('../db/api/chats.ts').default;
+
 const wrapAsync = require('../helpers').wrapAsync;
 
 const router = express.Router();

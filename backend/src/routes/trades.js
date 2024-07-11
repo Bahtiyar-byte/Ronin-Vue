@@ -1,7 +1,7 @@
 const express = require('express');
 
-const TradesService = require('../services/trades');
-const TradesDBApi = require('../db/api/trades');
+const TradesService = require('../services/trades.ts').default;
+const TradesDBApi = require('../db/api/trades.ts').default;
 const wrapAsync = require('../helpers').wrapAsync;
 
 const router = express.Router();

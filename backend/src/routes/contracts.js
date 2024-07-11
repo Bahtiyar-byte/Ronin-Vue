@@ -1,7 +1,7 @@
 const express = require('express');
 
-const ContractsService = require('../services/contracts');
-const ContractsDBApi = require('../db/api/contracts');
+const ContractsService = require('../services/contracts.ts').default;
+const ContractsDBApi = require('../db/api/contracts.ts').default;
 const wrapAsync = require('../helpers').wrapAsync;
 
 const router = express.Router();

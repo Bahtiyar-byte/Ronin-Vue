@@ -2,7 +2,7 @@ const express = require('express');
 const passport = require('passport');
 
 const config = require('../config');
-const AuthService = require('../services/auth');
+const AuthService = require('../services/auth.ts').default;
 const ForbiddenError = require('../services/notifications/errors/forbidden');
 const EmailSender = require('../services/email');
 const wrapAsync = require('../helpers').wrapAsync;

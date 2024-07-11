@@ -1,7 +1,7 @@
 const express = require('express');
 
-const ContactsService = require('../roninServices/contacts');
-const ContactsDBApi = require('../db/api/contacts');
+const { ContactsServiceInstance } = require('../services/contacts');
+const { ContactsDBApiInstance } = require('../db/api/contacts');
 const wrapAsync = require('../helpers').wrapAsync;
 
 const router = express.Router();
@@ -11,6 +11,9 @@ const { parse } = require('json2csv');
 const { checkCrudPermissions } = require('../middlewares/check-permissions');
 
 router.use(checkCrudPermissions('contacts'));
+
+const ContactsDBApi = new ContactsDBApiInstance();
+const ContactsService = new ContactsServiceInstance();
 
 /**
  *  @swagger
@@ -194,7 +197,11 @@ router.post(
 router.put(
   '/:id',
   wrapAsync(async (req, res) => {
-    const payload = await ContactsService.update(req.body.data, req.body.id, req.currentUser);
+    const payload = await ContactsService.update(
+      req.body.data,
+      req.body.id,
+      req.currentUser,
+    );
 
     res.status(200).send(payload);
   }),

@@ -1,7 +1,7 @@
 const express = require('express');
 
-const PermissionsService = require('../services/permissions');
-const PermissionsDBApi = require('../db/api/permissions');
+const PermissionsService = require('../services/permissions.ts').default;
+const PermissionsDBApi = require('../db/api/permissions.ts').default;
 const wrapAsync = require('../helpers').wrapAsync;
 
 const router = express.Router();

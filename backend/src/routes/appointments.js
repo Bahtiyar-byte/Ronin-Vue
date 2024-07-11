@@ -1,7 +1,7 @@
 const express = require('express');
 
-const AppointmentsService = require('../roninServices/appointments');
-const AppointmentsDBApi = require('../db/api/appointments');
+const AppointmentsService = require('../services/appointments.ts').default;
+const AppointmentsDBApi = require('../db/api/appointments.ts').default;
 const wrapAsync = require('../helpers').wrapAsync;
 
 const router = express.Router();
