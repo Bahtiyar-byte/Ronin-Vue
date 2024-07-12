@@ -27,7 +27,6 @@ module.exports = class TemplatesDBApi {
     await templates.setRelated_trade(data.related_trade || null, {
       transaction,
     });
-
     return templates;
   }
 
