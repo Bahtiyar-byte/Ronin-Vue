@@ -62,6 +62,10 @@ declare module 'vue-router/auto/routes' {
     'jobs-details-id': RouteRecordInfo<'jobs-details-id', '/jobs/details/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'jobs-update-id': RouteRecordInfo<'jobs-update-id', '/jobs/update/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'profile': RouteRecordInfo<'profile', '/profile', Record<never, never>, Record<never, never>>,
+    'trades': RouteRecordInfo<'trades', '/trades', Record<never, never>, Record<never, never>>,
+    'trades-create': RouteRecordInfo<'trades-create', '/trades/create', Record<never, never>, Record<never, never>>,
+    'trades-details-id': RouteRecordInfo<'trades-details-id', '/trades/details/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    'trades-update-id': RouteRecordInfo<'trades-update-id', '/trades/update/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
   }
 }
 
