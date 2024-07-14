@@ -73,14 +73,13 @@ router.post(
   '/',
   wrapAsync(async (req, res) => {
     const link = new URL(req.headers.referer);
-    await TemplatesService.create(
+    const template = await TemplatesService.create(
       req.body.data,
       req.currentUser,
       true,
       link.host,
     );
-    const payload = true;
-    res.status(200).send(payload);
+    res.status(200).send(template);
   }),
 );
 

@@ -246,7 +246,7 @@ module.exports = class TradesDBApi {
     }
 
     const records = await db.trades.findAll({
-      attributes: ['id', 'id'],
+      attributes: ['id', 'name'],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['id', 'ASC']],
@@ -254,7 +254,7 @@ module.exports = class TradesDBApi {
 
     return records.map((record) => ({
       id: record.id,
-      label: record.id,
+      label: record.name,
     }));
   }
 };
