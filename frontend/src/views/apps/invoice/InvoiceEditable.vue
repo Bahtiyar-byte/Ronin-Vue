@@ -1,16 +1,19 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import InvoiceAutoComplete from './InvoiceAutoComplete.vue'
-import { useCurrentUserStore } from '@/@core/stores/auth/currentUser'
-import { useContacts } from '@/composables/useContacts'
-import { useEstimateSectionTemplates } from '@/composables/useEstimateSectionTemplates'
 
 import type { RouteLocationNormalizedLoaded } from 'vue-router'
+
+import DebouncedAutoComplete from '@/components/common/DebouncedAutoComplete.vue'
+
 import type User from '@/types/users/User'
 import type Contact from '@/types/contacts/Contact'
 import type EstimateSectionTemplate from '@/types/estimateSectionTemplates/EstimateSectionTemplate'
 import type EstimateSection from '@/types/estimateSections/EstimateSection'
 import type Estimate from '@/types/estimates/Estimate'
+
+import { useCurrentUserStore } from '@/@core/stores/auth/currentUser'
+import { useContacts } from '@/composables/useContacts'
+import { useEstimateSectionTemplates } from '@/composables/useEstimateSectionTemplates'
 
 import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
 import { themeConfig } from '@themeConfig'
@@ -21,6 +24,7 @@ import { convertTemplateToSection } from '@/utils/estimates'
 import EstimateSectionEdit from '@/views/apps/invoice/EstimateSectionEdit.vue'
 
 import { resolveUserName } from '@/utils/auth'
+import { fetchAutocomplete } from '@/utils/api'
 
 const emit = defineEmits<{
   (e: 'push', value: Partial<EstimateSection>): void
@@ -78,15 +82,7 @@ watch(contactId, async newVal => {
   })
 })
 
-const fetchAutocomplete = async (query: string, autocompleteFn: (query: string) => Promise<any>) => {
-  const { data } = await autocompleteFn(query)
-  if (data.value === null) {
-    return
-  }
-
-  return data.value.map((item: any) => ({ value: item.id, title: item.label }))
-}
-
+const tradesDialogVisible = ref<boolean>(false)
 const isDialogVisible = ref<boolean>(false)
 
 const { getById: getEstimateSectionTemplateById } = useEstimateSectionTemplates()
@@ -153,7 +149,7 @@ const handleSectionRemove = (sectionNum: number) => {
         <p class="font-semibold mt-4">
           Company representative:
         </p>
-        <InvoiceAutoComplete
+        <DebouncedAutoComplete
           v-model:value="userId"
           title="Search Users"
           :fetch-items="(query) => fetchAutocomplete(query, autocompleteUsers)"
@@ -239,10 +235,17 @@ const handleSectionRemove = (sectionNum: number) => {
       <VBtn
         size="small"
         prepend-icon="tabler-plus"
-        @click="isDialogVisible = !isDialogVisible"
+        @click="tradesDialogVisible = !tradesDialogVisible"
       >
         Add section
       </VBtn>
+
+      <TradeSelectionDialog
+        v-model:dialog-visible="tradesDialogVisible"
+        @update:dialog-visible="value => {
+          console.log(value)
+        }"
+      />
 
       <InvoiceSectionManageDialog
         v-model:dialog-visible="isDialogVisible"

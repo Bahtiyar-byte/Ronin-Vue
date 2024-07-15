@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { debounce } from 'lodash'
 import { useEstimateSectionTemplates } from '@/composables/useEstimateSectionTemplates'
-import InvoiceAutoComplete from '@/views/apps/invoice/InvoiceAutoComplete.vue'
+import DebouncedAutoComplete from '@/components/common/DebouncedAutoComplete.vue'
 import type EstimateSectionTemplate from '@/types/estimateSectionTemplates/EstimateSectionTemplate'
+
+import { fetchAutocomplete } from '@/utils/api'
 
 interface Props {}
 
@@ -21,15 +23,6 @@ const dialogModelValueUpdate = (val: boolean) => {
 }
 
 const existenceLabel = ref<string>('Select existent section template')
-
-const fetchAutocomplete = async (query: string, autocompleteFn: (query: string) => Promise<any>) => {
-  const { data } = await autocompleteFn(query)
-  if (data.value === null) {
-    return
-  }
-
-  return data.value.map((item: any) => ({ value: item.id, title: item.label }))
-}
 
 const debounceFetchAutocomplete = debounce(fetchAutocomplete, 400)
 
@@ -62,7 +55,7 @@ const selectedTemplate = ref<string>()
       <VCardText>
         <VRow>
           <VCol cols="9">
-            <InvoiceAutoComplete
+            <DebouncedAutoComplete
               v-model="selectedTemplate"
               :label="existenceLabel"
               :title="existenceLabel"

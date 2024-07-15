@@ -52,3 +52,12 @@ export const prepareEntityToUpdate = (entity: Record<string, any>): Record<strin
 
   return updatedEntity
 }
+
+export const fetchAutocomplete = async (query: string, autocompleteFn: (query: string) => Promise<any>) => {
+  const { data } = await autocompleteFn(query)
+  if (data.value === null) {
+    return
+  }
+
+  return data.value.map((item: any) => ({ value: item.id, title: item.label }))
+}

@@ -6,6 +6,8 @@ import { useContacts } from '@/composables/useContacts'
 import { useUsers } from '@/composables/useUsers'
 import InfoPanelActions from '@/components/jobs/details/InfoPanelActions.vue'
 
+import { fetchAutocomplete } from '@/utils/api'
+
 const jobData = defineModel<Job>('jobData', { required: true })
 
 const contactEditVisible = defineModel<boolean>('jobEditVisible', {
@@ -21,15 +23,6 @@ const fetchEnumItems = async (type: string) => {
   const { data } = await getVariants('jobs', type)
 
   return data.value
-}
-
-const fetchAutocomplete = async (query: string, autocompleteFn: (query: string) => Promise<any>) => {
-  const { data } = await autocompleteFn(query)
-  if (data.value === null) {
-    return
-  }
-
-  return data.value.map((item: any) => ({ value: item.id, title: item.label }))
 }
 
 const saveItem = async (type: string, newValue: string) => {

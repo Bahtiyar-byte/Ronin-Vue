@@ -3,6 +3,7 @@ import type { Options } from 'flatpickr/dist/types/options'
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import { VForm } from 'vuetify/components/VForm'
 import type { Event, NewEvent } from './types'
+import { fetchAutocomplete } from '@/utils/api'
 
 import CalendarAutocompleteField from '@/views/apps/calendar/edit/CalendarAutocompleteField.vue'
 
@@ -123,15 +124,6 @@ watch(event, newVal => {
 
 const { autocomplete: autocompleteContacts } = useContacts()
 const { autocomplete: autocompleteUsers } = useUsers()
-
-const fetchAutocomplete = async (query: string, autocompleteFn: (query: string) => Promise<any>) => {
-  const { data } = await autocompleteFn(query)
-  if (data.value === null) {
-    return
-  }
-
-  return data.value.map((item: any) => ({ value: item.id, title: item.label }))
-}
 </script>
 
 <template>
