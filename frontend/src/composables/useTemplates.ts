@@ -1,17 +1,17 @@
 import type CountResponse from "@/types/common/CountRequestTypes";
-import type Contact from "@/types/contacts/Contact";
 import type {
-  GetContactsRequest,
-  GetContactsResponse,
-} from "@/types/contacts/GetContactsRequest";
+  GetTemplatesRequest,
+  GetTemplatesResponse,
+} from "@/types/templates/GetTemplatesRequest";
+import type Template from "@/types/templates/Template";
 import { useApi } from "./useApi";
 
-export const useContacts = () => {
+export const useTemplates = () => {
   const count = async (params: object) => {
     const url = computed(() => {
       const qParams = new URLSearchParams(params as Record<string, string>);
 
-      return `/contacts/count?${qParams.toString()}`;
+      return `/templates/count?${qParams.toString()}`;
     });
 
     const { data, isFetching, error, response } = await useApi(url.value)
@@ -26,18 +26,18 @@ export const useContacts = () => {
     };
   };
 
-  const getList = async (requestParams: GetContactsRequest) => {
+  const getList = async (requestParams: GetTemplatesRequest) => {
     const url = computed(() => {
       const qParams = new URLSearchParams(
         requestParams as Record<string, string>
       );
 
-      return `/contacts/?${qParams.toString()}`;
+      return `/templates/?${qParams.toString()}`;
     });
 
     const { data, isFetching, error, response } = useApi(url.value)
       .get()
-      .json<GetContactsResponse>();
+      .json<GetTemplatesResponse>();
 
     return {
       data,
@@ -48,9 +48,9 @@ export const useContacts = () => {
   };
 
   const getById = async (id: string) => {
-    const { data, isFetching, error } = useApi(`/contacts/${id}`)
+    const { data, isFetching, error } = useApi(`/templates/${id}`)
       .get()
-      .json<Contact>();
+      .json<Template>();
 
     return {
       data,
@@ -59,12 +59,12 @@ export const useContacts = () => {
     };
   };
 
-  const create = async (contact: Contact) => {
-    const { data, isFetching, error } = useApi("/contacts/")
+  const create = async (template: Template) => {
+    const { data, isFetching, error } = useApi("/templates/")
       .post({
-        data: contact,
+        data: template,
       })
-      .json<Contact>();
+      .json<Template>();
 
     return {
       data,
@@ -73,13 +73,13 @@ export const useContacts = () => {
     };
   };
 
-  const update = async (contact: Contact) => {
-    const { data, isFetching, error } = useApi(`/contacts/${contact.id}`)
+  const update = async (template: Template) => {
+    const { data, isFetching, error } = useApi(`/templates/${template.id}`)
       .put({
-        id: contact.id,
-        data: contact,
+        id: template.id,
+        data: template,
       })
-      .json<Contact>();
+      .json<Template>();
 
     return {
       data,
@@ -88,8 +88,8 @@ export const useContacts = () => {
     };
   };
 
-  const deleteContact = async (contact: Contact) => {
-    const { data, isFetching, error } = useApi(`/contacts/${contact.id}`)
+  const deleteTemplate = async (template: Template) => {
+    const { data, isFetching, error } = useApi(`/templates/${template.id}`)
       .delete()
       .json<boolean>();
 
@@ -102,7 +102,7 @@ export const useContacts = () => {
 
   const autocomplete = async (query: string, limit: number = 100) => {
     const { data, isFetching } = await useApi(
-      `/contacts/autocomplete/?query=${query}&limit=${limit}`
+      `/templates/autocomplete/?query=${query}&limit=${limit}`
     ).json<{ id: string; label: string }[]>();
 
     return {
@@ -117,7 +117,7 @@ export const useContacts = () => {
     getById,
     create,
     update,
-    deleteContact,
+    deleteTemplate,
     autocomplete,
   };
 };

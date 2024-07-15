@@ -4,7 +4,13 @@ import type FormFieldsGroup from "@/types/forms/FormFieldsGroup";
 import { ref } from "vue";
 
 export const useFormFields = (
-  formType: "estimates" | "jobs" | "contacts" | "appointments" | "trades"
+  formType:
+    | "estimates"
+    | "jobs"
+    | "contacts"
+    | "appointments"
+    | "trades"
+    | "templates"
 ) => {
   const { getVariants } = useFilters();
   const formFields = ref<Array<FormField | FormFieldsGroup>>([]);

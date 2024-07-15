@@ -81,6 +81,7 @@ declare module 'vue' {
     Shortcuts: typeof import('./src/@core/components/Shortcuts.vue')['default']
     TablePagination: typeof import('./src/@core/components/TablePagination.vue')['default']
     TabSkeleton: typeof import('./src/components/common/skeletons/TabSkeleton.vue')['default']
+    TemplateInfoPanel: typeof import('./src/components/templates/TemplateInfoPanel.vue')['default']
     TheCustomizer: typeof import('./src/@core/components/TheCustomizer.vue')['default']
     ThemeSwitcher: typeof import('./src/@core/components/ThemeSwitcher.vue')['default']
     TiptapEditor: typeof import('./src/@core/components/TiptapEditor.vue')['default']
