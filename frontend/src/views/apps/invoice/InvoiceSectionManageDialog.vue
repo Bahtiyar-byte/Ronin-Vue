@@ -1,18 +1,20 @@
 <script setup lang="ts">
 import { debounce } from 'lodash'
 import { useEstimateSectionTemplates } from '@/composables/useEstimateSectionTemplates'
-import InvoiceAutoComplete from '@/views/apps/invoice/InvoiceAutoComplete.vue'
+import DebouncedAutoComplete from '@/components/common/DebouncedAutoComplete.vue'
 import type EstimateSectionTemplate from '@/types/estimateSectionTemplates/EstimateSectionTemplate'
+
+import { fetchAutocomplete } from '@/utils/api'
 
 interface Props {}
 
 defineProps<Props>()
 
-const { autocomplete: autocompleteTemplates } = useEstimateSectionTemplates()
+defineEmits<{
+  (e: 'saveSectionClicked', id: string): void
+}>()
 
-// const emit = defineEmits<{
-//   (e: 'submit', value: any): void
-// }>()
+const { autocomplete: autocompleteTemplates } = useEstimateSectionTemplates()
 
 const isDialogVisible = defineModel<boolean>('dialogVisible', { required: true })
 
@@ -21,15 +23,6 @@ const dialogModelValueUpdate = (val: boolean) => {
 }
 
 const existenceLabel = ref<string>('Select existent section template')
-
-const fetchAutocomplete = async (query: string, autocompleteFn: (query: string) => Promise<any>) => {
-  const { data } = await autocompleteFn(query)
-  if (data.value === null) {
-    return
-  }
-
-  return data.value.map((item: any) => ({ value: item.id, title: item.label }))
-}
 
 const debounceFetchAutocomplete = debounce(fetchAutocomplete, 400)
 
@@ -43,6 +36,8 @@ const DialogTemplateCreationForm = defineAsyncComponent(() =>
 const toggleTemplateCreation = () => {
   isTemplateCreationVisible.value = !isTemplateCreationVisible.value
 }
+
+const selectedTemplate = ref<string>()
 </script>
 
 <template>
@@ -60,7 +55,8 @@ const toggleTemplateCreation = () => {
       <VCardText>
         <VRow>
           <VCol cols="9">
-            <InvoiceAutoComplete
+            <DebouncedAutoComplete
+              v-model="selectedTemplate"
               :label="existenceLabel"
               :title="existenceLabel"
               :fetch-items="(query) => fetchAutocomplete(query, autocompleteTemplates)"
@@ -71,7 +67,16 @@ const toggleTemplateCreation = () => {
             cols="3"
             class="d-flex items-end"
           >
-            <VBtn class="w-full">
+            <VBtn
+              type="button"
+              class="w-full"
+              @click="() => {
+                if (selectedTemplate?.length) {
+                  dialogModelValueUpdate(false)
+                  $emit('saveSectionClicked', selectedTemplate)
+                }
+              }"
+            >
               Save
             </VBtn>
           </VCol>

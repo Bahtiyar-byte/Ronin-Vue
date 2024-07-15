@@ -3,20 +3,24 @@ import type Estimate from '@/types/estimates/Estimate'
 import InvoiceEditable from '@/views/apps/invoice/InvoiceEditable.vue'
 
 // Type: Invoice data
-import type { PurchasedProduct } from '@/views/apps/invoice/types'
+import type EstimateSection from '@/types/estimateSections/EstimateSection'
 
-const estimateData = ref<Estimate>()
+const estimateData = reactive<Partial<Estimate>>({
+  createdAt: new Date(),
+  related_contact: null,
+  sections: [],
+})
 
-const addProduct = (value: PurchasedProduct) => {
-  console.log(value)
-
-  // estimateData.value?.purchasedProducts.push(value)
+const addProduct = (value: Partial<EstimateSection>) => {
+  estimateData.sections?.push(value)
 }
 
-const removeProduct = (id: number) => {
-  console.log(id)
+const removeSection = (id: number) => {
+  estimateData.sections?.splice(id, 1)
+}
 
-  // estimateData.value?.purchasedProducts.splice(id, 1)
+const handleSave = () => {
+  console.log(estimateData)
 }
 </script>
 
@@ -28,9 +32,9 @@ const removeProduct = (id: number) => {
       md="9"
     >
       <InvoiceEditable
-        :data="estimateData"
+        v-model:data="estimateData"
         @push="addProduct"
-        @remove="removeProduct"
+        @remove-section="removeSection"
       />
     </VCol>
 
@@ -39,7 +43,7 @@ const removeProduct = (id: number) => {
       cols="12"
       md="3"
     >
-      <VCard class="mb-8">
+      <VCard class="mb-8 !sticky top-4">
         <VCardText>
           <!-- 👉 Send Invoice -->
           <VBtn
@@ -55,6 +59,7 @@ const removeProduct = (id: number) => {
             block
             color="secondary"
             variant="tonal"
+            @click="handleSave"
           >
             Save
           </VBtn>

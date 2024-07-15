@@ -1,6 +1,7 @@
 import type Contact from '@/types/contacts/Contact'
 import type Job from '@/types/jobs/Job'
 import type Entity from '@/types/common/Entity'
+import type EstimateSection from '@/types/estimateSections/EstimateSection'
 
 export default interface Estimate extends Entity {
   labor_cost?: number | null
@@ -17,4 +18,5 @@ export default interface Estimate extends Entity {
   trade?: string | null
   template_used?: string | null
   unit_of_measurement?: string | null
+  sections?: Partial<EstimateSection>[]
 }
