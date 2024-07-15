@@ -79,7 +79,7 @@ const saveItem = async (type: string, newValue: string) => {
           class="d-flex justify-center gap-x-4"
         >
           <VBtn
-            :to="{ name: 'templates-update-id', params: { id: templateData.id } }"
+            :to="{ name: 'tools-templates-update-id', params: { id: templateData.id } }"
             variant="elevated"
             class="w-full"
           >

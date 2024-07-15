@@ -1,16 +1,14 @@
 <script setup lang="ts">
-import { useTemplates } from '@/composables/useTemplates'
-import type Template from '@/types/templates/Template'
+import { useTrades } from '@/composables/useTrades'
+import type Trade from '@/types/trades/Trade'
 import ItemsManage from '@/components/common/CRUD/ItemsManage.vue'
 import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
 import { useTableManagement } from '@/utils/forms/useTableManagement'
 
-const { getList, deleteTemplate } = useTemplates()
+const { getList, deleteContact } = useTrades()
 
 const headersDefinition = [
   { title: 'Name', key: 'name' },
-  { title: 'Description', key: 'description' },
-  { title: 'Trade', key: 'related_trade.name', sortable: false },
   { title: 'Actions', key: 'actions', sortable: false },
 ]
 
@@ -24,39 +22,32 @@ const {
   selectedItems,
   deletionDialogOptions,
   handleItemDeletion,
-} = useTableManagement<Template>('templates', getList, deleteTemplate, headersDefinition)
+} = useTableManagement<Trade>('trades', getList, deleteContact, headersDefinition)
 </script>
 
 <template>
   <ItemsManage
     v-model:items-per-page="pagination.itemsPerPage"
     v-model:search-query="searchQuery"
-    items-title="Templates"
-    :search-settings="{ placeholder: 'Search templates' }"
+    items-title="Trades"
+    :search-settings="{ placeholder: 'Search trades' }"
     :breadcrumbs="[
       {
         title: 'Home',
         to: { name: 'root' },
       },
       {
-        title: 'Templates',
+        title: 'Trades',
         disabled: true,
       },
     ]"
   >
-    <!-- <template #filters>
-      <FiltersList
-        :filters="filters"
-        class="flex gap-2"
-      />
-    </template> -->
-
     <template #buttons>
       <VBtn
-        :to="{ name: 'templates-create' }"
+        :to="{ name: 'tools-trades-create' }"
         prepend-icon="tabler-plus"
       >
-        Create template
+        Create trade
       </VBtn>
     </template>
 
@@ -79,13 +70,13 @@ const {
 
         <template #item.actions="{ item }">
           <IconBtn
-            :to="{ name: 'templates-details-id', params: { id: item.id } }"
+            :to="{ name: 'tools-trades-details-id', params: { id: item.id } }"
             title="View"
           >
             <VIcon icon="tabler-eye" />
           </IconBtn>
           <IconBtn
-            :to="{ name: 'templates-update-id', params: { id: item.id } }"
+            :to="{ name: 'tools-trades-update-id', params: { id: item.id } }"
             title="Edit"
           >
             <VIcon icon="tabler-edit" />
@@ -101,6 +92,6 @@ const {
   <ConfirmDialog
     v-model:is-visible="deletionDialogOptions.visible"
     :on-accept="deletionDialogOptions.onAccept"
-    title="Are you sure you want to delete this template?"
+    title="Are you sure you want to delete this trade?"
   />
 </template>

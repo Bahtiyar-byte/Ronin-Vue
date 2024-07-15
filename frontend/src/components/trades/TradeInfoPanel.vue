@@ -67,7 +67,7 @@ const saveItem = async (type: string, newValue: string) => {
           class="d-flex justify-center gap-x-4"
         >
           <VBtn
-            :to="{ name: 'trades-update-id', params: { id: tradeData.id } }"
+            :to="{ name: 'tools-trades-update-id', params: { id: tradeData.id } }"
             variant="elevated"
             class="w-full"
           >

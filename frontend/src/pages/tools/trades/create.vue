@@ -17,7 +17,7 @@ const pageTitle = ref('Create Trade')
 
 const breadcrumbs = ref([
   { title: 'Home', to: { name: 'root' } },
-  { title: 'Trades', to: { name: 'trades' } },
+  { title: 'Trades', to: { name: 'tools-trades' } },
   { title: 'New trade', disabled: true },
 ])
 
@@ -71,7 +71,7 @@ const submitForm = async (values: Record<string, any>) => {
   const { data } = await action(tradeData)
 
   watch(data, newVal => {
-    router.push({ name: 'trades-details-id', params: { id: newVal?.id as string } })
+    router.push({ name: 'tools-trades-details-id', params: { id: newVal?.id as string } })
   })
 }
 </script>

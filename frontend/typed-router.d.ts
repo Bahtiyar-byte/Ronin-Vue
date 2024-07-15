@@ -62,14 +62,14 @@ declare module 'vue-router/auto/routes' {
     'jobs-details-id': RouteRecordInfo<'jobs-details-id', '/jobs/details/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'jobs-update-id': RouteRecordInfo<'jobs-update-id', '/jobs/update/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'profile': RouteRecordInfo<'profile', '/profile', Record<never, never>, Record<never, never>>,
-    'templates': RouteRecordInfo<'templates', '/templates', Record<never, never>, Record<never, never>>,
-    'templates-create': RouteRecordInfo<'templates-create', '/templates/create', Record<never, never>, Record<never, never>>,
-    'templates-details-id': RouteRecordInfo<'templates-details-id', '/templates/details/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
-    'templates-update-id': RouteRecordInfo<'templates-update-id', '/templates/update/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
-    'trades': RouteRecordInfo<'trades', '/trades', Record<never, never>, Record<never, never>>,
-    'trades-create': RouteRecordInfo<'trades-create', '/trades/create', Record<never, never>, Record<never, never>>,
-    'trades-details-id': RouteRecordInfo<'trades-details-id', '/trades/details/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
-    'trades-update-id': RouteRecordInfo<'trades-update-id', '/trades/update/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    'tools-templates': RouteRecordInfo<'tools-templates', '/tools/templates', Record<never, never>, Record<never, never>>,
+    'tools-templates-create': RouteRecordInfo<'tools-templates-create', '/tools/templates/create', Record<never, never>, Record<never, never>>,
+    'tools-templates-details-id': RouteRecordInfo<'tools-templates-details-id', '/tools/templates/details/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    'tools-templates-update-id': RouteRecordInfo<'tools-templates-update-id', '/tools/templates/update/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    'tools-trades': RouteRecordInfo<'tools-trades', '/tools/trades', Record<never, never>, Record<never, never>>,
+    'tools-trades-create': RouteRecordInfo<'tools-trades-create', '/tools/trades/create', Record<never, never>, Record<never, never>>,
+    'tools-trades-details-id': RouteRecordInfo<'tools-trades-details-id', '/tools/trades/details/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    'tools-trades-update-id': RouteRecordInfo<'tools-trades-update-id', '/tools/trades/update/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
   }
 }
 

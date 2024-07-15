@@ -6,12 +6,10 @@ import { useTemplates } from '@/composables/useTemplates'
 import type Template from '@/types/templates/Template'
 
 import TemplateInfoPanel from '@/components/templates/TemplateInfoPanel.vue'
-// import ActivityTab from '@/components/contacts/details/ActivityTab.vue'
-// import RelatedTab from '@/components/contacts/details/RelatedTab.vue'
 
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } }
 
-const contactTab = ref(null)
+const templateTab = ref(null)
 
 const tabs = [
   { icon: 'tabler-activity', title: 'Activity' },
@@ -55,7 +53,7 @@ useHead({
       },
       {
         title: 'Templates',
-        to: { name: 'templates' },
+        to: { name: 'tools-templates' },
       },
       {
         title: templateName,
@@ -78,36 +76,6 @@ useHead({
       md="7"
       lg="8"
     >
-      <!-- <VTabs
-        v-model="contactTab"
-        class="v-tabs-pill"
-      >
-        <VTab
-          v-for="tab in tabs"
-          :key="tab.icon"
-        >
-          <VIcon
-            :size="18"
-            :icon="tab.icon"
-            class="me-1"
-          />
-          <span>{{ tab.title }}</span>
-        </VTab>
-      </VTabs> -->
-
-      <!-- <VWindow
-        v-model="contactTab"
-        class="mt-6 disable-tab-transition"
-        :touch="false"
-      >
-        <VWindowItem>
-          <ActivityTab :contact-data="templateData" />
-        </VWindowItem>
-
-        <VWindowItem>
-          <RelatedTab />
-        </VWindowItem>
-      </VWindow> -->
     </VCol>
   </VRow>
   <div v-else-if="!isLoading">

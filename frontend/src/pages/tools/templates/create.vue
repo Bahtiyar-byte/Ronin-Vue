@@ -16,7 +16,7 @@ const pageTitle = ref('Create Template')
 
 const breadcrumbs = ref([
   { title: 'Home', to: { name: 'root' } },
-  { title: 'Templates', to: { name: 'templates' } },
+  { title: 'Templates', to: { name: 'tools-templates' } },
   { title: 'New template', disabled: true },
 ])
 
@@ -73,7 +73,7 @@ const submitForm = async (values: Record<string, any>) => {
   const { data } = await action(templateData)
 
   watch(data, newVal => {
-    router.push({ name: 'templates-details-id', params: { id: newVal?.id as string } })
+    router.push({ name: 'tools-templates-details-id', params: { id: newVal?.id as string } })
   })
 }
 </script>

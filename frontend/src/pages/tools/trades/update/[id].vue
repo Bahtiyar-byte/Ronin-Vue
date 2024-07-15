@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import Create from '@/pages/templates/create.vue'
+import Create from '@/pages/tools/trades/create.vue'
 </script>
-
 <template>
   <Create />
 </template>
