@@ -1,5 +1,5 @@
 export default interface Entity {
-  id?: string // Undefined if new entity creation
+  id: string
   importHash: string | null
   createdAt: string | Date
   updatedAt: string | Date

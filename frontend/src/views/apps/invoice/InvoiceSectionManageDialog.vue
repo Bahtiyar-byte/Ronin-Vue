@@ -1,10 +1,9 @@
 <script setup lang="ts">
+import type { Ref } from 'vue'
 import { debounce } from 'lodash'
-import { useEstimateSectionTemplates } from '@/composables/useEstimateSectionTemplates'
 import DebouncedAutoComplete from '@/components/common/DebouncedAutoComplete.vue'
 import type EstimateSectionTemplate from '@/types/estimateSectionTemplates/EstimateSectionTemplate'
-
-import { fetchAutocomplete } from '@/utils/api'
+import type { GetListResponse } from '@/types/common/GetListRequestTypes'
 
 interface Props {}
 
@@ -14,18 +13,33 @@ defineEmits<{
   (e: 'saveSectionClicked', id: string): void
 }>()
 
-const { autocomplete: autocompleteTemplates } = useEstimateSectionTemplates()
-
 const isDialogVisible = defineModel<boolean>('dialogVisible', { required: true })
 const tradesUuid = defineModel<string>('tradesUuid')
+const selectedTemplate = ref<string>()
 
 const dialogModelValueUpdate = (val: boolean) => {
   isDialogVisible.value = val
+
+  if (!val) {
+    tradesUuid.value = undefined
+    selectedTemplate.value = ''
+  }
 }
 
 const existenceLabel = ref<string>('Select existent section template')
 
-const debounceFetchAutocomplete = debounce(fetchAutocomplete, 400)
+const { getList } = useTemplates()
+
+const sectionsAutocomplete = async (query: string): Promise<Ref<GetListResponse | null> | undefined> => {
+  const { data } = await getList({
+    name: query,
+    related_trade: tradesUuid.value ?? '',
+  })
+
+  return data
+}
+
+const debounceFetchAutocomplete = debounce(sectionsAutocomplete, 400)
 
 const isTemplateCreationVisible = ref<boolean>(false)
 const showTemplateCreatedSnackbar = ref<boolean>(false)
@@ -37,8 +51,6 @@ const DialogTemplateCreationForm = defineAsyncComponent(() =>
 const toggleTemplateCreation = () => {
   isTemplateCreationVisible.value = !isTemplateCreationVisible.value
 }
-
-const selectedTemplate = ref<string>()
 </script>
 
 <template>
@@ -60,7 +72,7 @@ const selectedTemplate = ref<string>()
               v-model="selectedTemplate"
               :label="existenceLabel"
               :title="existenceLabel"
-              :fetch-items="(query) => fetchAutocomplete(query, autocompleteTemplates)"
+              :fetch-items="sectionsAutocomplete"
               class="w-full"
             />
           </VCol>
@@ -73,8 +85,8 @@ const selectedTemplate = ref<string>()
               class="w-full"
               @click="() => {
                 if (selectedTemplate?.length) {
-                  dialogModelValueUpdate(false)
                   $emit('saveSectionClicked', selectedTemplate)
+                  dialogModelValueUpdate(false)
                 }
               }"
             >
@@ -117,7 +129,7 @@ const selectedTemplate = ref<string>()
             /**
              * ToDo: Fetch section new section template
              */
-            debounceFetchAutocomplete('', autocompleteTemplates)
+            debounceFetchAutocomplete('')
             showTemplateCreatedSnackbar = true
           }"
         />

@@ -1,3 +1,5 @@
+import type Entity from '@/types/common/Entity'
+
 export interface GetListRequest
 {
   id?: string
@@ -9,5 +11,5 @@ export interface GetListRequest
 export interface GetListResponse
 {
   count: number
-  rows: object[]
+  rows: Entity[]
 }

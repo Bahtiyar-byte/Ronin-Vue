@@ -1,77 +1,77 @@
-import type CountResponse from "@/types/common/CountRequestTypes";
+import { useApi } from './useApi'
+import type CountResponse from '@/types/common/CountRequestTypes'
 import type {
   GetTemplatesRequest,
   GetTemplatesResponse,
-} from "@/types/templates/GetTemplatesRequest";
-import type Template from "@/types/templates/Template";
-import { useApi } from "./useApi";
+} from '@/types/templates/GetTemplatesRequest'
+import type Template from '@/types/templates/Template'
 
 export const useTemplates = () => {
   const count = async (params: object) => {
     const url = computed(() => {
-      const qParams = new URLSearchParams(params as Record<string, string>);
+      const qParams = new URLSearchParams(params as Record<string, string>)
 
-      return `/templates/count?${qParams.toString()}`;
-    });
+      return `/templates/count?${qParams.toString()}`
+    })
 
     const { data, isFetching, error, response } = await useApi(url.value)
       .get()
-      .json<CountResponse>();
+      .json<CountResponse>()
 
     return {
       data,
       isFetching,
       error,
       response,
-    };
-  };
+    }
+  }
 
-  const getList = async (requestParams: GetTemplatesRequest) => {
+  const getList = async (requestParams: Partial<GetTemplatesRequest>) => {
     const url = computed(() => {
       const qParams = new URLSearchParams(
-        requestParams as Record<string, string>
-      );
+        requestParams as Record<string, string>,
+      )
 
-      return `/templates/?${qParams.toString()}`;
-    });
+      return `/templates/?${qParams.toString()}`
+    })
 
     const { data, isFetching, error, response } = useApi(url.value)
       .get()
-      .json<GetTemplatesResponse>();
+      .json<GetTemplatesResponse>()
 
     return {
       data,
       isFetching,
       error,
       response,
-    };
-  };
+    }
+  }
 
   const getById = async (id: string) => {
     const { data, isFetching, error } = useApi(`/templates/${id}`)
       .get()
-      .json<Template>();
+      .json<Template>()
 
     return {
       data,
       isFetching,
       error,
-    };
-  };
+    }
+  }
 
   const create = async (template: Template) => {
-    const { data, isFetching, error } = useApi("/templates/")
+    const { data, isFetching, error } = useApi('/templates/')
       .post({
         data: template,
       })
-      .json<Template>();
+      .json<Template>()
 
     return {
       data,
       isFetching,
       error,
-    };
-  };
+    }
+  }
 
   const update = async (template: Template) => {
     const { data, isFetching, error } = useApi(`/templates/${template.id}`)
@@ -79,37 +79,37 @@ export const useTemplates = () => {
         id: template.id,
         data: template,
       })
-      .json<Template>();
+      .json<Template>()
 
     return {
       data,
       isFetching,
       error,
-    };
-  };
+    }
+  }
 
   const deleteTemplate = async (template: Template) => {
     const { data, isFetching, error } = useApi(`/templates/${template.id}`)
       .delete()
-      .json<boolean>();
+      .json<boolean>()
 
     return {
       data,
       isFetching,
       error,
-    };
-  };
+    }
+  }
 
   const autocomplete = async (query: string, limit: number = 100) => {
     const { data, isFetching } = await useApi(
-      `/templates/autocomplete/?query=${query}&limit=${limit}`
-    ).json<{ id: string; label: string }[]>();
+      `/templates/autocomplete/?query=${query}&limit=${limit}`,
+    ).json<{ id: string; label: string }[]>()
 
     return {
       data,
       isFetching,
-    };
-  };
+    }
+  }
 
   return {
     count,
@@ -119,5 +119,5 @@ export const useTemplates = () => {
     update,
     deleteTemplate,
     autocomplete,
-  };
-};
+  }
+}

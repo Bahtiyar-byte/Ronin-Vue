@@ -8,13 +8,17 @@ defineEmits<{
 }>()
 
 const isDialogVisible = defineModel<boolean>('dialogVisible', { required: true })
+const selectedTrade = ref<string>()
 
 const dialogModelValueUpdate = (val: boolean) => {
   isDialogVisible.value = val
+
+  if (!val) {
+    selectedTrade.value = ''
+  }
 }
 
 const { autocomplete: autocompleteTrades } = useTrades()
-const selectedTrade = ref<string>()
 
 const existenceLabel = 'Selected existent trade'
 </script>
@@ -50,8 +54,8 @@ const existenceLabel = 'Selected existent trade'
               class="w-full"
               @click="() => {
                 if (selectedTrade?.length) {
-                  dialogModelValueUpdate(false)
                   $emit('saveTradeClicked', selectedTrade)
+                  dialogModelValueUpdate(false)
                 }
               }"
             >

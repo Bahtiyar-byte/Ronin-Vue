@@ -126,21 +126,16 @@ const handleSectionRemove = (sectionNum: number) => {
     class="md:!p-6 !p-12"
     :loading="isLoading"
   >
-    <!-- SECTION Header -->
     <div class="d-flex flex-wrap justify-space-between flex-column rounded bg-var-theme-background flex-sm-row gap-6 p-6 mb-6">
-      <!-- 👉 Left Content -->
       <div>
         <div class="d-flex align-center app-logo mb-6">
-          <!-- 👉 Logo -->
           <VNodeRenderer :nodes="themeConfig.app.logo" />
 
-          <!-- 👉 Title -->
           <h6 class="app-logo-title">
             {{ coreConfig.company.name }}
           </h6>
         </div>
 
-        <!-- 👉 Address -->
         <p
           v-for="(address, addressKey) in coreConfig.company.address.split('\n')"
           :key="`estimate-address-${addressKey}`"
@@ -152,11 +147,6 @@ const handleSectionRemove = (sectionNum: number) => {
         <p class="font-semibold mt-4">
           Company representative:
         </p>
-<!--        <DebouncedAutoComplete-->
-<!--          v-model:value="userId"-->
-<!--          title="Search Users"-->
-<!--          :fetch-items="(query) => fetchAutocomplete(query, autocompleteUsers)"-->
-<!--        />-->
         <p v-if="selectedUser">
           {{ resolveUserName(selectedUser) }}
         </p>
@@ -168,9 +158,7 @@ const handleSectionRemove = (sectionNum: number) => {
         </p>
       </div>
 
-      <!-- 👉 Right Content -->
       <div class="d-flex flex-column justify-center gap-2">
-        <!-- 👉 Issue Date -->
         <div class="d-flex gap-x-4 align-start align-sm-center flex-column flex-sm-row">
           <span
             class="text-high-emphasis text-sm-end"
@@ -187,19 +175,12 @@ const handleSectionRemove = (sectionNum: number) => {
         </div>
       </div>
     </div>
-    <!-- !SECTION -->
 
     <VRow>
       <VCol class="text-no-wrap">
         <h6 class="font-medium text-body mb-4">
           Estimate To:
         </h6>
-<!--        <DebouncedAutoComplete-->
-<!--          v-model:value="contactId"-->
-<!--          label=""-->
-<!--          title="Update related contact"-->
-<!--          :fetch-items="(query: string) => fetchAutocomplete(query, autocompleteContacts)"-->
-<!--        />-->
         <p v-if="estimateData.related_contact?.name">
           {{ estimateData.related_contact.name }}
         </p>
@@ -222,7 +203,6 @@ const handleSectionRemove = (sectionNum: number) => {
     </VRow>
 
     <VDivider class="my-6 border-dashed border-gray-700 !opacity-60" />
-    <!-- 👉 Add purchased products -->
     <div class="add-products-form">
       <div
         v-for="(section, index) in data.sections"
@@ -265,7 +245,6 @@ const handleSectionRemove = (sectionNum: number) => {
 
     <VDivider class="my-6 border-dashed border-gray-700 !opacity-60" />
 
-    <!-- 👉 Total Amount -->
     <div class="flex justify-space-between flex-wrap flex-column flex-sm-row">
       <div />
 
@@ -332,16 +311,5 @@ const handleSectionRemove = (sectionNum: number) => {
         </VCol>
       </VRow>
     </div>
-
-<!--    <div>-->
-<!--      <h6 class="text-h6 mb-2">-->
-<!--        Note:-->
-<!--      </h6>-->
-<!--      <VTextarea-->
-<!--        v-model="estimateData.description"-->
-<!--        placeholder="Write note here..."-->
-<!--        :rows="2"-->
-<!--      />-->
-<!--    </div>-->
   </VCard>
 </template>
