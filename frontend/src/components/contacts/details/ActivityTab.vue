@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import type WidgetCardProps from '@/types/widgets/WidgetCardProps'
 import WidgetCard from '@/components/widgets/WidgetCard.vue'
-import { useAppointments } from '@/composables/useAppointments'
 import type Contact from '@/types/contacts/Contact'
 
 const contactData = defineModel<Contact>('contactData', { required: true })
 
 const { count: appointmentsCount } = useAppointments()
+const { count: estimatesCount } = useEstimates()
+const { count: jobsCount } = useJobs()
 
 const widgets = ref<WidgetCardProps[]>([
   {
+    to: { name: 'calendar', query: { related_contact: contactData.value.id } },
     widget: {
       title: 'Appointments',
       value: (await appointmentsCount({ related_contact: contactData.value.id })).data.value?.count,
@@ -22,9 +24,10 @@ const widgets = ref<WidgetCardProps[]>([
     },
   },
   {
+    to: { name: 'estimates', query: { related_contact: contactData.value.id } },
     widget: {
       title: 'Estimates',
-      value: 0,
+      value: (await estimatesCount({ related_contact: contactData.value.id })).data.value?.count,
       icon: 'material-symbols-task-outline',
       action: {
         title: 'Create estimate for this contact',
@@ -34,15 +37,19 @@ const widgets = ref<WidgetCardProps[]>([
     },
   },
   {
+    to: { name: 'jobs', query: { related_contact: contactData.value.id } },
     widget: {
       title: 'Jobs',
-      value: 0,
+      value: (await jobsCount({ related_contact: contactData.value.id })).data.value?.count,
       icon: 'material-symbols-task-outline',
       action: {
         title: 'Add job for this contact',
         icon: 'tabler-plus',
         to: {
-          name: 'root',
+          name: 'jobs-create',
+          query: {
+            related_contact: contactData.value.id,
+          },
         },
       },
     },

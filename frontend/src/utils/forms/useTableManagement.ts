@@ -39,6 +39,7 @@ export function useTableManagement<T>(
       offset: (pagination.value.page - 1) * pagination.value.itemsPerPage,
       sortBy: '',
       sortDesc: '',
+      ...route.query,
       ...Object.fromEntries(filters.value.map(filter => [filter.key, filter?.value ?? ''])),
       q: searchQuery?.value ?? '',
       name: searchQuery?.value ?? '',
