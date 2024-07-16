@@ -223,6 +223,7 @@ const handleSectionRemove = (sectionNum: number) => {
           v-if="data.sections !== undefined"
           :id="index"
           v-model:section="data.sections[index]"
+          :hide-controls="hideControls"
           @remove="(val: number) => handleSectionRemove(val)"
           @update:total-amount="recalculateTotal"
         />

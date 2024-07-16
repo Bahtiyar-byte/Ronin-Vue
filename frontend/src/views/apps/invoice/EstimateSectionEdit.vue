@@ -7,6 +7,7 @@ interface Emit {
 
 interface Props {
   id: number
+  hideControls?: boolean
 }
 
 defineProps<Props>()
@@ -67,13 +68,24 @@ watch([
           cols="12"
           md="6"
         >
+          <p
+            v-if="hideControls"
+            class="font-semibold mb-2"
+          >
+            {{ data.name }}
+          </p>
           <AppTextField
+            v-else
             v-model="data.name"
             placeholder="Name"
             class="mb-2"
           />
 
+          <p v-if="hideControls">
+            {{ data.description }}
+          </p>
           <AppTextarea
+            v-else
             v-model="data.description"
             rows="2"
             placeholder="Item description"
@@ -85,7 +97,11 @@ watch([
           md="2"
           sm="4"
         >
+          <span v-if="hideControls">
+            {{ data.material_price }}
+          </span>
           <AppTextField
+            v-else
             v-model="data.material_price"
             type="number"
             placeholder="Material price"
@@ -98,7 +114,11 @@ watch([
           md="2"
           sm="4"
         >
+          <span v-if="hideControls">
+            {{ data.amount }}
+          </span>
           <AppTextField
+            v-else
             v-model="data.amount"
             type="number"
             class="mb-6"
@@ -121,6 +141,7 @@ watch([
 
     <!-- 👉 Item Actions -->
     <div
+      v-if="!hideControls"
       class="flex flex-col align-end absolute right-0 top-0 bottom-0"
       :class="$vuetify.display.smAndUp ? 'border-s' : 'border-b' "
     >
