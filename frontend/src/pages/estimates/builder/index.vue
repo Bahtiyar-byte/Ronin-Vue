@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import html2pdf from 'html2pdf.js'
+
 import type Estimate from '@/types/estimates/Estimate'
 import InvoiceEditable from '@/views/apps/invoice/InvoiceEditable.vue'
 
@@ -22,17 +24,34 @@ const removeSection = (id: number) => {
 const handleSave = () => {
   console.log(estimateData)
 }
+
+const generatePdf = () => {
+  const element = document.getElementById('invoice-editable')
+
+  return html2pdf().from(element)
+}
+
+const hideControls = ref<boolean>(false)
+
+const handleDownload = () => {
+  hideControls.value = true
+
+  generatePdf().save('estimate.pdf').then(() => {
+    hideControls.value = false
+  })
+}
 </script>
 
 <template>
   <VRow>
-    <!-- 👉 InvoiceEditable -->
     <VCol
       cols="12"
       md="9"
     >
       <InvoiceEditable
+        id="invoice-editable"
         v-model:data="estimateData"
+        :hide-controls="hideControls"
         @push="addProduct"
         @remove-section="removeSection"
       />
@@ -53,22 +72,14 @@ const handleSave = () => {
           >
             Send Esimate
           </VBtn>
-
-          <VBtn
-            block
-            color="secondary"
-            variant="tonal"
-            prepend-icon="tabler-printer"
-          >
-            Print
-          </VBtn>
           <VBtn
             block
             color="secondary"
             variant="tonal"
             prepend-icon="tabler-download"
+            @click="handleDownload"
           >
-            Download
+            Print / Download
           </VBtn>
         </VCardText>
       </VCard>

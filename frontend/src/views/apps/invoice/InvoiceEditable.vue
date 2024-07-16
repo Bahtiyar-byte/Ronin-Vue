@@ -3,8 +3,6 @@ import { storeToRefs } from 'pinia'
 
 import type { RouteLocationNormalizedLoaded } from 'vue-router'
 
-import DebouncedAutoComplete from '@/components/common/DebouncedAutoComplete.vue'
-
 import type User from '@/types/users/User'
 import type Contact from '@/types/contacts/Contact'
 import type EstimateSectionTemplate from '@/types/estimateSectionTemplates/EstimateSectionTemplate'
@@ -12,7 +10,6 @@ import type EstimateSection from '@/types/estimateSections/EstimateSection'
 import type Estimate from '@/types/estimates/Estimate'
 
 import { useCurrentUserStore } from '@/@core/stores/auth/currentUser'
-import { useContacts } from '@/composables/useContacts'
 import { useEstimateSectionTemplates } from '@/composables/useEstimateSectionTemplates'
 
 import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
@@ -24,8 +21,13 @@ import { convertTemplateToSection } from '@/utils/estimates'
 import EstimateSectionEdit from '@/views/apps/invoice/EstimateSectionEdit.vue'
 
 import { resolveUserName } from '@/utils/auth'
-import { fetchAutocomplete } from '@/utils/api'
-import SignatureField from "@/components/estimates/SignatureField.vue";
+
+import SignatureField from '@/components/estimates/SignatureField.vue'
+import {formatDate} from "@core/utils/formatters";
+
+defineProps<{
+  hideControls: boolean
+}>()
 
 const emit = defineEmits<{
   (e: 'push', value: Partial<EstimateSection>): void
@@ -33,8 +35,8 @@ const emit = defineEmits<{
 }>()
 
 const { user: currentUser } = storeToRefs(useCurrentUserStore())
-const { autocomplete: autocompleteContacts, getById: getContactById } = useContacts()
-const { autocomplete: autocompleteUsers, getById: getUserById } = useUsers()
+const { getById: getContactById } = useContacts()
+const { getById: getUserById } = useUsers()
 
 const estimateData = defineModel<Partial<Estimate>>('data', { required: true })
 
@@ -166,7 +168,15 @@ const handleSectionRemove = (sectionNum: number) => {
           >Date Issued:</span>
 
           <span style="inline-size: 9.5rem;">
+            <span v-if="hideControls">
+              {{ formatDate(estimateData.createdAt as string, {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+              }) }}
+            </span>
             <AppDateTimePicker
+              v-else
               v-model="estimateData.createdAt"
               placeholder="YYYY-MM-DD"
               :config="{ position: 'auto right' }"
@@ -219,6 +229,7 @@ const handleSectionRemove = (sectionNum: number) => {
       </div>
 
       <VBtn
+        v-if="!hideControls"
         size="small"
         prepend-icon="tabler-plus"
         @click="tradesDialogVisible = !tradesDialogVisible"
@@ -227,6 +238,7 @@ const handleSectionRemove = (sectionNum: number) => {
       </VBtn>
 
       <TradeSelectionDialog
+        v-if="!hideControls"
         v-model:dialog-visible="tradesDialogVisible"
         @save-trade-clicked="(tradeId: string) => {
           isDialogVisible = true
@@ -235,6 +247,7 @@ const handleSectionRemove = (sectionNum: number) => {
       />
 
       <InvoiceSectionManageDialog
+        v-if="!hideControls"
         v-model:dialog-visible="isDialogVisible"
         v-model:trades-uuid="tradesUuid as string"
         @save-section-clicked="(templateId: string) => {
