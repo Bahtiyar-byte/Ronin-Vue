@@ -240,7 +240,7 @@ module.exports = class TradesDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('trades', 'id', query),
+          Utils.ilike('trades', 'name', query),
         ],
       };
     }
@@ -249,7 +249,7 @@ module.exports = class TradesDBApi {
       attributes: ['id', 'name'],
       where,
       limit: limit ? Number(limit) : undefined,
-      orderBy: [['id', 'ASC']],
+      orderBy: [['name', 'ASC']],
     });
 
     return records.map((record) => ({

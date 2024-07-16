@@ -1,7 +1,7 @@
 const express = require('express');
 
-const { ContactsServiceInstance } = require('../services/contacts');
-const { ContactsDBApiInstance } = require('../db/api/contacts');
+const { ContactsServiceInstance } = require('../services/contacts.ts');
+const { ContactsDBApiInstance } = require('../db/api/contacts.ts');
 const wrapAsync = require('../helpers').wrapAsync;
 
 const router = express.Router();
@@ -12,8 +12,8 @@ const { checkCrudPermissions } = require('../middlewares/check-permissions');
 
 router.use(checkCrudPermissions('contacts'));
 
-const ContactsDBApi = new ContactsDBApiInstance();
-const ContactsService = new ContactsServiceInstance();
+const ContactsDBApi = ContactsDBApiInstance;
+const ContactsService = ContactsServiceInstance;
 
 /**
  *  @swagger

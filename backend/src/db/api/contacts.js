@@ -6,19 +6,23 @@ const Utils = require('../utils');
 const Sequelize = db.Sequelize;
 const Op = Sequelize.Op;
 
-module.exports = class ContractsDBApi {
+module.exports = class ContactsDBApi {
   static async create(data, options) {
     const currentUser = (options && options.currentUser) || { id: null };
     const transaction = (options && options.transaction) || undefined;
 
-    const contracts = await db.contracts.create(
+    const contacts = await db.contacts.create(
       {
         id: data.id || undefined,
 
         name: data.name || null,
-        amount: data.amount || null,
-        body: data.body || null,
-        signed_date: data.signed_date || null,
+        email: data.email || null,
+        phone: data.phone || null,
+        address: data.address || null,
+        status: data.status || null,
+        firstName: data.firstName || null,
+        lastName: data.lastName || null,
+        source: data.source || null,
         importHash: data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
@@ -26,15 +30,7 @@ module.exports = class ContractsDBApi {
       { transaction },
     );
 
-    await contracts.setRelated_contact(data.related_contact || null, {
-      transaction,
-    });
-
-    await contracts.setRelated_job(data.related_job || null, {
-      transaction,
-    });
-
-    return contracts;
+    return contacts;
   }
 
   static async bulkImport(data, options) {
@@ -42,13 +38,17 @@ module.exports = class ContractsDBApi {
     const transaction = (options && options.transaction) || undefined;
 
     // Prepare data - wrapping individual data transformations in a map() method
-    const contractsData = data.map((item, index) => ({
+    const contactsData = data.map((item, index) => ({
       id: item.id || undefined,
 
       name: item.name || null,
-      amount: item.amount || null,
-      body: item.body || null,
-      signed_date: item.signed_date || null,
+      email: item.email || null,
+      phone: item.phone || null,
+      address: item.address || null,
+      status: item.status || null,
+      firstName: item.firstName || null,
+      lastName: item.lastName || null,
+      source: item.source || null,
       importHash: item.importHash || null,
       createdById: currentUser.id,
       updatedById: currentUser.id,
@@ -56,48 +56,44 @@ module.exports = class ContractsDBApi {
     }));
 
     // Bulk create items
-    const contracts = await db.contracts.bulkCreate(contractsData, {
+    const contacts = await db.contacts.bulkCreate(contactsData, {
       transaction,
     });
 
     // For each item created, replace relation files
 
-    return contracts;
+    return contacts;
   }
 
   static async update(id, data, options) {
     const currentUser = (options && options.currentUser) || { id: null };
     const transaction = (options && options.transaction) || undefined;
 
-    const contracts = await db.contracts.findByPk(id, {}, { transaction });
+    const contacts = await db.contacts.findByPk(id, {}, { transaction });
 
-    await contracts.update(
+    await contacts.update(
       {
         name: data.name || null,
-        amount: data.amount || null,
-        body: data.body || null,
-        signed_date: data.signed_date || null,
+        email: data.email || null,
+        phone: data.phone || null,
+        address: data.address || null,
+        status: data.status || null,
+        firstName: data.firstName || null,
+        lastName: data.lastName || null,
+        source: data.source || null,
         updatedById: currentUser.id,
       },
       { transaction },
     );
 
-    await contracts.setRelated_contact(data.related_contact || null, {
-      transaction,
-    });
-
-    await contracts.setRelated_job(data.related_job || null, {
-      transaction,
-    });
-
-    return contracts;
+    return contacts;
   }
 
   static async deleteByIds(ids, options) {
     const currentUser = (options && options.currentUser) || { id: null };
     const transaction = (options && options.transaction) || undefined;
 
-    const contracts = await db.contracts.findAll({
+    const contacts = await db.contacts.findAll({
       where: {
         id: {
           [Op.in]: ids,
@@ -107,24 +103,24 @@ module.exports = class ContractsDBApi {
     });
 
     await db.sequelize.transaction(async (transaction) => {
-      for (const record of contracts) {
+      for (const record of contacts) {
         await record.update({ deletedBy: currentUser.id }, { transaction });
       }
-      for (const record of contracts) {
+      for (const record of contacts) {
         await record.destroy({ transaction });
       }
     });
 
-    return contracts;
+    return contacts;
   }
 
   static async remove(id, options) {
     const currentUser = (options && options.currentUser) || { id: null };
     const transaction = (options && options.transaction) || undefined;
 
-    const contracts = await db.contracts.findByPk(id, options);
+    const contacts = await db.contacts.findByPk(id, options);
 
-    await contracts.update(
+    await contacts.update(
       {
         deletedBy: currentUser.id,
       },
@@ -133,31 +129,46 @@ module.exports = class ContractsDBApi {
       },
     );
 
-    await contracts.destroy({
+    await contacts.destroy({
       transaction,
     });
 
-    return contracts;
+    return contacts;
   }
 
   static async findBy(where, options) {
     const transaction = (options && options.transaction) || undefined;
 
-    const contracts = await db.contracts.findOne({ where }, { transaction });
+    const contacts = await db.contacts.findOne({ where }, { transaction });
 
-    if (!contracts) {
-      return contracts;
+    if (!contacts) {
+      return contacts;
     }
 
-    const output = contracts.get({ plain: true });
+    const output = contacts.get({ plain: true });
 
-    output.related_contact = await contracts.getRelated_contact({
+    output.estimates_related_contact =
+      await contacts.getEstimates_related_contact({
+        transaction,
+      });
+
+    output.jobs_related_contact = await contacts.getJobs_related_contact({
       transaction,
     });
 
-    output.related_job = await contracts.getRelated_job({
+    output.emails_related_contact = await contacts.getEmails_related_contact({
       transaction,
     });
+
+    output.appointments_related_contact =
+      await contacts.getAppointments_related_contact({
+        transaction,
+      });
+
+    output.contracts_related_contact =
+      await contacts.getContracts_related_contact({
+        transaction,
+      });
 
     return output;
   }
@@ -173,17 +184,7 @@ module.exports = class ContractsDBApi {
 
     const transaction = (options && options.transaction) || undefined;
     let where = {};
-    let include = [
-      {
-        model: db.contacts,
-        as: 'related_contact',
-      },
-
-      {
-        model: db.jobs,
-        as: 'related_job',
-      },
-    ];
+    let include = [];
 
     if (filter) {
       if (filter.id) {
@@ -196,63 +197,43 @@ module.exports = class ContractsDBApi {
       if (filter.name) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('contracts', 'name', filter.name),
+          [Op.and]: Utils.ilike('contacts', 'name', filter.name),
         };
       }
 
-      if (filter.body) {
+      if (filter.email) {
         where = {
           ...where,
-          [Op.and]: Utils.ilike('contracts', 'body', filter.body),
+          [Op.and]: Utils.ilike('contacts', 'email', filter.email),
         };
       }
 
-      if (filter.amountRange) {
-        const [start, end] = filter.amountRange;
-
-        if (start !== undefined && start !== null && start !== '') {
-          where = {
-            ...where,
-            amount: {
-              ...where.amount,
-              [Op.gte]: start,
-            },
-          };
-        }
-
-        if (end !== undefined && end !== null && end !== '') {
-          where = {
-            ...where,
-            amount: {
-              ...where.amount,
-              [Op.lte]: end,
-            },
-          };
-        }
+      if (filter.phone) {
+        where = {
+          ...where,
+          [Op.and]: Utils.ilike('contacts', 'phone', filter.phone),
+        };
       }
 
-      if (filter.signed_dateRange) {
-        const [start, end] = filter.signed_dateRange;
+      if (filter.address) {
+        where = {
+          ...where,
+          [Op.and]: Utils.ilike('contacts', 'address', filter.address),
+        };
+      }
 
-        if (start !== undefined && start !== null && start !== '') {
-          where = {
-            ...where,
-            signed_date: {
-              ...where.signed_date,
-              [Op.gte]: start,
-            },
-          };
-        }
+      if (filter.firstName) {
+        where = {
+          ...where,
+          [Op.and]: Utils.ilike('contacts', 'firstName', filter.firstName),
+        };
+      }
 
-        if (end !== undefined && end !== null && end !== '') {
-          where = {
-            ...where,
-            signed_date: {
-              ...where.signed_date,
-              [Op.lte]: end,
-            },
-          };
-        }
+      if (filter.lastName) {
+        where = {
+          ...where,
+          [Op.and]: Utils.ilike('contacts', 'lastName', filter.lastName),
+        };
       }
 
       if (
@@ -267,25 +248,17 @@ module.exports = class ContractsDBApi {
         };
       }
 
-      if (filter.related_contact) {
-        var listItems = filter.related_contact.split('|').map((item) => {
-          return Utils.uuid(item);
-        });
-
+      if (filter.status) {
         where = {
           ...where,
-          related_contactId: { [Op.or]: listItems },
+          status: filter.status,
         };
       }
 
-      if (filter.related_job) {
-        var listItems = filter.related_job.split('|').map((item) => {
-          return Utils.uuid(item);
-        });
-
+      if (filter.source) {
         where = {
           ...where,
-          related_jobId: { [Op.or]: listItems },
+          source: filter.source,
         };
       }
 
@@ -317,7 +290,7 @@ module.exports = class ContractsDBApi {
     let { rows, count } = options?.countOnly
       ? {
           rows: [],
-          count: await db.contracts.count({
+          count: await db.contacts.count({
             where,
             include,
             distinct: true,
@@ -330,7 +303,7 @@ module.exports = class ContractsDBApi {
             transaction,
           }),
         }
-      : await db.contracts.findAndCountAll({
+      : await db.contacts.findAndCountAll({
           where,
           include,
           distinct: true,
@@ -358,12 +331,12 @@ module.exports = class ContractsDBApi {
       where = {
         [Op.or]: [
           { ['id']: Utils.uuid(query) },
-          Utils.ilike('contracts', 'name', query),
+          Utils.ilike('contacts', 'name', query),
         ],
       };
     }
 
-    const records = await db.contracts.findAll({
+    const records = await db.contacts.findAll({
       attributes: ['id', 'name'],
       where,
       limit: limit ? Number(limit) : undefined,

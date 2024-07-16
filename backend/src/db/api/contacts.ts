@@ -4,9 +4,12 @@ import Utils from '../utils';
 import { ContactDTO } from './dtos/contacts.dto';
 import { IContactsDBApi, Options } from './interfaces/IContactsDBApi.interface';
 const db = require('../models');
+const Contacts = require('./contacts');
 
 @Service()
-class ContactsDBApi implements IContactsDBApi {
+class ContactsDBApi
+    extends Contacts
+    implements IContactsDBApi {
   async create(data: ContactDTO, options: Options = {}): Promise<void> {
     const currentUser = options.currentUser || { id: null };
     const transaction = options.transaction;
@@ -291,5 +294,5 @@ class ContactsDBApi implements IContactsDBApi {
 }
 
 const ContactsDBApiInstance: IContactsDBApi =
-  ContactsDBApi as typeof ContactsDBApi & IContactsDBApi;
+  new ContactsDBApi() as typeof ContactsDBApi & IContactsDBApi;
 export { ContactsDBApi, ContactsDBApiInstance };
