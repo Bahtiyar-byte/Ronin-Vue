@@ -131,7 +131,7 @@ watch([
           md="2"
           sm="4"
         >
-          <p class="my-2">
+          <p :class="hideControls ? '' : 'my-2'">
             <span class="d-inline d-md-none">Price: </span>
             <span class="text-high-emphasis">${{ totalAmount }}</span>
           </p>
