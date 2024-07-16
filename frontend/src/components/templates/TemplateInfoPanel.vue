@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import type Trade from '@/types/trades/Trade'
+import type Template from '@/types/templates/Template'
 // import { useFilters } from '@/composables/useFilters'
-import { useTrades } from '@/composables/useTrades'
+import { useTemplates } from '@/composables/useTemplates'
 
-const { update } = useTrades()
+const { update } = useTemplates()
 
-const tradeData = defineModel<Trade>('tradeData', { required: true })
+const templateData = defineModel<Template>('templateData', { required: true })
 
-const tradeEditVisible = defineModel<boolean>('tradeEditVisible', {
+const templateEditVisible = defineModel<boolean>('templateEditVisible', {
   default: true,
 })
 
 
 const saveItem = async (type: string, newValue: string) => {
   const updatedData = {
-    ...prepareEntityToUpdate(tradeData.value),
+    ...prepareEntityToUpdate(templateData.value),
     [type]: newValue,
-  } as Trade
+  } as Template
 
   const { data, isFetching } = await update(updatedData)
 
@@ -25,7 +25,7 @@ const saveItem = async (type: string, newValue: string) => {
       return
     }
 
-    tradeData.value = newVal
+    templateData.value = newVal
   })
 
   return isFetching
@@ -37,7 +37,7 @@ const saveItem = async (type: string, newValue: string) => {
   <VRow>
     <!-- SECTION User Details -->
     <VCol cols="12">
-      <VCard :title="tradeData.name">
+      <VCard :title="templateData.name">
         <VCardText>
           <!-- 👉 Details -->
           <h5 class="text-[1.05rem] leading-[1.5] font-medium">
@@ -54,20 +54,32 @@ const saveItem = async (type: string, newValue: string) => {
                   Name:
                 </span>
                 <div class="d-inline-block text-body-1">
-                  {{ tradeData.name }}
+                  {{ templateData.name }}
                 </div>
               </VListItemTitle>
             </VListItem>
+
+            <VListItem>
+              <VListItemTitle>
+                <span class="font-medium">
+                  Description:
+                </span>
+                <div class="d-inline-block text-body-1">
+                  {{ templateData.description }}
+                </div>
+              </VListItemTitle>
+            </VListItem>
+
           </VList>
         </VCardText>
 
         <!-- 👉 Edit and Suspend button -->
         <VCardText
-          v-if="tradeEditVisible"
+          v-if="templateEditVisible"
           class="d-flex justify-center gap-x-4"
         >
           <VBtn
-            :to="{ name: 'tools-trades-update-id', params: { id: tradeData.id } }"
+            :to="{ name: 'tools-templates-update-id', params: { id: templateData.id } }"
             variant="elevated"
             class="w-full"
           >

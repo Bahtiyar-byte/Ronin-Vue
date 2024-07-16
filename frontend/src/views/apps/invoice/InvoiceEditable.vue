@@ -194,7 +194,7 @@ const handleSectionRemove = (sectionNum: number) => {
           v-model:value="contactId"
           label=""
           title="Update related contact"
-          :fetch-items="(query) => fetchAutocomplete(query, autocompleteContacts)"
+          :fetch-items="(query: string) => fetchAutocomplete(query, autocompleteContacts)"
         />
         <p v-if="estimateData.related_contact?.name">
           {{ estimateData.related_contact.name }}
@@ -252,7 +252,7 @@ const handleSectionRemove = (sectionNum: number) => {
 
       <InvoiceSectionManageDialog
         v-model:dialog-visible="isDialogVisible"
-        v-model:trades-uuid="tradesUuid"
+        v-model:trades-uuid="tradesUuid as string"
         @save-section-clicked="(templateId: string) => {
           handleTemplateSectionSelected(templateId)
         }"

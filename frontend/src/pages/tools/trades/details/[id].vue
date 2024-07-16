@@ -34,6 +34,7 @@ onMounted(async () => {
   })
 
   watch(isFetching, newVal => {
+    // console.lof('newVal ',newVal)
     isLoading.value = newVal
   }, { immediate: true })
 })
@@ -54,7 +55,7 @@ useHead({
       },
       {
         title: 'Trades',
-        to: { name: 'trades' },
+        to: { name: 'tools-trades' },
       },
       {
         title: tradeName,
