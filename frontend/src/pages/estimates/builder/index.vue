@@ -21,14 +21,24 @@ const removeSection = (id: number) => {
   estimateData.sections?.splice(id, 1)
 }
 
-const handleSave = () => {
-  console.log(estimateData)
-}
-
 const generatePdf = () => {
   const element = document.getElementById('invoice-editable')
 
   return html2pdf().from(element)
+}
+
+const handleSave = async () => {
+  const opt = {
+    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+  }
+
+  hideControls.value = true
+
+  generatePdf().set(opt).toContainer().toCanvas().toImg().outputPdf('blob').then((blob: Blob) => {
+    hideControls.value = false
+
+    console.log(blob)
+  })
 }
 
 const hideControls = ref<boolean>(false)
