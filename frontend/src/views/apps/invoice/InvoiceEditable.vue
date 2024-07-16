@@ -25,6 +25,7 @@ import EstimateSectionEdit from '@/views/apps/invoice/EstimateSectionEdit.vue'
 
 import { resolveUserName } from '@/utils/auth'
 import { fetchAutocomplete } from '@/utils/api'
+import SignatureField from "@/components/estimates/SignatureField.vue";
 
 const emit = defineEmits<{
   (e: 'push', value: Partial<EstimateSection>): void
@@ -151,11 +152,14 @@ const handleSectionRemove = (sectionNum: number) => {
         <p class="font-semibold mt-4">
           Company representative:
         </p>
-        <DebouncedAutoComplete
-          v-model:value="userId"
-          title="Search Users"
-          :fetch-items="(query) => fetchAutocomplete(query, autocompleteUsers)"
-        />
+<!--        <DebouncedAutoComplete-->
+<!--          v-model:value="userId"-->
+<!--          title="Search Users"-->
+<!--          :fetch-items="(query) => fetchAutocomplete(query, autocompleteUsers)"-->
+<!--        />-->
+        <p v-if="selectedUser">
+          {{ resolveUserName(selectedUser) }}
+        </p>
         <p v-if="selectedUser?.phoneNumber">
           Phone: <a :href="`tel:${selectedUser.phoneNumber}`">{{ selectedUser.phoneNumber }}</a>
         </p>
@@ -190,12 +194,12 @@ const handleSectionRemove = (sectionNum: number) => {
         <h6 class="font-medium text-body mb-4">
           Estimate To:
         </h6>
-        <InvoiceAutoComplete
-          v-model:value="contactId"
-          label=""
-          title="Update related contact"
-          :fetch-items="(query: string) => fetchAutocomplete(query, autocompleteContacts)"
-        />
+<!--        <DebouncedAutoComplete-->
+<!--          v-model:value="contactId"-->
+<!--          label=""-->
+<!--          title="Update related contact"-->
+<!--          :fetch-items="(query: string) => fetchAutocomplete(query, autocompleteContacts)"-->
+<!--        />-->
         <p v-if="estimateData.related_contact?.name">
           {{ estimateData.related_contact.name }}
         </p>
@@ -263,20 +267,7 @@ const handleSectionRemove = (sectionNum: number) => {
 
     <!-- 👉 Total Amount -->
     <div class="flex justify-space-between flex-wrap flex-column flex-sm-row">
-      <div class="mb-6 sm:mb-0">
-        <div class="d-flex align-center mb-4">
-          <h6 class="font-semibold mx-2">
-            Salesperson:
-          </h6>
-          <AppTextField
-            v-if="selectedUser"
-            :value="resolveUserName(selectedUser)"
-            readonly
-            style="inline-size: 8rem;"
-            placeholder="John Doe"
-          />
-        </div>
-      </div>
+      <div />
 
       <div>
         <table class="w-100">
@@ -299,15 +290,58 @@ const handleSectionRemove = (sectionNum: number) => {
 
     <VDivider class="my-6 border-dashed border-gray-700 !opacity-60" />
 
-    <div>
-      <h6 class="text-h6 mb-2">
-        Note:
-      </h6>
-      <VTextarea
-        v-model="estimateData.description"
-        placeholder="Write note here..."
-        :rows="2"
-      />
+    <div class="text-sm mb-12">
+      <p>
+        This estimate includes the cost for all services provided, any materials needed, all labor hours, and transportation, along with all required overhead
+        such as any necessary insurances, certifications, and/or warranties. We do not discourage our customers from obtaining multiple service quotes in
+        order to make the best possible decision, but due to constant fluctuations in material and labor costs, the price outlined in this estimate is good for 30
+        days. If you have any questions or comments about the estimate, please contact us as soon as possible so that we can provide you with the needed
+        information.
+      </p>
+      <p class="mt-4">
+        <b>
+          If there is need work to be done or that was discussed and its not specifically listed on estimate please contact us
+        </b>
+      </p>
     </div>
+
+    <div class="space-y-6">
+      <span class="hidden">Signatures</span>
+      <VRow>
+        <VCol cols="8">
+          <SignatureField title="Company Authorized Signature" />
+        </VCol>
+        <VCol cols="4">
+          <SignatureField title="Date" />
+        </VCol>
+      </VRow>
+      <VRow>
+        <VCol cols="8">
+          <SignatureField title="Customer Signature" />
+        </VCol>
+        <VCol cols="4">
+          <SignatureField title="Date" />
+        </VCol>
+      </VRow>
+      <VRow>
+        <VCol cols="8">
+          <SignatureField title="Customer Signature" />
+        </VCol>
+        <VCol cols="4">
+          <SignatureField title="Date" />
+        </VCol>
+      </VRow>
+    </div>
+
+<!--    <div>-->
+<!--      <h6 class="text-h6 mb-2">-->
+<!--        Note:-->
+<!--      </h6>-->
+<!--      <VTextarea-->
+<!--        v-model="estimateData.description"-->
+<!--        placeholder="Write note here..."-->
+<!--        :rows="2"-->
+<!--      />-->
+<!--    </div>-->
   </VCard>
 </template>

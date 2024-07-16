@@ -62,7 +62,7 @@ const existenceLabel = 'Selected existent trade'
       </VCardText>
       <VCardActions>
         <RouterLink
-          :to="{ name: 'trades' }"
+          :to="{ name: 'tools-trades' }"
           target="_blank"
         >
           <VBtn

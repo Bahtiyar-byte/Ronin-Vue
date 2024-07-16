@@ -17,7 +17,7 @@ defineEmits<{
 const { autocomplete: autocompleteTemplates } = useEstimateSectionTemplates()
 
 const isDialogVisible = defineModel<boolean>('dialogVisible', { required: true })
-const tradesUuid = defineModel<string>('tradesUuid', { required: true })
+const tradesUuid = defineModel<string>('tradesUuid')
 
 const dialogModelValueUpdate = (val: boolean) => {
   isDialogVisible.value = val

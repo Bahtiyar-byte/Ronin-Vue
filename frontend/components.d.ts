@@ -80,6 +80,7 @@ declare module 'vue' {
     SecurityTab: typeof import('./src/components/profile/tabs/SecurityTab.vue')['default']
     ShareProjectDialog: typeof import('./src/components/dialogs/ShareProjectDialog.vue')['default']
     Shortcuts: typeof import('./src/@core/components/Shortcuts.vue')['default']
+    SignatureField: typeof import('./src/components/estimates/SignatureField.vue')['default']
     TablePagination: typeof import('./src/@core/components/TablePagination.vue')['default']
     TabSkeleton: typeof import('./src/components/common/skeletons/TabSkeleton.vue')['default']
     TemplateInfoPanel: typeof import('./src/components/templates/TemplateInfoPanel.vue')['default']

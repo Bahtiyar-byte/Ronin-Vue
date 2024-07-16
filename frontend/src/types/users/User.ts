@@ -12,7 +12,7 @@ export default interface User extends Entity {
   passwordResetToken: null | string
   passwordResetTokenExpiresAt: null | string
   provider: string
-  name: null | string
+  name: string
   avatar: []
   roleId: []
 }

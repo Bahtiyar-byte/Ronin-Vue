@@ -21,5 +21,11 @@ export const resolveUserName = (user: User): string => {
     return name
   }
 
-  return [firstName, lastName].filter(Boolean).join(' ')
+  const filteredParts = [firstName, lastName].filter(Boolean).join(' ')
+
+  if (filteredParts) {
+    return filteredParts
+  }
+
+  return user.email
 }
