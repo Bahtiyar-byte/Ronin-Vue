@@ -20,7 +20,7 @@ watch([
   () => data.value.material_price,
   () => data.value.amount,
 ], () => {
-  totalAmount.value = (data.value.material_price ?? 0) * (data.value.amount ?? 0)
+  totalAmount.value = Number.parseFloat(((data.value.material_price ?? 0) * (data.value.amount ?? 0)).toFixed(2))
 })
 </script>
 
@@ -90,7 +90,7 @@ watch([
             type="number"
             placeholder="Material price"
             class="mb-6"
-            min="1"
+            min="0.01"
           />
         </VCol>
         <VCol
@@ -103,7 +103,7 @@ watch([
             type="number"
             class="mb-6"
             placeholder="Amount"
-            min="1"
+            min="0.01"
           />
         </VCol>
         <VCol

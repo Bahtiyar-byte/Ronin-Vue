@@ -44,24 +44,31 @@ const handleSave = () => {
       md="3"
     >
       <VCard class="mb-8 !sticky top-4">
-        <VCardText>
+        <VCardText class="space-y-4">
           <!-- 👉 Send Invoice -->
           <VBtn
             block
             prepend-icon="tabler-send"
-            class="mb-4"
+            @click="handleSave"
           >
             Send Esimate
           </VBtn>
 
-          <!-- 👉 Save -->
           <VBtn
             block
             color="secondary"
             variant="tonal"
-            @click="handleSave"
+            prepend-icon="tabler-printer"
           >
-            Save
+            Print
+          </VBtn>
+          <VBtn
+            block
+            color="secondary"
+            variant="tonal"
+            prepend-icon="tabler-download"
+          >
+            Download
           </VBtn>
         </VCardText>
       </VCard>

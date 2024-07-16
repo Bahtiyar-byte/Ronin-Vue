@@ -112,7 +112,7 @@ const recalculateTotal = () => {
     total += (section.material_price ?? 0) * (section.amount ?? 0)
   })
 
-  estimateData.value.total_price = total
+  estimateData.value.total_price = Number.parseFloat(total.toFixed(2))
 }
 
 const handleSectionRemove = (sectionNum: number) => {

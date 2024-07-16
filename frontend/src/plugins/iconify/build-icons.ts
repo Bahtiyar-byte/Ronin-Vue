@@ -123,6 +123,8 @@ const sources: BundleScriptConfig = {
         'mail',
         'mail-opened',
         'send',
+        'printer',
+        'download',
       ],
     },
     {
