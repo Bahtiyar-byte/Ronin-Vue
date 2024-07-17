@@ -4,16 +4,18 @@ import type {
   NotificationKey,
   NotificationType,
 } from '../../../@types/Notification/NotificationTypes';
+import UsersDBApi from '../../../db/api/users'
+import { ContactsDBApi } from '../../../db/api/contacts'
 
 export namespace NotificationsServices {
   export abstract class Service {
-    private usersDbApi;
+    private usersDbApi: UsersDBApi;
 
-    private contactsDbApi;
+    private contactsDbApi: ContactsDBApi;
 
     protected constructor() {
-      this.usersDbApi = require('../../../db/api/users.js');
-      this.contactsDbApi = require('../../../db/api/contacts');
+      this.usersDbApi = new UsersDBApi();
+      this.contactsDbApi = new ContactsDBApi();
     }
 
     checkIfNotificationEnabled(

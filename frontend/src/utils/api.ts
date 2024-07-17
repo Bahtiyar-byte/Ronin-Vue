@@ -40,13 +40,12 @@ export const prepareEntityToUpdate = (entity: Record<string, any>): Record<strin
 
   for (const key in entity) {
     if (Object.prototype.hasOwnProperty.call(entity, key)) {
-      if (
-        (key.endsWith('Id') && (key.startsWith('related_') || key.startsWith('assigned_')))
-        || key === 'related_contact'
-      ) {
+      if (key.endsWith('Id') && (key.startsWith('related_') || key.startsWith('assigned_'))) {
         const newKey = key.slice(0, -2)
 
         updatedEntity[newKey] = entity[key]
+      } else if (key === 'related_contact') {
+        updatedEntity[key] = entity[key].id
       } else if (updatedEntity[key] === undefined) {
         updatedEntity[key] = entity[key]
       }

@@ -1,6 +1,6 @@
 
 require('reflect-metadata')
-require('./subscribers/index')
+require('./subscribers/index.ts')
 
 module.exports = class RoninAppInitialise {
     /**

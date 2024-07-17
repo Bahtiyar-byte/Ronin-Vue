@@ -1,15 +1,21 @@
+import type Appointment from '~/@types/Appointment/Appointment'
+import type Email from '~/services/email/list/Email'
+import type Estimate from '~/@types/Estimate/Estimate';
+import type Contact from '~/@types/Contact/Contact';
+
 const { getNotification } = require('../../../notifications/helpers');
 const EmailUtils = require('../../utils')
 
 const config = require('../../../../config');
 
-module.exports = class EstimateCreatedEmail {
-    constructor(estimate) {
-        this.to = estimate.related_contact.email;
-        this.estimate = estimate;
+export default class AppointmentCreatedContactEmail implements Email {
+    public to: string
 
-        // ToDo: remove this shit
-        // this.to = 'mkuchirov@gmail.com';
+    private estimate: Estimate
+
+    constructor(to: string, estimate: Estimate) {
+        this.to = to
+        this.estimate = estimate
     }
 
     get subject() {
@@ -24,14 +30,7 @@ module.exports = class EstimateCreatedEmail {
             return (new EmailUtils()).renderDefaultEmail(
                 this.subject,
                 getNotification('emails.estimate.created.body',
-                    this.estimate.related_contact.name,
-                    this.estimate.name,
-                    this.estimate.description,
-                    this.estimate.trade,
-                    this.estimate.material_cost,
-                    this.estimate.labor_cost,
-                    this.estimate.total_price,
-
+                    (this.estimate.related_contact as Contact).name,
                     // ToDo: generate correct link with token
                     (new URL(`${config.frontendUrl}/auth/accept-estimate/${this.estimate.id}`))
                 )
@@ -41,4 +40,4 @@ module.exports = class EstimateCreatedEmail {
             throw error;
         }
     }
-};
+}

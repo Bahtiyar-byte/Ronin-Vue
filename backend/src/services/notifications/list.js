@@ -99,17 +99,9 @@ const errors = {
         subject: '{0}: Estimate created',
         body: `
 <h1>Dear, {0}</h1>
-<p>We created a new estimate with the following details:</p>
-<ul>
-  <li><strong>Name:</strong> {1}</li>
-  <li><strong>Description:</strong> {2}</li>
-  <li><strong>Trade:</strong> {3}</li>
-  <li><strong>Material Cost:</strong> {4}</li>
-  <li><strong>Labor Cost:</strong> {5}</li>
-  <li><strong>Total Price:</strong> {6}</li>
-</ul>
+<p>We created a new estimate. See the file attached bellow.</p>
 <p>If you confirm this estimate, please click the link below:</p>
-<a href="{7}" target="_blank" class="button w-100">Confirm Estimate</a>
+<a href="{1}" target="_blank" class="button w-100">Confirm Estimate</a>
         `,
       }
     },
