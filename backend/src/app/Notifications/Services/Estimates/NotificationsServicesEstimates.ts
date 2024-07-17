@@ -28,14 +28,25 @@ export namespace NotificationsServicesAppointments {
             }
         }
 
-        private async sendContactEmailNotification(contact: Contact, estimate: Estimate) {
+        private async sendContactEmailNotification(contact: Contact, estimate: Estimate & { attachments?: string[] }) {
             const _estimate: Estimate = {
                 ...estimate,
                 related_contact: contact,
             }
 
             const estimateCreatedContactMail = new EstimateCreatedContactEmail(contact.email as string, _estimate);
-            await new EmailSender(estimateCreatedContactMail).send();
+
+            const emailSender = new EmailSender(estimateCreatedContactMail);
+
+            estimate.attachments?.forEach(item => {
+                emailSender.addAttachment({
+                    filename: 'Estimate',
+                    contentType: 'application/pdf',
+                    content: Buffer.from(item)
+                })
+            })
+
+            await emailSender.send();
         }
 
         private async getEstimateContact(estimate: Estimate): Promise<Contact> {

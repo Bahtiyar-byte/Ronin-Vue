@@ -62,7 +62,22 @@ export const useEstimates = () => {
     }
   }
 
-  const create = async (estimate: Partial<Estimate>) => {
+  const create = async (estimate: Partial<Estimate> & { attachments: Blob[] }) => {
+    // const formData = new FormData()
+    //
+    // // Добавляем остальные поля оценки в FormData
+    // for (const [key, value] of Object.entries(estimate)) {
+    //   if (key !== 'attachments') {
+    //     formData.append(`data[${key}]`, value as string | Blob)
+    //   }
+    // }
+    //
+    // estimate.attachments.forEach((attachment, index) => {
+    //   formData.append('data[attachments][]', attachment, `attachment_${index}.pdf`)
+    // })
+    //
+    // console.log(formData)
+
     const {
       data,
       isFetching,

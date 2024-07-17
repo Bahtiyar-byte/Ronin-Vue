@@ -18,6 +18,16 @@ module.exports = class RoninEstimatesService extends EstimatesService {
             await transaction.commit();
 
             estimates = await EstimatesDBApi.findBy({ id: estimates.id });
+
+            if (data.attachedFile !== undefined) {
+                estimates = {
+                    ...estimates,
+                    attachments: [
+                        data.attachedFile
+                    ],
+                }
+            }
+
             eventEmitter.emit('estimateCreated', estimates);
 
             return estimates;

@@ -46,7 +46,10 @@ const handleSave = async () => {
   generatePdf().set(opt).toContainer().toCanvas().toImg().outputPdf('blob').then(async (blob: Blob) => {
     hideControls.value = false
 
-    const { data } = await createEstimate(prepareEntityToUpdate(estimateData))
+    const { data } = await createEstimate({
+      ...prepareEntityToUpdate(estimateData),
+      attachments: [blob],
+    })
 
     watch(data, async (newVal: Estimate | null) => {
       if (newVal === null) {

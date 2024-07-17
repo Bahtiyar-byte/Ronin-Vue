@@ -63,21 +63,21 @@ function prefixWithPlus(value: number): string {
               location="bottom"
               :text="widget.action.title"
             >
-              <template #activator="{ props }">
-                <VAvatar
-                  v-bind="props"
-                  :color="widget?.iconColor ?? 'primary'"
-                  variant="tonal"
-                  rounded
-                  size="42"
-                >
-                  <RouterLink :to="widget.action.to">
+              <template #activator="{ props: tooltipProps }">
+                <RouterLink :to="widget.action.to">
+                  <VAvatar
+                    v-bind="tooltipProps"
+                    :color="widget?.iconColor ?? 'primary'"
+                    variant="tonal"
+                    rounded
+                    size="42"
+                  >
                     <VIcon
                       :icon="widget.action.icon"
                       size="26"
                     />
-                  </RouterLink>
-                </VAvatar>
+                  </VAvatar>
+                </RouterLink>
               </template>
             </VTooltip>
           </div>

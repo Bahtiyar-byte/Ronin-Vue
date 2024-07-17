@@ -4,8 +4,16 @@ import type Email from '~/services/email/list/Email'
 const config = require('../../config');
 const nodemailer = require('nodemailer');
 
+interface Attachment {
+    filename: string
+    content: Buffer
+    contentType: string
+}
+
 export default class EmailSender {
     private readonly email: Email
+
+    private attachments: Attachment[] = []
 
     constructor(email: Email) {
         this.email = email;
@@ -21,9 +29,14 @@ export default class EmailSender {
             to: this.email.to,
             subject: this.email.subject,
             html: htmlContent,
+            attachments: this.attachments
         };
 
         return transporter.sendMail(mailOptions);
+    }
+
+    async addAttachment(attachment: Attachment) {
+        this.attachments.push(attachment)
     }
 
     static get isConfigured() {

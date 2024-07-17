@@ -3,6 +3,9 @@ require('dotenv').config()
 const express = require('express');
 const cors = require('cors');
 const app = express();
+
+app.use(express.json({ limit: '10mb' }));
+
 const passport = require('passport');
 const path = require('path');
 const fs = require('fs');
