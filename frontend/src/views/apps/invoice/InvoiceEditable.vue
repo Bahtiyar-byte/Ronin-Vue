@@ -111,14 +111,14 @@ const recalculateTotal = () => {
   let total = 0
 
   sections.forEach(section => {
-    total += (section.material_price ?? 0) * (section.amount ?? 0)
+    total += Number.parseFloat(section?.amount?.toString() ?? '0')
   })
 
   estimateData.value = {
     ...estimateData.value,
-    total_price: Number.parseFloat(total.toFixed(2)),
+    total_price: total,
   }
-  estimateData.value.total_price = Number.parseFloat(total.toFixed(2))
+  estimateData.value.total_price = total
 }
 
 const handleSectionRemove = (sectionNum: number) => {

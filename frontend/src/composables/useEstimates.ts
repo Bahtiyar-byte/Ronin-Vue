@@ -62,7 +62,7 @@ export const useEstimates = () => {
     }
   }
 
-  const create = async (estimate: Estimate) => {
+  const create = async (estimate: Partial<Estimate>) => {
     const {
       data,
       isFetching,

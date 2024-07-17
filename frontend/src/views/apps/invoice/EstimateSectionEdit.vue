@@ -26,36 +26,6 @@ watch([
 </script>
 
 <template>
-  <!-- eslint-disable vue/no-mutating-props -->
-  <div class="add-products-header hidden md:flex mb-4">
-    <VRow class="!mx-10 font-semibold">
-      <VCol
-        cols="12"
-        md="6"
-      >
-        Item
-      </VCol>
-      <VCol
-        cols="12"
-        md="2"
-      >
-        Cost
-      </VCol>
-      <VCol
-        cols="12"
-        md="2"
-      >
-        Amount
-      </VCol>
-      <VCol
-        cols="12"
-        md="2"
-      >
-        Price
-      </VCol>
-    </VRow>
-  </div>
-
   <VCard
     flat
     border
@@ -64,10 +34,7 @@ watch([
     <!-- 👉 Left Form -->
     <div class="py-6 flex-grow-1">
       <VRow class="!mx-10">
-        <VCol
-          cols="12"
-          md="6"
-        >
+        <VCol cols="12">
           <p
             v-if="hideControls"
             class="font-semibold mb-2"
@@ -92,28 +59,21 @@ watch([
             persistent-placeholder
           />
         </VCol>
+      </VRow>
+      <VRow class="!mx-10 mt-2 border-t border-gray-300 dark:border-gray-700">
         <VCol
           cols="12"
-          md="2"
-          sm="4"
+          md="8"
+          class="font-semibold"
         >
-          <span v-if="hideControls">
-            {{ data.material_price }}
-          </span>
-          <AppTextField
-            v-else
-            v-model="data.material_price"
-            type="number"
-            placeholder="Material price"
-            class="mb-6"
-            min="0.01"
-          />
+          {{ section.name }} Section Total
         </VCol>
         <VCol
           cols="12"
-          md="2"
-          sm="4"
+          md="4"
+          class="flex items-center gap-0.5"
         >
+          $
           <span v-if="hideControls">
             {{ data.amount }}
           </span>
@@ -121,20 +81,9 @@ watch([
             v-else
             v-model="data.amount"
             type="number"
-            class="mb-6"
             placeholder="Amount"
             min="0.01"
           />
-        </VCol>
-        <VCol
-          cols="12"
-          md="2"
-          sm="4"
-        >
-          <p :class="hideControls ? '' : 'my-2'">
-            <span class="d-inline d-md-none">Price: </span>
-            <span class="text-high-emphasis">${{ totalAmount }}</span>
-          </p>
         </VCol>
       </VRow>
     </div>

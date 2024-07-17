@@ -1,7 +1,7 @@
 const express = require('express');
 
-const { ContactsServiceInstance } = require('../services/contacts.ts');
-const { ContactsDBApiInstance } = require('../db/api/contacts.ts');
+const { ContactsServiceInstance } = require('../services/contacts');
+const { ContactsDBApiInstance } = require('../db/api/contacts');
 const wrapAsync = require('../helpers').wrapAsync;
 
 const router = express.Router();
@@ -12,8 +12,8 @@ const { checkCrudPermissions } = require('../middlewares/check-permissions');
 
 router.use(checkCrudPermissions('contacts'));
 
-const ContactsDBApi = ContactsDBApiInstance;
-const ContactsService = ContactsServiceInstance;
+const ContactsDBApi = new ContactsDBApiInstance();
+const ContactsService = new ContactsServiceInstance();
 
 /**
  *  @swagger
@@ -87,18 +87,18 @@ const ContactsService = ContactsServiceInstance;
  *          description: Some server error
  */
 router.post(
-  '/',
-  wrapAsync(async (req, res) => {
-    const link = new URL(req.headers.referer);
-    const payload = await ContactsService.create(
-      req.body.data,
-      req.currentUser,
-      true,
-      link.host,
-    );
+    '/',
+    wrapAsync(async (req, res) => {
+        const link = new URL(req.headers.referer);
+        const payload = await ContactsService.create(
+            req.body.data,
+            req.currentUser,
+            true,
+            link.host,
+        );
 
-    res.status(200).send(payload);
-  }),
+        res.status(200).send(payload);
+    }),
 );
 
 /**
@@ -137,13 +137,13 @@ router.post(
  *
  */
 router.post(
-  '/bulk-import',
-  wrapAsync(async (req, res) => {
-    const link = new URL(req.headers.referer);
-    await ContactsService.bulkImport(req, res, true, link.host);
-    const payload = true;
-    res.status(200).send(payload);
-  }),
+    '/bulk-import',
+    wrapAsync(async (req, res) => {
+        const link = new URL(req.headers.referer);
+        await ContactsService.bulkImport(req, res, true, link.host);
+        const payload = true;
+        res.status(200).send(payload);
+    }),
 );
 
 /**
@@ -195,16 +195,16 @@ router.post(
  *          description: Some server error
  */
 router.put(
-  '/:id',
-  wrapAsync(async (req, res) => {
-    const payload = await ContactsService.update(
-      req.body.data,
-      req.body.id,
-      req.currentUser,
-    );
+    '/:id',
+    wrapAsync(async (req, res) => {
+        const payload = await ContactsService.update(
+            req.body.data,
+            req.body.id,
+            req.currentUser,
+        );
 
-    res.status(200).send(payload);
-  }),
+        res.status(200).send(payload);
+    }),
 );
 
 /**
@@ -240,12 +240,12 @@ router.put(
  *          description: Some server error
  */
 router.delete(
-  '/:id',
-  wrapAsync(async (req, res) => {
-    await ContactsService.remove(req.params.id, req.currentUser);
-    const payload = true;
-    res.status(200).send(payload);
-  }),
+    '/:id',
+    wrapAsync(async (req, res) => {
+        await ContactsService.remove(req.params.id, req.currentUser);
+        const payload = true;
+        res.status(200).send(payload);
+    }),
 );
 
 /**
@@ -281,12 +281,12 @@ router.delete(
  *          description: Some server error
  */
 router.post(
-  '/deleteByIds',
-  wrapAsync(async (req, res) => {
-    await ContactsService.deleteByIds(req.body.data, req.currentUser);
-    const payload = true;
-    res.status(200).send(payload);
-  }),
+    '/deleteByIds',
+    wrapAsync(async (req, res) => {
+        await ContactsService.deleteByIds(req.body.data, req.currentUser);
+        const payload = true;
+        res.status(200).send(payload);
+    }),
 );
 
 /**
@@ -315,33 +315,33 @@ router.post(
  *          description: Some server error
  */
 router.get(
-  '/',
-  wrapAsync(async (req, res) => {
-    const filetype = req.query.filetype;
+    '/',
+    wrapAsync(async (req, res) => {
+        const filetype = req.query.filetype;
 
-    const payload = await ContactsDBApi.findAll(req.query);
-    if (filetype && filetype === 'csv') {
-      const fields = [
-        'id',
-        'name',
-        'email',
-        'phone',
-        'address',
-        'firstName',
-        'lastName',
-      ];
-      const opts = { fields };
-      try {
-        const csv = parse(payload.rows, opts);
-        res.status(200).attachment(csv);
-        res.send(csv);
-      } catch (err) {
-        console.error(err);
-      }
-    } else {
-      res.status(200).send(payload);
-    }
-  }),
+        const payload = await ContactsDBApi.findAll(req.query);
+        if (filetype && filetype === 'csv') {
+            const fields = [
+                'id',
+                'name',
+                'email',
+                'phone',
+                'address',
+                'firstName',
+                'lastName',
+            ];
+            const opts = { fields };
+            try {
+                const csv = parse(payload.rows, opts);
+                res.status(200).attachment(csv);
+                res.send(csv);
+            } catch (err) {
+                console.error(err);
+            }
+        } else {
+            res.status(200).send(payload);
+        }
+    }),
 );
 
 /**
@@ -370,16 +370,16 @@ router.get(
  *          description: Some server error
  */
 router.get(
-  '/count',
-  wrapAsync(async (req, res) => {
-    const payload = await ContactsDBApi.findAll(
-      req.query,
+    '/count',
+    wrapAsync(async (req, res) => {
+        const payload = await ContactsDBApi.findAll(
+            req.query,
 
-      { countOnly: true },
-    );
+            { countOnly: true },
+        );
 
-    res.status(200).send(payload);
-  }),
+        res.status(200).send(payload);
+    }),
 );
 
 /**
@@ -408,12 +408,12 @@ router.get(
  *          description: Some server error
  */
 router.get('/autocomplete', async (req, res) => {
-  const payload = await ContactsDBApi.findAllAutocomplete(
-    req.query.query,
-    req.query.limit,
-  );
+    const payload = await ContactsDBApi.findAllAutocomplete(
+        req.query.query,
+        req.query.limit,
+    );
 
-  res.status(200).send(payload);
+    res.status(200).send(payload);
 });
 
 /**
@@ -449,12 +449,12 @@ router.get('/autocomplete', async (req, res) => {
  *          description: Some server error
  */
 router.get(
-  '/:id',
-  wrapAsync(async (req, res) => {
-    const payload = await ContactsDBApi.findBy({ id: req.params.id });
+    '/:id',
+    wrapAsync(async (req, res) => {
+        const payload = await ContactsDBApi.findBy({ id: req.params.id });
 
-    res.status(200).send(payload);
-  }),
+        res.status(200).send(payload);
+    }),
 );
 
 router.use('/', require('../helpers').commonErrorHandler);

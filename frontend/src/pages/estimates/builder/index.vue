@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { type Ref } from 'vue'
 import html2pdf from 'html2pdf.js'
 
 import type Estimate from '@/types/estimates/Estimate'
@@ -21,11 +22,19 @@ const removeSection = (id: number) => {
   estimateData.sections?.splice(id, 1)
 }
 
+const { create: createEstimate } = useEstimates()
+const { create: createEstimateSection } = useEstimateSections()
+
+const router = useRouter()
+
 const generatePdf = () => {
   const element = document.getElementById('invoice-editable')
 
   return html2pdf().from(element)
 }
+
+const hideControls = ref<boolean>(false)
+const loading = ref<boolean>(false)
 
 const handleSave = async () => {
   const opt = {
@@ -34,14 +43,32 @@ const handleSave = async () => {
 
   hideControls.value = true
 
-  generatePdf().set(opt).toContainer().toCanvas().toImg().outputPdf('blob').then((blob: Blob) => {
+  generatePdf().set(opt).toContainer().toCanvas().toImg().outputPdf('blob').then(async (blob: Blob) => {
     hideControls.value = false
 
-    console.log(blob)
+    const { data } = await createEstimate(prepareEntityToUpdate(estimateData))
+
+    watch(data, async (newVal: Estimate | null) => {
+      if (newVal === null) {
+        return
+      }
+
+      const createSectionsPromises = estimateData.sections?.map(sectionData => createEstimateSection(prepareEntityToUpdate({
+        ...sectionData,
+        related_estimate: newVal.id,
+      }))) as Promise<{ data: Ref<EstimateSection | null>; isFetching: Readonly<Ref<boolean>>; error: Ref<any> }>[]
+
+      await Promise.all(createSectionsPromises)
+
+      await router.push({
+        name: 'estimates-builder-id',
+        params: {
+          id: newVal.id,
+        },
+      })
+    })
   })
 }
-
-const hideControls = ref<boolean>(false)
 
 const handleDownload = () => {
   hideControls.value = true
@@ -72,7 +99,10 @@ const handleDownload = () => {
       cols="12"
       md="3"
     >
-      <VCard class="mb-8 !sticky top-4">
+      <VCard
+        :loading="loading"
+        class="mb-8 !sticky top-4"
+      >
         <VCardText class="space-y-4">
           <!-- 👉 Send Invoice -->
           <VBtn

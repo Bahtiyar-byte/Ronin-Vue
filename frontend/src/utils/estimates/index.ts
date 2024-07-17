@@ -3,6 +3,8 @@ import type EstimateSectionTemplate from '@/types/estimateSectionTemplates/Estim
 
 export const convertTemplateToSection = (template: EstimateSectionTemplate): Partial<EstimateSection> => {
   return {
-    ...template,
+    name: template.name,
+    description: template.description,
+    related_template: template.id,
   }
 }
