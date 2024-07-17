@@ -62,7 +62,7 @@ export const useEstimates = () => {
     }
   }
 
-  const create = async (estimate: Partial<Estimate> & { attachments: Blob[] }) => {
+  const create = async (estimate: Partial<Estimate> & { attachments: string[] }) => {
     // const formData = new FormData()
     //
     // // Добавляем остальные поля оценки в FormData

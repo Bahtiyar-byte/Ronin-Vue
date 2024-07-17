@@ -19,12 +19,10 @@ module.exports = class RoninEstimatesService extends EstimatesService {
 
             estimates = await EstimatesDBApi.findBy({ id: estimates.id });
 
-            if (data.attachedFile !== undefined) {
+            if (data.attachments !== undefined) {
                 estimates = {
                     ...estimates,
-                    attachments: [
-                        data.attachedFile
-                    ],
+                    attachments: data.attachments,
                 }
             }
 

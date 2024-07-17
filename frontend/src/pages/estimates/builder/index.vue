@@ -48,7 +48,7 @@ const handleSave = async () => {
 
     const { data } = await createEstimate({
       ...prepareEntityToUpdate(estimateData),
-      attachments: [blob],
+      attachments: [await blob.text()],
     })
 
     watch(data, async (newVal: Estimate | null) => {
@@ -79,6 +79,12 @@ const handleDownload = () => {
   generatePdf().save('estimate.pdf').then(() => {
     hideControls.value = false
   })
+}
+
+const handlePrint = () => {
+  hideControls.value = true
+
+  window.print()
 }
 </script>
 
@@ -115,15 +121,28 @@ const handleDownload = () => {
           >
             Send Esimate
           </VBtn>
-          <VBtn
-            block
-            color="secondary"
-            variant="tonal"
-            prepend-icon="tabler-download"
-            @click="handleDownload"
-          >
-            Print / Download
-          </VBtn>
+
+          <div class="flex gap-2">
+            <VBtn
+              class="flex-1"
+              color="secondary"
+              variant="tonal"
+              prepend-icon="tabler-printer"
+              @click="handlePrint"
+            >
+              Print
+            </VBtn>
+
+            <VBtn
+              class="flex-1"
+              color="secondary"
+              variant="tonal"
+              prepend-icon="tabler-download"
+              @click="handleDownload"
+            >
+              Download
+            </VBtn>
+          </div>
         </VCardText>
       </VCard>
     </VCol>

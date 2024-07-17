@@ -23,7 +23,6 @@ import EstimateSectionEdit from '@/views/apps/invoice/EstimateSectionEdit.vue'
 import { resolveUserName } from '@/utils/auth'
 
 import SignatureField from '@/components/estimates/SignatureField.vue'
-import {formatDate} from "@core/utils/formatters";
 
 defineProps<{
   hideControls: boolean
@@ -57,12 +56,12 @@ onMounted(async () => {
         estimateData.value.related_contact = newVal
         contactId.value = data.value?.id
       }
-
-      if (currentUser) {
-        userId.value = currentUser.value?.id
-        selectedUser.value = currentUser.value as User
-      }
     })
+  }
+
+  if (currentUser) {
+    userId.value = currentUser.value?.id
+    selectedUser.value = currentUser.value as User
   }
 })
 
