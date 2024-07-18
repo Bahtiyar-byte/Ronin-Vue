@@ -66,18 +66,6 @@ const redirectToPreview = async () => {
 const handleSave = async (redirect?: boolean) => {
   const processRedirect = redirect ?? false
 
-  // const opt = {
-  //   jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
-  // }
-  //
-  // hideControls.value = true
-  //
-  // generatePdf().set(opt).toContainer().toCanvas().toImg().outputPdf('blob').then(async (blob: Blob) => {
-
-  // hideControls.value = false
-
-  // attachments: [await blob.text()],
-
   const action = estimateData.value.id ? updateEstimate : createEstimate
 
   const { data } = await action({
@@ -113,8 +101,6 @@ const handleSave = async (redirect?: boolean) => {
       await redirectToPreview()
     }
   })
-
-  // })
 }
 
 const handlePreview = async () => {

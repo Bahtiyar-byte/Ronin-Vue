@@ -125,6 +125,7 @@ const sources: BundleScriptConfig = {
         'send',
         'printer',
         'download',
+        'link',
       ],
     },
     {

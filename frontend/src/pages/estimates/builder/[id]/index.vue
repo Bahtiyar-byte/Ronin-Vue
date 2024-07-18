@@ -4,10 +4,11 @@ import html2pdf from 'html2pdf.js'
 import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router'
 import type Estimate from '@/types/estimates/Estimate'
 import InvoiceEditable from '@/views/apps/invoice/InvoiceEditable.vue'
+import InvoiceSendInvoiceDrawer from '@/views/apps/invoice/InvoiceSendInvoiceDrawer.vue'
 
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } }
 
-const { getById } = useEstimates()
+const { getById, sendEstimate } = useEstimates()
 const estimate = ref<Partial<Estimate>>({})
 
 const loading = ref<boolean>(false)
@@ -40,6 +41,31 @@ const handleDownload = () => {
 const handlePrint = () => {
   window.print()
 }
+
+const isSendPaymentSidebarVisible = ref<boolean>(false)
+
+const handleSending = async (data: {
+  emailTo: string
+  subject: string
+  message: string
+}) => {
+  loading.value = true
+
+  const opt = {
+    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+  }
+
+  generatePdf().set(opt).toContainer().toCanvas().toImg().outputPdf('blob').then(async (blob: Blob) => {
+    const { data: resultData, isFetching } = await sendEstimate(estimate.value, {
+      ...prepareEntityToUpdate(data),
+      attachments: [blob],
+    })
+
+    watch(isFetching, newVal => {
+      loading.value = newVal
+    })
+  })
+}
 </script>
 
 <template>
@@ -67,6 +93,7 @@ const handlePrint = () => {
           <VBtn
             block
             prepend-icon="tabler-send"
+            @click="isSendPaymentSidebarVisible = !isSendPaymentSidebarVisible"
           >
             Send
           </VBtn>
@@ -103,5 +130,12 @@ const handlePrint = () => {
         </VCardText>
       </VCard>
     </VCol>
+
+    <InvoiceSendInvoiceDrawer
+      v-if="estimate.id !== undefined"
+      v-model:isDrawerOpen="isSendPaymentSidebarVisible"
+      v-model:estimate-data="estimate"
+      @submit="handleSending"
+    />
   </VRow>
 </template>

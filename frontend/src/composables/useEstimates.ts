@@ -126,6 +126,48 @@ export const useEstimates = () => {
     }
   }
 
+  interface AdditionalData {
+    emailTo: string
+    subject: string
+    message: string
+    attachments: Blob[]
+  }
+
+  const sendEstimate = async (
+    estimate: Partial<Estimate>,
+    additionalData: Partial<AdditionalData>,
+  ) => {
+    const formData = new FormData()
+
+    for (const key in estimate) {
+      if (estimate[key as keyof Estimate] !== undefined) {
+        formData.append(`estimate[${key}]`, estimate[key as keyof Estimate] as string | Blob)
+      }
+    }
+
+    for (const key in additionalData) {
+      if (additionalData[key as keyof AdditionalData] !== undefined) {
+        if (key === 'attachments') {
+          (additionalData.attachments as Blob[]).forEach((attachment, index) => {
+            formData.append(`additionalData[attachments][${index}]`, attachment, `attachment_${index}.pdf`)
+          })
+        } else {
+          formData.append(`additionalData[${key}]`, additionalData[key as keyof AdditionalData] as string | Blob)
+        }
+      }
+    }
+
+    const {
+      data,
+      isFetching,
+    } = useApi('/estimates-sender/send').post(formData).json<{ result: boolean }>()
+
+    return {
+      data,
+      isFetching,
+    }
+  }
+
   return {
     count,
     getList,
@@ -134,5 +176,6 @@ export const useEstimates = () => {
     update,
     deleteEstimate,
     autocomplete,
+    sendEstimate,
   }
 }

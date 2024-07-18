@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
+import type Estimate from '@/types/estimates/Estimate'
 
 interface SubmitData {
-  invoiceBalance: string
-  paymentAmount: string
-  paymentDate: string
-  paymentMethod: string
-  paymentNote: string
+  emailTo: string
+  subject: string
+  message: string
 }
+
 interface Emit {
   (e: 'update:isDrawerOpen', value: boolean): void
   (e: 'submit', value: SubmitData): void
@@ -16,23 +16,24 @@ interface Emit {
 interface Props {
   isDrawerOpen: boolean
 }
+
 const props = defineProps<Props>()
+
 const emit = defineEmits<Emit>()
 
-const invoiceBalance = ref()
-const paymentAmount = ref()
-const paymentDate = ref('')
-const paymentMethod = ref()
-const paymentNote = ref('')
+const estimateData = defineModel<Partial<Estimate>>('estimateData', { required: true })
+
+const emailTo = ref(estimateData.value.related_contact?.email ?? '')
+const subject = ref(`Estimate #${estimateData.value.id}`)
+
+const message = ref<string>('')
 
 const onSubmit = () => {
   emit('update:isDrawerOpen', false)
   emit('submit', {
-    invoiceBalance: invoiceBalance.value,
-    paymentAmount: paymentAmount.value,
-    paymentDate: paymentDate.value,
-    paymentMethod: paymentMethod.value,
-    paymentNote: paymentNote.value,
+    emailTo: emailTo.value,
+    subject: subject.value,
+    message: message.value,
   })
 }
 
@@ -46,14 +47,13 @@ const handleDrawerModelValueUpdate = (val: boolean) => {
     temporary
     location="end"
     :width="400"
-    border="none"
     :model-value="props.isDrawerOpen"
     class="scrollable-content"
     @update:model-value="handleDrawerModelValueUpdate"
   >
     <!-- 👉 Header -->
     <AppDrawerHeaderSection
-      title="Add Payment"
+      title="Send Invoice"
       @cancel="$emit('update:isDrawerOpen', false)"
     />
     <VDivider />
@@ -64,48 +64,43 @@ const handleDrawerModelValueUpdate = (val: boolean) => {
             <VRow>
               <VCol cols="12">
                 <AppTextField
-                  v-model="invoiceBalance"
-                  label="Invoice Balance"
-                  type="number"
-                  placeholder="$99"
+                  v-model="emailTo"
+                  label="To"
+                  placeholder="receiver@email.com"
                 />
               </VCol>
 
               <VCol cols="12">
                 <AppTextField
-                  v-model="paymentAmount"
-                  label="Payment Amount"
-                  type="number"
-                  placeholder="$99"
-                />
-              </VCol>
-
-              <VCol cols="12">
-                <AppDateTimePicker
-                  v-model="paymentDate"
-                  label="Payment Date"
-                  placeholder="Select Date"
-                />
-              </VCol>
-
-              <VCol cols="12">
-                <AppSelect
-                  v-model="paymentMethod"
-                  label="Select Payment Method"
-                  placeholder="Select Payment Method"
-                  :items="['Cash', 'Bank Transfer', 'Debit', 'Credit', 'PayPal']"
+                  v-model="subject"
+                  label="Subject"
+                  placeholder="Estimate subject"
                 />
               </VCol>
 
               <VCol cols="12">
                 <AppTextarea
-                  v-model="paymentNote"
-                  label="Internal Payment Note"
-                  placeholder="Internal Payment Note"
+                  v-model="message"
+                  rows="10"
+                  label="Message"
+                  placeholder="Thank you for your business, always a pleasure to work with you!"
                 />
               </VCol>
 
               <VCol cols="12">
+                <div class="mb-6">
+                  <VChip
+                    label
+                    color="primary"
+                    size="small"
+                  >
+                    <VIcon
+                      start
+                      icon="tabler-link"
+                    />
+                    Estimate Attached
+                  </VChip>
+                </div>
                 <VBtn
                   type="submit"
                   class="me-3"
@@ -114,7 +109,6 @@ const handleDrawerModelValueUpdate = (val: boolean) => {
                 </VBtn>
 
                 <VBtn
-                  type="reset"
                   color="secondary"
                   variant="tonal"
                   @click="$emit('update:isDrawerOpen', false)"

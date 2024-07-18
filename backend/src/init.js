@@ -15,11 +15,18 @@ module.exports = class RoninAppInitialise {
 
     initApp() {
         const filtersRoutes = require('./routes/filters');
+        const estimateSenderRoutes = require('./routes/estimateSender');
 
         this.app.use(
             '/api/filters',
             this.passport.authenticate('jwt', { session: false }),
             filtersRoutes,
         );
+
+        this.app.use(
+            '/api/estimates-sender',
+            this.passport.authenticate('jwt', { session: false }),
+            estimateSenderRoutes,
+        )
     }
 }
