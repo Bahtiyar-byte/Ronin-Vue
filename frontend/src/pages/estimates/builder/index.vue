@@ -11,7 +11,7 @@ import type EstimateSection from '@/types/estimateSections/EstimateSection'
 
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id?: string } }
 
-const { create: createEstimate, getById: getEstimate } = useEstimates()
+const { create: createEstimate, update: updateEstimate, getById: getEstimate } = useEstimates()
 const { create: createEstimateSection } = useEstimateSections()
 
 const estimateData = ref<Partial<Estimate>>({
@@ -25,7 +25,10 @@ onBeforeMount(async () => {
     const { data } = await getEstimate(route.params.id)
 
     watch(data, newVal => {
-      estimateData.value = newVal as Estimate
+      estimateData.value = {
+        ...newVal as Estimate,
+        sections: newVal?.estimate_sections_related_estimate ?? [],
+      }
     })
   }
 })
@@ -75,8 +78,10 @@ const handleSave = async (redirect?: boolean) => {
 
   // attachments: [await blob.text()],
 
-  const { data } = await createEstimate({
-    ...prepareEntityToUpdate(estimateData),
+  const action = estimateData.value.id ? updateEstimate : createEstimate
+
+  const { data } = await action({
+    ...prepareEntityToUpdate(estimateData.value),
     notifyContact: false,
   })
 
@@ -85,14 +90,24 @@ const handleSave = async (redirect?: boolean) => {
       return
     }
 
+    estimateData.value = {
+      ...newVal,
+      sections: estimateData.value.sections,
+    }
     estimateId.value = newVal.id
 
-    const createSectionsPromises = estimateData.value.sections?.map(sectionData => createEstimateSection(prepareEntityToUpdate({
-      ...sectionData,
-      related_estimate: newVal.id,
-    }))) as Promise<{ data: Ref<EstimateSection | null>; isFetching: Readonly<Ref<boolean>>; error: Ref<any> }>[]
+    const createSectionsPromises = estimateData.value.sections?.map(sectionData => {
+      if (sectionData.id === undefined) {
+        return createEstimateSection(prepareEntityToUpdate({
+          ...sectionData,
+          related_estimate: newVal.id,
+        }))
+      }
 
-    await Promise.all(createSectionsPromises)
+      return false
+    }).filter(Boolean)
+
+    await Promise.all(createSectionsPromises as Promise<any>[])
 
     if (processRedirect) {
       await redirectToPreview()
@@ -141,7 +156,7 @@ const handlePreview = async () => {
             block
             variant="tonal"
             color="secondary"
-            @click="handleSave"
+            @click="() => handleSave()"
           >
             Save
           </VBtn>

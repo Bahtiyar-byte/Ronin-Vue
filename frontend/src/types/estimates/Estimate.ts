@@ -19,4 +19,5 @@ export default interface Estimate extends Entity {
   template_used?: string | null
   unit_of_measurement?: string | null
   sections?: Partial<EstimateSection>[]
+  estimate_sections_related_estimate?: Partial<EstimateSection>[]
 }

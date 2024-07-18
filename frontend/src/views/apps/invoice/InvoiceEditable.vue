@@ -217,19 +217,20 @@ const handleSectionRemove = (sectionNum: number) => {
 
     <VDivider class="my-6 border-dashed border-gray-700 !opacity-60" />
     <div class="add-products-form">
-      <div
-        v-for="(section, index) in data.sections"
-        :key="`${section.id}-${index}`"
-        class="mb-4"
-      >
-        <EstimateSectionEdit
-          v-if="data.sections !== undefined"
-          :id="index"
-          v-model:section="data.sections[index]"
-          :hide-controls="hideControls"
-          @remove="(val: number) => handleSectionRemove(val)"
-          @update:total-amount="recalculateTotal"
-        />
+      <div v-if="data.sections !== undefined">
+        <div
+          v-for="(section, index) in data.sections"
+          :key="`${section.id}-${index}`"
+          class="mb-4"
+        >
+          <EstimateSectionEdit
+            :id="index"
+            v-model:section="data.sections[index]"
+            :hide-controls="hideControls || (data.sections[index].id !== undefined && !!data.sections[index].id.length)"
+            @remove="(val: number) => handleSectionRemove(val)"
+            @update:total-amount="recalculateTotal"
+          />
+        </div>
       </div>
 
       <VBtn

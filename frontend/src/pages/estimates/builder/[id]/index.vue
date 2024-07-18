@@ -16,7 +16,10 @@ onBeforeMount(async () => {
   const { data, isFetching } = await getById(route.params.id)
 
   watch(data, newVal => {
-    estimate.value = newVal as Estimate
+    estimate.value = {
+      ...newVal as Estimate,
+      sections: newVal?.estimate_sections_related_estimate ?? [],
+    }
   })
 
   watch(isFetching, newVal => {
