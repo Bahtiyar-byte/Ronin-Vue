@@ -26,6 +26,13 @@ module.exports = class RoninEstimatesService extends EstimatesService {
                 }
             }
 
+            if (data.notifyContact !== undefined) {
+                estimates = {
+                    ...estimates,
+                    notifyContact: data.notifyContact,
+                }
+            }
+
             eventEmitter.emit('estimateCreated', estimates);
 
             return estimates;

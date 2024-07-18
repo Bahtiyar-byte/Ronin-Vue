@@ -3,6 +3,11 @@ import type CountResponse from '@/types/common/CountRequestTypes'
 import type { GetEstimatesRequest, GetEstimatesResponse } from '@/types/estimates/GetEstimatesRequest'
 import type Estimate from '@/types/estimates/Estimate'
 
+interface UpdateAdditionalOptions {
+  attachments: string[]
+  notifyContact: boolean
+}
+
 export const useEstimates = () => {
   const count = async (params: object) => {
     const url = computed(() => {
@@ -62,22 +67,7 @@ export const useEstimates = () => {
     }
   }
 
-  const create = async (estimate: Partial<Estimate> & { attachments: string[] }) => {
-    // const formData = new FormData()
-    //
-    // // Добавляем остальные поля оценки в FormData
-    // for (const [key, value] of Object.entries(estimate)) {
-    //   if (key !== 'attachments') {
-    //     formData.append(`data[${key}]`, value as string | Blob)
-    //   }
-    // }
-    //
-    // estimate.attachments.forEach((attachment, index) => {
-    //   formData.append('data[attachments][]', attachment, `attachment_${index}.pdf`)
-    // })
-    //
-    // console.log(formData)
-
+  const create = async (estimate: Partial<Estimate> & Partial<UpdateAdditionalOptions>) => {
     const {
       data,
       isFetching,
@@ -93,7 +83,7 @@ export const useEstimates = () => {
     }
   }
 
-  const update = async (estimate: Estimate) => {
+  const update = async (estimate: Estimate & Partial<UpdateAdditionalOptions>) => {
     const {
       data,
       isFetching,

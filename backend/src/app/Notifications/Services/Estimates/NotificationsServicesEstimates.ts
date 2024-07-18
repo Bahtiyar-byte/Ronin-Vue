@@ -16,10 +16,12 @@ export namespace NotificationsServicesAppointments {
             super();
         }
 
-        async notifyCreated(entity: Estimate): Promise<boolean> {
+        async notifyCreated(entity: Estimate & Partial<{ notifyContact: boolean }>): Promise<boolean> {
             try {
-                const contact = await this.getEstimateContact(entity);
-                await this.sendContactEmailNotification(contact, entity);
+                if (entity.notifyContact !== false) {
+                    const contact = await this.getEstimateContact(entity);
+                    await this.sendContactEmailNotification(contact, entity);
+                }
 
                 return true;
             } catch (error) {

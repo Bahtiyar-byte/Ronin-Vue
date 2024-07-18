@@ -62,7 +62,7 @@ export default defineComponent({
       // 👉 Navbar
       const navbar = h(
         'header',
-        { class: ['layout-navbar', { 'navbar-blur': configStore.isNavbarBlurEnabled }] },
+        { class: ['layout-navbar print:!hidden', { 'navbar-blur': configStore.isNavbarBlurEnabled }] },
         [
           h(
             'div',
@@ -84,7 +84,7 @@ export default defineComponent({
       // 👉 Footer
       const footer = h(
         'footer',
-        { class: 'layout-footer' },
+        { class: 'layout-footer print:!hidden' },
         [
           h(
             'div',

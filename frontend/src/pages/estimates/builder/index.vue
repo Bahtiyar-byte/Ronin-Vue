@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { type Ref } from 'vue'
-import html2pdf from 'html2pdf.js'
+
+import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router'
 
 import type Estimate from '@/types/estimates/Estimate'
 import InvoiceEditable from '@/views/apps/invoice/InvoiceEditable.vue'
@@ -8,83 +9,105 @@ import InvoiceEditable from '@/views/apps/invoice/InvoiceEditable.vue'
 // Type: Invoice data
 import type EstimateSection from '@/types/estimateSections/EstimateSection'
 
-const estimateData = reactive<Partial<Estimate>>({
+const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id?: string } }
+
+const { create: createEstimate, getById: getEstimate } = useEstimates()
+const { create: createEstimateSection } = useEstimateSections()
+
+const estimateData = ref<Partial<Estimate>>({
   createdAt: new Date(),
   related_contact: null,
   sections: [],
 })
 
+onBeforeMount(async () => {
+  if (route.params.id !== undefined) {
+    const { data } = await getEstimate(route.params.id)
+
+    watch(data, newVal => {
+      estimateData.value = newVal as Estimate
+    })
+  }
+})
+
 const addProduct = (value: Partial<EstimateSection>) => {
-  estimateData.sections?.push(value)
+  estimateData.value = {
+    ...estimateData.value,
+    sections: [
+      ...(estimateData.value.sections || []),
+      value,
+    ],
+  }
 }
 
 const removeSection = (id: number) => {
-  estimateData.sections?.splice(id, 1)
+  estimateData.value.sections?.splice(id, 1)
 }
-
-const { create: createEstimate } = useEstimates()
-const { create: createEstimateSection } = useEstimateSections()
 
 const router = useRouter()
-
-const generatePdf = () => {
-  const element = document.getElementById('invoice-editable')
-
-  return html2pdf().from(element)
-}
 
 const hideControls = ref<boolean>(false)
 const loading = ref<boolean>(false)
 
-const handleSave = async () => {
-  const opt = {
-    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+const estimateId = ref<string | undefined>(route.params.id)
+
+const redirectToPreview = async () => {
+  await router.push({
+    name: 'estimates-builder-id',
+    params: {
+      id: estimateId.value as string,
+    },
+  })
+}
+
+const handleSave = async (redirect?: boolean) => {
+  const processRedirect = redirect ?? false
+
+  // const opt = {
+  //   jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+  // }
+  //
+  // hideControls.value = true
+  //
+  // generatePdf().set(opt).toContainer().toCanvas().toImg().outputPdf('blob').then(async (blob: Blob) => {
+
+  // hideControls.value = false
+
+  // attachments: [await blob.text()],
+
+  const { data } = await createEstimate({
+    ...prepareEntityToUpdate(estimateData),
+    notifyContact: false,
+  })
+
+  watch(data, async (newVal: Estimate | null) => {
+    if (newVal === null) {
+      return
+    }
+
+    estimateId.value = newVal.id
+
+    const createSectionsPromises = estimateData.value.sections?.map(sectionData => createEstimateSection(prepareEntityToUpdate({
+      ...sectionData,
+      related_estimate: newVal.id,
+    }))) as Promise<{ data: Ref<EstimateSection | null>; isFetching: Readonly<Ref<boolean>>; error: Ref<any> }>[]
+
+    await Promise.all(createSectionsPromises)
+
+    if (processRedirect) {
+      await redirectToPreview()
+    }
+  })
+
+  // })
+}
+
+const handlePreview = async () => {
+  if (estimateId.value === undefined) {
+    await handleSave(true)
+  } else {
+    await redirectToPreview()
   }
-
-  hideControls.value = true
-
-  generatePdf().set(opt).toContainer().toCanvas().toImg().outputPdf('blob').then(async (blob: Blob) => {
-    hideControls.value = false
-
-    const { data } = await createEstimate({
-      ...prepareEntityToUpdate(estimateData),
-      attachments: [await blob.text()],
-    })
-
-    watch(data, async (newVal: Estimate | null) => {
-      if (newVal === null) {
-        return
-      }
-
-      const createSectionsPromises = estimateData.sections?.map(sectionData => createEstimateSection(prepareEntityToUpdate({
-        ...sectionData,
-        related_estimate: newVal.id,
-      }))) as Promise<{ data: Ref<EstimateSection | null>; isFetching: Readonly<Ref<boolean>>; error: Ref<any> }>[]
-
-      await Promise.all(createSectionsPromises)
-
-      await router.push({
-        name: 'estimates-builder-id',
-        params: {
-          id: newVal.id,
-        },
-      })
-    })
-  })
-}
-
-const handleDownload = () => {
-  hideControls.value = true
-
-  generatePdf().save('estimate.pdf').then(() => {
-    hideControls.value = false
-  })
-}
-
-const handlePrint = () => {
-  hideControls.value = true
-
-  window.print()
 }
 </script>
 
@@ -112,37 +135,23 @@ const handlePrint = () => {
         :loading="loading"
         class="mb-8 !sticky top-4"
       >
-        <VCardText class="space-y-4">
+        <VCardText class="space-y-3">
           <!-- 👉 Send Invoice -->
           <VBtn
             block
-            prepend-icon="tabler-send"
+            variant="tonal"
+            color="secondary"
             @click="handleSave"
           >
-            Send Esimate
+            Save
           </VBtn>
 
-          <div class="flex gap-2">
-            <VBtn
-              class="flex-1"
-              color="secondary"
-              variant="tonal"
-              prepend-icon="tabler-printer"
-              @click="handlePrint"
-            >
-              Print
-            </VBtn>
-
-            <VBtn
-              class="flex-1"
-              color="secondary"
-              variant="tonal"
-              prepend-icon="tabler-download"
-              @click="handleDownload"
-            >
-              Download
-            </VBtn>
-          </div>
+          <VBtn
+            block
+            @click="handlePreview"
+          >
+            Preview
+          </VBtn>
         </VCardText>
       </VCard>
     </VCol>
