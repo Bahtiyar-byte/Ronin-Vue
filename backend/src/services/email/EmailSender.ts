@@ -6,8 +6,9 @@ const nodemailer = require('nodemailer');
 
 interface Attachment {
     filename: string
-    content: Buffer
     contentType: string
+    content?: Buffer
+    path?: string
 }
 
 export default class EmailSender {

@@ -5,6 +5,7 @@ import EmailSender from '../../../../services/email/EmailSender';
 import EstimateCreatedContactEmail from '../../../../services/email/list/estimates/EstimateCreatedContactEmail';
 import type Estimate from '~/@types/Estimate/Estimate';
 import type Contact from '~/@types/Contact/Contact';
+import type SendNotificationAdditionalData from '~/@types/helpers/SendNotificationAdditionalData';
 
 export const NotificationServiceToken = new Token<NotificationsServicesAppointments.NotificationService>();
 
@@ -16,11 +17,17 @@ export namespace NotificationsServicesAppointments {
             super();
         }
 
-        async notifyCreated(entity: Estimate & Partial<{ notifyContact: boolean }>): Promise<boolean> {
+        public async sendToCustomer(estimate: Estimate, additionalData: SendNotificationAdditionalData): Promise<boolean> {
+            await this.notifyCreated(estimate, additionalData);
+
+            return true
+        }
+
+        async notifyCreated(entity: Estimate & Partial<{ notifyContact: boolean }>, additionalData?: SendNotificationAdditionalData): Promise<boolean> {
             try {
                 if (entity.notifyContact !== false) {
                     const contact = await this.getEstimateContact(entity);
-                    await this.sendContactEmailNotification(contact, entity);
+                    await this.sendContactEmailNotification(contact, entity, additionalData);
                 }
 
                 return true;
@@ -30,21 +37,28 @@ export namespace NotificationsServicesAppointments {
             }
         }
 
-        private async sendContactEmailNotification(contact: Contact, estimate: Estimate & { attachments?: string[] }) {
+        private async sendContactEmailNotification(contact: Contact, estimate: Estimate, additionalData?: SendNotificationAdditionalData) {
             const _estimate: Estimate = {
                 ...estimate,
                 related_contact: contact,
             }
 
-            const estimateCreatedContactMail = new EstimateCreatedContactEmail(contact.email as string, _estimate);
+            const estimateCreatedContactMail = new EstimateCreatedContactEmail(
+                additionalData?.emailTo.length ? additionalData?.emailTo  : contact.email as string,
+                _estimate
+            );
+
+            if (additionalData?.subject.length) {
+                estimateCreatedContactMail.subject = additionalData.subject
+            }
 
             const emailSender = new EmailSender(estimateCreatedContactMail);
 
-            estimate.attachments?.forEach(item => {
+            additionalData?.attachments?.forEach(item => {
                 emailSender.addAttachment({
                     filename: 'Estimate',
-                    contentType: 'application/pdf',
-                    content: Buffer.from(item)
+                    contentType: item.mimetype,
+                    path: item.path,
                 })
             })
 

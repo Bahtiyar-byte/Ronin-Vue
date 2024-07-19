@@ -149,7 +149,7 @@ export const useEstimates = () => {
       if (additionalData[key as keyof AdditionalData] !== undefined) {
         if (key === 'attachments') {
           (additionalData.attachments as Blob[]).forEach((attachment, index) => {
-            formData.append(`additionalData[attachments][${index}]`, attachment, `attachment_${index}.pdf`)
+            formData.append('attachments', attachment, `attachment_${index}.pdf`)
           })
         } else {
           formData.append(`additionalData[${key}]`, additionalData[key as keyof AdditionalData] as string | Blob)

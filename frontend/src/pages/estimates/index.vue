@@ -78,13 +78,13 @@ const {
 
         <template #item.actions="{ item }">
           <IconBtn
-            :to="{ name: 'estimates-details-id', params: { id: item.id } }"
+            :to="{ name: 'estimates-builder-id', params: { id: item.id } }"
             title="View"
           >
             <VIcon icon="tabler-eye" />
           </IconBtn>
           <IconBtn
-            :to="{ name: 'estimates-update-id', params: { id: item.id } }"
+            :to="{ name: 'estimates-builder-id-edit', params: { id: item.id } }"
             title="Edit"
           >
             <VIcon icon="tabler-edit" />

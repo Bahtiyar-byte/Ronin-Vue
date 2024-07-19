@@ -24,7 +24,7 @@ const emit = defineEmits<Emit>()
 const estimateData = defineModel<Partial<Estimate>>('estimateData', { required: true })
 
 const emailTo = ref(estimateData.value.related_contact?.email ?? '')
-const subject = ref(`Estimate #${estimateData.value.id}`)
+const subject = ref('New estimate was created')
 
 const message = ref<string>('')
 

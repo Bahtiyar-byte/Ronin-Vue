@@ -11,6 +11,8 @@ const config = require('../../../../config');
 export default class AppointmentCreatedContactEmail implements Email {
     public to: string
 
+    private _subject?: string
+
     private estimate: Estimate
 
     constructor(to: string, estimate: Estimate) {
@@ -19,10 +21,14 @@ export default class AppointmentCreatedContactEmail implements Email {
     }
 
     get subject() {
-        return getNotification(
+        return this._subject ?? getNotification(
             'emails.estimate.created.subject',
             getNotification('app.title'),
         );
+    }
+
+    set subject(subj: string) {
+        this._subject = subj
     }
 
     async html() {

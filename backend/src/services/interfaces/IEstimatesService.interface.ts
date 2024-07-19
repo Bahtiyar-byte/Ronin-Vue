@@ -1,10 +1,4 @@
 import { UserDTO } from '../../db/api/dtos/users.dto';
-interface Request {
-  file: {
-    buffer: Buffer;
-  };
-  currentUser: UserDTO;
-}
 
 interface Response {}
 
