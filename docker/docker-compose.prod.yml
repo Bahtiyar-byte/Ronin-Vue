@@ -1,0 +1,62 @@
+version: "3.9"
+services:
+  web:
+    image: frontend
+    build:
+      context: ../frontend
+      dockerfile: prod.Dockerfile
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    ports:
+      - "5173:5173"
+      - "80:80"
+    environment:
+      FRONTEND_SERVER_PORT: "5173"
+    volumes:
+      - ./../frontend/src:/app/src
+      - ./../frontend/public:/app/public
+      - ./../frontend/index.html:/app/index.html
+      - ./../frontend/tailwind.config.js:/usr/src/app/tailwind.config.js
+      - ./../frontend/vite.config.js:/app/vite.config.js
+      - ./../frontend/postcss.config.js:/usr/src/app/postcss.config.js
+      - ./../frontend/package.json:/app/package.json
+      - ./../frontend/pnpm-lock.yaml:/app/pnpm-lock.yaml
+    networks:
+      - ronin-vue-prod
+  db:
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_DB=db_evans_crm
+    ports:
+      - "5444:5432"
+    networks:
+      - ronin-vue-prod
+
+  backend:
+    image: backend
+    volumes:
+    - ./wait-for-it.sh:/usr/src/app/wait-for-it.sh
+    - ./start-backend.sh:/usr/src/app/start-backend.sh
+    - ./../backend/src:/usr/src/app/src
+    - ./../backend/package.json:/usr/src/app/package.json
+    - ./../backend/.prettierrc:/usr/src/app/.prettierrc
+    - ./../backend/.env:/usr/src/app/.env
+    build: ../backend
+    environment:
+     - DEV_DB_HOST=db
+     - DEV_DB_POST=5432
+    ports:
+     - "8080:8080"
+    depends_on:
+     - "db"
+    restart: "always"
+    networks:
+      - ronin-vue-prod
+    command: ["bash", "./start-backend.sh"]
+
+networks:
+  ronin-vue-prod:
+    driver: bridge
