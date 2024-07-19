@@ -7,7 +7,8 @@ export const $api = ofetch.create({
     if (accessToken) {
       options.headers = {
         ...options.headers,
-        Authorization: `Bearer ${accessToken}`,
+
+        // Authorization: `Bearer ${accessToken}`,
       }
     }
   },
@@ -35,12 +36,17 @@ export const getResponseText = async (res: Response): Promise<string> => {
   return result
 }
 
-export const prepareEntityToUpdate = (entity: Record<string, any>): Record<string, any> => {
+export const prepareEntityToUpdate = (
+  entity: Record<string, any>,
+): Record<string, any> => {
   const updatedEntity: Record<string, any> = {}
 
   for (const key in entity) {
     if (Object.prototype.hasOwnProperty.call(entity, key)) {
-      if (key.endsWith('Id') && (key.startsWith('related_') || key.startsWith('assigned_'))) {
+      if (
+        key.endsWith('Id')
+        && (key.startsWith('related_') || key.startsWith('assigned_'))
+      ) {
         const newKey = key.slice(0, -2)
 
         updatedEntity[newKey] = entity[key]
@@ -55,7 +61,10 @@ export const prepareEntityToUpdate = (entity: Record<string, any>): Record<strin
   return updatedEntity
 }
 
-export const fetchAutocomplete = async (query: string, autocompleteFn: (query: string) => Promise<any>) => {
+export const fetchAutocomplete = async (
+  query: string,
+  autocompleteFn: (query: string) => Promise<any>,
+) => {
   const { data } = await autocompleteFn(query)
   if (data.value === null) {
     return

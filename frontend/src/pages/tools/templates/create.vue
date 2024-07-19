@@ -39,7 +39,7 @@ const fetchTemplateData = async (id: string) => {
           if (hasKey(template, subField.name)) {
             subField.value = template[subField.name]
             if (subField.name === 'related_trade') {
-                subField.value = template[subField.name].id
+              subField.value = template[subField.name].id
             }
           }
         })

@@ -80,8 +80,42 @@ const widgets = ref<WidgetCardProps[]>([
           name: 'root',
         },
       },
+      details: {
+        title: 'Show details',
+      },
     },
   },
+  {
+    widget: {
+      title: 'Communications',
+      value: 0,
+      icon: 'tabler-message-circle-2',
+      iconColor: 'success',
+      action: {
+        title: 'Communications',
+        icon: 'tabler-plus',
+        to: {
+          name: 'root',
+        },
+      },
+    },
+  },
+  {
+    widget: {
+      title: 'Crew',
+      value: 0,
+      icon: 'tabler-user',
+      iconColor: 'primary',
+      action: {
+        title: 'Crew',
+        icon: 'tabler-plus',
+        to: {
+          name: 'root',
+        },
+      },
+    },
+  },
+  
 ])
 </script>
 

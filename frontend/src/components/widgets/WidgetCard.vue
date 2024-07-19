@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import type WidgetCardProps from '@/types/widgets/WidgetCardProps'
 
 const props = defineProps<WidgetCardProps>()
+
+const isAddPaymentMethodsDialogVisible = ref(false)
 
 const containerTag = computed(() => (props.to ? RouterLink : 'div'))
 
@@ -44,6 +46,15 @@ function prefixWithPlus(value: number): string {
               class="text-sm"
             >
               {{ widget.desc }}
+            </div>
+            <div
+              v-if="widget.title === 'Documents'"
+              class="text-xsm"
+            >
+              <VBtn @click="isAddPaymentMethodsDialogVisible = !isAddPaymentMethodsDialogVisible">
+                Details
+              </VBtn>
+              <DocumentsDialog v-model:is-dialog-visible="isAddPaymentMethodsDialogVisible" />
             </div>
           </div>
           <div class="flex flex-column gap-2">

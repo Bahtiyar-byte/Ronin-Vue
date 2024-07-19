@@ -68,6 +68,12 @@ const {
           />
         </template>
 
+        <template #item.name="{ item }">
+          <RouterLink :to="{ name: 'tools-trades-details-id', params: { id: item.id } }">
+            {{ item.name }}
+          </RouterLink>
+        </template>
+
         <template #item.actions="{ item }">
           <IconBtn
             :to="{ name: 'tools-trades-details-id', params: { id: item.id } }"

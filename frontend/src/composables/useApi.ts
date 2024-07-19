@@ -17,7 +17,6 @@ export const useApi = createFetch({
         options.headers = {
           ...options.headers,
           Authorization: `Bearer ${accessToken}`,
-
         }
       }
 
@@ -31,8 +30,7 @@ export const useApi = createFetch({
       let parsedData = null
       try {
         parsedData = destr(data)
-      }
-      catch (error) {
+      } catch (error) {
         // console.error(error)
       }
 

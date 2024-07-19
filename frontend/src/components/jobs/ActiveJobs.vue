@@ -104,6 +104,12 @@ watch([
           />
         </template>
 
+        <template #item.name="{ item }">
+          <RouterLink :to="{ name: 'jobs-details-id', params: { id: item.id } }">
+            {{ item.name }}
+          </RouterLink>
+        </template>
+
         <template #item.actions="{ item }">
           <div class="text-nowrap">
             <IconBtn

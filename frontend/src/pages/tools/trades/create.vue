@@ -1,13 +1,12 @@
 <script lang="ts" setup>
 import { type RouteLocationNormalizedLoaded, useRoute, useRouter } from 'vue-router'
+import { useHead } from '@unhead/vue'
+import { computed, onBeforeMount, ref, watch } from 'vue'
 import { useTrades } from '@/composables/useTrades'
 import type Trade from '@/types/trades/Trade'
 import type FormField from '@/types/forms/FormField'
 import { useFormFields } from '@/utils/forms/useFormFields'
 import { initialFieldsTrades } from '@/utils/initial_data/initialFieldsTrades'
-import { useHead } from '@unhead/vue'
-import { computed, onBeforeMount, ref, watch } from 'vue'
-
 
 const { create: createTrade, getById: getTradeById, update: updateTrade } = useTrades()
 const router = useRouter()

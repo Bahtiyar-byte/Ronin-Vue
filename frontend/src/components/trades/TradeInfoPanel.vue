@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type Trade from '@/types/trades/Trade'
+
 // import { useFilters } from '@/composables/useFilters'
 import { useTrades } from '@/composables/useTrades'
 
@@ -10,7 +11,6 @@ const tradeData = defineModel<Trade>('tradeData', { required: true })
 const tradeEditVisible = defineModel<boolean>('tradeEditVisible', {
   default: true,
 })
-
 
 const saveItem = async (type: string, newValue: string) => {
   const updatedData = {
@@ -30,7 +30,6 @@ const saveItem = async (type: string, newValue: string) => {
 
   return isFetching
 }
-
 </script>
 
 <template>
