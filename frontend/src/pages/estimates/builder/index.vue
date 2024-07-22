@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import { type Ref } from 'vue'
-
 import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router'
 
 import type Estimate from '@/types/estimates/Estimate'
@@ -104,11 +102,7 @@ const handleSave = async (redirect?: boolean) => {
 }
 
 const handlePreview = async () => {
-  if (estimateId.value === undefined) {
-    await handleSave(true)
-  } else {
-    await redirectToPreview()
-  }
+  await handleSave(true)
 }
 </script>
 
