@@ -126,6 +126,7 @@ const sources: BundleScriptConfig = {
         'printer',
         'download',
         'link',
+        'file-type-pdf',
       ],
     },
     {

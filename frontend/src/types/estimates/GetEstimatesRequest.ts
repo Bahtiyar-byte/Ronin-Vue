@@ -4,6 +4,7 @@ import type Estimate from '@/types/estimates/Estimate'
 export interface GetEstimatesRequest extends GetListRequest
 {
   related_job?: string
+  related_contact?: string
 }
 
 export interface GetEstimatesResponse extends GetListResponse

@@ -16,6 +16,8 @@ function prefixWithPlus(value: number): string {
   <component
     :is="containerTag"
     :to="to"
+    @click="props.action"
+    class="cursor-pointer"
   >
     <VCard>
       <VCardText>
@@ -64,7 +66,10 @@ function prefixWithPlus(value: number): string {
               :text="widget.action.title"
             >
               <template #activator="{ props: tooltipProps }">
-                <RouterLink :to="widget.action.to">
+                <RouterLink
+                  :to="widget.action.to"
+                  @click.stop=""
+                >
                   <VAvatar
                     v-bind="tooltipProps"
                     :color="widget?.iconColor ?? 'primary'"
