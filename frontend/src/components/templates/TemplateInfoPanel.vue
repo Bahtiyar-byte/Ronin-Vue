@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type Template from '@/types/templates/Template'
+
 // import { useFilters } from '@/composables/useFilters'
 import { useTemplates } from '@/composables/useTemplates'
 
@@ -10,7 +11,6 @@ const templateData = defineModel<Template>('templateData', { required: true })
 const templateEditVisible = defineModel<boolean>('templateEditVisible', {
   default: true,
 })
-
 
 const saveItem = async (type: string, newValue: string) => {
   const updatedData = {
@@ -30,7 +30,6 @@ const saveItem = async (type: string, newValue: string) => {
 
   return isFetching
 }
-
 </script>
 
 <template>
@@ -69,7 +68,6 @@ const saveItem = async (type: string, newValue: string) => {
                 </div>
               </VListItemTitle>
             </VListItem>
-
           </VList>
         </VCardText>
 

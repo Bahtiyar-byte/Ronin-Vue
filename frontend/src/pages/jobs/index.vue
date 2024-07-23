@@ -74,6 +74,12 @@ const {
           />
         </template>
 
+        <template #item.name="{ item }">
+          <RouterLink :to="{ name: 'jobs-details-id', params: { id: item.id } }">
+            {{ item.name }}
+          </RouterLink>
+        </template>
+
         <template #item.actions="{ item }">
           <IconBtn
             :to="{ name: 'jobs-details-id', params: { id: item.id } }"

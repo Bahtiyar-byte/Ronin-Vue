@@ -1,9 +1,9 @@
+import { useApi } from './useApi'
 import type CountResponse from '@/types/common/CountRequestTypes'
 import type {
   GetContactsRequest,
   GetContactsResponse,
 } from '@/types/contacts/GetContactsRequest'
-import { useApi } from './useApi'
 import type Trade from '@/types/trades/Trade'
 
 export const useTrades = () => {
@@ -60,7 +60,7 @@ export const useTrades = () => {
   }
 
   const create = async (trade: Trade) => {
-    const { data, isFetching, error } = useApi("/trades/")
+    const { data, isFetching, error } = useApi('/trades/')
       .post({
         data: trade,
       })

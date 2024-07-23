@@ -12,6 +12,10 @@ const contactEditVisible = defineModel<boolean>('contactEditVisible', {
   default: true,
 })
 
+import { mergeProps } from 'vue'
+
+const items = [{ title: 'Option 1', value: 'Option 1' }, { title: 'Option 2', value: 'Option 2' }, { title: 'Option 3', value: 'Option 3' }]
+
 const fetchEnumItems = async (type: string) => {
   const { data } = await getVariants('contacts', type)
 
@@ -92,25 +96,40 @@ const saveItem = async (type: string, newValue: string) => {
               </VListItemTitle>
             </VListItem>
 
-            <EditableInfoItem
-              label="Status"
-              :value="contactData.status"
-              title="Update contact status"
-              :fetch-items="() => fetchEnumItems('status')"
-              :on-save="(newValue: string) => saveItem('status', newValue)"
-            />
+            <VListItem>
+              <VListItemTitle>
+                <span class="font-medium">
+                  Status:
+                </span>
+                <a
+                  :href="`tel:${contactData.status}`"
+                  class="text-primary"
+                >
+                  {{ contactData.status }}
+                </a>
+              </VListItemTitle>
+            </VListItem>
           </VList>
         </VCardText>
-
+  
         <!-- 👉 Edit and Suspend button -->
         <VCardText
           v-if="contactEditVisible"
           class="d-flex justify-center gap-x-4"
         >
+          <VMenu>
+            <template  #activator="{ props: menuProps }">
+              <VBtn class="w-1/2" v-bind="mergeProps(menuProps, tooltipProps)">
+                Assign
+              </VBtn>
+            </template>
+            <VList :items="items" />
+          </VMenu>
+
           <VBtn
             :to="{ name: 'contacts-update-id', params: { id: contactData.id } }"
             variant="elevated"
-            class="w-full"
+            class="w-1/2"
           >
             Edit
           </VBtn>

@@ -19,4 +19,14 @@ export default [
     to: { name: 'calendar' },
     icon: { icon: 'tabler-calendar' },
   },
+  {
+    title: 'Email',
+    to: { name: 'email' },
+    icon: { icon: 'tabler-mail' },
+  },
+  {
+    title: 'Chat',
+    to: { name: 'chat' },
+    icon: { icon: 'tabler-message-circle-2' },
+  },
 ]

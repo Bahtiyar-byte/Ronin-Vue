@@ -136,7 +136,7 @@ const date = ref<string | Date>(estimateData.value.createdAt ?? new Date())
     <div class="d-flex flex-wrap justify-space-between flex-column rounded bg-var-theme-background flex-sm-row gap-6 p-6 mb-6">
       <div>
         <div class="d-flex align-center app-logo mb-6">
-          <VNodeRenderer :nodes="themeConfig.app.logo" />
+          <VNodeRenderer :nodes="themeConfig.app.logoDocuments" />
 
           <h6 class="app-logo-title">
             {{ coreConfig.company.name }}

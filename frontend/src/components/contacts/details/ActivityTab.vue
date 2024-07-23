@@ -96,6 +96,21 @@ const widgets = ref<WidgetCardProps[]>([
       },
     },
   },
+  {
+    widget: {
+      title: 'Communications',
+      value: 0,
+      icon: 'tabler-message-circle-2',
+      iconColor: 'success',
+      action: {
+        title: 'Communications',
+        icon: 'tabler-plus',
+        to: {
+          name: 'root',
+        },
+      },
+    },
+  },
 ])
 </script>
 

@@ -82,29 +82,38 @@ const saveItem = async (type: string, newValue: string) => {
               </VListItemTitle>
             </VListItem>
 
-            <EditableInfoItem
-              label="Category"
-              :value="jobData.category as string"
-              title="Update job category"
-              :fetch-items="() => fetchEnumItems('category')"
-              :on-save="(newValue: string) => saveItem('category', newValue)"
-            />
+            <VListItem v-if="jobData.category">
+              <VListItemTitle>
+                <span class="font-medium">
+                  Category:
+                </span>
+                <div class="d-inline-block text-body-1">
+                  {{ jobData.category }}
+                </div>
+              </VListItemTitle>
+            </VListItem>
 
-            <EditableInfoItem
-              label="Type"
-              :value="jobData.type as string"
-              title="Update job type"
-              :fetch-items="() => fetchEnumItems('type')"
-              :on-save="(newValue: string) => saveItem('type', newValue)"
-            />
+            <VListItem v-if="jobData.type">
+              <VListItemTitle>
+                <span class="font-medium">
+                  Type:
+                </span>
+                <div class="d-inline-block text-body-1">
+                  {{ jobData.type }}
+                </div>
+              </VListItemTitle>
+            </VListItem>
 
-            <EditableInfoItem
-              label="Status"
-              :value="jobData.status as string"
-              title="Update job status"
-              :fetch-items="() => fetchEnumItems('status')"
-              :on-save="(newValue: string) => saveItem('status', newValue)"
-            />
+            <VListItem v-if="jobData.status">
+              <VListItemTitle>
+                <span class="font-medium">
+                  Status:
+                </span>
+                <div class="d-inline-block text-body-1">
+                  {{ jobData.status }}
+                </div>
+              </VListItemTitle>
+            </VListItem>
           </VList>
 
           <h5 class="text-[1.05rem] leading-[1.5] font-medium mt-6">

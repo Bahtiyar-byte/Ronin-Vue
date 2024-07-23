@@ -1,19 +1,19 @@
 // initialFieldsTrades.ts
-import type FormField from "@/types/forms/FormField";
-import type FormFieldsGroup from "@/types/forms/FormFieldsGroup";
-import * as yup from "yup";
+import * as yup from 'yup'
+import type FormField from '@/types/forms/FormField'
+import type FormFieldsGroup from '@/types/forms/FormFieldsGroup'
 
 export const initialFieldsTrades: Array<FormField | FormFieldsGroup> = [
   {
-    title: "General",
+    title: 'General',
     fields: [
       {
-        type: "input",
-        name: "name",
-        label: "Name",
-        value: "",
-        rules: yup.string().required("Name is required"),
+        type: 'input',
+        name: 'name',
+        label: 'Name',
+        value: '',
+        rules: yup.string().required('Name is required'),
       },
     ],
   },
-];
+]

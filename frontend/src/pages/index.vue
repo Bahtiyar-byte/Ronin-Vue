@@ -7,12 +7,17 @@ import PipelineDisplayItem from '@/types/pipiline/PipelineDisplayItem'
 import { useContacts } from '@/composables/useContacts'
 import { useJobs } from '@/composables/useJobs'
 
-import PipelineCard from '@/components/common/pipelines/PipelineCard.vue'
+import CurrentPipeline from '@/views/home/CurrentPipeline.vue'
+
 import QuickCreateEntity from '@/components/index/QuickCreateEntity.vue'
 
 // import CrmAnalyticsSales from '@/components/dashboards/CrmAnalyticsSales.vue'
 // import CrmRevenueGrowth from '@/components/dashboards/CrmRevenueGrowth.vue'
 import ActiveJobs from '@/components/jobs/ActiveJobs.vue'
+
+import CrmActivityTimeline from '@/views/home/CrmActivityTimeline.vue'
+import LaborTickets from '@/views/home/LaborTickets.vue'
+import Invoice from '@/views/home/Invoice.vue'
 
 const currentPipelineItems = ref<PipelineDisplayItem[]>([])
 const { count: contactsCount } = useContacts()
@@ -74,9 +79,8 @@ watchEffect(() => {
 </script>
 
 <template>
-  <PipelineCard
+  <CurrentPipeline
     class="mb-6"
-    title="Current pipeline"
     :pipeline-items="currentPipelineItems"
   />
 
@@ -105,6 +109,20 @@ watchEffect(() => {
       <QuickCreateEntity class="mb-6" />
 
       <!-- <CrmAnalyticsSales /> -->
+
+      <CrmActivityTimeline />
+    </VCol>
+  </VRow>
+  <VRow>
+    <VCol
+      cols="6"
+      md="6"
+    >
+      <LaborTickets />
+    </VCol>
+
+    <VCol>
+      <Invoice />
     </VCol>
   </VRow>
 </template>

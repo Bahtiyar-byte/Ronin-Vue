@@ -75,8 +75,7 @@ useHead({
       cols="12"
       md="7"
       lg="8"
-    >
-    </VCol>
+    />
   </VRow>
   <div v-else-if="!isLoading">
     <VAlert
