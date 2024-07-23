@@ -16,7 +16,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  tag: 'aside',
+  tag: 'div',
 })
 
 const refNav = ref()
@@ -57,6 +57,21 @@ const handleNavScroll = (evt: Event) => {
 }
 
 const hideTitleAndIcon = configStore.isVerticalNavMini(isHovered)
+
+const settingsMenuItem: NavGroup = {
+  title: 'Settings',
+  icon: { icon: 'tabler-settings' },
+  children: [
+    {
+      title: 'Trades',
+      to: { name: 'tools-trades' },
+    },
+    {
+      title: 'Templates',
+      to: { name: 'tools-templates' },
+    },
+  ],
+}
 </script>
 
 <template>
@@ -126,17 +141,26 @@ const hideTitleAndIcon = configStore.isVerticalNavMini(isHovered)
     >
       <PerfectScrollbar
         :key="configStore.isAppRTL"
-        tag="ul"
-        class="nav-items"
+        tag="div"
+        class="nav-items flex flex-col justify-between"
         :options="{ wheelPropagation: false }"
         @ps-scroll-y="handleNavScroll"
       >
-        <Component
-          :is="resolveNavItemComponent(item)"
-          v-for="(item, index) in navItems"
-          :key="index"
-          :item="item"
-        />
+        <ul>
+          <Component
+            :is="resolveNavItemComponent(item)"
+            v-for="(item, index) in navItems"
+            :key="index"
+            :item="item"
+          />
+        </ul>
+
+        <ul>
+          <Component
+            :is="resolveNavItemComponent(settingsMenuItem)"
+            :item="settingsMenuItem"
+          />
+        </ul>
       </PerfectScrollbar>
     </slot>
   </Component>
