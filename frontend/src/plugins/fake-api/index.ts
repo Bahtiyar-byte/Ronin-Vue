@@ -36,22 +36,3 @@ const worker = setupWorker(
   ...handlerAuth,
   ...handlerDashboard
 );
-
-export default function () {
-  worker
-    .start({
-      serviceWorker: {
-        url: "mockServiceWorker.js",
-      },
-      onUnhandledRequest: "bypass",
-    })
-    .then(() => {
-      console.log("Mock service has started");
-      handlerAppsChat.forEach((handler) => {
-        const {
-          method,
-          info: { path },
-        } = handler;
-      });
-    });
-}

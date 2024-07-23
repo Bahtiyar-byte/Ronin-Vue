@@ -39,6 +39,9 @@ importers:
       '@iconify-json/tabler':
         specifier: 1.1.106
         version: 1.1.106
+      '@infectoone/vue-ganttastic':
+        specifier: ^2.3.2
+        version: 2.3.2(dayjs@1.11.12)(vue@3.4.21(typescript@5.3.3))
       '@sindresorhus/is':
         specifier: 6.2.0
         version: 6.2.0
@@ -832,6 +835,12 @@ packages:
     peerDependencies:
       vue: '>=3'
 
+  '@infectoone/vue-ganttastic@2.3.2':
+    resolution: {integrity: sha512-krxHdlZvo4cdS4axQ99qb756RzwieI7LcyY2vAIehJ5Sxd/jz5Pu/vTplTC0Rxqj8T4v1knYPK9uvTMkQYWYng==}
+    peerDependencies:
+      dayjs: ^1.11.5
+      vue: ^3.2.40
+
   '@inquirer/confirm@3.1.8':
     resolution: {integrity: sha512-f3INZ+ca4dQdn+MQiq1yP/mOIR/Oc8BLRYuDh6ciToWd6z4W8yArfzjBCMQ0BPY8PcJKwZxGIt8Z6yNT32eSTw==}
     engines: {node: '>=18'}
@@ -1338,6 +1347,9 @@ packages:
   '@types/video.js@7.3.58':
     resolution: {integrity: sha512-1CQjuSrgbv1/dhmcfQ83eVyYbvGyqhTvb2Opxr0QCV+iJ4J6/J+XWQ3Om59WiwCd1MN3rDUHasx5XRrpUtewYQ==}
 
+  '@types/web-bluetooth@0.0.16':
+    resolution: {integrity: sha512-oh8q2Zc32S6gd/j50GowEjKLoOVOwHP/bWVjKJInBwQqdOYMdPrf1oVlelTlyfFK3CKxL1uahMDAr+vy8T7yMQ==}
+
   '@types/web-bluetooth@0.0.20':
     resolution: {integrity: sha512-g9gZnnXVq7gM7v3tJCWV/qw7w+KeOlSHAhgF9RytFyifW6AF61hdT2ucrYhPq9hLs5JIryeupHV3qGk95dH9ow==}
 
@@ -1623,14 +1635,23 @@ packages:
   '@vueuse/core@10.9.0':
     resolution: {integrity: sha512-/1vjTol8SXnx6xewDEKfS0Ra//ncg4Hb0DaZiwKf7drgfMsKFExQ+FnnENcN6efPen+1kIzhLQoGSy0eDUVOMg==}
 
+  '@vueuse/core@9.13.0':
+    resolution: {integrity: sha512-pujnclbeHWxxPRqXWmdkKV5OX4Wk4YeK7wusHqRwU0Q7EFusHoqNA/aPhB6KCh9hEqJkLAJo7bb0Lh9b+OIVzw==}
+
   '@vueuse/math@10.9.0':
     resolution: {integrity: sha512-qb60AzFKzg8Gw85c4YiheEMC2AMkk+eO/nB9MmuQFU/HAHvfVckesiPlwaQqUlZQ4MJt0z8qP18/H7ozpj0sKQ==}
 
   '@vueuse/metadata@10.9.0':
     resolution: {integrity: sha512-iddNbg3yZM0X7qFY2sAotomgdHK7YJ6sKUvQqbvwnf7TmaVPxS4EJydcNsVejNdS8iWCtDk+fYXr7E32nyTnGA==}
 
+  '@vueuse/metadata@9.13.0':
+    resolution: {integrity: sha512-gdU7TKNAUVlXXLbaF+ZCfte8BjRJQWPCa2J55+7/h+yDtzw3vOoGQDRXzI6pyKyo6bXFT5/QoPE4hAknExjRLQ==}
+
   '@vueuse/shared@10.9.0':
     resolution: {integrity: sha512-Uud2IWncmAfJvRaFYzv5OHDli+FbOzxiVEQdLCKQKLyhz94PIyFC3CHcH7EDMwIn8NPtD06+PNbC/PiO0LGLtw==}
+
+  '@vueuse/shared@9.13.0':
+    resolution: {integrity: sha512-UrnhU+Cnufu4S6JLCPZnkWh0WwZGUp72ktOF2DFptMlOs3TOdVv8xJN53zhHGARmVOsz5KqOls09+J1NR6sBKw==}
 
   '@webzlodimir/vue-avatar@0.0.8':
     resolution: {integrity: sha512-4UAMDMpzakYKwJt5POj/6QUcDQT3TbIGcbR2Aq3JdcuA1T/VBvhKbHhccoTdE6FgUomk7PaWDTIcgWiRSO1cJA==}
@@ -2078,6 +2099,9 @@ packages:
   data-view-byte-offset@1.0.0:
     resolution: {integrity: sha512-t/Ygsytq+R995EJ5PZlD4Cu56sWa8InXySaViRzw9apusqsOO2bQP+SbYzAhR0pFKoB+43lYy8rWban9JSuXnA==}
     engines: {node: '>= 0.4'}
+
+  dayjs@1.11.12:
+    resolution: {integrity: sha512-Rt2g+nTbLlDWZTwwrIXjy9MeiZmSDI375FvZs72ngxx8PDC6YXOeR3q5LAuPzjZQxhiWdRKac7RKV+YyQYfYIg==}
 
   de-indent@1.0.2:
     resolution: {integrity: sha512-e/1zu3xH5MQryN2zdVaF0OrdNLUbvWxzMbi+iNA6Bky7l1RoP8a2fIbRocyHclXt/arDrrR6lL3TqFD9pMQTsg==}
@@ -5364,6 +5388,14 @@ snapshots:
       '@iconify/types': 2.0.0
       vue: 3.4.21(typescript@5.3.3)
 
+  '@infectoone/vue-ganttastic@2.3.2(dayjs@1.11.12)(vue@3.4.21(typescript@5.3.3))':
+    dependencies:
+      '@vueuse/core': 9.13.0(vue@3.4.21(typescript@5.3.3))
+      dayjs: 1.11.12
+      vue: 3.4.21(typescript@5.3.3)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+
   '@inquirer/confirm@3.1.8':
     dependencies:
       '@inquirer/core': 8.2.1
@@ -5868,6 +5900,8 @@ snapshots:
 
   '@types/video.js@7.3.58': {}
 
+  '@types/web-bluetooth@0.0.16': {}
+
   '@types/web-bluetooth@0.0.20': {}
 
   '@types/webfontloader@1.6.38': {}
@@ -6314,6 +6348,16 @@ snapshots:
       - '@vue/composition-api'
       - vue
 
+  '@vueuse/core@9.13.0(vue@3.4.21(typescript@5.3.3))':
+    dependencies:
+      '@types/web-bluetooth': 0.0.16
+      '@vueuse/metadata': 9.13.0
+      '@vueuse/shared': 9.13.0(vue@3.4.21(typescript@5.3.3))
+      vue-demi: 0.14.8(vue@3.4.21(typescript@5.3.3))
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
+
   '@vueuse/math@10.9.0(vue@3.4.21(typescript@5.3.3))':
     dependencies:
       '@vueuse/shared': 10.9.0(vue@3.4.21(typescript@5.3.3))
@@ -6324,7 +6368,16 @@ snapshots:
 
   '@vueuse/metadata@10.9.0': {}
 
+  '@vueuse/metadata@9.13.0': {}
+
   '@vueuse/shared@10.9.0(vue@3.4.21(typescript@5.3.3))':
+    dependencies:
+      vue-demi: 0.14.8(vue@3.4.21(typescript@5.3.3))
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
+
+  '@vueuse/shared@9.13.0(vue@3.4.21(typescript@5.3.3))':
     dependencies:
       vue-demi: 0.14.8(vue@3.4.21(typescript@5.3.3))
     transitivePeerDependencies:
@@ -6846,6 +6899,8 @@ snapshots:
       call-bind: 1.0.7
       es-errors: 1.3.0
       is-data-view: 1.0.1
+
+  dayjs@1.11.12: {}
 
   de-indent@1.0.2: {}
 
