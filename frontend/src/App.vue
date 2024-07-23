@@ -1,12 +1,37 @@
 <script setup lang="ts">
 import { useTheme } from 'vuetify'
 import { useHead } from '@unhead/vue'
+import { storeToRefs } from 'pinia'
 import ScrollToTop from '@core/components/ScrollToTop.vue'
 import initCore from '@core/initCore'
 import { initConfigStore, useConfigStore } from '@core/stores/config'
 import { hexToRgb } from '@layouts/utils'
+import { useAbility } from '@/plugins/casl/composables/useAbility'
+import { useCurrentUserStore } from '@core/stores/auth/currentUser'
+import { CurrentUser } from '@/types/users/User'
+import type {Permission} from "@/types/roles/roles";
+import {permissionToAbilityRule} from "@/utils/roles";
+
+const { user } = storeToRefs(useCurrentUserStore())
 
 const { global } = useTheme()
+
+const ability = useAbility()
+
+watch(user, (currUser: CurrentUser | null) => {
+  if (currUser === null) {
+    return
+  }
+
+  if (currUser?.app_role_permissions.length) {
+    const abilityRules = currUser.app_role_permissions.map((permission: Permission) => permissionToAbilityRule(permission))
+
+    ability.update(abilityRules)
+
+    // ToDo: make some refactor to make permissions array size smaller
+    // useCookie('userAbilityRules').value = abilityRules
+  }
+})
 
 // ℹ️ Sync current theme with initial loader theme
 initCore()

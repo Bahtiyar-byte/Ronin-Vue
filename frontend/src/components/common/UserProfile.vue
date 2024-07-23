@@ -58,7 +58,7 @@ const { user, userName } = storeToRefs(currentUserStore)
           </VListItemSubtitle>
         </VListItem>
 
-        <VDivider class="my-2" />
+        <VDivider class="my-2 border-gray-300 dark:border-gray-600" />
 
         <!-- 👉 Profile -->
         <VListItem :to="{ name: 'profile' }">
@@ -73,8 +73,7 @@ const { user, userName } = storeToRefs(currentUserStore)
           <VListItemTitle>Profile</VListItemTitle>
         </VListItem>
 
-        <!-- Divider -->
-        <VDivider class="my-2" />
+        <VDivider class="my-2 border-gray-300 dark:border-gray-600" />
 
         <!-- 👉 Logout -->
         <VListItem @click.prevent="logout(router)">
