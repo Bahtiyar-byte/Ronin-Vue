@@ -13,6 +13,7 @@ const { create: createEstimate, update: updateEstimate, getById: getEstimate } =
 const { create: createEstimateSection } = useEstimateSections()
 
 const estimateData = ref<Partial<Estimate>>({
+  name: 'New estimate',
   createdAt: new Date(),
   related_contact: null,
   sections: [],
@@ -126,29 +127,41 @@ const handlePreview = async () => {
       cols="12"
       md="3"
     >
-      <VCard
-        :loading="loading"
-        class="mb-8 !sticky top-4"
-      >
-        <VCardText class="space-y-3">
-          <!-- 👉 Send Invoice -->
-          <VBtn
-            block
-            variant="tonal"
-            color="secondary"
-            @click="() => handleSave()"
-          >
-            Save
-          </VBtn>
+      <div class="sticky top-4">
+        <VCard
+          :loading="loading"
+          class="mb-6"
+        >
+          <VCardText class="space-y-3">
+            <!-- 👉 Send Invoice -->
+            <VBtn
+              block
+              variant="tonal"
+              color="secondary"
+              @click="() => handleSave()"
+            >
+              Save
+            </VBtn>
 
-          <VBtn
-            block
-            @click="handlePreview"
-          >
-            Preview
-          </VBtn>
-        </VCardText>
-      </VCard>
+            <VBtn
+              block
+              @click="handlePreview"
+            >
+              Preview
+            </VBtn>
+          </VCardText>
+        </VCard>
+
+        <VCard>
+          <VCardText class="space-y-3">
+            <AppTextField
+              v-model="estimateData.name"
+              label="Estimate name"
+              aria-required="true"
+            />
+          </VCardText>
+        </VCard>
+      </div>
     </VCol>
   </VRow>
 </template>

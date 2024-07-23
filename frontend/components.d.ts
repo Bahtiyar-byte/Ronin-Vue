@@ -97,6 +97,7 @@ declare module 'vue' {
     UserInfoEditDialog: typeof import('./src/components/dialogs/UserInfoEditDialog.vue')['default']
     UserProfile: typeof import('./src/components/common/UserProfile.vue')['default']
     UserUpgradePlanDialog: typeof import('./src/components/dialogs/UserUpgradePlanDialog.vue')['default']
+    VueApexCharts: typeof import('vue3-apexcharts')['default']
     WidgetCard: typeof import('./src/components/widgets/WidgetCard.vue')['default']
   }
 }

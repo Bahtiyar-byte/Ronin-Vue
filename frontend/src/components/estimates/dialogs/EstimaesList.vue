@@ -30,14 +30,14 @@ const { data: estimatesList } = await getList(searchParams.value)
           :to="{ name: 'estimates-builder-id', params: { id: item.id } }"
         >
           <div class="d-flex justify-space-between align-center py-4 gap-x-4">
-            <div class="d-flex align-center">
+            <div class="d-flex align-center gap-2">
               <VIcon
                 icon="tabler-file-type-pdf"
                 :size="24"
               />
-              <h6 class="text-h6">
+              <p class="font-semibold">
                 {{ item.name }}
-              </h6>
+              </p>
             </div>
           </div>
           <VDivider

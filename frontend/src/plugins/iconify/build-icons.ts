@@ -141,6 +141,7 @@ const sources: BundleScriptConfig = {
         'refresh',
         'dots-vertical',
         'circle-filled',
+        'info-circle',
       ],
     },
     {
