@@ -51,6 +51,13 @@ export default [
     subject: "chats",
   },
   {
+    title: "Crew",
+    to: { name: "crews" },
+    icon: { icon: "tabler-users " },
+    action: "read",
+    subject: "chats",
+  },
+  {
     title: "Settings",
     icon: { icon: "tabler-settings" },
     action: "read",
