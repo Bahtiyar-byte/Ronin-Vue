@@ -19,7 +19,7 @@ const albumImages = [
 ]
 
 const communicationTypes = {
-  email: 'tabler-mail-opened',
+  emails: 'tabler-mail-opened',
   chat: 'tabler-message-circle-2',
   sms: 'tabler-message',
   calls: 'tabler-phone',
