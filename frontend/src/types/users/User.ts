@@ -1,4 +1,5 @@
 import type Entity from '@/types/common/Entity'
+import type { Permission } from '@/types/roles/roles'
 
 export default interface User extends Entity {
   firstName: string
@@ -15,4 +16,8 @@ export default interface User extends Entity {
   name: string
   avatar: []
   roleId: []
+}
+
+export interface CurrentUser extends User {
+  app_role_permissions: Permission[]
 }

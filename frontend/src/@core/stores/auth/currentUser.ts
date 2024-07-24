@@ -1,11 +1,13 @@
 import { defineStore } from 'pinia'
 import { useAuth } from '@/composables/useAuth'
-import type User from '@/types/users/User'
+import type { CurrentUser } from '@/types/users/User'
+import type { Permission } from '@/types/roles/roles'
 import { resolveUserName } from '@/utils/auth'
+import { permissionToAbilityRule } from '@/utils/roles'
 
 export const useCurrentUserStore = defineStore('currentUser', {
   state: () => ({
-    user: null as User | null,
+    user: null as CurrentUser | null,
   }),
   getters: {
     userName: state => {
@@ -20,8 +22,8 @@ export const useCurrentUserStore = defineStore('currentUser', {
     async fetchUser() {
       const { data, response } = await useAuth().me()
 
-      watch(data, (newVal: User | null) => {
-        this.user = newVal
+      watch(data, (newVal: CurrentUser | null) => {
+        this.user = newVal as CurrentUser
       })
 
       watch(response, (newVal: Response | null) => {
@@ -36,7 +38,7 @@ export const useCurrentUserStore = defineStore('currentUser', {
 
       return { response }
     },
-    setUser(user: User) {
+    setUser(user: CurrentUser) {
       this.user = user
     },
     clearUser() {

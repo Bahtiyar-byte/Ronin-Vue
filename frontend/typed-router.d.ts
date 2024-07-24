@@ -69,6 +69,7 @@ declare module 'vue-router/auto/routes' {
     'jobs-update-id': RouteRecordInfo<'jobs-update-id', '/jobs/update/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'profile': RouteRecordInfo<'profile', '/profile', Record<never, never>, Record<never, never>>,
     'scheduler': RouteRecordInfo<'scheduler', '/scheduler', Record<never, never>, Record<never, never>>,
+    'settings': RouteRecordInfo<'settings', '/settings', Record<never, never>, Record<never, never>>,
     'settings-profile': RouteRecordInfo<'settings-profile', '/settings/profile', Record<never, never>, Record<never, never>>,
     'settings-roles': RouteRecordInfo<'settings-roles', '/settings/roles', Record<never, never>, Record<never, never>>,
     'settings-roles-create': RouteRecordInfo<'settings-roles-create', '/settings/roles/create', Record<never, never>, Record<never, never>>,

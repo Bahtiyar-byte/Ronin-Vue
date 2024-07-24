@@ -124,6 +124,8 @@ const handleSectionRemove = (sectionNum: number) => {
   emit('removeSection', sectionNum)
   recalculateTotal()
 }
+
+const date = ref<string | Date>(estimateData.value.createdAt ?? new Date())
 </script>
 
 <template>
@@ -180,9 +182,10 @@ const handleSectionRemove = (sectionNum: number) => {
             </span>
             <AppDateTimePicker
               v-else
-              v-model="estimateData.createdAt"
+              v-model="date"
               placeholder="YYYY-MM-DD"
               :config="{ position: 'auto right' }"
+              @update:date="(newDate: Date) => estimateData.createdAt = newDate"
             />
           </span>
         </div>

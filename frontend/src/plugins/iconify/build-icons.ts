@@ -251,7 +251,6 @@ const target = join(__dirname, "icons.css");
 
       // Load icon set
       const filename = typeof item === "string" ? item : item.filename;
-
       const content = JSON.parse(
         await fs.readFile(filename, "utf8")
       ) as IconifyJSON;

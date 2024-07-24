@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import type { RouteLocationRaw } from 'vue-router'
 import type WidgetCardProps from '@/types/widgets/WidgetCardProps'
 import WidgetCard from '@/components/widgets/WidgetCard.vue'
 import type Contact from '@/types/contacts/Contact'
+import type { GetEstimatesRequest } from '@/types/estimates/GetEstimatesRequest'
 
 const contactData = defineModel<Contact>('contactData', { required: true })
 
@@ -9,9 +11,17 @@ const { count: appointmentsCount } = useAppointments()
 const { count: estimatesCount } = useEstimates()
 const { count: jobsCount } = useJobs()
 
+const dialogsVisibility = reactive({
+  estimates: false,
+})
+
+const estimatesSearchParams: GetEstimatesRequest = {
+  related_contact: contactData.value.id,
+}
+
 const widgets = ref<WidgetCardProps[]>([
   {
-    to: { name: 'calendar', query: { related_contact: contactData.value.id } },
+    to: { name: 'calendar', query: { related_contact: contactData.value.id } } as RouteLocationRaw,
     widget: {
       title: 'Appointments',
       value: (await appointmentsCount({ related_contact: contactData.value.id })).data.value?.count,
@@ -19,12 +29,14 @@ const widgets = ref<WidgetCardProps[]>([
       action: {
         title: 'Create appointment with this contact',
         icon: 'tabler-plus',
-        to: { name: 'calendar', query: { create_event: 1, contact_id: contactData.value.id } },
+        to: { name: 'calendar', query: { create_event: 1, contact_id: contactData.value.id } } as RouteLocationRaw,
       },
     },
   },
   {
-    to: { name: 'estimates', query: { related_contact: contactData.value.id } },
+    action: () => {
+      dialogsVisibility.estimates = !dialogsVisibility.estimates
+    },
     widget: {
       title: 'Estimates',
       value: (await estimatesCount({ related_contact: contactData.value.id })).data.value?.count,
@@ -32,7 +44,7 @@ const widgets = ref<WidgetCardProps[]>([
       action: {
         title: 'Create estimate for this contact',
         icon: 'tabler-plus',
-        to: { name: 'estimates-builder', query: { contact_id: contactData.value.id } },
+        to: { name: 'estimates-builder', query: { contact_id: contactData.value.id } } as RouteLocationRaw,
       },
     },
   },
@@ -115,5 +127,10 @@ const widgets = ref<WidgetCardProps[]>([
         <WidgetCard v-bind="widgetData" />
       </VCol>
     </VRow>
+
+    <EstimaesList
+      v-model:is-dialog-visible="dialogsVisibility.estimates"
+      v-model:search-params="estimatesSearchParams"
+    />
   </div>
 </template>

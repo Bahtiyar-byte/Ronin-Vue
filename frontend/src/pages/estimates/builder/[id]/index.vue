@@ -85,50 +85,58 @@ const handleSending = async (data: {
       md="3"
       class="print:!hidden"
     >
-      <VCard
-        :loading="loading"
-        class="mb-8 !sticky top-4"
-      >
-        <VCardText class="space-y-3">
-          <VBtn
-            block
-            prepend-icon="tabler-send"
-            @click="isSendPaymentSidebarVisible = !isSendPaymentSidebarVisible"
-          >
-            Send
-          </VBtn>
-
-          <VBtn
-            block
-            variant="tonal"
-            color="secondary"
-            prepend-icon="tabler-download"
-            @click="handleDownload"
-          >
-            Download
-          </VBtn>
-
-          <div class="flex gap-2.5">
+      <div class="!sticky top-4">
+        <VCard
+          :loading="loading"
+          class="mb-8"
+        >
+          <VCardText class="space-y-3">
             <VBtn
-              class="flex-1"
+              block
+              prepend-icon="tabler-send"
+              @click="isSendPaymentSidebarVisible = !isSendPaymentSidebarVisible"
+            >
+              Send
+            </VBtn>
+
+            <VBtn
+              block
               variant="tonal"
               color="secondary"
-              prepend-icon="tabler-printer"
-              @click="handlePrint"
+              prepend-icon="tabler-download"
+              @click="handleDownload"
             >
-              Print
+              Download
             </VBtn>
-            <VBtn
-              class="flex-1"
-              variant="tonal"
-              color="secondary"
-              :to="{ name: 'estimates-builder-id-edit', params: route.params }"
-            >
-              Edit
-            </VBtn>
-          </div>
-        </VCardText>
-      </VCard>
+
+            <div class="flex gap-2.5">
+              <VBtn
+                class="flex-1"
+                variant="tonal"
+                color="secondary"
+                prepend-icon="tabler-printer"
+                @click="handlePrint"
+              >
+                Print
+              </VBtn>
+              <VBtn
+                class="flex-1"
+                variant="tonal"
+                color="secondary"
+                :to="{ name: 'estimates-builder-id-edit', params: route.params }"
+              >
+                Edit
+              </VBtn>
+            </div>
+          </VCardText>
+        </VCard>
+
+        <VCard v-if="estimate.name?.length">
+          <VCardText class="space-y-3">
+            <p>{{ estimate.name }}</p>
+          </VCardText>
+        </VCard>
+      </div>
     </VCol>
 
     <InvoiceSendInvoiceDrawer

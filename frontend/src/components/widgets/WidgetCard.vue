@@ -37,7 +37,12 @@ function prefixWithPlus(value: number): string {
 </script>
 
 <template>
-  <component :is="containerTag" :to="to">
+  <component
+    :is="containerTag"
+    :to="to"
+    @click="props.action"
+    class="cursor-pointer"
+  >
     <VCard>
       <VCardText>
         <div class="d-flex gap-2 justify-space-between">

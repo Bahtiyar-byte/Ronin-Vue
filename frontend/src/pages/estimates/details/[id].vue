@@ -6,7 +6,7 @@ import { useEstimates } from '@/composables/useEstimates'
 import type Estimate from '@/types/estimates/Estimate'
 
 import EstimateInfoPanel from '@/components/estimates/EstimateInfoPanel.vue'
-import ActivityTab from '@/components/estimates/details/ActivityTab.vue'
+import ActivityTab from '@/components/estimates/details/EstimatesActivityTab.vue'
 import RelatedTab from '@/components/estimates/details/RelatedTab.vue'
 
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } }

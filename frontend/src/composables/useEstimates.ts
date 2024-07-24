@@ -131,6 +131,7 @@ export const useEstimates = () => {
     subject: string
     message: string
     attachments: Blob[]
+    notifyContact: boolean
   }
 
   const sendEstimate = async (

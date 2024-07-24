@@ -1,6 +1,6 @@
 import { useApi } from './useApi'
 import type LocalLoginRequest from '@/types/auth/LocalLoginRequest'
-import type User from '@/types/users/User'
+import type { CurrentUser } from '@/types/users/User'
 import type PasswordUpdateRequest from '@/types/auth/PasswordUpdateRequest'
 
 export const useAuth = () => {
@@ -26,7 +26,7 @@ export const useAuth = () => {
       isFetching,
       error,
       response,
-    } = useApi('auth/me').get().json<User>()
+    } = useApi('auth/me').get().json<CurrentUser>()
 
     return {
       data,
@@ -42,7 +42,7 @@ export const useAuth = () => {
       isFetching,
       error,
       response,
-    } = useApi('auth/password-update').put(passordsRequest).json<User>()
+    } = useApi('auth/password-update').put(passordsRequest).json<CurrentUser>()
 
     return {
       data,
