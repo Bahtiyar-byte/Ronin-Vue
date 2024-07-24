@@ -5,6 +5,8 @@ import type { RouteRecordRaw } from 'vue-router/auto'
 import { createRouter, createWebHistory } from 'vue-router/auto'
 import { useCurrentUserStore } from '@/@core/stores/auth/currentUser'
 
+import { setupGuards } from './guards'
+
 function recursiveLayouts(route: RouteRecordRaw): RouteRecordRaw {
   if (route.children) {
     for (let i = 0; i < route.children.length; i++) {
@@ -60,6 +62,8 @@ router.beforeEach(async to => {
     return { name: 'root' }
   }
 })
+
+// setupGuards(router)
 
 export { router }
 

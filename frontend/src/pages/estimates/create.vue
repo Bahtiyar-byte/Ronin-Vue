@@ -11,6 +11,13 @@ import { useFormFields } from '@/utils/forms/useFormFields'
 import type FormField from '@/types/forms/FormField'
 import { initialFieldEstimates } from '@/utils/initial_data/initialFieldsEstimates'
 
+definePage({
+  meta: {
+    action: 'create',
+    subject: 'estimates',
+  },
+})
+
 const { create: createEstimate, getById: getEstimateById, update: updateEstimate } = useEstimates()
 
 const router = useRouter()

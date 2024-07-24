@@ -1,7 +1,12 @@
 <script setup lang="ts">
-import BuilderIndex from './../index.vue'
+definePage({
+  meta: {
+    action: 'update',
+    subject: 'estimates',
+  },
+})
 </script>
 
 <template>
-  <BuilderIndex />
+  <EstimateBuilder />
 </template>

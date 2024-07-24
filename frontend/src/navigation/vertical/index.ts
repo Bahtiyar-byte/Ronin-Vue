@@ -3,10 +3,8 @@ export default [
     title: 'Home',
     to: { name: 'root' },
     icon: { icon: 'tabler-smart-home' },
-
-    // ToDo: How to disable permission check for this one?
-    action: 'read',
-    subject: 'contacts',
+    action: 'manage',
+    subject: 'all',
   },
   {
     title: 'Jobs',
