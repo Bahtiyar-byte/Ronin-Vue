@@ -34,4 +34,13 @@ export default [
     to: { name: "scheduler" },
     icon: { icon: "tabler-calendar" },
   },
+  {
+    title: "Settings",
+    // to: { name: "settings" },
+    icon: { icon: "tabler-settings" },
+    children: [
+      { title: "Profile", to: "settings-profile" },
+      { title: "Roles", to: "settings-roles" },
+    ],
+  },
 ];

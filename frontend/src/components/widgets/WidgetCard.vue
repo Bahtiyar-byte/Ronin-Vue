@@ -1,24 +1,34 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { RouterLink } from 'vue-router'
-import type WidgetCardProps from '@/types/widgets/WidgetCardProps'
+import { computed, ref } from "vue";
+import { RouterLink } from "vue-router";
+import { mergeProps } from "vue";
 
-const props = defineProps<WidgetCardProps>()
+import type WidgetCardProps from "@/types/widgets/WidgetCardProps";
 
-const isAddPaymentMethodsDialogVisible = ref(false)
+const props = defineProps<WidgetCardProps>();
 
-const containerTag = computed(() => (props.to ? RouterLink : 'div'))
+const isAddPaymentMethodsDialogVisible = ref(false);
+
+const containerTag = computed(() => (props.to ? RouterLink : "div"));
+
+
+
+const items = [
+  { title: "Emails", value: "emails" },
+  { title: "Chat", value: "chat" },
+  { title: "Calls", value: "calls" },
+  { title: "Sms", value: "sms" },
+];
+
+
 
 function prefixWithPlus(value: number): string {
-  return value > 0 ? `+${value}` : `${value}`
+  return value > 0 ? `+${value}` : `${value}`;
 }
 </script>
 
 <template>
-  <component
-    :is="containerTag"
-    :to="to"
-  >
+  <component :is="containerTag" :to="to">
     <VCard>
       <VCardText>
         <div class="d-flex gap-2 justify-space-between">
@@ -41,20 +51,21 @@ function prefixWithPlus(value: number): string {
                 ({{ prefixWithPlus(widget.change) }}%)
               </div>
             </div>
-            <div
-              v-if="widget.desc"
-              class="text-sm"
-            >
+            <div v-if="widget.desc" class="text-sm">
               {{ widget.desc }}
             </div>
-            <div
-              v-if="widget.title === 'Documents'"
-              class="text-xsm"
-            >
-              <VBtn @click="isAddPaymentMethodsDialogVisible = !isAddPaymentMethodsDialogVisible">
+            <div v-if="widget.title === 'Documents'" class="text-xsm">
+              <VBtn
+                @click="
+                  isAddPaymentMethodsDialogVisible =
+                    !isAddPaymentMethodsDialogVisible
+                "
+              >
                 Details
               </VBtn>
-              <DocumentsDialog v-model:is-dialog-visible="isAddPaymentMethodsDialogVisible" />
+              <DocumentsDialog
+                v-model:is-dialog-visible="isAddPaymentMethodsDialogVisible"
+              />
             </div>
           </div>
           <div class="flex flex-column gap-2">
@@ -64,10 +75,7 @@ function prefixWithPlus(value: number): string {
               rounded
               size="42"
             >
-              <VIcon
-                :icon="widget.icon"
-                size="26"
-              />
+              <VIcon :icon="widget.icon" size="26" />
             </VAvatar>
             <VTooltip
               v-if="widget.action"
@@ -75,7 +83,10 @@ function prefixWithPlus(value: number): string {
               :text="widget.action.title"
             >
               <template #activator="{ props: tooltipProps }">
-                <RouterLink :to="widget.action.to">
+                <RouterLink
+                  v-if="widget.title !== 'Communications'"
+                  :to="widget.action.to"
+                >
                   <VAvatar
                     v-bind="tooltipProps"
                     :color="widget?.iconColor ?? 'primary'"
@@ -83,12 +94,33 @@ function prefixWithPlus(value: number): string {
                     rounded
                     size="42"
                   >
-                    <VIcon
-                      :icon="widget.action.icon"
-                      size="26"
-                    />
+                    <VIcon :icon="widget.action.icon" size="26" />
                   </VAvatar>
                 </RouterLink>
+
+                <VMenu v-if="widget.title === 'Communications'">
+                  <template #activator="{ props: menuProps }">
+                    <VBtn
+                      class="w-1/2"
+                      :color="widget?.iconColor ?? 'primary'"
+                      variant="tonal"
+                      :icon="widget.action.icon"
+                      size="42"
+                      rounded
+                      v-bind="mergeProps(menuProps, tooltipProps)"
+                    />
+                  </template>
+                  <VList>
+                    <VListItem
+                      v-for="(item, index) in items"
+                      :key="index"
+                    >
+                      <RouterLink :to="`/jobs/communications/1/${item.value}`">
+                        <VListItemTitle>{{ item.title }}</VListItemTitle>
+                      </RouterLink>
+                    </VListItem>
+                  </VList>
+                </VMenu>
               </template>
             </VTooltip>
           </div>

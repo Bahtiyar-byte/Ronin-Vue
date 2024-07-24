@@ -138,6 +138,13 @@ const sources: BundleScriptConfig = {
         "refresh",
         "dots-vertical",
         "circle-filled",
+        "settings",
+        "lock",
+        "bookmark",
+        "checkbox",
+        "briefcase",
+        "message",
+        "phone",
       ],
     },
     {
