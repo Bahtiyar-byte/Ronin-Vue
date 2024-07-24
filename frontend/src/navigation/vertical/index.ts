@@ -48,15 +48,26 @@ export default [
     to: { name: "scheduler" },
     icon: { icon: "tabler-calendar" },
     action: "read",
-    subject: "scheduler",
+    subject: "chats",
   },
   {
     title: "Settings",
     icon: { icon: "tabler-settings" },
+    action: "read",
+    subject: "chats",
     children: [
-      { title: "Profile", to: "settings-profile" },
-
-      { title: "Roles", to: "settings-roles" },
+      {
+        title: "Profile",
+        subject: "chats",
+        action: "read",
+        to: "settings-profile",
+      },
+      {
+        title: "Roles",
+        subject: "chats",
+        action: "read",
+        to: "settings-roles",
+      },
     ],
   },
 ];
