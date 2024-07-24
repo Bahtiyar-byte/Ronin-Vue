@@ -115,7 +115,7 @@ const widgets = ref<WidgetCardProps[]>([
       },
     },
   },
-  
+
 ])
 </script>
 

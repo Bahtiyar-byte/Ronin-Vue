@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
+import emailStaticData from './emails.json'
 import ComposeDialog from '@/views/apps/email/ComposeDialog.vue'
 import EmailLeftSidebarContent from '@/views/apps/email/EmailLeftSidebarContent.vue'
 import EmailView from '@/views/apps/email/EmailView.vue'
@@ -13,7 +14,6 @@ import avatar3 from '@images/avatars/avatar-3.png'
 import avatar4 from '@images/avatars/avatar-4.png'
 import avatar5 from '@images/avatars/avatar-5.png'
 import avatar6 from '@images/avatars/avatar-6.png'
-import avatar7 from '@images/avatars/avatar-7.png'
 import avatar8 from '@images/avatars/avatar-8.png'
 
 const avatarMap = {
@@ -57,7 +57,7 @@ const q = ref('')
 // Email Selection
 // ------------------------------------------------
 const selectedEmails = ref<Email['id'][]>([])
-import emailStaticData from './emails.json'
+
 // Fetch Emails
 // const { data: emailData, execute: fetchEmails } = await useApi<any>(createUrl('/emails', {
 //   query: {
@@ -69,6 +69,7 @@ import emailStaticData from './emails.json'
 
 const emailData = emailStaticData.emails
 const emails = emailStaticData.emails
+
 // const emailMeta = emailStaticData.emailsMeta
 
 // const emails = computed<Email[]>(() => emailData.value.emails)
@@ -76,25 +77,24 @@ const emails = emailStaticData.emails
 
 const fetchEmails = () => {}
 
-   const emailsMeta = {
-      inbox: emailStaticData.emails.filter(
-        (email) => !email.isDeleted && !email.isRead && email.folder === "inbox"
-      ).length,
-      draft: emailStaticData.emails.filter(
-        (email) => !email.isDeleted && email.folder === "draft"
-      ).length,
-      spam: emailStaticData.emails.filter(
-        (email) => !email.isDeleted && !email.isRead && email.folder === "spam"
-      ).length,
-      star: emailStaticData.emails.filter((email) => !email.isDeleted && email.isStarred)
-        .length,
-    };
-
+const emailsMeta = {
+  inbox: emailStaticData.emails.filter(
+    email => !email.isDeleted && !email.isRead && email.folder === 'inbox',
+  ).length,
+  draft: emailStaticData.emails.filter(
+    email => !email.isDeleted && email.folder === 'draft',
+  ).length,
+  spam: emailStaticData.emails.filter(
+    email => !email.isDeleted && !email.isRead && email.folder === 'spam',
+  ).length,
+  star: emailStaticData.emails.filter(email => !email.isDeleted && email.isStarred)
+    .length,
+}
 
 const toggleSelectedEmail = (emailId: Email['id']) => {
   const emailIndex = selectedEmails.value.indexOf(emailId)
   if (emailIndex === -1)
-    selectedEmails.value.push(emailId)
+  { selectedEmails.value.push(emailId) }
   else selectedEmails.value.splice(emailIndex, 1)
 }
 
@@ -143,7 +143,7 @@ const refreshOpenedEmail = async () => {
   // await fetchEmails()
 
   if (openedEmail.value)
-    openedEmail.value = emails.value.find(e => e.id === openedEmail.value?.id)!
+  { openedEmail.value = emails.value.find(e => e.id === openedEmail.value?.id)! }
 }
 
 /*
@@ -166,37 +166,38 @@ const handleActionClick = async (
   selectedEmails.value = []
   selectedEmails.value = []
   if (!emailIds.length)
-    return
+  { return }
 
   if (action === 'trash')
-    await updateEmails(emailIds, { isDeleted: true })
+  { await updateEmails(emailIds, { isDeleted: true }) }
   else if (action === 'spam')
-    await updateEmails(emailIds, { folder: 'spam' })
+  { await updateEmails(emailIds, { folder: 'spam' }) }
   else if (action === 'unread')
-    await updateEmails(emailIds, { isRead: false })
+  { await updateEmails(emailIds, { isRead: false }) }
   else if (action === 'read')
-    await updateEmails(emailIds, { isRead: true })
+  { await updateEmails(emailIds, { isRead: true }) }
   else if (action === 'star')
-    await updateEmails(emailIds, { isStarred: true })
+  { await updateEmails(emailIds, { isStarred: true }) }
   else if (action === 'unstar')
-    await updateEmails(emailIds, { isStarred: false })
+  { await updateEmails(emailIds, { isStarred: false }) }
 
   // await fetchEmails()
 
   if (openedEmail.value)
-    refreshOpenedEmail()
+  { refreshOpenedEmail() }
 }
 
 // Email actions
 const handleMoveMailsTo = async (action: MoveEmailToAction) => {
   await moveSelectedEmailTo(action, selectedEmails.value)
+
   // await fetchEmails()
 }
 
 // Email view
 const changeOpenedEmail = (dir: 'previous' | 'next') => {
   if (!openedEmail.value)
-    return
+  { return }
 
   const openedEmailIndex = emails.value.findIndex(
     e => e.id === openedEmail.value?.id,
@@ -532,7 +533,6 @@ watch(
   </VLayout>
 </template>
 
-
 <style lang="scss">
 @use "@styles/variables/vuetify.scss";
 @use "@core/scss/base/mixins.scss";
@@ -630,4 +630,3 @@ watch(
   }
 }
 </style>
-
