@@ -257,7 +257,7 @@ const date = ref<string | Date>(estimateData.value.createdAt ?? new Date())
       <InvoiceSectionManageDialog
         v-if="!hideControls"
         v-model:dialog-visible="isDialogVisible"
-        v-model:trades-uuid="tradesUuid as string"
+        v-model:trades-uuid="tradesUuid"
         @save-section-clicked="(templateId: string) => {
           handleTemplateSectionSelected(templateId)
         }"
