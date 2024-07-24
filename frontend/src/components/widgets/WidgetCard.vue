@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { RouterLink } from "vue-router";
+import { RouterLink, useRoute } from "vue-router";
 import { mergeProps } from "vue";
 
 import type WidgetCardProps from "@/types/widgets/WidgetCardProps";
@@ -19,6 +19,15 @@ const items = [
   { title: "Calls", value: "calls" },
   { title: "Sms", value: "sms" },
 ];
+
+const route = useRoute()
+console.log('route' , route.name)
+
+const path = 'contacts-details-id'
+let communicationPath = '/contacts/communications'
+if (route.name !== path) {
+  communicationPath = '/jobs/communications'
+}
 
 
 
@@ -115,7 +124,7 @@ function prefixWithPlus(value: number): string {
                       v-for="(item, index) in items"
                       :key="index"
                     >
-                      <RouterLink :to="`/jobs/communications/1/${item.value}`">
+                      <RouterLink :to="`${communicationPath}/1/${item.value}`">
                         <VListItemTitle>{{ item.title }}</VListItemTitle>
                       </RouterLink>
                     </VListItem>

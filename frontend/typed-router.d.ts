@@ -50,6 +50,7 @@ declare module 'vue-router/auto/routes' {
     'calendar': RouteRecordInfo<'calendar', '/calendar', Record<never, never>, Record<never, never>>,
     'chat': RouteRecordInfo<'chat', '/chat', Record<never, never>, Record<never, never>>,
     'contacts': RouteRecordInfo<'contacts', '/contacts', Record<never, never>, Record<never, never>>,
+    'contacts-communications-id-type': RouteRecordInfo<'contacts-communications-id-type', '/contacts/communications/:id/:type', { id: ParamValue<true>, type: ParamValue<true> }, { id: ParamValue<false>, type: ParamValue<false> }>,
     'contacts-create': RouteRecordInfo<'contacts-create', '/contacts/create', Record<never, never>, Record<never, never>>,
     'contacts-details-id': RouteRecordInfo<'contacts-details-id', '/contacts/details/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'contacts-update-id': RouteRecordInfo<'contacts-update-id', '/contacts/update/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
