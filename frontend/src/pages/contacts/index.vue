@@ -5,6 +5,13 @@ import ItemsManage from '@/components/common/CRUD/ItemsManage.vue'
 import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
 import { useTableManagement } from '@/utils/forms/useTableManagement'
 
+definePage({
+  meta: {
+    actions: 'read',
+    subject: 'contacts',
+  },
+})
+
 const { getList, deleteContact } = useContacts()
 
 const headersDefinition = [
@@ -93,12 +100,16 @@ const {
             <VIcon icon="tabler-eye" />
           </IconBtn>
           <IconBtn
+            v-if="$can('update', 'contacts')"
             :to="{ name: 'contacts-update-id', params: { id: item.id } }"
             title="Edit"
           >
             <VIcon icon="tabler-edit" />
           </IconBtn>
-          <IconBtn @click="() => handleItemDeletion(item)">
+          <IconBtn
+            v-if="$can('delete', 'contacts')"
+            @click="() => handleItemDeletion(item)"
+          >
             <VIcon icon="tabler-trash" />
           </IconBtn>
         </template>

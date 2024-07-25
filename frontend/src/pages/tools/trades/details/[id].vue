@@ -7,6 +7,13 @@ import type Trade from '@/types/trades/Trade'
 
 import TradeInfoPanel from '@/components/trades/TradeInfoPanel.vue'
 
+definePage({
+  meta: {
+    actions: 'read',
+    subject: 'trades',
+  },
+})
+
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } }
 
 const tradeTab = ref(null)

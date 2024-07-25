@@ -10,13 +10,6 @@ import ItemUpdate from '@/components/common/CRUD/ItemUpdate.vue'
 import type Appointment from '@/types/appointments/Appointment'
 import type FormField from '@/types/forms/FormField'
 
-definePage({
-  meta: {
-    action: 'create',
-    subject: 'appointments',
-  },
-})
-
 const { create: createAppointment, getById: getAppointmentById, update: updateAppointment } = useAppointments()
 const { formFields, initializeFields } = useFormFields('appointments')
 

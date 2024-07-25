@@ -9,6 +9,13 @@ import JobInfoPanel from '@/components/jobs/JobInfoPanel.vue'
 import ActivityTab from '@/components/jobs/details/ActivityTab.vue'
 import RelatedTab from '@/components/jobs/details/RelatedTab.vue'
 
+definePage({
+  meta: {
+    action: 'read',
+    subject: 'jobs',
+  },
+})
+
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } }
 
 const jobTab = ref(null)

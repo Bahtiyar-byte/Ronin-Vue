@@ -76,8 +76,8 @@ onMounted(() => {
 
 watchEffect(() => {
   currentPipelineItems.value = [
-    createPipelineItem('Leads', 'leadContacts', { name: 'contacts', query: { stage: 'Lead' } }, 'mdi-account-filter-outline'),
-    createPipelineItem('Prospects', 'prospectContacts', { name: 'contacts', query: { stage: 'Prospect' } }, 'mdi-sale-outline'),
+    createPipelineItem('Leads', 'leadContacts', { name: 'contacts', query: { status: 'Lead' } }, 'mdi-account-filter-outline'),
+    createPipelineItem('Prospects', 'prospectContacts', { name: 'contacts', query: { status: 'Prospect' } }, 'mdi-sale-outline'),
     createPipelineItem('Approved', 'approvedJobs', { name: 'jobs', query: { status: 'Approved' } }, 'ic-outline-next-week'),
     createPipelineItem('Completed', 'completedJobs', { name: 'jobs', query: { status: 'Completed' } }, 'material-symbols-work-alert-outline'),
     createPipelineItem('Invoiced', 'invoicedJobs', { name: 'jobs', query: { status: 'Invoiced' } }, 'material-symbols-request-quote-outline'),

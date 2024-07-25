@@ -9,6 +9,13 @@ import ContactInfoPanel from '@/components/contacts/ContactInfoPanel.vue'
 import ActivityTab from '@/components/contacts/details/ActivityTab.vue'
 import RelatedTab from '@/components/contacts/details/RelatedTab.vue'
 
+definePage({
+  meta: {
+    actions: 'read',
+    subject: 'contacts',
+  },
+})
+
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } }
 
 const contactTab = ref(null)

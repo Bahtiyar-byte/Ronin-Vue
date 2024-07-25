@@ -16,6 +16,14 @@ import avatar5 from '@images/avatars/avatar-5.png'
 import avatar6 from '@images/avatars/avatar-6.png'
 import avatar8 from '@images/avatars/avatar-8.png'
 
+definePage({
+  meta: {
+    actions: 'read',
+    subject: 'emails',
+    layoutWrapperClasses: 'layout-content-height-fixed',
+  },
+})
+
 const avatarMap = {
   avatar1,
   avatar2,
@@ -25,12 +33,6 @@ const avatarMap = {
   avatar6,
   avatar8,
 }
-
-definePage({
-  meta: {
-    layoutWrapperClasses: 'layout-content-height-fixed',
-  },
-})
 
 const { isLeftSidebarOpen } = useResponsiveLeftSidebar()
 
