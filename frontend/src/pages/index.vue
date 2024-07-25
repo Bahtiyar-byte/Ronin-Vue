@@ -2,6 +2,7 @@
 import { onMounted, ref, watch, watchEffect } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
 import type { FetchCountFunction } from '@/types/common/CountRequestTypes'
+import type { AbilityRule } from '@/types/roles/roles'
 
 import PipelineDisplayItem from '@/types/pipiline/PipelineDisplayItem'
 import { useContacts } from '@/composables/useContacts'
@@ -11,8 +12,6 @@ import CurrentPipeline from '@/views/home/CurrentPipeline.vue'
 
 import QuickCreateEntity from '@/components/index/QuickCreateEntity.vue'
 
-// import CrmAnalyticsSales from '@/components/dashboards/CrmAnalyticsSales.vue'
-// import CrmRevenueGrowth from '@/components/dashboards/CrmRevenueGrowth.vue'
 import ActiveJobs from '@/components/jobs/ActiveJobs.vue'
 
 import CrmActivityTimeline from '@/views/home/CrmActivityTimeline.vue'
@@ -53,11 +52,12 @@ const updatePipelineCount = async (fetchCount: FetchCountFunction, params: objec
   }, { immediate: true })
 }
 
-const createPipelineItem = (title: string, countKey: keyof typeof currentPipelineCounts.value, routeQuery: RouteLocationRaw, icon: string) => {
+const createPipelineItem = (title: string, countKey: keyof typeof currentPipelineCounts.value, routeQuery: RouteLocationRaw, permission: AbilityRule, icon: string) => {
   return new PipelineDisplayItem(
     title,
     currentPipelineCounts.value[countKey],
     routeQuery,
+    permission,
     icon,
   )
 }
@@ -76,11 +76,11 @@ onMounted(() => {
 
 watchEffect(() => {
   currentPipelineItems.value = [
-    createPipelineItem('Leads', 'leadContacts', { name: 'contacts', query: { status: 'Lead' } }, 'mdi-account-filter-outline'),
-    createPipelineItem('Prospects', 'prospectContacts', { name: 'contacts', query: { status: 'Prospect' } }, 'mdi-sale-outline'),
-    createPipelineItem('Approved', 'approvedJobs', { name: 'jobs', query: { status: 'Approved' } }, 'ic-outline-next-week'),
-    createPipelineItem('Completed', 'completedJobs', { name: 'jobs', query: { status: 'Completed' } }, 'material-symbols-work-alert-outline'),
-    createPipelineItem('Invoiced', 'invoicedJobs', { name: 'jobs', query: { status: 'Invoiced' } }, 'material-symbols-request-quote-outline'),
+    createPipelineItem('Leads', 'leadContacts', { name: 'contacts', query: { status: 'Lead' } }, { action: 'read', subject: 'contacts' }, 'mdi-account-filter-outline'),
+    createPipelineItem('Prospects', 'prospectContacts', { name: 'contacts', query: { status: 'Prospect' } }, { action: 'read', subject: 'contacts' }, 'mdi-sale-outline'),
+    createPipelineItem('Approved', 'approvedJobs', { name: 'jobs', query: { status: 'Approved' } }, { action: 'read', subject: 'jobs' }, 'ic-outline-next-week'),
+    createPipelineItem('Completed', 'completedJobs', { name: 'jobs', query: { status: 'Completed' } }, { action: 'read', subject: 'jobs' }, 'material-symbols-work-alert-outline'),
+    createPipelineItem('Invoiced', 'invoicedJobs', { name: 'jobs', query: { status: 'Invoiced' } }, { action: 'read', subject: 'jobs' }, 'material-symbols-request-quote-outline'),
   ]
 })
 </script>

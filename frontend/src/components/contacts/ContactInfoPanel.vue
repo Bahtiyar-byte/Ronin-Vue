@@ -113,14 +113,14 @@ const saveItem = async (type: string, newValue: string) => {
 
         <!-- 👉 Edit and Suspend button -->
         <VCardText
-          v-if="contactEditVisible"
+          v-if="contactEditVisible && $can('update', 'contacts')"
           class="d-flex justify-center gap-x-4"
         >
           <VMenu>
             <template #activator="{ props: menuProps }">
               <VBtn
                 class="w-1/2"
-                v-bind="mergeProps(menuProps, tooltipProps)"
+                v-bind="menuProps"
               >
                 Assign
               </VBtn>
