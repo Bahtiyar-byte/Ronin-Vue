@@ -6,6 +6,13 @@ import type Estimate from '@/types/estimates/Estimate'
 import InvoiceEditable from '@/views/apps/invoice/InvoiceEditable.vue'
 import InvoiceSendInvoiceDrawer from '@/views/apps/invoice/InvoiceSendInvoiceDrawer.vue'
 
+definePage({
+  meta: {
+    action: 'read',
+    subject: 'estimates',
+  },
+})
+
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } }
 
 const { getById, sendEstimate } = useEstimates()
@@ -120,6 +127,7 @@ const handleSending = async (data: {
                 Print
               </VBtn>
               <VBtn
+                v-if="$can('create', 'estimates')"
                 class="flex-1"
                 variant="tonal"
                 color="secondary"

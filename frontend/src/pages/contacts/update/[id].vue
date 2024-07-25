@@ -1,7 +1,12 @@
-<script setup lang="ts">
-import Create from '@/pages/contacts/create.vue'
+<script lang="ts" setup>
+definePage({
+  meta: {
+    actions: 'update',
+    subject: 'contacts',
+  },
+})
 </script>
 
 <template>
-  <Create />
+  <CreateUpdateContact />
 </template>

@@ -1,9 +1,7 @@
 import { defineStore } from 'pinia'
 import { useAuth } from '@/composables/useAuth'
 import type { CurrentUser } from '@/types/users/User'
-import type { Permission } from '@/types/roles/roles'
 import { resolveUserName } from '@/utils/auth'
-import { permissionToAbilityRule } from '@/utils/roles'
 
 export const useCurrentUserStore = defineStore('currentUser', {
   state: () => ({

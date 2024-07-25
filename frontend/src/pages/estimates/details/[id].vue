@@ -9,6 +9,13 @@ import EstimateInfoPanel from '@/components/estimates/EstimateInfoPanel.vue'
 import ActivityTab from '@/components/estimates/details/EstimatesActivityTab.vue'
 import RelatedTab from '@/components/estimates/details/RelatedTab.vue'
 
+definePage({
+  meta: {
+    action: 'read',
+    subject: 'estimates',
+  },
+})
+
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } }
 
 const estimateTab = ref(null)

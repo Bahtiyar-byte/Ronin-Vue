@@ -1,7 +1,12 @@
 <script setup lang="ts">
-import Create from '@/pages/tools/templates/create.vue'
+definePage({
+  meta: {
+    actions: 'update',
+    subject: 'templates',
+  },
+})
 </script>
 
 <template>
-  <Create />
+  <CreateUpdateTemplate />
 </template>

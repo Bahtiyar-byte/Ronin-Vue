@@ -1,4 +1,5 @@
 import type { RouteLocationRaw } from 'vue-router'
+import type { AbilityRule } from '@/types/roles/roles'
 
 export interface IPipelineDisplayItem {
   title: string
@@ -13,6 +14,7 @@ export default class PipelineDisplayItem implements IPipelineDisplayItem {
     public title: string,
     public amount: number,
     public url: RouteLocationRaw,
+    public permission: AbilityRule,
     public icon?: string,
     public amountSubtitle?: string,
   ) {}

@@ -18,8 +18,8 @@ function prefixWithPlus(value: number): string {
   <component
     :is="containerTag"
     :to="to"
-    @click="props.action"
     class="cursor-pointer"
+    @click="props.action"
   >
     <VCard>
       <VCardText>

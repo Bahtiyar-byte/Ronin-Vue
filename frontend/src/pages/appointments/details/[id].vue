@@ -9,6 +9,13 @@ import AppointmentInfoPanel from '@/components/appointments/AppointmentInfoPanel
 import ActivityTab from '@/components/appointments/details/ActivityTab.vue'
 import RelatedTab from '@/components/appointments/details/RelatedTab.vue'
 
+definePage({
+  meta: {
+    action: 'read',
+    subject: 'appointments',
+  },
+})
+
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } }
 
 const appointmentTab = ref(null)
@@ -30,7 +37,7 @@ onMounted(async () => {
       return
     }
 
-    appointmentName.value = newVal.id
+    appointmentName.value = newVal.id as string
     appointmentData.value = newVal
   })
 

@@ -7,6 +7,13 @@ import type Template from '@/types/templates/Template'
 
 import TemplateInfoPanel from '@/components/templates/TemplateInfoPanel.vue'
 
+definePage({
+  meta: {
+    actions: 'read',
+    subject: 'templates',
+  },
+})
+
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } }
 
 const templateTab = ref(null)

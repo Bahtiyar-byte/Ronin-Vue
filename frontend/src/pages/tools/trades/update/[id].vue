@@ -1,7 +1,12 @@
 <script setup lang="ts">
-import Create from '@/pages/tools/trades/create.vue'
+definePage({
+  meta: {
+    actions: 'update',
+    subject: 'trades',
+  },
+})
 </script>
 
 <template>
-  <Create />
+  <CreateUpdateTrade />
 </template>

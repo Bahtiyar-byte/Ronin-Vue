@@ -4,7 +4,8 @@ export default [
     to: { name: 'root' },
     icon: { icon: 'tabler-smart-home' },
 
-    // ToDo: How to disable permission check for this one?
+    // ToDo: We need some workaround to allow
+    //  all users visit homepage but not only permitted to read contacts
     action: 'read',
     subject: 'contacts',
   },

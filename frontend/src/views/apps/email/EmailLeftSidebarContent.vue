@@ -159,7 +159,7 @@ const labels: Label[] = [
       <!-- Filters -->
       <ul class="email-filters py-4">
         <RouterLink
-          v-for="(folder,index) in folders"
+          v-for="(folder, index) in folders"
           :key="folder.title"
           v-slot="{ isActive, href, navigate }"
           class="d-flex align-center cursor-pointer align-center"
@@ -203,7 +203,7 @@ const labels: Label[] = [
           LABELS
         </div>
         <RouterLink
-          v-for="(label,index) in labels"
+          v-for="(label, index) in labels"
           :key="label.title"
           v-slot="{ isActive, href, navigate }"
           class="d-flex align-center"
