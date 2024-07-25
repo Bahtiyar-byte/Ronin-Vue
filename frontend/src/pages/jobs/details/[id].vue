@@ -5,10 +5,6 @@ import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router'
 import { useJobs } from '@/composables/useJobs'
 import type Job from '@/types/jobs/Job'
 
-import JobInfoPanel from '@/components/jobs/JobInfoPanel.vue'
-import ActivityTab from '@/components/jobs/details/ActivityTab.vue'
-import RelatedTab from '@/components/jobs/details/RelatedTab.vue'
-
 definePage({
   meta: {
     action: 'read',
@@ -107,11 +103,11 @@ useHead({
         :touch="false"
       >
         <VWindowItem>
-          <ActivityTab :job-data="jobData" />
+          <JobsActivityTab :job-data="jobData" />
         </VWindowItem>
 
         <VWindowItem>
-          <RelatedTab />
+          <JobsRelatedTab />
         </VWindowItem>
       </VWindow>
     </VCol>

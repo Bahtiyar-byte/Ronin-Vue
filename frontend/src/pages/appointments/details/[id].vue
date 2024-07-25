@@ -5,10 +5,6 @@ import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router'
 import { useAppointments } from '@/composables/useAppointments'
 import type Appointment from '@/types/appointments/Appointment'
 
-import AppointmentInfoPanel from '@/components/appointments/AppointmentInfoPanel.vue'
-import ActivityTab from '@/components/appointments/details/ActivityTab.vue'
-import RelatedTab from '@/components/appointments/details/RelatedTab.vue'
-
 definePage({
   meta: {
     action: 'read',
@@ -108,11 +104,11 @@ useHead({
         :touch="false"
       >
         <VWindowItem>
-          <ActivityTab />
+          <AppointmentsActivityTab />
         </VWindowItem>
 
         <VWindowItem>
-          <RelatedTab />
+          <AppointmentsRelatedTab />
         </VWindowItem>
       </VWindow>
     </VCol>
