@@ -39,6 +39,7 @@ declare module 'vue' {
     ConfirmDialog: typeof import('./src/components/common/ConfirmDialog.vue')['default']
     ContactInfoPanel: typeof import('./src/components/contacts/ContactInfoPanel.vue')['default']
     CreateAppDialog: typeof import('./src/components/dialogs/CreateAppDialog.vue')['default']
+    CreateUpdateAppointment: typeof import('./src/components/appointments/CreateUpdateAppointment.vue')['default']
     CrmAnalyticsSales: typeof import('./src/components/dashboards/CrmAnalyticsSales.vue')['default']
     CrmRevenueGrowth: typeof import('./src/components/dashboards/CrmRevenueGrowth.vue')['default']
     CustomCheckboxes: typeof import('./src/@core/components/app-form-elements/CustomCheckboxes.vue')['default']
