@@ -3,6 +3,13 @@ import { useJobs } from '@/composables/useJobs'
 import type Job from '@/types/jobs/Job'
 import { useTableManagement } from '@/utils/forms/useTableManagement'
 
+definePage({
+  meta: {
+    action: 'read',
+    subject: 'jobs',
+  },
+})
+
 const { getList, deleteJob } = useJobs()
 
 const {
@@ -75,7 +82,7 @@ const {
         </template>
 
         <template #item.name="{ item }">
-          <RouterLink :to="{ name: 'jobs-details-id', params: { id: item.id } }">
+          <RouterLink :to="{ name: 'jobs-details-id', params: { id: item.id as string } }">
             {{ item.name }}
           </RouterLink>
         </template>
@@ -88,12 +95,16 @@ const {
             <VIcon icon="tabler-eye" />
           </IconBtn>
           <IconBtn
+            v-if="$can('update', 'jobs')"
             :to="{ name: 'jobs-update-id', params: { id: item.id } }"
             title="Edit"
           >
             <VIcon icon="tabler-edit" />
           </IconBtn>
-          <IconBtn @click="() => handleItemDeletion(item)">
+          <IconBtn
+            v-if="$can('delete', 'jobs')"
+            @click="() => handleItemDeletion(item)"
+          >
             <VIcon icon="tabler-trash" />
           </IconBtn>
         </template>
