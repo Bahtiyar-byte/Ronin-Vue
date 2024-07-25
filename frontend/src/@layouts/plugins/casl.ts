@@ -43,6 +43,10 @@ export const canViewNavMenuGroup = (item: NavGroup) => {
 export const canNavigate = (to: RouteLocationNormalized) => {
   const ability = useAbility()
 
-  // @ts-expect-error We should allow passing string | undefined to can because for admin ability we omit defining action & subject
-  return to.matched.some(route => ability.can(route.meta.action, route.meta.subject))
+  return to.matched.some(route => {
+    console.log(route.meta.action, route.meta.subject, ability.can(route.meta.action, route.meta.subject))
+
+    // @ts-expect-error We should allow passing string | undefined to can because for admin ability we omit defining action & subject
+    return ability.can(route.meta.action, route.meta.subject)
+  })
 }

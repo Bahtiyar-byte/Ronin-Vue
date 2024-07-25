@@ -3,8 +3,11 @@ export default [
     title: 'Home',
     to: { name: 'root' },
     icon: { icon: 'tabler-smart-home' },
-    action: 'manage',
-    subject: 'all',
+
+    // ToDo: We need some workaround to allow
+    //  all users visit homepage but not only permitted to read contacts
+    action: 'read',
+    subject: 'contacts',
   },
   {
     title: 'Jobs',

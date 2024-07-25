@@ -26,7 +26,7 @@ export const setupGuards = (router: Router) => {
      */
     if (to.meta.unauthenticatedOnly) {
       if (isLoggedIn) {
-        return '/'
+        return { name: 'root' }
       } else {
         return undefined
       }
@@ -37,7 +37,7 @@ export const setupGuards = (router: Router) => {
       return isLoggedIn
         ? { name: 'not-authorized' }
         : {
-            name: 'login',
+            name: 'auth-login',
             query: {
               ...to.query,
               to: to.fullPath !== '/' ? to.path : undefined,

@@ -19,6 +19,13 @@ import CrmActivityTimeline from '@/views/home/CrmActivityTimeline.vue'
 import LaborTickets from '@/views/home/LaborTickets.vue'
 import Invoice from '@/views/home/Invoice.vue'
 
+definePage({
+  meta: {
+    action: 'read',
+    subject: 'contacts',
+  },
+})
+
 const currentPipelineItems = ref<PipelineDisplayItem[]>([])
 const { count: contactsCount } = useContacts()
 const { count: jobsCount } = useJobs()

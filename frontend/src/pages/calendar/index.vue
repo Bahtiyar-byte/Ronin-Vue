@@ -7,6 +7,13 @@ import { useCurrentUserStore } from '@/@core/stores/auth/currentUser'
 // Components
 import CalendarEventHandler from '@/views/apps/calendar/CalendarEventHandler.vue'
 
+definePage({
+  meta: {
+    action: 'read',
+    subject: 'appointments',
+  },
+})
+
 const route = useRoute() as RouteLocationNormalizedLoaded & { query: Partial<{ create_event: boolean; contact_id: string; user_id: string }> }
 
 // 👉 Event
