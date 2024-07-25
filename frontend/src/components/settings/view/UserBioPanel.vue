@@ -35,15 +35,15 @@ const isUpgradePlanDialogVisible = ref(false)
 // 👉 Role variant resolver
 const resolveUserRoleVariant = (role: string) => {
   if (role === 'subscriber')
-    return { color: 'warning', icon: 'tabler-user' }
+  { return { color: 'warning', icon: 'tabler-user' } }
   if (role === 'author')
-    return { color: 'success', icon: 'tabler-circle-check' }
+  { return { color: 'success', icon: 'tabler-circle-check' } }
   if (role === 'maintainer')
-    return { color: 'primary', icon: 'tabler-chart-pie-2' }
+  { return { color: 'primary', icon: 'tabler-chart-pie-2' } }
   if (role === 'editor')
-    return { color: 'info', icon: 'tabler-pencil' }
+  { return { color: 'info', icon: 'tabler-pencil' } }
   if (role === 'admin')
-    return { color: 'secondary', icon: 'tabler-server-2' }
+  { return { color: 'secondary', icon: 'tabler-server-2' } }
 
   return { color: 'primary', icon: 'tabler-user' }
 }

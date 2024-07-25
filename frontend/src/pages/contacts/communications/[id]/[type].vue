@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import avatar8 from "@images/avatars/avatar-8.png";
-import xls from "@images/icons/file/xls.png";
-import pdf from "@images/icons/project-icons/pdf.png";
-import aviato from "@images/logos/aviato.png";
-import bitbank from "@images/logos/bitbank.png";
-import zipcar from "@images/logos/zipcar.png";
-import TimelineRectangle1 from "@images/pages/TimelineRectangle1.png";
-import TimelineRectangle2 from "@images/pages/TimelineRectangle2.png";
-import TimelineRectangle3 from "@images/pages/TimelineRectangle3.png";
-import TimelineRectangle4 from "@images/pages/TimelineRectangle4.png";
-import { useRoute } from "vue-router";
+import { useRoute } from 'vue-router'
+import pdf from '@images/icons/project-icons/pdf.png'
+import aviato from '@images/logos/aviato.png'
+import bitbank from '@images/logos/bitbank.png'
+import zipcar from '@images/logos/zipcar.png'
+import TimelineRectangle1 from '@images/pages/TimelineRectangle1.png'
+import TimelineRectangle2 from '@images/pages/TimelineRectangle2.png'
+import TimelineRectangle3 from '@images/pages/TimelineRectangle3.png'
+import TimelineRectangle4 from '@images/pages/TimelineRectangle4.png'
 
 const albumImages = [
   TimelineRectangle1,
@@ -25,40 +23,41 @@ const communicationTypes = {
   calls: 'tabler-phone',
 }
 
-const route = useRoute();
-const communicationId = route.params.id;
-const communicationType = route.params.type;
-
+const route = useRoute()
+const communicationId = route.params.id
+const communicationType = route.params.type
 
 const earnings = [
   {
     avatar: zipcar,
-    title: "Zipcar",
-    subtitle: "Vuejs, React & HTML",
-    amount: "$24,895.65",
-    progress: "primary",
+    title: 'Zipcar',
+    subtitle: 'Vuejs, React & HTML',
+    amount: '$24,895.65',
+    progress: 'primary',
   },
   {
     avatar: bitbank,
-    title: "Bitbank",
-    subtitle: "Sketch, Figma & XD",
-    amount: "$8,6500.20",
-    progress: "info",
+    title: 'Bitbank',
+    subtitle: 'Sketch, Figma & XD',
+    amount: '$8,6500.20',
+    progress: 'info',
   },
   {
     avatar: aviato,
-    title: "Aviato",
-    subtitle: "HTML & Anguler",
-    amount: "$1,2450.80",
-    progress: "secondary",
+    title: 'Aviato',
+    subtitle: 'HTML & Anguler',
+    amount: '$1,2450.80',
+    progress: 'secondary',
   },
-];
+]
 </script>
 
 <template>
   <div class="my-6">
     <div>
-      <h5 class="text-h5">Communication</h5>
+      <h5 class="text-h5">
+        Communication
+      </h5>
     </div>
     <VTimeline
       align="start"
@@ -69,23 +68,33 @@ const earnings = [
       class="mt-4"
     >
       <!-- SECTION Timeline Item: Document -->
-      <VTimelineItem fill-dot size="small">
+      <VTimelineItem
+        fill-dot
+        size="small"
+      >
         <template #opposite>
           <span class="app-timeline-meta"> 2 month's ago </span>
         </template>
         <template #icon>
           <div class="v-timeline-avatar-wrapper rounded-circle">
-            <VAvatar size="32" color="primary" variant="tonal">
-              <VIcon :icon="communicationTypes[communicationType]" size="20" />
+            <VAvatar
+              size="32"
+              color="primary"
+              variant="tonal"
+            >
+              <VIcon
+                :icon="communicationTypes[communicationType]"
+                size="20"
+              />
             </VAvatar>
           </div>
         </template>
         <!-- 👉 Header -->
         <VCard class="mb-10 mt-n4">
           <VCardItem class="pb-4">
-            <VCardTitle
-              >Jane Williams</VCardTitle
-            >
+            <VCardTitle>
+              Jane Williams
+            </VCardTitle>
           </VCardItem>
           <VCardText>
             <!-- 👉 Content -->
@@ -96,7 +105,12 @@ const earnings = [
               created over the course of the project.
             </p>
             <div class="d-inline-flex align-items-center timeline-chip">
-              <img :src="pdf" height="20" class="me-2" alt="img" />
+              <img
+                :src="pdf"
+                height="20"
+                class="me-2"
+                alt="img"
+              >
               <span class="app-timeline-text font-weight-medium">
                 documentation.pdf
               </span>
@@ -105,23 +119,33 @@ const earnings = [
         </VCard>
       </VTimelineItem>
 
-      <VTimelineItem fill-dot size="small">
+      <VTimelineItem
+        fill-dot
+        size="small"
+      >
         <template #opposite>
           <span class="app-timeline-meta"> 2 month's ago </span>
         </template>
         <template #icon>
           <div class="v-timeline-avatar-wrapper rounded-circle">
-            <VAvatar size="32" color="primary" variant="tonal">
-              <VIcon :icon="communicationTypes[communicationType]" size="20" />
+            <VAvatar
+              size="32"
+              color="primary"
+              variant="tonal"
+            >
+              <VIcon
+                :icon="communicationTypes[communicationType]"
+                size="20"
+              />
             </VAvatar>
           </div>
         </template>
         <!-- 👉 Header -->
         <VCard class="mb-10 mt-n4">
           <VCardItem class="pb-4">
-            <VCardTitle
-              >John Williams</VCardTitle
-            >
+            <VCardTitle>
+              John Williams
+            </VCardTitle>
           </VCardItem>
           <VCardText>
             <!-- 👉 Content -->
@@ -132,7 +156,12 @@ const earnings = [
               created over the course of the project.
             </p>
             <div class="d-inline-flex align-items-center timeline-chip">
-              <img :src="pdf" height="20" class="me-2" alt="img" />
+              <img
+                :src="pdf"
+                height="20"
+                class="me-2"
+                alt="img"
+              >
               <span class="app-timeline-text font-weight-medium">
                 documentation.pdf
               </span>
@@ -140,7 +169,6 @@ const earnings = [
           </VCardText>
         </VCard>
       </VTimelineItem>
-
     </VTimeline>
   </div>
 </template>

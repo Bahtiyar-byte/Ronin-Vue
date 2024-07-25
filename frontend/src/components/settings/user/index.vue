@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import avatar1 from '@images/avatars/avatar-1.png'
 import UserBioPanel from '@/components/settings/view/UserBioPanel.vue'
-import UserTabAccount from '@/components/settings/view/UserTabAccount.vue'
 import UserTabSecurity from '@/components/settings/view/UserTabSecurity.vue'
 
 const route = useRoute('apps-user-view-id')
@@ -30,7 +29,6 @@ const userData = {
   projectDone: 23,
   taskDone: 55,
 }
-
 
 if (userData) {
   const [firstName, lastName] = userData.fullName.split(' ')

@@ -1,27 +1,25 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
-import { RouterLink, useRoute } from "vue-router";
-import { mergeProps } from "vue";
+import { computed, mergeProps, ref } from 'vue'
+import { RouterLink, useRoute } from 'vue-router'
 
-import type WidgetCardProps from "@/types/widgets/WidgetCardProps";
+import type WidgetCardProps from '@/types/widgets/WidgetCardProps'
 
-const props = defineProps<WidgetCardProps>();
+const props = defineProps<WidgetCardProps>()
 
-const isAddPaymentMethodsDialogVisible = ref(false);
+const isAddPaymentMethodsDialogVisible = ref(false)
 
-const containerTag = computed(() => (props.to ? RouterLink : "div"));
-
-
+const containerTag = computed(() => (props.to ? RouterLink : 'div'))
 
 const items = [
-  { title: "Emails", value: "emails" },
-  { title: "Chat", value: "chat" },
-  { title: "Calls", value: "calls" },
-  { title: "Sms", value: "sms" },
-];
+  { title: 'Emails', value: 'emails' },
+  { title: 'Chat', value: 'chat' },
+  { title: 'Calls', value: 'calls' },
+  { title: 'Sms', value: 'sms' },
+]
 
 const route = useRoute()
-console.log('route' , route.name)
+
+console.log('route', route.name)
 
 const path = 'contacts-details-id'
 let communicationPath = '/contacts/communications'
@@ -29,10 +27,8 @@ if (route.name !== path) {
   communicationPath = '/jobs/communications'
 }
 
-
-
 function prefixWithPlus(value: number): string {
-  return value > 0 ? `+${value}` : `${value}`;
+  return value > 0 ? `+${value}` : `${value}`
 }
 </script>
 
@@ -40,8 +36,8 @@ function prefixWithPlus(value: number): string {
   <component
     :is="containerTag"
     :to="to"
-    @click="props.action"
     class="cursor-pointer"
+    @click="props.action"
   >
     <VCard>
       <VCardText>
@@ -65,21 +61,25 @@ function prefixWithPlus(value: number): string {
                 ({{ prefixWithPlus(widget.change) }}%)
               </div>
             </div>
-            <div v-if="widget.desc" class="text-sm">
+            <div
+              v-if="widget.desc"
+              class="text-sm"
+            >
               {{ widget.desc }}
             </div>
-            <div v-if="widget.title === 'Documents'" class="text-xsm">
+            <div
+              v-if="widget.title === 'Documents'"
+              class="text-xsm"
+            >
               <VBtn
                 @click="
-                  isAddPaymentMethodsDialogVisible =
-                    !isAddPaymentMethodsDialogVisible
+                  isAddPaymentMethodsDialogVisible
+                    = !isAddPaymentMethodsDialogVisible
                 "
               >
                 Details
               </VBtn>
-              <DocumentsDialog
-                v-model:is-dialog-visible="isAddPaymentMethodsDialogVisible"
-              />
+              <DocumentsDialog v-model:is-dialog-visible="isAddPaymentMethodsDialogVisible" />
             </div>
           </div>
           <div class="flex flex-column gap-2">
@@ -89,7 +89,10 @@ function prefixWithPlus(value: number): string {
               rounded
               size="42"
             >
-              <VIcon :icon="widget.icon" size="26" />
+              <VIcon
+                :icon="widget.icon"
+                size="26"
+              />
             </VAvatar>
             <VTooltip
               v-if="widget.action"
@@ -108,7 +111,10 @@ function prefixWithPlus(value: number): string {
                     rounded
                     size="42"
                   >
-                    <VIcon :icon="widget.action.icon" size="26" />
+                    <VIcon
+                      :icon="widget.action.icon"
+                      size="26"
+                    />
                   </VAvatar>
                 </RouterLink>
 

@@ -8,9 +8,9 @@ import { initConfigStore, useConfigStore } from '@core/stores/config'
 import { hexToRgb } from '@layouts/utils'
 import { useAbility } from '@/plugins/casl/composables/useAbility'
 import { useCurrentUserStore } from '@core/stores/auth/currentUser'
-import { CurrentUser } from '@/types/users/User'
-import type {Permission} from "@/types/roles/roles";
-import {permissionToAbilityRule} from "@/utils/roles";
+import type { CurrentUser } from '@/types/users/User'
+import type { Permission } from '@/types/roles/roles'
+import { permissionToAbilityRule } from '@/utils/roles'
 
 const { user } = storeToRefs(useCurrentUserStore())
 

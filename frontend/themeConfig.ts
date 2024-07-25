@@ -1,55 +1,55 @@
-import { defineThemeConfig } from "@core";
-import { Skins } from "@core/enums";
-import { breakpointsVuetify } from "@vueuse/core";
-import { VIcon } from "vuetify/components/VIcon";
+import { breakpointsVuetify } from '@vueuse/core'
+import { VIcon } from 'vuetify/components/VIcon'
+import { defineThemeConfig } from '@core'
+import { Skins } from '@core/enums'
 
 // ❗ Logo SVG must be imported with ?raw suffix
-import logoDocuments from "@images/evans_logo_full.svg?raw";
-import logo from "@images/evanslogo.svg?raw";
+import logoDocuments from '@images/evans_logo_full.svg?raw'
+import logo from '@images/evanslogo.svg?raw'
 
 import {
   AppContentLayoutNav,
   ContentWidth,
   FooterType,
   NavbarType,
-} from "@layouts/enums";
+} from '@layouts/enums'
 
 export const { themeConfig, layoutConfig } = defineThemeConfig({
   app: {
-    title: <Lowercase<string>>"Evans CRM",
-    logo: h("div", {
+    title: <Lowercase<string>>'Evans CRM',
+    logo: h('div', {
       innerHTML: logo,
-      style: "line-height:0; color: rgb(var(--v-global-theme-primary))",
+      style: 'line-height:0; color: rgb(var(--v-global-theme-primary))',
     }),
-    logoDocuments: h("div", {
+    logoDocuments: h('div', {
       innerHTML: logoDocuments,
-      style: "line-height:0; color: rgb(var(--v-global-theme-primary))",
+      style: 'line-height:0; color: rgb(var(--v-global-theme-primary))',
     }),
     contentWidth: ContentWidth.Boxed,
     contentLayoutNav: AppContentLayoutNav.Vertical,
     overlayNavFromBreakpoint: breakpointsVuetify.md + 16, // 16 for scrollbar. Docs: https://next.vuetifyjs.com/en/features/display-and-platform/
     i18n: {
       enable: false,
-      defaultLocale: "en",
+      defaultLocale: 'en',
       langConfig: [
         {
-          label: "English",
-          i18nLang: "en",
+          label: 'English',
+          i18nLang: 'en',
           isRTL: false,
         },
         {
-          label: "French",
-          i18nLang: "fr",
+          label: 'French',
+          i18nLang: 'fr',
           isRTL: false,
         },
         {
-          label: "Arabic",
-          i18nLang: "ar",
+          label: 'Arabic',
+          i18nLang: 'ar',
           isRTL: true,
         },
       ],
     },
-    theme: "system",
+    theme: 'system',
     skin: Skins.Default,
     iconRenderer: VIcon,
   },
@@ -60,12 +60,12 @@ export const { themeConfig, layoutConfig } = defineThemeConfig({
   footer: { type: FooterType.Static },
   verticalNav: {
     isVerticalNavCollapsed: false,
-    defaultNavItemIconProps: { icon: "tabler-circle" },
+    defaultNavItemIconProps: { icon: 'tabler-circle' },
     isVerticalNavSemiDark: false,
   },
   horizontalNav: {
     type: NavbarType.Static,
-    transition: "slide-y-reverse-transition",
+    transition: 'slide-y-reverse-transition',
     popoverOffset: 6,
   },
 
@@ -74,11 +74,11 @@ export const { themeConfig, layoutConfig } = defineThemeConfig({
   // Such as: chevronDown: { icon: 'tabler-chevron-down', color:'primary', size: '24' },
   */
   icons: {
-    chevronDown: { icon: "tabler-chevron-down" },
-    chevronRight: { icon: "tabler-chevron-right", size: 20 },
-    close: { icon: "tabler-x" },
-    verticalNavPinned: { icon: "tabler-circle-dot" },
-    verticalNavUnPinned: { icon: "tabler-circle" },
-    sectionTitlePlaceholder: { icon: "tabler-minus" },
+    chevronDown: { icon: 'tabler-chevron-down' },
+    chevronRight: { icon: 'tabler-chevron-right', size: 20 },
+    close: { icon: 'tabler-x' },
+    verticalNavPinned: { icon: 'tabler-circle-dot' },
+    verticalNavUnPinned: { icon: 'tabler-circle' },
+    sectionTitlePlaceholder: { icon: 'tabler-minus' },
   },
-});
+})
