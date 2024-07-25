@@ -5,8 +5,6 @@ import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router'
 import { useTemplates } from '@/composables/useTemplates'
 import type Template from '@/types/templates/Template'
 
-import TemplateInfoPanel from '@/components/templates/TemplateInfoPanel.vue'
-
 definePage({
   meta: {
     actions: 'read',
