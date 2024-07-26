@@ -1,20 +1,14 @@
 import type Contact from '@/types/contacts/Contact'
 import type User from '@/types/users/User'
+import type Entity from '@/types/common/Entity'
 
-export default interface Job {
-  id?: string // Undefined if new job creation
+export default interface Job extends Entity {
   name?: string
   description?: string | null
   category?: string
   type?: string
   status?: string
   address?: string | null
-  importHash?: string | null
-  createdAt?: string
-  updatedAt?: string
-  deletedAt?: string | null
-  createdById?: string | null
-  updatedById?: string | null
   related_contactId?: string
   related_contact?: Contact | null
   related_estimateId?: string | null

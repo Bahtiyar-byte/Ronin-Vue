@@ -79,6 +79,7 @@ declare module 'vue' {
     JobInfoPanel: typeof import('./src/components/jobs/JobInfoPanel.vue')['default']
     JobsActivityTab: typeof import('./src/components/jobs/details/JobsActivityTab.vue')['default']
     JobsInfoPanelActions: typeof import('./src/components/jobs/details/JobsInfoPanelActions.vue')['default']
+    JobsListDialog: typeof import('./src/components/jobs/dialogs/JobsListDialog.vue')['default']
     JobsRelatedTab: typeof import('./src/components/jobs/details/JobsRelatedTab.vue')['default']
     MoreBtn: typeof import('./src/@core/components/MoreBtn.vue')['default']
     Notifications: typeof import('./src/@core/components/Notifications.vue')['default']
