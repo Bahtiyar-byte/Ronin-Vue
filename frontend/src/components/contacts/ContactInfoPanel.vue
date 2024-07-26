@@ -1,11 +1,5 @@
 <script setup lang="ts">
-import { mergeProps } from 'vue'
 import type Contact from '@/types/contacts/Contact'
-import { useFilters } from '@/composables/useFilters'
-import { useContacts } from '@/composables/useContacts'
-
-const { getVariants } = useFilters()
-const { update } = useContacts()
 
 const contactData = defineModel<Contact>('contactData', { required: true })
 
@@ -14,31 +8,6 @@ const contactEditVisible = defineModel<boolean>('contactEditVisible', {
 })
 
 const items = [{ title: 'Option 1', value: 'Option 1' }, { title: 'Option 2', value: 'Option 2' }, { title: 'Option 3', value: 'Option 3' }]
-
-const fetchEnumItems = async (type: string) => {
-  const { data } = await getVariants('contacts', type)
-
-  return data.value
-}
-
-const saveItem = async (type: string, newValue: string) => {
-  const updatedData = {
-    ...prepareEntityToUpdate(contactData.value),
-    [type]: newValue,
-  } as Contact
-
-  const { data, isFetching } = await update(updatedData)
-
-  watch(data, newVal => {
-    if (newVal === null) {
-      return
-    }
-
-    contactData.value = newVal
-  })
-
-  return isFetching
-}
 </script>
 
 <template>

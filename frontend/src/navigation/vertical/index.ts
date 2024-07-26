@@ -43,5 +43,41 @@ export default [
     icon: { icon: 'tabler-message-circle-2' },
     action: 'read',
     subject: 'chats',
+    action: 'read',
+    subject: 'chats',
+  },
+  {
+    title: 'Scheduler',
+    to: { name: 'scheduler' },
+    icon: { icon: 'tabler-calendar' },
+    action: 'read',
+    subject: 'chats',
+  },
+  {
+    title: 'Crew',
+    to: { name: 'crews' },
+    icon: { icon: 'tabler-users ' },
+    action: 'read',
+    subject: 'chats',
+  },
+  {
+    title: 'Settings',
+    icon: { icon: 'tabler-settings' },
+    action: 'read',
+    subject: 'chats',
+    children: [
+      {
+        title: 'Profile',
+        subject: 'chats',
+        action: 'read',
+        to: 'settings-profile',
+      },
+      {
+        title: 'Roles',
+        subject: 'chats',
+        action: 'read',
+        to: 'settings-roles',
+      },
+    ],
   },
 ]

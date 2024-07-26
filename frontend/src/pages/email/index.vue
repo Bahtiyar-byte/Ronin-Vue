@@ -60,22 +60,8 @@ const q = ref('')
 // ------------------------------------------------
 const selectedEmails = ref<Email['id'][]>([])
 
-// Fetch Emails
-// const { data: emailData, execute: fetchEmails } = await useApi<any>(createUrl('/emails', {
-//   query: {
-//     q,
-//     filter: () => 'filter' in route.params ? route.params.filter : undefined,
-//     label: () => 'label' in route.params ? route.params.label : undefined,
-//   },
-// }))
-
 const emailData = emailStaticData.emails
 const emails = emailStaticData.emails
-
-// const emailMeta = emailStaticData.emailsMeta
-
-// const emails = computed<Email[]>(() => emailData.value.emails)
-// const emailsMeta = computed(() => emailData.value.emailsMeta)
 
 const fetchEmails = () => {}
 
@@ -95,9 +81,11 @@ const emailsMeta = {
 
 const toggleSelectedEmail = (emailId: Email['id']) => {
   const emailIndex = selectedEmails.value.indexOf(emailId)
-  if (emailIndex === -1)
-  { selectedEmails.value.push(emailId) }
-  else selectedEmails.value.splice(emailIndex, 1)
+  if (emailIndex === -1) {
+    selectedEmails.value.push(emailId)
+  } else {
+    selectedEmails.value.splice(emailIndex, 1)
+  }
 }
 
 const selectAllEmailCheckbox = computed(
@@ -144,8 +132,9 @@ const emailViewMeta = computed(() => {
 const refreshOpenedEmail = async () => {
   // await fetchEmails()
 
-  if (openedEmail.value)
-  { openedEmail.value = emails.value.find(e => e.id === openedEmail.value?.id)! }
+  if (openedEmail.value) {
+    openedEmail.value = emails.value.find(e => e.id === openedEmail.value?.id)!
+  }
 }
 
 /*
@@ -167,8 +156,9 @@ const handleActionClick = async (
 ) => {
   selectedEmails.value = []
   selectedEmails.value = []
-  if (!emailIds.length)
-  { return }
+  if (!emailIds.length) {
+    return
+  }
 
   if (action === 'trash')
   { await updateEmails(emailIds, { isDeleted: true }) }

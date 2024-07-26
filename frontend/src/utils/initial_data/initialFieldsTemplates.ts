@@ -17,13 +17,6 @@ export const initialFieldsTemplates: Array<FormField | FormFieldsGroup> = [
         rules: yup.string().required('Name is required'),
       },
       {
-        type: 'input',
-        name: 'description',
-        label: 'Description',
-        value: '',
-        rules: yup.string().required('Description is required'),
-      },
-      {
         type: 'autocomplete',
         name: 'related_trade',
         label: 'Trade',
@@ -39,8 +32,14 @@ export const initialFieldsTemplates: Array<FormField | FormFieldsGroup> = [
             title: item.label,
           }))
         },
-
         rules: yup.string().required('Trade is required'),
+      },
+      {
+        type: 'textarea',
+        name: 'description',
+        label: 'Description',
+        value: '',
+        rules: yup.string().required('Description is required'),
       },
     ],
   },
