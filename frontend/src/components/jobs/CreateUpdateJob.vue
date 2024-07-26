@@ -38,7 +38,11 @@ const fetchJobData = async (id: string) => {
       if ('fields' in field) {
         field.fields.forEach(subField => {
           if (hasKey(job, subField.name)) {
-            subField.value = job[subField.name].id
+            if (typeof job[subField.name] === 'object') {
+              subField.value = job[subField.name].id
+            } else {
+              subField.value = job[subField.name]
+            }
           }
         })
       } else if (hasKey(job, field.name)) {

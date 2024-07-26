@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
+import {type RouteLocationNormalizedLoaded, useRoute} from 'vue-router'
 import pdf from '@images/icons/project-icons/pdf.png'
 import aviato from '@images/logos/aviato.png'
 import bitbank from '@images/logos/bitbank.png'
@@ -9,12 +9,12 @@ import TimelineRectangle2 from '@images/pages/TimelineRectangle2.png'
 import TimelineRectangle3 from '@images/pages/TimelineRectangle3.png'
 import TimelineRectangle4 from '@images/pages/TimelineRectangle4.png'
 
-const albumImages = [
-  TimelineRectangle1,
-  TimelineRectangle2,
-  TimelineRectangle3,
-  TimelineRectangle4,
-]
+definePage({
+  meta: {
+    action: 'read',
+    subject: 'chats',
+  },
+})
 
 const communicationTypes = {
   emails: 'tabler-mail-opened',
@@ -23,33 +23,8 @@ const communicationTypes = {
   calls: 'tabler-phone',
 }
 
-const route = useRoute()
-const communicationId = route.params.id
+const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string; type: string } }
 const communicationType = route.params.type
-
-const earnings = [
-  {
-    avatar: zipcar,
-    title: 'Zipcar',
-    subtitle: 'Vuejs, React & HTML',
-    amount: '$24,895.65',
-    progress: 'primary',
-  },
-  {
-    avatar: bitbank,
-    title: 'Bitbank',
-    subtitle: 'Sketch, Figma & XD',
-    amount: '$8,6500.20',
-    progress: 'info',
-  },
-  {
-    avatar: aviato,
-    title: 'Aviato',
-    subtitle: 'HTML & Anguler',
-    amount: '$1,2450.80',
-    progress: 'secondary',
-  },
-]
 </script>
 
 <template>
