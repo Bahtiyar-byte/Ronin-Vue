@@ -63,6 +63,7 @@ declare module 'vue' {
     EstimateInfoPanel: typeof import('./src/components/estimates/EstimateInfoPanel.vue')['default']
     EstimatesActivityTab: typeof import('./src/components/estimates/details/EstimatesActivityTab.vue')['default']
     FiltersList: typeof import('./src/components/common/filters/FiltersList.vue')['default']
+    Fleet: typeof import('./src/components/scheduler/Fleet.vue')['default']
     GeneralTab: typeof import('./src/components/profile/tabs/GeneralTab.vue')['default']
     I18n: typeof import('./src/@core/components/I18n.vue')['default']
     InDialogCreation: typeof import('./src/components/estimateSectionTemplates/InDialogCreation.vue')['default']

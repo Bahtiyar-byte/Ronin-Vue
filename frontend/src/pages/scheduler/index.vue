@@ -1,11 +1,36 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
+import dayjs from 'dayjs'
+import Fleet from '@/components/scheduler/Fleet.vue'
 
 definePage({
   meta: {
     layoutWrapperClasses: 'layout-content-height-fixed',
   },
 })
+
+const state = reactive({
+  chartStartDate: '2024-07-23 00:00',
+  chartEndDate: '2024-07-24 00:00',
+})
+
+const twoDaysInMillis = 2 * 24 * 60 * 60 * 1000
+
+const handlePreviousWeek = () => {
+  const date = new Date(state.chartStartDate)
+  const previousDate = new Date(date.getTime() - twoDaysInMillis)
+
+  state.chartEndDate = state.chartStartDate
+  state.chartStartDate = dayjs(previousDate).format('YYYY-MM-DD HH:mm')
+}
+
+const handleNextWeek = () => {
+  const date = new Date(state.chartEndDate)
+  const nextDate = new Date(date.getTime() + twoDaysInMillis)
+
+  state.chartStartDate = state.chartEndDate
+  state.chartEndDate = dayjs(nextDate).format('YYYY-MM-DD HH:mm')
+}
 
 const row1BarList = ref([
   {
@@ -14,7 +39,8 @@ const row1BarList = ref([
     ganttBarConfig: {
       // each bar must have a nested ganttBarConfig object ...
       id: 'unique-id-1', // ... and a unique "id" property
-      label: 'Lorem ipsum dolor',
+      hasHandles: true,
+      label: 'Shingles',
     },
   },
 ])
@@ -25,7 +51,8 @@ const row2BarList = ref([
     myEndDate: '2024-07-25 02:00',
     ganttBarConfig: {
       id: 'another-unique-id-2',
-      label: 'Hey, look at me',
+      label: 'Gutters',
+      hasHandles: true,
       style: {
         // arbitrary CSS styling for your bar
         background: '#e09b69',
@@ -42,7 +69,8 @@ const row3BarList = ref([
     myEndDate: '2024-07-25 02:00',
     ganttBarConfig: {
       id: 'another-unique-id-3',
-      label: 'Hey, look at me',
+      label: 'Soffit',
+      hasHandles: true,
       style: {
         // arbitrary CSS styling for your bar
         background: 'purple',
@@ -59,7 +87,8 @@ const row4BarList = ref([
     myEndDate: '2024-07-25 02:00',
     ganttBarConfig: {
       id: 'another-unique-id-4',
-      label: 'Hey, look at me',
+      label: 'Tile',
+      hasHandles: true,
       style: {
         // arbitrary CSS styling for your bar
         background: '#e09b69',
@@ -76,7 +105,8 @@ const row5BarList = ref([
     myEndDate: '2024-07-25 02:00',
     ganttBarConfig: {
       id: 'another-unique-id-5',
-      label: 'Hey, look at me',
+      label: 'Flat Roof',
+      hasHandles: true,
       style: {
         // arbitrary CSS styling for your bar
         background: '#e09b69',
@@ -89,38 +119,57 @@ const row5BarList = ref([
 </script>
 
 <template>
-  <VCard>
-    <!-- <VLayout> -->
-    <GGanttChart
-      chart-start="2024-07-23 00:00"
-      chart-end="2024-07-24 23:00"
-      bar-start="myBeginDate"
-      bar-end="myEndDate"
-      push-on-overlap
-      precision="hour"
-    >
-      <GGanttRow
-        label="Crew 1"
-        style="color: 'red' !important;"
-        :bars="row1BarList"
-      />
-      <GGanttRow
-        label="Crew 2"
-        :bars="row2BarList"
-      />
-      <GGanttRow
-        label="Crew 3"
-        :bars="row3BarList"
-      />
-      <GGanttRow
-        label="Crew 4"
-        :bars="row4BarList"
-      />
-      <GGanttRow
-        label="Crew 5"
-        :bars="row5BarList"
-      />
-    </GGanttChart>
-    <!-- </VLayout> -->
-  </VCard>
+  <div>
+    <VCard>
+      <div class="demo-space-x">
+        <VBtn
+          icon="tabler-arrow-left"
+          rounded
+          @click="handlePreviousWeek"
+        />
+        <VBtn
+          icon="tabler-arrow-right"
+          rounded
+          @click="handleNextWeek"
+        />
+      </div>
+
+      <!-- <VLayout> -->
+      <GGanttChart
+        :chart-start="state.chartStartDate"
+        :chart-end="state.chartEndDate"
+        bar-start="myBeginDate"
+        bar-end="myEndDate"
+        push-on-overlap
+        precision="hour"
+      >
+        <GGanttRow
+          label="Crew 1"
+          style="color: 'red' !important"
+          :bars="row1BarList"
+        />
+        <GGanttRow
+          label="Crew 2"
+          :bars="row2BarList"
+        />
+        <GGanttRow
+          label="Crew 3"
+          :bars="row3BarList"
+        />
+        <GGanttRow
+          label="Crew 4"
+          :bars="row4BarList"
+        />
+        <GGanttRow
+          label="Crew 5"
+          :bars="row5BarList"
+        />
+      </GGanttChart>
+      <!-- </VLayout> -->
+    </VCard>
+
+    <!-- <VCard> -->
+    <Fleet />
+    <!-- </VCard> -->
+  </div>
 </template>

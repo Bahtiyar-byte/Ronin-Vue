@@ -158,6 +158,8 @@ const sources: BundleScriptConfig = {
         'align-center',
         'align-right',
         'align-justified',
+        'arrow-right',
+        'arrow-left',
       ],
     },
     {
