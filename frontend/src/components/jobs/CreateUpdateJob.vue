@@ -8,7 +8,6 @@ import type Job from '@/types/jobs/Job'
 import { useFormFields } from '@/utils/forms/useFormFields'
 import { initialFieldsJobs } from '@/utils/initial_data/initialFieldsJobs'
 import type FormField from '@/types/forms/FormField'
-import ItemUpdate from "@/components/common/CRUD/ItemUpdate.vue";
 
 const { create: createJob, getById: getJobById, update: updateJob } = useJobs()
 const router = useRouter()
@@ -56,7 +55,7 @@ const fetchJobData = async (id: string) => {
 }
 
 onBeforeMount(async () => {
-  await initializeFields(initialFieldsJobs)
+  await initializeFields(initialFieldsJobs())
 
   const jobId = route.params.id as string
   if (jobId) {

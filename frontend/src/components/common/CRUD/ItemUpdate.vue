@@ -9,15 +9,13 @@ import type FormFieldsGroup from '@/types/forms/FormFieldsGroup'
 import EntityField from '@/components/common/CRUD/EntityField.vue'
 import type { BreadcrumbsItem } from '@/types/breadcrumbs/BreadcrumbsItem'
 
-const props = withDefaults(defineProps<{
+const props = defineProps<{
   title: string
   breadcrumbs: BreadcrumbsItem[]
   fields: Array<FormField | FormFieldsGroup>
   submitHandler: (values: Record<string, any>) => Promise<void>
-  isUpdateMode?: boolean
-}>(), {
-  isUpdateMode: true
-})
+  isUpdateMode: boolean
+}>()
 
 const initializeFormData = (fields: Array<FormField | FormFieldsGroup>) => {
   const data = {} as Record<string, any>
