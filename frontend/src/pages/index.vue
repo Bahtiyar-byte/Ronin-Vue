@@ -20,8 +20,8 @@ import Invoice from '@/views/home/Invoice.vue'
 
 definePage({
   meta: {
-    action: 'read',
-    subject: 'contacts',
+    action: 'manage',
+    subject: 'basicActions',
   },
 })
 

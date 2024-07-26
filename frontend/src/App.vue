@@ -10,7 +10,7 @@ import { useAbility } from '@/plugins/casl/composables/useAbility'
 import { useCurrentUserStore } from '@core/stores/auth/currentUser'
 import type { CurrentUser } from '@/types/users/User'
 import type { Permission } from '@/types/roles/roles'
-import { permissionToAbilityRule, groupPermissions } from '@/utils/roles'
+import { groupPermissions, permissionToAbilityRule } from '@/utils/roles'
 
 const { user } = storeToRefs(useCurrentUserStore())
 
@@ -27,6 +27,12 @@ watch(user, (currUser: CurrentUser | null) => {
     const abilityRules = groupPermissions(
       currUser.app_role_permissions.map((permission: Permission) => permissionToAbilityRule(permission))
     )
+
+    // Add ability to visit homepage, scheduler, etc.
+    abilityRules.push({
+      action: 'manage',
+      subject: 'basicActions',
+    })
 
     ability.update(abilityRules)
     useCookie('userAbilityRules').value = JSON.stringify(abilityRules)

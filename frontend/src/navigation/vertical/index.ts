@@ -3,11 +3,8 @@ export default [
     title: 'Home',
     to: { name: 'root' },
     icon: { icon: 'tabler-smart-home' },
-
-    // ToDo: We need some workaround to allow
-    //  all users visit homepage but not only permitted to read contacts
-    action: 'read',
-    subject: 'contacts',
+    action: 'manage',
+    subject: 'basicActions',
   },
   {
     title: 'Jobs',
@@ -43,8 +40,6 @@ export default [
     icon: { icon: 'tabler-message-circle-2' },
     action: 'read',
     subject: 'chats',
-    action: 'read',
-    subject: 'chats',
   },
   {
     title: 'Scheduler',
@@ -63,20 +58,22 @@ export default [
   {
     title: 'Settings',
     icon: { icon: 'tabler-settings' },
+
+    // ToDo: Check array of permissions for nav groups
     action: 'read',
     subject: 'chats',
     children: [
       {
         title: 'Profile',
-        subject: 'chats',
-        action: 'read',
         to: 'settings-profile',
+        action: 'manage',
+        subject: 'basicActions',
       },
       {
         title: 'Roles',
-        subject: 'chats',
-        action: 'read',
         to: 'settings-roles',
+        action: 'read',
+        subject: 'roles',
       },
     ],
   },
