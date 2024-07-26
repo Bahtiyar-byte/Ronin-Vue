@@ -7,6 +7,7 @@ import type Trade from '@/types/trades/Trade'
 import type FormField from '@/types/forms/FormField'
 import { useFormFields } from '@/utils/forms/useFormFields'
 import { initialFieldsTrades } from '@/utils/initial_data/initialFieldsTrades'
+import ItemUpdate from "@/components/common/CRUD/ItemUpdate.vue";
 
 const { create: createTrade, getById: getTradeById, update: updateTrade } = useTrades()
 const router = useRouter()
@@ -82,5 +83,6 @@ const submitForm = async (values: Record<string, any>) => {
     :breadcrumbs="breadcrumbs"
     :fields="formFields as FormField[]"
     :submit-handler="submitForm"
+    :is-update-mode="isUpdateMode"
   />
 </template>

@@ -14,13 +14,6 @@ definePage({
 
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } }
 
-const templateTab = ref(null)
-
-const tabs = [
-  { icon: 'tabler-activity', title: 'Activity' },
-  { icon: 'ph-link-light', title: 'Related' },
-]
-
 const templateData = ref<Template>()
 const templateName = ref<string>('')
 const isLoading = ref<boolean>(false)

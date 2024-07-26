@@ -82,5 +82,6 @@ const submitForm = async (values: Record<string, any>) => {
     :breadcrumbs="breadcrumbs"
     :fields="formFields as FormField[]"
     :submit-handler="submitForm"
+    :is-update-mode="isUpdateMode"
   />
 </template>

@@ -14,13 +14,6 @@ definePage({
 
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } }
 
-const tradeTab = ref(null)
-
-const tabs = [
-  { icon: 'tabler-activity', title: 'Activity' },
-  { icon: 'ph-link-light', title: 'Related' },
-]
-
 const tradeData = ref<Trade>()
 const tradeName = ref<string>('')
 const isLoading = ref<boolean>(false)

@@ -160,6 +160,7 @@ const sources: BundleScriptConfig = {
         'align-justified',
         'arrow-right',
         'arrow-left',
+        'file-type-pdf',
       ],
     },
     {

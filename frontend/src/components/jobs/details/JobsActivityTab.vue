@@ -1,15 +1,25 @@
 <script setup lang="ts">
+import type { RouteLocationRaw } from 'vue-router'
 import type WidgetCardProps from '@/types/widgets/WidgetCardProps'
 import WidgetCard from '@/components/widgets/WidgetCard.vue'
 import type Job from '@/types/jobs/Job'
 import { useEstimates } from '@/composables/useEstimates'
+import type { GetEstimatesRequest } from '@/types/estimates/GetEstimatesRequest'
+import { useAbility } from '@/plugins/casl/composables/useAbility'
 
 const jobData = defineModel<Job>('jobData', { required: true })
 
 const { count: estimatesCount } = useEstimates()
 
+const dialogsVisibility = reactive({
+  estimates: false,
+  documents: false,
+})
+
 const widgets = ref<WidgetCardProps[]>([
   {
+    permission: { action: 'read', subject: 'appointments' },
+    to: { name: 'calendar', query: { related_job: jobData.value.id } } as RouteLocationRaw,
     widget: {
       title: 'Appointments',
       value: 0,
@@ -17,22 +27,15 @@ const widgets = ref<WidgetCardProps[]>([
       action: {
         title: 'Add appointment for this job',
         icon: 'tabler-plus',
-        to: {
-          name: 'appointments-create',
-          query: computed(() => {
-            return {
-              assigned_to: jobData.value?.assigned_to?.id || '',
-              related_contact: jobData.value?.related_contact?.id || '',
-
-              // related_job: jobData.value?.id || '',
-            }
-          }),
-        },
+        to: { name: 'calendar', query: { create_event: 1, job_id: jobData.value.id } } as RouteLocationRaw,
       },
     },
   },
   {
-    to: { name: 'estimates', query: { related_job: jobData.value.id } },
+    permission: { action: 'read', subject: 'estimates' },
+    action: () => {
+      dialogsVisibility.estimates = !dialogsVisibility.estimates
+    },
     widget: {
       title: 'Estimates',
       value: (await estimatesCount({ related_job: jobData.value.id })).data.value?.count,
@@ -53,6 +56,7 @@ const widgets = ref<WidgetCardProps[]>([
     },
   },
   {
+    permission: { action: 'read', subject: 'invoices' },
     widget: {
       title: 'Invoices',
       value: 0,
@@ -68,6 +72,10 @@ const widgets = ref<WidgetCardProps[]>([
     },
   },
   {
+    permission: { action: 'read', subject: 'documents' },
+    action: () => {
+      dialogsVisibility.documents = !dialogsVisibility.documents
+    },
     widget: {
       title: 'Documents',
       value: 0,
@@ -86,6 +94,7 @@ const widgets = ref<WidgetCardProps[]>([
     },
   },
   {
+    permission: { action: 'read', subject: 'chats' },
     widget: {
       title: 'Communications',
       value: 0,
@@ -101,6 +110,7 @@ const widgets = ref<WidgetCardProps[]>([
     },
   },
   {
+    permission: { action: 'read', subject: 'chats' },
     widget: {
       title: 'Crew',
       value: 0,
@@ -115,15 +125,24 @@ const widgets = ref<WidgetCardProps[]>([
       },
     },
   },
-
 ])
+
+const ability = useAbility()
+
+const filteredWidgets = computed(() => {
+  return widgets.value.filter(widget => widget.permission === undefined || ability.can(widget.permission?.action, widget.permission?.subject))
+})
+
+const estimatesSearchParams: GetEstimatesRequest = {
+  related_job: jobData.value.id,
+}
 </script>
 
 <template>
   <div class="mb-6">
     <VRow>
       <VCol
-        v-for="(widgetData, id) in widgets"
+        v-for="(widgetData, id) in filteredWidgets"
         :key="`activity-widget-${id}`"
         cols="12"
         md="4"
@@ -132,5 +151,12 @@ const widgets = ref<WidgetCardProps[]>([
         <WidgetCard v-bind="widgetData" />
       </VCol>
     </VRow>
+
+    <EstimaesList
+      v-model:is-dialog-visible="dialogsVisibility.estimates"
+      v-model:search-params="estimatesSearchParams"
+    />
+
+    <DocumentsDialog v-model:is-dialog-visible="dialogsVisibility.documents" />
   </div>
 </template>

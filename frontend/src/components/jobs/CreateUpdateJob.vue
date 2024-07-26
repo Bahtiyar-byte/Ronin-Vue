@@ -38,7 +38,11 @@ const fetchJobData = async (id: string) => {
       if ('fields' in field) {
         field.fields.forEach(subField => {
           if (hasKey(job, subField.name)) {
-            subField.value = job[subField.name].id
+            if (typeof job[subField.name] === 'object') {
+              subField.value = job[subField.name].id
+            } else {
+              subField.value = job[subField.name]
+            }
           }
         })
       } else if (hasKey(job, field.name)) {
@@ -51,7 +55,7 @@ const fetchJobData = async (id: string) => {
 }
 
 onBeforeMount(async () => {
-  await initializeFields(initialFieldsJobs)
+  await initializeFields(initialFieldsJobs())
 
   const jobId = route.params.id as string
   if (jobId) {
@@ -83,6 +87,7 @@ const submitForm = async (values: Record<string, any>) => {
     :breadcrumbs="breadcrumbs"
     :fields="formFields as FormField[]"
     :submit-handler="submitForm"
+    :is-update-mode="isUpdateMode"
   >
     <template #append_related_contactId>
       <VTooltip text="Add new contact">
