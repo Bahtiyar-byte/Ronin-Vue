@@ -8,6 +8,7 @@ import type Job from '@/types/jobs/Job'
 import { useFormFields } from '@/utils/forms/useFormFields'
 import { initialFieldsJobs } from '@/utils/initial_data/initialFieldsJobs'
 import type FormField from '@/types/forms/FormField'
+import ItemUpdate from "@/components/common/CRUD/ItemUpdate.vue";
 
 const { create: createJob, getById: getJobById, update: updateJob } = useJobs()
 const router = useRouter()
@@ -87,6 +88,7 @@ const submitForm = async (values: Record<string, any>) => {
     :breadcrumbs="breadcrumbs"
     :fields="formFields as FormField[]"
     :submit-handler="submitForm"
+    :is-update-mode="isUpdateMode"
   >
     <template #append_related_contactId>
       <VTooltip text="Add new contact">
