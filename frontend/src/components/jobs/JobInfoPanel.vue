@@ -2,11 +2,10 @@
 import type Job from '@/types/jobs/Job'
 import { useFilters } from '@/composables/useFilters'
 import { useJobs } from '@/composables/useJobs'
-import { useContacts } from '@/composables/useContacts'
 import { useUsers } from '@/composables/useUsers'
-import InfoPanelActions from '@/components/jobs/details/JobsInfoPanelActions.vue'
 
 import { fetchAutocomplete } from '@/utils/api'
+import { formatDate, stringToDate } from '@/utils/date'
 
 const jobData = defineModel<Job>('jobData', { required: true })
 
@@ -14,16 +13,8 @@ const contactEditVisible = defineModel<boolean>('jobEditVisible', {
   default: true,
 })
 
-const { getVariants } = useFilters()
 const { update } = useJobs()
-const { autocomplete: autocompleteContacts } = useContacts()
 const { autocomplete: autocompleteUsers } = useUsers()
-
-const fetchEnumItems = async (type: string) => {
-  const { data } = await getVariants('jobs', type)
-
-  return data.value
-}
 
 const saveItem = async (type: string, newValue: string) => {
   const updatedData = {
@@ -31,7 +22,7 @@ const saveItem = async (type: string, newValue: string) => {
     [type]: newValue,
   }
 
-  const { data, isFetching } = await update(updatedData)
+  const { data, isFetching } = await update(updatedData as Job)
 
   watch(data, newVal => {
     if (newVal === null) {
@@ -76,7 +67,7 @@ const saveItem = async (type: string, newValue: string) => {
                 <span class="font-medium">
                   Address:
                 </span>
-                <div class="d-inline-block text-body-1">
+                <div class="d-inline text-body-1">
                   {{ jobData.address }}
                 </div>
               </VListItemTitle>
@@ -114,24 +105,59 @@ const saveItem = async (type: string, newValue: string) => {
                 </div>
               </VListItemTitle>
             </VListItem>
+
+            <VListItem v-if="jobData.start_date">
+              <VListItemTitle>
+                <span class="font-medium">
+                  Start date:
+                </span>
+                <div class="d-inline-block text-body-1">
+                  {{ formatDate('m-d-Y', stringToDate(jobData.start_date)) }}
+                </div>
+              </VListItemTitle>
+            </VListItem>
+
+            <VListItem v-if="jobData.end_date">
+              <VListItemTitle>
+                <span class="font-medium">
+                  End date:
+                </span>
+                <div class="d-inline-block text-body-1">
+                  {{ formatDate('m-d-Y', stringToDate(jobData.end_date)) }}
+                </div>
+              </VListItemTitle>
+            </VListItem>
+
+            <VListItem v-if="jobData.related_contact">
+              <VListItemTitle>
+                <span class="font-medium">
+                  Related contact:
+                </span>
+                <div class="d-inline-block text-body-1">
+                  {{ jobData.related_contact.name }}
+                </div>
+              </VListItemTitle>
+            </VListItem>
+
+            <VListItem v-if="jobData.description?.length">
+              <VListItemTitle>
+                <span class="font-medium">
+                  Related contact:
+                </span>
+                <div class="text-body-1 whitespace-pre-wrap">
+                  {{ jobData.description }}
+                </div>
+              </VListItemTitle>
+            </VListItem>
           </VList>
+
+          <VDivider class="my-4 !opacity-60" />
 
           <h5 class="text-[1.05rem] leading-[1.5] font-medium mt-6">
             Related
           </h5>
 
-          <VDivider class="my-4 !opacity-60" />
-
           <VList class="card-list mt-2">
-            <EditableInfoItem
-              label="Related contact"
-              type="autocomplete"
-              :value="jobData.related_contactId as string"
-              title="Update job related contact"
-              :fetch-autocomplete-items="(query: string) => fetchAutocomplete(query, autocompleteContacts)"
-              :on-save="(newValue: string) => saveItem('related_contact', newValue)"
-            />
-
             <EditableInfoItem
               label="Assigned to"
               type="autocomplete"
@@ -142,11 +168,6 @@ const saveItem = async (type: string, newValue: string) => {
             />
           </VList>
         </VCardText>
-
-        <InfoPanelActions
-          :job-data="jobData"
-          @update:job-data="(newVal: Job) => jobData = newVal"
-        />
 
         <!-- 👉 Edit and Suspend button -->
         <VCardText

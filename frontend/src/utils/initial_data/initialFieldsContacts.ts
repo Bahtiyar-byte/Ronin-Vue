@@ -31,7 +31,7 @@ export const initialFieldsContacts: Array<FormField | FormFieldsGroup> = [
       },
       {
         type: 'input',
-        name: 'phone_number',
+        name: 'phone',
         label: 'Phone Number',
         value: '',
         rules: yup.string().required('Phone Number is required'),

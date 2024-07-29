@@ -561,15 +561,15 @@ module.exports = class UsersDBApi {
     }
 
     const records = await db.users.findAll({
-      attributes: ['id', 'name'],
+      attributes: ['id', 'name', 'firstName'],
       where,
       limit: limit ? Number(limit) : undefined,
-      orderBy: [['name', 'ASC']],
+      orderBy: [['name', 'ASC'], ['firstName', 'ASC']],
     });
 
     return records.map((record) => ({
       id: record.id,
-      label: record.name,
+      label: record.name === null || record.name.length === 0 ? record.firstName : record.name,
     }));
   }
 

@@ -105,6 +105,9 @@ dependencies:
   ofetch:
     specifier: 1.3.3
     version: 1.3.3
+  php-date:
+    specifier: ^4.0.1
+    version: 4.0.1
   pinia:
     specifier: 2.1.7
     version: 2.1.7(typescript@5.3.3)(vue@3.4.21)
@@ -6022,6 +6025,10 @@ packages:
     resolution: {integrity: sha512-7EAHlyLHI56VEIdK57uwHdHKIaAGbnXPiw0yWbarQZOKaKpvUIgW0jWRVLiatnM+XXlSwsanIBH/hzGMJulMow==}
     dev: false
     optional: true
+
+  /php-date@4.0.1:
+    resolution: {integrity: sha512-R0QljD+JYb5CxA1PWdyFsyT8NW1WRN3Um+lAtiXIKPbTCn/Kej/v5pU9l4ZFGiRLvAFbB3hNnYO9yGdXH85Dtw==}
+    dev: false
 
   /picocolors@0.2.1:
     resolution: {integrity: sha512-cMlDqaLEqfSaW8Z7N5Jw+lyIW869EzT73/F5lhtY9cLGoVxSXznfgfXMO0Z5K0o0Q2TkTXq+0KFsdnSe3jDViA==}
