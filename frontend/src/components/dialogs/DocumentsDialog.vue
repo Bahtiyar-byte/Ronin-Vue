@@ -57,7 +57,6 @@ const paymentMethodsData = [
     type: 'Credit Card',
     img: dc,
   },
-
 ]
 </script>
 
