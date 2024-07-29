@@ -5,6 +5,13 @@ import ItemsManage from '@/components/common/CRUD/ItemsManage.vue'
 import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
 import { useTableManagement } from '@/utils/forms/useTableManagement'
 
+definePage({
+  meta: {
+    action: 'read',
+    subject: 'templates',
+  },
+})
+
 const { getList, deleteTemplate } = useTemplates()
 
 const headersDefinition = [

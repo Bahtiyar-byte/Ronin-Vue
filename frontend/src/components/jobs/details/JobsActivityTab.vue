@@ -3,16 +3,17 @@ import type { RouteLocationRaw } from 'vue-router'
 import type WidgetCardProps from '@/types/widgets/WidgetCardProps'
 import WidgetCard from '@/components/widgets/WidgetCard.vue'
 import type Job from '@/types/jobs/Job'
-import { useEstimates } from '@/composables/useEstimates'
 import type { GetEstimatesRequest } from '@/types/estimates/GetEstimatesRequest'
 import { useAbility } from '@/plugins/casl/composables/useAbility'
 
 const jobData = defineModel<Job>('jobData', { required: true })
 
 const { count: estimatesCount } = useEstimates()
+const { count: invoicesCount } = useInvoices()
 
 const dialogsVisibility = reactive({
   estimates: false,
+  invoices: false,
   documents: false,
 })
 
@@ -57,9 +58,12 @@ const widgets = ref<WidgetCardProps[]>([
   },
   {
     permission: { action: 'read', subject: 'invoices' },
+    action: () => {
+      dialogsVisibility.invoices = !dialogsVisibility.invoices
+    },
     widget: {
       title: 'Invoices',
-      value: 0,
+      value: (await invoicesCount({ related_job: jobData.value.id })).data.value?.count,
       icon: 'ph-invoice-light',
       iconColor: 'success',
       action: {
@@ -136,6 +140,8 @@ const filteredWidgets = computed(() => {
 const estimatesSearchParams: GetEstimatesRequest = {
   related_job: jobData.value.id,
 }
+
+const invoicesSearchParams: GetEstimatesRequest = estimatesSearchParams
 </script>
 
 <template>
@@ -155,6 +161,11 @@ const estimatesSearchParams: GetEstimatesRequest = {
     <EstimaesList
       v-model:is-dialog-visible="dialogsVisibility.estimates"
       v-model:search-params="estimatesSearchParams"
+    />
+
+    <InvoicesListDialog
+      v-model:is-dialog-visible="dialogsVisibility.invoices"
+      v-model:search-params="invoicesSearchParams"
     />
 
     <DocumentsDialog v-model:is-dialog-visible="dialogsVisibility.documents" />

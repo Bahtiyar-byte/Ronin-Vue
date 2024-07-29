@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import type Job from '@/types/jobs/Job'
-import { useFilters } from '@/composables/useFilters'
-import { useJobs } from '@/composables/useJobs'
-import { useUsers } from '@/composables/useUsers'
-
-import { fetchAutocomplete } from '@/utils/api'
-import { formatDate, stringToDate } from '@/utils/date'
+import {formatDateTime} from "@/utils/date";
 
 const jobData = defineModel<Job>('jobData', { required: true })
 
@@ -112,7 +107,7 @@ const saveItem = async (type: string, newValue: string) => {
                   Start date:
                 </span>
                 <div class="d-inline-block text-body-1">
-                  {{ formatDate('m-d-Y', stringToDate(jobData.start_date)) }}
+                  {{ formatDateTime('m-d-Y', stringToDate(jobData.start_date)) }}
                 </div>
               </VListItemTitle>
             </VListItem>
@@ -123,7 +118,7 @@ const saveItem = async (type: string, newValue: string) => {
                   End date:
                 </span>
                 <div class="d-inline-block text-body-1">
-                  {{ formatDate('m-d-Y', stringToDate(jobData.end_date)) }}
+                  {{ formatDateTime('m-d-Y', stringToDate(jobData.end_date)) }}
                 </div>
               </VListItemTitle>
             </VListItem>

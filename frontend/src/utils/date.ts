@@ -24,7 +24,7 @@ const prepareDate = (date?: Date | number): { _date: Date } => {
   return { _date }
 }
 
-export const formatDate = (format?: string, date?: Date | number): string => {
+export const formatDateTime = (format?: string, date?: Date | number): string => {
   const { _date } = prepareDate(date)
 
   return phpFormatDate(format ?? 'm-d-Y', _date)

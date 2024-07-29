@@ -15,6 +15,7 @@ const { count: jobsCount } = useJobs()
 const dialogsVisibility = reactive({
   estimates: false,
   jobs: false,
+  invoices: false,
   documents: false,
 })
 
@@ -22,9 +23,7 @@ const estimatesSearchParams: GetEstimatesRequest = {
   related_contact: contactData.value.id,
 }
 
-const jobsSearchParams = {
-  related_contact: contactData.value.id,
-}
+const jobsSearchParams = estimatesSearchParams
 
 const widgets = ref<WidgetCardProps[]>([
   {
@@ -80,6 +79,9 @@ const widgets = ref<WidgetCardProps[]>([
   },
   {
     permission: { action: 'read', subject: 'invoices' },
+    action: () => {
+      dialogsVisibility.invoices = !dialogsVisibility.invoices
+    },
     widget: {
       title: 'Invoices',
       value: 0,
@@ -161,6 +163,8 @@ const filteredWidgets = computed(() => {
       v-model:is-dialog-visible="dialogsVisibility.jobs"
       v-model:search-params="jobsSearchParams"
     />
+
+    <InvoicesListDialog v-model:is-dialog-visible="dialogsVisibility.invoices" />
 
     <DocumentsDialog v-model:is-dialog-visible="dialogsVisibility.documents" />
   </div>
