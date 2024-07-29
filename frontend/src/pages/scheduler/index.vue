@@ -7,7 +7,6 @@ definePage({
   meta: {
     action: 'manage',
     subject: 'basicActions',
-    layoutWrapperClasses: 'layout-content-height-fixed',
   },
 })
 
