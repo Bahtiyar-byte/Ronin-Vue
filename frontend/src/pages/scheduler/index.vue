@@ -12,7 +12,7 @@ definePage({
 
 const state = reactive({
   chartStartDate: '2024-07-23 00:00',
-  chartEndDate: '2024-07-24 00:00',
+  chartEndDate: '2024-07-25 00:00',
 })
 
 const twoDaysInMillis = 2 * 24 * 60 * 60 * 1000
@@ -121,7 +121,7 @@ const row5BarList = ref([
 
 <template>
   <div>
-    <VCard>
+    <VCard class="mb-3">
       <div class="demo-space-x">
         <VBtn
           icon="tabler-arrow-left"

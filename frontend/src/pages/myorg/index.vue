@@ -1,5 +1,13 @@
 <script setup lang="ts">
 import CompanyGeneralDocuments from '@/components/myorg/CompanyGeneralDocuments.vue'
+
+definePage({
+  meta: {
+    action: 'read',
+    subject: 'myorg',
+  },
+})
+
 </script>
 
 <template>
