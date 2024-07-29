@@ -70,12 +70,9 @@ const paymentMethodsData = [
     <!-- 👉 dialog close btn -->
     <DialogCloseBtn @click="emit('update:isDialogVisible', false)" />
 
-    <VCard class="pa-2 pa-sm-10">
+    <VCard class="sm:!p-10 !p-2">
       <VCardText>
-        <!-- 👉 Title -->
-        <h4 class="text-h4 text-center mb-2">
-          Documents
-        </h4>
+        <ActivityDialogHeader title="Related documents" />
 
         <div
           v-for="(item, index) in paymentMethodsData"

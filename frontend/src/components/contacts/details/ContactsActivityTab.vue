@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { RouteLocationRaw } from 'vue-router'
 import type WidgetCardProps from '@/types/widgets/WidgetCardProps'
-import WidgetCard from '@/components/widgets/WidgetCard.vue'
 import type Contact from '@/types/contacts/Contact'
 import type { GetEstimatesRequest } from '@/types/estimates/GetEstimatesRequest'
 import { useAbility } from '@/plugins/casl/composables/useAbility'
@@ -11,10 +10,12 @@ const contactData = defineModel<Contact>('contactData', { required: true })
 const { count: appointmentsCount } = useAppointments()
 const { count: estimatesCount } = useEstimates()
 const { count: jobsCount } = useJobs()
+const { countDocuments, countInvoices } = useContactsAttachments()
 
 const dialogsVisibility = reactive({
   estimates: false,
   jobs: false,
+  invoices: false,
   documents: false,
 })
 
@@ -22,9 +23,7 @@ const estimatesSearchParams: GetEstimatesRequest = {
   related_contact: contactData.value.id,
 }
 
-const jobsSearchParams = {
-  related_contact: contactData.value.id,
-}
+const jobsSearchParams = estimatesSearchParams
 
 const widgets = ref<WidgetCardProps[]>([
   {
@@ -80,9 +79,12 @@ const widgets = ref<WidgetCardProps[]>([
   },
   {
     permission: { action: 'read', subject: 'invoices' },
+    action: () => {
+      dialogsVisibility.invoices = !dialogsVisibility.invoices
+    },
     widget: {
       title: 'Invoices',
-      value: 0,
+      value: (await countInvoices({ related_contact: contactData.value.id })).data.value?.count,
       icon: 'ph-invoice-light',
       iconColor: 'success',
       action: {
@@ -101,7 +103,7 @@ const widgets = ref<WidgetCardProps[]>([
     },
     widget: {
       title: 'Documents',
-      value: 0,
+      value: (await countDocuments({ related_contact: contactData.value.id })).data.value?.count,
       icon: 'ph-invoice-light',
       iconColor: 'info',
       action: {
@@ -162,6 +164,8 @@ const filteredWidgets = computed(() => {
       v-model:search-params="jobsSearchParams"
     />
 
-    <DocumentsDialog v-model:is-dialog-visible="dialogsVisibility.documents" />
+    <InvoicesListDialog v-model:is-dialog-visible="dialogsVisibility.invoices" />
+
+    <DocumentsListDialog v-model:is-dialog-visible="dialogsVisibility.documents" />
   </div>
 </template>

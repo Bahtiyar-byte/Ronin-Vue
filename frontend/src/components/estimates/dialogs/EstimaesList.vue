@@ -19,10 +19,7 @@ const { data: estimatesList } = await getList(searchParams.value)
 
     <VCard class="sm:!p-10 !p-2">
       <VCardText>
-        <!-- 👉 Title -->
-        <h4 class="text-2xl font-semibold text-center mb-6">
-          Related estimates
-        </h4>
+        <ActivityDialogHeader title="Related estimates" />
 
         <RouterLink
           v-for="(item, index) in estimatesList?.rows"

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { GetJobsRequest } from '@/types/jobs/GetJobsRequest'
+import type { GetInvoicesRequest } from '@/types/invoices/GetInvoicesRequest'
 
 const isDialogVisible = defineModel<boolean>('isDialogVisible', { required: true })
-const searchParams = defineModel<GetJobsRequest>('searchParams', { default: {} })
+const searchParams = defineModel<GetInvoicesRequest>('searchParams', { default: {} })
 
-const { getList } = useJobs()
+const { getList } = useInvoices()
 
-const { data: jobsList } = await getList(searchParams.value)
+const { data: invoicesList } = await getList(searchParams.value)
 </script>
 
 <template>
@@ -20,22 +20,22 @@ const { data: jobsList } = await getList(searchParams.value)
     <VCard class="sm:!p-10 !p-2">
       <VCardText>
         <!-- 👉 Title -->
-        <ActivityDialogHeader title="Related jobs" />
+        <ActivityDialogHeader title="Related invoices" />
 
         <RouterLink
-          v-for="(item, index) in jobsList?.rows"
+          v-for="(item, index) in invoicesList?.rows"
           :key="index"
-          :to="{ name: 'jobs-details-id', params: { id: item.id as string } }"
+          :to="{ name: 'root' }"
         >
           <div class="d-flex justify-space-between align-center py-4 gap-x-4">
             <div class="d-flex align-center gap-2">
               <p class="font-semibold">
-                {{ item.name }}
+                {{ item.invoice_number }}
               </p>
             </div>
           </div>
           <VDivider
-            v-if="index !== (jobsList?.rows.length ?? 0) - 1"
+            v-if="index !== (invoicesList?.rows.length ?? 0) - 1"
             class="border-gray-300 !opacity-60"
           />
         </RouterLink>

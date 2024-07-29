@@ -34,7 +34,7 @@ function prefixWithPlus(value: number): string {
   <component
     :is="containerTag"
     :to="to"
-    class="cursor-pointer"
+    :class="{ 'cursor-pointer': props.action || props.to }"
     @click="props.action"
   >
     <VCard>

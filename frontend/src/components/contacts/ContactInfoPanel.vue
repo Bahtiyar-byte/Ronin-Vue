@@ -69,12 +69,31 @@ const items = [{ title: 'Option 1', value: 'Option 1' }, { title: 'Option 2', va
                 <span class="font-medium">
                   Status:
                 </span>
-                <a
-                  :href="`tel:${contactData.status}`"
-                  class="text-primary"
-                >
+                <div class="d-inline-block text-body-1">
                   {{ contactData.status }}
-                </a>
+                </div>
+              </VListItemTitle>
+            </VListItem>
+
+            <VListItem v-if="contactData.address?.length">
+              <VListItemTitle>
+                <span class="font-medium">
+                  Address:
+                </span>
+                <div class="d-inline-block text-body-1">
+                  {{ contactData.address }}
+                </div>
+              </VListItemTitle>
+            </VListItem>
+
+            <VListItem v-if="contactData.source?.length">
+              <VListItemTitle>
+                <span class="font-medium">
+                  Source:
+                </span>
+                <div class="d-inline-block text-body-1">
+                  {{ contactData.source }}
+                </div>
               </VListItemTitle>
             </VListItem>
           </VList>

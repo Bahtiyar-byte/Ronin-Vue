@@ -8,10 +8,6 @@ import PipelineDisplayItem from '@/types/pipiline/PipelineDisplayItem'
 import { useContacts } from '@/composables/useContacts'
 import { useJobs } from '@/composables/useJobs'
 
-import CurrentPipeline from '@/views/home/CurrentPipeline.vue'
-
-import QuickCreateEntity from '@/components/index/QuickCreateEntity.vue'
-
 import ActiveJobs from '@/components/jobs/ActiveJobs.vue'
 
 import CrmActivityTimeline from '@/views/home/CrmActivityTimeline.vue'
@@ -102,23 +98,12 @@ watchEffect(() => {
       cols="12"
       md="4"
     >
-      <VCard
-        title="Tools component will be here"
-        class="mb-6"
-      />
-
-      <!-- <CrmRevenueGrowth /> -->
+      <CrmActivityTimeline />
     </VCol>
     <VCol
       cols="12"
       md="4"
-    >
-      <QuickCreateEntity class="mb-6" />
-
-      <!-- <CrmAnalyticsSales /> -->
-
-      <CrmActivityTimeline />
-    </VCol>
+    />
   </VRow>
   <VRow>
     <VCol
