@@ -10,6 +10,7 @@ const contactData = defineModel<Contact>('contactData', { required: true })
 const { count: appointmentsCount } = useAppointments()
 const { count: estimatesCount } = useEstimates()
 const { count: jobsCount } = useJobs()
+const { countDocuments, countInvoices } = useContactsAttachments()
 
 const dialogsVisibility = reactive({
   estimates: false,
@@ -83,7 +84,7 @@ const widgets = ref<WidgetCardProps[]>([
     },
     widget: {
       title: 'Invoices',
-      value: 0,
+      value: (await countInvoices({ related_contact: contactData.value.id })).data.value?.count,
       icon: 'ph-invoice-light',
       iconColor: 'success',
       action: {
@@ -102,7 +103,7 @@ const widgets = ref<WidgetCardProps[]>([
     },
     widget: {
       title: 'Documents',
-      value: 0,
+      value: (await countDocuments({ related_contact: contactData.value.id })).data.value?.count,
       icon: 'ph-invoice-light',
       iconColor: 'info',
       action: {
