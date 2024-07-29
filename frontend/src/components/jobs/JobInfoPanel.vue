@@ -122,21 +122,10 @@ const saveItem = async (type: string, newValue: string) => {
               </VListItemTitle>
             </VListItem>
 
-            <VListItem v-if="jobData.related_contact">
-              <VListItemTitle>
-                <span class="font-medium">
-                  Related contact:
-                </span>
-                <div class="d-inline-block text-body-1">
-                  {{ jobData.related_contact.name }}
-                </div>
-              </VListItemTitle>
-            </VListItem>
-
             <VListItem v-if="jobData.description?.length">
               <VListItemTitle>
                 <span class="font-medium">
-                  Related contact:
+                  Description:
                 </span>
                 <div class="text-body-1 whitespace-pre-wrap">
                   {{ jobData.description }}
@@ -152,6 +141,17 @@ const saveItem = async (type: string, newValue: string) => {
           <VDivider class="my-4 !opacity-60" />
 
           <VList class="card-list mt-2">
+            <VListItem v-if="jobData.related_contact">
+              <VListItemTitle>
+                <span class="font-medium">
+                  Related contact:
+                </span>
+                <div class="d-inline-block text-body-1">
+                  {{ jobData.related_contact.name }}
+                </div>
+              </VListItemTitle>
+            </VListItem>
+
             <EditableInfoItem
               label="Assigned to"
               type="autocomplete"

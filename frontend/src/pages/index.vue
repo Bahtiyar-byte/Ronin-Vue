@@ -4,6 +4,8 @@ import type { RouteLocationRaw } from 'vue-router'
 import type { FetchCountFunction } from '@/types/common/CountRequestTypes'
 import type { AbilityRule } from '@/types/roles/roles'
 
+import CurrentPipeline from '@/views/home/CurrentPipeline.vue'
+
 import PipelineDisplayItem from '@/types/pipiline/PipelineDisplayItem'
 import { useContacts } from '@/composables/useContacts'
 import { useJobs } from '@/composables/useJobs'
@@ -90,31 +92,27 @@ watchEffect(() => {
   <VRow>
     <VCol
       cols="12"
-      md="4"
+      md="6"
     >
-      <ActiveJobs />
+      <ActiveJobs class="h-full" />
     </VCol>
     <VCol
       cols="12"
-      md="4"
+      md="6"
     >
-      <CrmActivityTimeline />
+      <CrmActivityTimeline class="h-full" />
     </VCol>
-    <VCol
-      cols="12"
-      md="4"
-    />
   </VRow>
   <VRow>
     <VCol
       cols="6"
       md="6"
     >
-      <LaborTickets />
+      <LaborTickets class="h-full" />
     </VCol>
 
     <VCol>
-      <Invoice />
+      <Invoice class="h-full" />
     </VCol>
   </VRow>
 </template>
