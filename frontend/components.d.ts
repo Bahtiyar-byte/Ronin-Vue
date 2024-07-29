@@ -59,6 +59,7 @@ declare module 'vue' {
     DebouncedAutoComplete: typeof import('./src/components/common/DebouncedAutoComplete.vue')['default']
     DialogCloseBtn: typeof import('./src/@core/components/DialogCloseBtn.vue')['default']
     DocumentsDialog: typeof import('./src/components/dialogs/DocumentsDialog.vue')['default']
+    DocumentsListDialog: typeof import('./src/components/documents/dialogs/DocumentsListDialog.vue')['default']
     DropZone: typeof import('./src/@core/components/DropZone.vue')['default']
     EditableInfoItem: typeof import('./src/components/common/CRUD/EditableInfoItem.vue')['default']
     EditAutocompleteField: typeof import('./src/components/common/CRUD/EditAutocompleteField.vue')['default']

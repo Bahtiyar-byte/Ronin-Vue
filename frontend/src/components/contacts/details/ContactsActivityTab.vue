@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { RouteLocationRaw } from 'vue-router'
 import type WidgetCardProps from '@/types/widgets/WidgetCardProps'
-import WidgetCard from '@/components/widgets/WidgetCard.vue'
 import type Contact from '@/types/contacts/Contact'
 import type { GetEstimatesRequest } from '@/types/estimates/GetEstimatesRequest'
 import { useAbility } from '@/plugins/casl/composables/useAbility'
@@ -166,6 +165,6 @@ const filteredWidgets = computed(() => {
 
     <InvoicesListDialog v-model:is-dialog-visible="dialogsVisibility.invoices" />
 
-    <DocumentsDialog v-model:is-dialog-visible="dialogsVisibility.documents" />
+    <DocumentsListDialog v-model:is-dialog-visible="dialogsVisibility.documents" />
   </div>
 </template>
