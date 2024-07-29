@@ -6,6 +6,7 @@ import InvoiceEditable from '@/views/apps/invoice/InvoiceEditable.vue'
 
 // Type: Invoice data
 import type EstimateSection from '@/types/estimateSections/EstimateSection'
+
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id?: string } }
 
 const { create: createEstimate, update: updateEstimate, getById: getEstimate } = useEstimates()

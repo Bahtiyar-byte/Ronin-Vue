@@ -25,7 +25,7 @@ watch(user, (currUser: CurrentUser | null) => {
 
   if (currUser?.app_role_permissions.length) {
     const abilityRules = groupPermissions(
-      currUser.app_role_permissions.map((permission: Permission) => permissionToAbilityRule(permission))
+      currUser.app_role_permissions.map((permission: Permission) => permissionToAbilityRule(permission)),
     )
 
     // Add ability to visit homepage, scheduler, etc.

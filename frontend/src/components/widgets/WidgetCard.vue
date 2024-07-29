@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, mergeProps, ref } from 'vue'
+import { computed, mergeProps } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 
 import type WidgetCardProps from '@/types/widgets/WidgetCardProps'

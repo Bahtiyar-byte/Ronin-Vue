@@ -2,6 +2,7 @@
 import type { UserProperties } from '@db/apps/users/types'
 import AddNewUserDrawer from '@/components/myorg/AddNewUserDrawer.vue'
 import avatar1 from '@images/avatars/avatar-1.png'
+
 // 👉 Store
 const searchQuery = ref('')
 const selectedRole = ref()

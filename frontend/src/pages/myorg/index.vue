@@ -5,23 +5,21 @@ import CompanyGeneralDocuments from '@/components/myorg/CompanyGeneralDocuments.
 <template>
   <div>
     <VBreadcrumbs
-    :items="[
-      {
-        title: 'Home',
-        to: { name: 'root' },
-      },
-      {
-        title: 'My Org',
-        disabled: true,
-        to: { name: 'myorg' },
-      },
-    ]"
-    class="!pl-0"
-  />
-      <VCard class="text-lg;" >
-        <CompanyGeneralDocuments />
-      </VCard>
-
-      
+      :items="[
+        {
+          title: 'Home',
+          to: { name: 'root' },
+        },
+        {
+          title: 'My Org',
+          disabled: true,
+          to: { name: 'myorg' },
+        },
+      ]"
+      class="!pl-0"
+    />
+    <VCard class="text-lg;">
+      <CompanyGeneralDocuments />
+    </VCard>
   </div>
 </template>

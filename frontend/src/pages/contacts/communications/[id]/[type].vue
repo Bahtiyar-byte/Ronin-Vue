@@ -1,13 +1,6 @@
 <script setup lang="ts">
-import {type RouteLocationNormalizedLoaded, useRoute} from 'vue-router'
+import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router'
 import pdf from '@images/icons/project-icons/pdf.png'
-import aviato from '@images/logos/aviato.png'
-import bitbank from '@images/logos/bitbank.png'
-import zipcar from '@images/logos/zipcar.png'
-import TimelineRectangle1 from '@images/pages/TimelineRectangle1.png'
-import TimelineRectangle2 from '@images/pages/TimelineRectangle2.png'
-import TimelineRectangle3 from '@images/pages/TimelineRectangle3.png'
-import TimelineRectangle4 from '@images/pages/TimelineRectangle4.png'
 
 definePage({
   meta: {

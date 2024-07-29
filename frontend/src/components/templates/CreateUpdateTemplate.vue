@@ -7,7 +7,7 @@ import type Template from '@/types/templates/Template'
 import { useFormFields } from '@/utils/forms/useFormFields'
 import { initialFieldsTemplates } from '@/utils/initial_data/initialFieldsTemplates'
 import type FormField from '@/types/forms/FormField'
-import ItemUpdate from "@/components/common/CRUD/ItemUpdate.vue";
+import ItemUpdate from '@/components/common/CRUD/ItemUpdate.vue'
 
 const { create: createTemplate, getById: getTemplateById, update: updateTemplate } = useTemplates()
 const router = useRouter()
