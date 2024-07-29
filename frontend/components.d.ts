@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     ActiveJobs: typeof import('./src/components/jobs/ActiveJobs.vue')['default']
+    ActivityDialogHeader: typeof import('./src/components/common/ActivityDialogHeader.vue')['default']
     AddAuthenticatorAppDialog: typeof import('./src/components/dialogs/AddAuthenticatorAppDialog.vue')['default']
     AddEditAddressDialog: typeof import('./src/components/dialogs/AddEditAddressDialog.vue')['default']
     AddEditPermissionDialog: typeof import('./src/components/dialogs/AddEditPermissionDialog.vue')['default']
@@ -61,6 +62,7 @@ declare module 'vue' {
     DemoExpansionPanelBasic: typeof import('./src/components/myorg/DemoExpansionPanelBasic.vue')['default']
     DialogCloseBtn: typeof import('./src/@core/components/DialogCloseBtn.vue')['default']
     DocumentsDialog: typeof import('./src/components/dialogs/DocumentsDialog.vue')['default']
+    DocumentsListDialog: typeof import('./src/components/documents/dialogs/DocumentsListDialog.vue')['default']
     DropZone: typeof import('./src/@core/components/DropZone.vue')['default']
     EditableInfoItem: typeof import('./src/components/common/CRUD/EditableInfoItem.vue')['default']
     EditAutocompleteField: typeof import('./src/components/common/CRUD/EditAutocompleteField.vue')['default']
@@ -77,6 +79,7 @@ declare module 'vue' {
     GeneralTab: typeof import('./src/components/profile/tabs/GeneralTab.vue')['default']
     I18n: typeof import('./src/@core/components/I18n.vue')['default']
     InDialogCreation: typeof import('./src/components/estimateSectionTemplates/InDialogCreation.vue')['default']
+    InvoicesListDialog: typeof import('./src/components/invoices/dialogs/InvoicesListDialog.vue')['default']
     ItemsManage: typeof import('./src/components/common/CRUD/ItemsManage.vue')['default']
     ItemUpdate: typeof import('./src/components/common/CRUD/ItemUpdate.vue')['default']
     JobInfoPanel: typeof import('./src/components/jobs/JobInfoPanel.vue')['default']

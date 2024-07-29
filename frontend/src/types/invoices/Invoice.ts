@@ -1,4 +1,5 @@
 import type Entity from '@/types/common/Entity'
+import Job from '@/types/jobs/Job'
 
 export interface InvoiceDocument extends Entity {
   name: string
@@ -6,9 +7,10 @@ export interface InvoiceDocument extends Entity {
 }
 
 export interface Invoice extends Entity {
-  number: number
-  documentId: string
-  document: InvoiceDocument
-  job: any[]
-  estimate: any[]
+  invoice_number: string
+  invoice_date: Date | string
+  terms: string
+  approved_job_value: Job | string
+  balance_amount: number
+  job: Job
 }
