@@ -58,13 +58,6 @@ export default [
     subject: "chats",
   },
   {
-    title: "My Org",
-    to: { name: "myorg" },
-    icon: { icon: "tabler-building " },
-    action: "read",
-    subject: "chats",
-  },
-  {
     title: "Settings",
     icon: { icon: "tabler-settings" },
     action: "read",

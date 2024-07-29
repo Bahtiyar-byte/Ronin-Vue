@@ -2,6 +2,13 @@
 import { defineAsyncComponent } from 'vue'
 import TabSkeleton from '@/components/common/skeletons/TabSkeleton.vue'
 
+definePage({
+  meta: {
+    action: 'manage',
+    subject: 'basicActions',
+  },
+})
+
 const tab = ref(null)
 
 const tabsList = [

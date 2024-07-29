@@ -5,6 +5,8 @@ import Fleet from '@/components/scheduler/Fleet.vue'
 
 definePage({
   meta: {
+    action: 'manage',
+    subject: 'basicActions',
     layoutWrapperClasses: 'layout-content-height-fixed',
   },
 })

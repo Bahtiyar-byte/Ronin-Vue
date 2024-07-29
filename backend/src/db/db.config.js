@@ -1,3 +1,6 @@
+
+const dev_db_port = process.env?.DEV_DB_PORT ?? 5444
+
 module.exports = {
   production: {
     dialect: 'postgres',
@@ -15,7 +18,7 @@ module.exports = {
     password: '',
     database: 'db_evans_crm',
     host: process.env.DEV_DB_HOST || 'localhost',
-    port: process.env.DEV_DB_PORT || 5444,
+    port: dev_db_port,
     logging: console.log,
     seederStorage: 'sequelize',
   },

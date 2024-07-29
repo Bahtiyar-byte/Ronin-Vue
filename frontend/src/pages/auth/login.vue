@@ -13,6 +13,7 @@ const router = useRouter()
 definePage({
   meta: {
     layout: 'blank',
+    unauthenticatedOnly: true,
   },
 })
 

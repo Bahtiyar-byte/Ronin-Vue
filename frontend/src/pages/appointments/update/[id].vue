@@ -1,7 +1,12 @@
 <script setup lang="ts">
-import Create from '@/pages/appointments/create.vue'
+definePage({
+  meta: {
+    action: 'update',
+    subject: 'appointments',
+  },
+})
 </script>
 
 <template>
-  <Create />
+  <CreateUpdateAppointment />
 </template>

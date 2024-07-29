@@ -5,16 +5,14 @@ import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router'
 import { useTrades } from '@/composables/useTrades'
 import type Trade from '@/types/trades/Trade'
 
-import TradeInfoPanel from '@/components/trades/TradeInfoPanel.vue'
+definePage({
+  meta: {
+    actions: 'read',
+    subject: 'trades',
+  },
+})
 
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } }
-
-const tradeTab = ref(null)
-
-const tabs = [
-  { icon: 'tabler-activity', title: 'Activity' },
-  { icon: 'ph-link-light', title: 'Related' },
-]
 
 const tradeData = ref<Trade>()
 const tradeName = ref<string>('')

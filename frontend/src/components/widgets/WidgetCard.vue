@@ -6,8 +6,6 @@ import type WidgetCardProps from '@/types/widgets/WidgetCardProps'
 
 const props = defineProps<WidgetCardProps>()
 
-const isAddPaymentMethodsDialogVisible = ref(false)
-
 const containerTag = computed(() => (props.to ? RouterLink : 'div'))
 
 const items = [
@@ -67,20 +65,6 @@ function prefixWithPlus(value: number): string {
             >
               {{ widget.desc }}
             </div>
-            <div
-              v-if="widget.title === 'Documents'"
-              class="text-xsm"
-            >
-              <VBtn
-                @click="
-                  isAddPaymentMethodsDialogVisible
-                    = !isAddPaymentMethodsDialogVisible
-                "
-              >
-                Details
-              </VBtn>
-              <DocumentsDialog v-model:is-dialog-visible="isAddPaymentMethodsDialogVisible" />
-            </div>
           </div>
           <div class="flex flex-column gap-2">
             <VAvatar
@@ -103,6 +87,7 @@ function prefixWithPlus(value: number): string {
                 <RouterLink
                   v-if="widget.title !== 'Communications'"
                   :to="widget.action.to"
+                  @click.stop=""
                 >
                   <VAvatar
                     v-bind="tooltipProps"

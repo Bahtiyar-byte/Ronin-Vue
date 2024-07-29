@@ -5,16 +5,14 @@ import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router'
 import { useTemplates } from '@/composables/useTemplates'
 import type Template from '@/types/templates/Template'
 
-import TemplateInfoPanel from '@/components/templates/TemplateInfoPanel.vue'
+definePage({
+  meta: {
+    actions: 'read',
+    subject: 'templates',
+  },
+})
 
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } }
-
-const templateTab = ref(null)
-
-const tabs = [
-  { icon: 'tabler-activity', title: 'Activity' },
-  { icon: 'ph-link-light', title: 'Related' },
-]
 
 const templateData = ref<Template>()
 const templateName = ref<string>('')

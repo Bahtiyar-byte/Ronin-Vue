@@ -5,9 +5,12 @@ import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router'
 import { useContacts } from '@/composables/useContacts'
 import type Contact from '@/types/contacts/Contact'
 
-import ContactInfoPanel from '@/components/contacts/ContactInfoPanel.vue'
-import ActivityTab from '@/components/contacts/details/ActivityTab.vue'
-import RelatedTab from '@/components/contacts/details/RelatedTab.vue'
+definePage({
+  meta: {
+    actions: 'read',
+    subject: 'contacts',
+  },
+})
 
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } }
 
@@ -101,11 +104,11 @@ useHead({
         :touch="false"
       >
         <VWindowItem>
-          <ActivityTab :contact-data="contactData" />
+          <ContactsActivityTab :contact-data="contactData" />
         </VWindowItem>
 
         <VWindowItem>
-          <RelatedTab />
+          <ContactsRelatedTab />
         </VWindowItem>
       </VWindow>
     </VCol>

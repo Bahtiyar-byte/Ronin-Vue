@@ -17,8 +17,8 @@ const pageTitle = ref('Create Trade')
 
 const breadcrumbs = ref([
   { title: 'Home', to: { name: 'root' } },
-  { title: 'Roles', to: { name: 'tools-trades' } },
-  { title: 'New role', disabled: true },
+  { title: 'Trades', to: { name: 'tools-trades' } },
+  { title: 'New trade', disabled: true },
 ])
 
 const { formFields, initializeFields } = useFormFields('trades')

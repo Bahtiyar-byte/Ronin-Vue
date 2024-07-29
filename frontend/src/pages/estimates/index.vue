@@ -4,6 +4,13 @@ import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
 import type Estimate from '@/types/estimates/Estimate'
 import { useTableManagement } from '@/utils/forms/useTableManagement'
 
+definePage({
+  meta: {
+    action: 'read',
+    subject: 'estimates',
+  },
+})
+
 const { getList, deleteEstimate } = useEstimates()
 
 const headersDefinition = [
@@ -84,12 +91,16 @@ const {
             <VIcon icon="tabler-eye" />
           </IconBtn>
           <IconBtn
+            v-if="$can('update', 'estimates')"
             :to="{ name: 'estimates-builder-id-edit', params: { id: item.id } }"
             title="Edit"
           >
             <VIcon icon="tabler-edit" />
           </IconBtn>
-          <IconBtn @click="() => handleItemDeletion(item)">
+          <IconBtn
+            v-if="$can('update', 'estimates')"
+            @click="() => handleItemDeletion(item)"
+          >
             <VIcon icon="tabler-trash" />
           </IconBtn>
         </template>

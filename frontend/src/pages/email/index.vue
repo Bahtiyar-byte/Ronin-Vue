@@ -16,6 +16,14 @@ import avatar5 from '@images/avatars/avatar-5.png'
 import avatar6 from '@images/avatars/avatar-6.png'
 import avatar8 from '@images/avatars/avatar-8.png'
 
+definePage({
+  meta: {
+    actions: 'read',
+    subject: 'emails',
+    layoutWrapperClasses: 'layout-content-height-fixed',
+  },
+})
+
 const avatarMap = {
   avatar1,
   avatar2,
@@ -25,12 +33,6 @@ const avatarMap = {
   avatar6,
   avatar8,
 }
-
-definePage({
-  meta: {
-    layoutWrapperClasses: 'layout-content-height-fixed',
-  },
-})
 
 const { isLeftSidebarOpen } = useResponsiveLeftSidebar()
 
@@ -79,9 +81,11 @@ const emailsMeta = {
 
 const toggleSelectedEmail = (emailId: Email['id']) => {
   const emailIndex = selectedEmails.value.indexOf(emailId)
-  if (emailIndex === -1)
-  { selectedEmails.value.push(emailId) }
-  else selectedEmails.value.splice(emailIndex, 1)
+  if (emailIndex === -1) {
+    selectedEmails.value.push(emailId)
+  } else {
+    selectedEmails.value.splice(emailIndex, 1)
+  }
 }
 
 const selectAllEmailCheckbox = computed(
@@ -128,8 +132,9 @@ const emailViewMeta = computed(() => {
 const refreshOpenedEmail = async () => {
   // await fetchEmails()
 
-  if (openedEmail.value)
-  { openedEmail.value = emails.value.find(e => e.id === openedEmail.value?.id)! }
+  if (openedEmail.value) {
+    openedEmail.value = emails.value.find(e => e.id === openedEmail.value?.id)!
+  }
 }
 
 /*
@@ -151,8 +156,9 @@ const handleActionClick = async (
 ) => {
   selectedEmails.value = []
   selectedEmails.value = []
-  if (!emailIds.length)
-  { return }
+  if (!emailIds.length) {
+    return
+  }
 
   if (action === 'trash')
   { await updateEmails(emailIds, { isDeleted: true }) }

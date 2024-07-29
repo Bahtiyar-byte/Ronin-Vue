@@ -5,8 +5,6 @@ import { useJobs } from '@/composables/useJobs'
 
 const {
   count: getEstimatesCount,
-
-  // getList: getEstimatesList
 } = useEstimates()
 
 const { update: updateJob } = useJobs()

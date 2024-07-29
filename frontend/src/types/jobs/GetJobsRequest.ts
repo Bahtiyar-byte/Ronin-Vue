@@ -14,6 +14,7 @@ export interface GetJobsRequest extends GetListRequest
   stage?: string
   createdAtRange?: string[]
   countOnly?: boolean
+  related_contact?: string
 }
 
 export interface GetJobsResponse extends GetListResponse

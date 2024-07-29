@@ -14,6 +14,7 @@ const props = defineProps<{
   breadcrumbs: BreadcrumbsItem[]
   fields: Array<FormField | FormFieldsGroup>
   submitHandler: (values: Record<string, any>) => Promise<void>
+  isUpdateMode: boolean
 }>()
 
 const initializeFormData = (fields: Array<FormField | FormFieldsGroup>) => {
@@ -165,7 +166,7 @@ const onSubmit = handleSubmit(async (values: Record<string, any>) => {
           variant="elevated"
           type="submit"
         >
-          Submit
+          {{ props.isUpdateMode ? 'Update' : 'Create' }}
         </VBtn>
       </VCardActions>
     </VForm>

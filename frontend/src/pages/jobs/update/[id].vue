@@ -1,7 +1,12 @@
 <script setup lang="ts">
-import Create from '@/pages/jobs/create.vue'
+definePage({
+  meta: {
+    actions: 'update',
+    subject: 'jobs',
+  },
+})
 </script>
 
 <template>
-  <Create />
+  <CreateUpdateJob />
 </template>

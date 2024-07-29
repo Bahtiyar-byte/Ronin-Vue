@@ -71,6 +71,9 @@ onMounted(() => {
     zoom: 12.25,
   })
 
+  map.value.scrollZoom.disable()
+  map.value.addControl(new mapboxgl.NavigationControl())
+
   for (let index = 0; index < geojson.features.length; index++)
   { new mapboxgl.Marker({ element: refCars.value[index] }).setLngLat(geojson.features[index].geometry.coordinates as LngLatLike).addTo(map.value) }
 

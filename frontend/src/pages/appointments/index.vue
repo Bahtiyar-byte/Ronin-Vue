@@ -11,6 +11,13 @@ import type { SortItem } from '@core/types'
 import ItemsManage from '@/components/common/CRUD/ItemsManage.vue'
 import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
 
+definePage({
+  meta: {
+    action: 'read',
+    subject: 'appointments',
+  },
+})
+
 const items = ref<Appointment[]>([])
 const { getList, deleteAppointment } = useAppointments()
 
@@ -192,12 +199,16 @@ const handleItemDeletion = async (appointment: Appointment) => {
             <VIcon icon="tabler-eye" />
           </IconBtn>
           <IconBtn
+            v-if="$can('update', 'appointments')"
             :to="{ name: 'appointments-update-id', params: { id: item.id } }"
             title="Edit"
           >
             <VIcon icon="tabler-edit" />
           </IconBtn>
-          <IconBtn @click="() => handleItemDeletion(item)">
+          <IconBtn
+            v-if="$can('delete', 'appointments')"
+            @click="() => handleItemDeletion(item)"
+          >
             <VIcon icon="tabler-trash" />
           </IconBtn>
         </template>

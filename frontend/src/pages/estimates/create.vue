@@ -11,6 +11,13 @@ import { useFormFields } from '@/utils/forms/useFormFields'
 import type FormField from '@/types/forms/FormField'
 import { initialFieldEstimates } from '@/utils/initial_data/initialFieldsEstimates'
 
+definePage({
+  meta: {
+    action: 'create',
+    subject: 'estimates',
+  },
+})
+
 const { create: createEstimate, getById: getEstimateById, update: updateEstimate } = useEstimates()
 
 const router = useRouter()
@@ -128,6 +135,7 @@ const submitForm = async (values: Record<string, any>) => {
     :breadcrumbs="breadcrumbs"
     :fields="formFields as FormField[]"
     :submit-handler="submitForm"
+    :is-update-mode="isUpdateMode"
   >
     <template #append_related_contactId>
       <VTooltip text="Add new contact">
