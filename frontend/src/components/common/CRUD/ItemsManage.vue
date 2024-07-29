@@ -43,7 +43,10 @@ const showButtonsWrapper = props.showItemsPerPage || showButtonsContainer
     :title="itemsTitle as string"
     :breadcrumbs="breadcrumbs"
   />
-  <VCard :title="cardTitle">
+  <VCard
+    :title="cardTitle"
+    v-bind="$attrs"
+  >
     <template v-if="$slots.filters">
       <VCardItem class="pb-4">
         <VCardTitle>Filters</VCardTitle>
