@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type Job from '@/types/jobs/Job'
-import {formatDateTime} from "@/utils/date";
 
 const jobData = defineModel<Job>('jobData', { required: true })
 
@@ -146,11 +145,11 @@ const saveItem = async (type: string, newValue: string) => {
             </VListItem>
           </VList>
 
-          <VDivider class="my-4 !opacity-60" />
-
           <h5 class="text-[1.05rem] leading-[1.5] font-medium mt-6">
             Related
           </h5>
+
+          <VDivider class="my-4 !opacity-60" />
 
           <VList class="card-list mt-2">
             <EditableInfoItem

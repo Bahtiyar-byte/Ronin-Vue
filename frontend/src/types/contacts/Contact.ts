@@ -11,4 +11,5 @@ export default interface Contact extends Entity {
   job: any[]
   estimate: any[]
   appointment: any[]
+  source: string
 }
