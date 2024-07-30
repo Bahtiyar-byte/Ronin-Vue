@@ -161,6 +161,7 @@ const sources: BundleScriptConfig = {
         'arrow-right',
         'arrow-left',
         'file-type-pdf',
+        'building',
       ],
     },
     {

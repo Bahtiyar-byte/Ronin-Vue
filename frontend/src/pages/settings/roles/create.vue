@@ -7,7 +7,7 @@ import type Trade from '@/types/trades/Trade'
 import type FormField from '@/types/forms/FormField'
 import { useFormFields } from '@/utils/forms/useFormFields'
 import { initialFieldsTrades } from '@/utils/initial_data/initialFieldsTrades'
-import ItemUpdate from "@/components/common/CRUD/ItemUpdate.vue";
+import ItemUpdate from '@/components/common/CRUD/ItemUpdate.vue'
 
 const { create: createTrade, getById: getTradeById, update: updateTrade } = useTrades()
 const router = useRouter()
