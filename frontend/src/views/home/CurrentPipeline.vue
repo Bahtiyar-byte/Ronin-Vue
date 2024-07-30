@@ -82,7 +82,7 @@ const statistics = [
                 <div class="text-body-2">
                   {{ pipeline.title }}
                 </div>
-                <h5 class="text-h5">
+                <h5 class="font-weight-medium">
                   {{ pipeline.amount }}
                 </h5>
               </div>

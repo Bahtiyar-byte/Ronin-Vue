@@ -17,8 +17,6 @@ const items = [
 
 const route = useRoute()
 
-console.log('route', route.name)
-
 const path = 'contacts-details-id'
 let communicationPath = '/contacts/communications'
 if (route.name !== path) {
@@ -87,7 +85,10 @@ function prefixWithPlus(value: number): string {
                 <RouterLink
                   v-if="widget.title !== 'Communications'"
                   :to="widget.action.to"
-                  @click.stop=""
+                  @click.stop="(e: Event) => {
+                    e.stopPropagation()
+                    e.preventDefault()
+                  }"
                 >
                   <VAvatar
                     v-bind="tooltipProps"
@@ -113,6 +114,10 @@ function prefixWithPlus(value: number): string {
                       size="42"
                       rounded
                       v-bind="mergeProps(menuProps, tooltipProps)"
+                      @click.stop="(e: Event) => {
+                        e.stopPropagation()
+                        e.preventDefault()
+                      }"
                     />
                   </template>
                   <VList>
