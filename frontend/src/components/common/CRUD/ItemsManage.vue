@@ -16,6 +16,10 @@ interface Props {
   cardTitle?: string
 }
 
+defineOptions({
+  inheritAttrs: false,
+})
+
 const props = withDefaults(defineProps<Props>(), {
   showTitle: true,
   showItemsPerPage: true,
@@ -38,70 +42,72 @@ const showButtonsWrapper = props.showItemsPerPage || showButtonsContainer
 </script>
 
 <template>
-  <PageHeader
-    v-if="props.showTitle"
-    :title="itemsTitle as string"
-    :breadcrumbs="breadcrumbs"
-  />
-  <VCard
-    :title="cardTitle"
-    v-bind="$attrs"
-  >
-    <template v-if="$slots.filters">
-      <VCardItem class="pb-4">
-        <VCardTitle>Filters</VCardTitle>
-      </VCardItem>
-      <VCardText>
-        <VRow>
-          <slot name="filters" />
-        </VRow>
-      </VCardText>
-      <VDivider class="!opacity-60" />
-    </template>
-
-    <VCardText
-      v-if="showButtonsWrapper"
-      class="d-flex flex-wrap gap-4"
+  <div>
+    <PageHeader
+      v-if="props.showTitle"
+      :title="itemsTitle as string"
+      :breadcrumbs="breadcrumbs"
+    />
+    <VCard
+      :title="cardTitle"
+      v-bind="$attrs"
     >
-      <slot name="searchSectionTitle" />
+      <template v-if="$slots.filters">
+        <VCardItem class="pb-4">
+          <VCardTitle>Filters</VCardTitle>
+        </VCardItem>
+        <VCardText>
+          <VRow>
+            <slot name="filters" />
+          </VRow>
+        </VCardText>
+        <VDivider class="!opacity-60" />
+      </template>
 
-      <div
-        v-if="props.showItemsPerPage"
-        class="me-3 d-flex gap-3"
+      <VCardText
+        v-if="showButtonsWrapper"
+        class="d-flex flex-wrap gap-4"
       >
-        <AppSelect
-          v-model="itemsPerPage"
-          :items="itemsPerPageOptions"
-          style="inline-size: 6.25rem;"
-        />
-      </div>
+        <slot name="searchSectionTitle" />
 
-      <VSpacer />
-
-      <div
-        v-if="searchSettings || showButtonsContainer"
-        class="app-search-filter d-flex align-center flex-wrap gap-4"
-      >
         <div
-          v-if="searchSettings"
-          style="inline-size: 15.625rem;"
+          v-if="props.showItemsPerPage"
+          class="me-3 d-flex gap-3"
         >
-          <AppTextField
-            v-model="searchQuery"
-            :placeholder="searchSettings.placeholder"
-            clearable
+          <AppSelect
+            v-model="itemsPerPage"
+            :items="itemsPerPageOptions"
+            style="inline-size: 6.25rem;"
           />
         </div>
 
-        <slot name="buttons" />
-      </div>
-    </VCardText>
+        <VSpacer />
 
-    <VDivider
-      v-if="showButtonsWrapper"
-      class="!opacity-60"
-    />
+        <div
+          v-if="searchSettings || showButtonsContainer"
+          class="app-search-filter d-flex align-center flex-wrap gap-4"
+        >
+          <div
+            v-if="searchSettings"
+            style="inline-size: 15.625rem;"
+          >
+            <AppTextField
+              v-model="searchQuery"
+              :placeholder="searchSettings.placeholder"
+              clearable
+            />
+          </div>
 
-    <slot name="table" />
-  </VCard>
+          <slot name="buttons" />
+        </div>
+      </VCardText>
+
+      <VDivider
+        v-if="showButtonsWrapper"
+        class="!opacity-60"
+      />
+
+      <slot name="table" />
+    </VCard>
+  </div>
 </template>

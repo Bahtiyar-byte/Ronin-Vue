@@ -7,7 +7,6 @@ definePage({
     subject: 'myorg',
   },
 })
-
 </script>
 
 <template>
