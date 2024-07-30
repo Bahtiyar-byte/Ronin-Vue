@@ -1,5 +1,5 @@
 import type Entity from '@/types/common/Entity'
-import Job from '@/types/jobs/Job'
+import type Job from '@/types/jobs/Job'
 
 export interface InvoiceDocument extends Entity {
   name: string

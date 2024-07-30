@@ -17,16 +17,138 @@ const communicationTypes = {
 }
 
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string; type: string } }
-const communicationType = route.params.type
+
+// ToDo: Refactor!
+interface CommunicationsItem {
+  type: 'emails' | 'chat' | 'calls' | 'sms'
+  title: string
+  message: string
+  attachments?: { filename: string; extension: string }[]
+  date: Date
+}
+
+const messages = computed<CommunicationsItem[]>(() => {
+  return [
+    {
+      type: 'emails',
+      title: 'Jane Williams',
+      message: `he process of recording the key project details and producing the
+              documents that are required to implement it successfully. Simply
+              put, it's an umbrella term which includes all the documents
+              created over the course of the project.`,
+      date: new Date(),
+    },
+    {
+      type: 'emails',
+      title: 'Jane Williams',
+      message: `he process of recording the key project details and producing the
+              documents that are required to implement it successfully. Simply
+              put, it's an umbrella term which includes all the documents
+              created over the course of the project.`,
+      date: new Date(),
+    },
+    {
+      type: 'chat',
+      title: 'Jane Williams',
+      message: `he process of recording the key project details and producing the
+              documents that are required to implement it successfully. Simply
+              put, it's an umbrella term which includes all the documents
+              created over the course of the project.`,
+      date: new Date(),
+    },
+    {
+      type: 'chat',
+      title: 'Jane Williams',
+      message: `he process of recording the key project details and producing the
+              documents that are required to implement it successfully. Simply
+              put, it's an umbrella term which includes all the documents
+              created over the course of the project.`,
+      date: new Date(),
+    },
+    {
+      type: 'calls',
+      title: 'Jane Williams',
+      message: `he process of recording the key project details and producing the
+              documents that are required to implement it successfully. Simply
+              put, it's an umbrella term which includes all the documents
+              created over the course of the project.`,
+      date: new Date(),
+    },
+    {
+      type: 'calls',
+      title: 'Jane Williams',
+      message: `he process of recording the key project details and producing the
+              documents that are required to implement it successfully. Simply
+              put, it's an umbrella term which includes all the documents
+              created over the course of the project.`,
+      date: new Date(),
+    },
+    {
+      type: 'chat',
+      title: 'Jane Williams',
+      message: `he process of recording the key project details and producing the
+              documents that are required to implement it successfully. Simply
+              put, it's an umbrella term which includes all the documents
+              created over the course of the project.`,
+      date: new Date(),
+    },
+    {
+      type: 'chat',
+      title: 'Jane Williams',
+      message: `he process of recording the key project details and producing the
+              documents that are required to implement it successfully. Simply
+              put, it's an umbrella term which includes all the documents
+              created over the course of the project.`,
+      date: new Date(),
+    },
+  ].filter(msg => {
+    if (route.params.type === 'general') {
+      return true
+    }
+
+    return msg.type === route.params.type
+  })
+})
+
+const resolveIcon = (message: CommunicationsItem): string => {
+  if (message.type === 'emails') {
+    return communicationTypes.emails
+  } else if (message.type === 'chat') {
+    return communicationTypes.chat
+  } else if (message.type === 'calls') {
+    return communicationTypes.calls
+  } else if (message.type === 'sms') {
+    return communicationTypes.sms
+  }
+
+  return ''
+}
 </script>
 
 <template>
-  <div class="my-6">
-    <div>
-      <h5 class="text-h5">
-        Communication
-      </h5>
-    </div>
+  <div>
+    <PageHeader
+      title="Communication"
+      :breadcrumbs="[
+        {
+          title: 'Home',
+          to: { name: 'root' },
+        },
+        {
+          title: 'Contacts',
+          to: { name: 'contacts' },
+        },
+        {
+          title: 'Contact name',
+          to: { name: 'contacts-details-id', params: { id: route.params.id } },
+        },
+        {
+          title: 'Communications',
+          disabled: true,
+        },
+      ]"
+    />
+
     <VTimeline
       align="start"
       line-inset="19"
@@ -35,8 +157,9 @@ const communicationType = route.params.type
       :density="$vuetify.display.smAndDown ? 'compact' : 'default'"
       class="mt-4"
     >
-      <!-- SECTION Timeline Item: Document -->
       <VTimelineItem
+        v-for="(message, idx) in messages"
+        :key="`timeline-item-${idx}`"
         fill-dot
         size="small"
       >
@@ -51,7 +174,7 @@ const communicationType = route.params.type
               variant="tonal"
             >
               <VIcon
-                :icon="communicationTypes[communicationType]"
+                :icon="resolveIcon(message)"
                 size="20"
               />
             </VAvatar>
@@ -61,67 +184,13 @@ const communicationType = route.params.type
         <VCard class="mb-10 mt-n4">
           <VCardItem class="pb-4">
             <VCardTitle>
-              Jane Williams
+              {{ message.title }}
             </VCardTitle>
           </VCardItem>
           <VCardText>
             <!-- 👉 Content -->
             <p class="app-timeline-text mb-3">
-              he process of recording the key project details and producing the
-              documents that are required to implement it successfully. Simply
-              put, it's an umbrella term which includes all the documents
-              created over the course of the project.
-            </p>
-            <div class="d-inline-flex align-items-center timeline-chip">
-              <img
-                :src="pdf"
-                height="20"
-                class="me-2"
-                alt="img"
-              >
-              <span class="app-timeline-text font-weight-medium">
-                documentation.pdf
-              </span>
-            </div>
-          </VCardText>
-        </VCard>
-      </VTimelineItem>
-
-      <VTimelineItem
-        fill-dot
-        size="small"
-      >
-        <template #opposite>
-          <span class="app-timeline-meta"> 2 month's ago </span>
-        </template>
-        <template #icon>
-          <div class="v-timeline-avatar-wrapper rounded-circle">
-            <VAvatar
-              size="32"
-              color="primary"
-              variant="tonal"
-            >
-              <VIcon
-                :icon="communicationTypes[communicationType]"
-                size="20"
-              />
-            </VAvatar>
-          </div>
-        </template>
-        <!-- 👉 Header -->
-        <VCard class="mb-10 mt-n4">
-          <VCardItem class="pb-4">
-            <VCardTitle>
-              John Williams
-            </VCardTitle>
-          </VCardItem>
-          <VCardText>
-            <!-- 👉 Content -->
-            <p class="app-timeline-text mb-3">
-              he process of recording the key project details and producing the
-              documents that are required to implement it successfully. Simply
-              put, it's an umbrella term which includes all the documents
-              created over the course of the project.
+              {{ message.message }}
             </p>
             <div class="d-inline-flex align-items-center timeline-chip">
               <img
@@ -144,21 +213,5 @@ const communicationType = route.params.type
 <style lang="scss">
 .v-timeline-avatar-wrapper {
   background-color: rgb(var(--v-theme-surface));
-}
-
-.timeline-rating {
-  .v-rating__item {
-    .v-btn--icon {
-      --v-btn-height: 28px;
-
-      .v-btn__content {
-        .v-icon {
-          block-size: 28px !important;
-          font-size: 28px !important;
-          inline-size: 28px !important;
-        }
-      }
-    }
-  }
 }
 </style>

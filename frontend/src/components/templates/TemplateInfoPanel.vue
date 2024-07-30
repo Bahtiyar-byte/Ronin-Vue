@@ -1,35 +1,11 @@
 <script setup lang="ts">
 import type Template from '@/types/templates/Template'
 
-// import { useFilters } from '@/composables/useFilters'
-import { useTemplates } from '@/composables/useTemplates'
-
-const { update } = useTemplates()
-
 const templateData = defineModel<Template>('templateData', { required: true })
 
 const templateEditVisible = defineModel<boolean>('templateEditVisible', {
   default: true,
 })
-
-const saveItem = async (type: string, newValue: string) => {
-  const updatedData = {
-    ...prepareEntityToUpdate(templateData.value),
-    [type]: newValue,
-  } as Template
-
-  const { data, isFetching } = await update(updatedData)
-
-  watch(data, newVal => {
-    if (newVal === null) {
-      return
-    }
-
-    templateData.value = newVal
-  })
-
-  return isFetching
-}
 </script>
 
 <template>
