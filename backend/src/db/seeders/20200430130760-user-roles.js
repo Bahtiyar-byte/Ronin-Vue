@@ -87,7 +87,7 @@ module.exports = {
       'contracts',
       'amendments',
       'estimate_sections',
-      ,
+      'myorg',
     ];
     await queryInterface.bulkInsert(
       'permissions',
