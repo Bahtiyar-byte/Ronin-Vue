@@ -2,7 +2,6 @@
 import { computed, onBeforeMount, ref, watch } from 'vue'
 import { type RouteLocationNormalizedLoaded, useRoute, useRouter } from 'vue-router'
 import { useHead } from '@unhead/vue'
-import { useContacts } from '@/composables/useContacts'
 import type Contact from '@/types/contacts/Contact'
 import { useFormFields } from '@/utils/forms/useFormFields'
 import { initialFieldsContacts } from '@/utils/initial_data/initialFieldsContacts'
@@ -50,7 +49,7 @@ const fetchContactData = async (id: string) => {
 }
 
 onBeforeMount(async () => {
-  await initializeFields(initialFieldsContacts)
+  await initializeFields(initialFieldsContacts())
 
   const contactId = route.params.id as string
   if (contactId) {
