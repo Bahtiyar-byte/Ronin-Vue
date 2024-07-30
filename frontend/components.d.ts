@@ -123,7 +123,6 @@ declare module 'vue' {
     UserProfile: typeof import('./src/components/common/UserProfile.vue')['default']
     UserTabSecurity: typeof import('./src/components/settings/view/UserTabSecurity.vue')['default']
     UserUpgradePlanDialog: typeof import('./src/components/dialogs/UserUpgradePlanDialog.vue')['default']
-    VueApexCharts: typeof import('vue3-apexcharts')['default']
     WidgetCard: typeof import('./src/components/widgets/WidgetCard.vue')['default']
   }
 }

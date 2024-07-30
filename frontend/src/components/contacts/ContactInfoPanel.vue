@@ -7,7 +7,36 @@ const contactEditVisible = defineModel<boolean>('contactEditVisible', {
   default: true,
 })
 
-const items = [{ title: 'Option 1', value: 'Option 1' }, { title: 'Option 2', value: 'Option 2' }, { title: 'Option 3', value: 'Option 3' }]
+const { update } = useContacts()
+const { autocomplete: autocompleteUsers } = useUsers()
+
+const saveItem = async (type: string, newValue: string) => {
+  const updatedData = {
+    ...prepareEntityToUpdate(contactData.value),
+    [type]: newValue,
+  } as Contact
+
+  const { data, isFetching } = await update(updatedData)
+
+  watch(data, newVal => {
+    if (newVal === null) {
+      return
+    }
+
+    contactData.value = newVal
+  })
+
+  return isFetching
+}
+
+const items = ref<{ title: string; value: string }[]>()
+
+onBeforeMount(async () => {
+  items.value = (await autocompleteUsers(''))?.data.value?.map(item => ({
+    title: item.label,
+    value: item.id,
+  }))
+})
 </script>
 
 <template>
@@ -113,7 +142,13 @@ const items = [{ title: 'Option 1', value: 'Option 1' }, { title: 'Option 2', va
                 Assign
               </VBtn>
             </template>
-            <VList :items="items" />
+            <VList
+              :items="items"
+              @update:selected="(e: unknown[]) => {
+                // ToDo: there is no currently assigned_to field in contact entity
+                saveItem('assigned_to', e[0] as string)
+              }"
+            />
           </VMenu>
 
           <VBtn
