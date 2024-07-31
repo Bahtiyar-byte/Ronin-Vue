@@ -10,3 +10,9 @@ export const splitOnce = (str: string, delimiter: string): string[] => {
 
   return [str.substring(0, index), str.substring(index + 1)]
 }
+
+export const formatPrice = (val: number, symbol: string = '$'): string => {
+  console.log(val)
+
+  return `${symbol}${val.toFixed(2)}`
+}

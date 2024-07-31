@@ -7,6 +7,9 @@ export default {
   ],
   theme: {
     extend: {},
+    listStyleType: {
+      'upper-latin': 'upper-latin',
+    },
   },
   plugins: [],
 }

@@ -108,11 +108,8 @@ const handlePreview = async () => {
 </script>
 
 <template>
-  <VRow>
-    <VCol
-      cols="12"
-      md="9"
-    >
+  <InvoiceBuilderLayout>
+    <template #leftColumn>
       <InvoiceEditable
         id="invoice-editable"
         v-model:data="estimateData"
@@ -120,48 +117,38 @@ const handlePreview = async () => {
         @push="addProduct"
         @remove-section="removeSection"
       />
-    </VCol>
+    </template>
 
-    <!-- 👉 Right Column: Invoice Action -->
-    <VCol
-      cols="12"
-      md="3"
-    >
-      <div class="sticky top-4">
-        <VCard
-          :loading="loading"
-          class="mb-6"
-        >
-          <VCardText class="space-y-3">
-            <!-- 👉 Send Invoice -->
-            <VBtn
-              block
-              variant="tonal"
-              color="secondary"
-              @click="() => handleSave()"
-            >
-              Save
-            </VBtn>
+    <template #rightColumn>
+      <VCard :loading="loading">
+        <VCardText class="space-y-3">
+          <VBtn
+            block
+            variant="tonal"
+            color="secondary"
+            @click="() => handleSave()"
+          >
+            Save
+          </VBtn>
 
-            <VBtn
-              block
-              @click="handlePreview"
-            >
-              Preview
-            </VBtn>
-          </VCardText>
-        </VCard>
+          <VBtn
+            block
+            @click="handlePreview"
+          >
+            Preview
+          </VBtn>
+        </VCardText>
+      </VCard>
 
-        <VCard>
-          <VCardText class="space-y-3">
-            <AppTextField
-              v-model="estimateData.name"
-              label="Estimate name"
-              aria-required="true"
-            />
-          </VCardText>
-        </VCard>
-      </div>
-    </VCol>
-  </VRow>
+      <VCard>
+        <VCardText class="space-y-3">
+          <AppTextField
+            v-model="estimateData.name"
+            label="Estimate name"
+            aria-required="true"
+          />
+        </VCardText>
+      </VCard>
+    </template>
+  </InvoiceBuilderLayout>
 </template>
