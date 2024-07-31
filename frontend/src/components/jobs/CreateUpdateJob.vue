@@ -70,7 +70,7 @@ useHead({
 })
 
 const submitForm = async (values: Record<string, any>) => {
-  const jobData = { ...jobRef.value, ...values } as Job
+  const jobData = prepareEntityToUpdate({ ...jobRef.value, ...values }) as Job
   const action = jobData.id ? updateJob : createJob
   const { data } = await action(jobData)
 
