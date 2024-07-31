@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useTrades } from '@/composables/useTrades'
-import type Trade from '@/types/trades/Trade'
+import { useRoles } from '@/composables/useRoles'
+import type Role from '@/types/roles/Role'
 import ItemsManage from '@/components/common/CRUD/ItemsManage.vue'
 import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
 import { useTableManagement } from '@/utils/forms/useTableManagement'
@@ -12,7 +12,7 @@ definePage({
   },
 })
 
-const { getList, deleteContact } = useTrades()
+const { getList, deleteContact } = useRoles()
 
 const headersDefinition = [
   { title: 'Name', key: 'name' },
@@ -29,7 +29,7 @@ const {
   selectedItems,
   deletionDialogOptions,
   handleItemDeletion,
-} = useTableManagement<Trade>('trades', getList, deleteContact, headersDefinition)
+} = useTableManagement<Role>('roles', getList, deleteContact, headersDefinition)
 </script>
 
 <template>
@@ -51,7 +51,7 @@ const {
   >
     <template #buttons>
       <VBtn
-        :to="{ name: 'tools-trades-create' }"
+        :to="{ name: 'settings-roles-create' }"
         prepend-icon="tabler-plus"
       >
         Create role
@@ -76,20 +76,20 @@ const {
         </template>
 
         <template #item.name="{ item }">
-          <RouterLink :to="{ name: 'tools-trades-details-id', params: { id: item.id } }">
+          <RouterLink :to="{ name: 'settings-roles-details-id', params: { id: item.id } }">
             {{ item.name }}
           </RouterLink>
         </template>
 
         <template #item.actions="{ item }">
           <IconBtn
-            :to="{ name: 'tools-trades-details-id', params: { id: item.id } }"
+            :to="{ name: 'settings-roles-details-id', params: { id: item.id } }"
             title="View"
           >
             <VIcon icon="tabler-eye" />
           </IconBtn>
           <IconBtn
-            :to="{ name: 'tools-trades-update-id', params: { id: item.id } }"
+            :to="{ name: 'settings-roles-update-id', params: { id: item.id } }"
             title="Edit"
           >
             <VIcon icon="tabler-edit" />
@@ -105,6 +105,6 @@ const {
   <ConfirmDialog
     v-model:is-visible="deletionDialogOptions.visible"
     :on-accept="deletionDialogOptions.onAccept"
-    title="Are you sure you want to delete this trade?"
+    title="Are you sure you want to delete this role?"
   />
 </template>

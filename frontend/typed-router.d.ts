@@ -90,6 +90,7 @@ declare module 'vue-router/auto/routes' {
     'tools-trades-create': RouteRecordInfo<'tools-trades-create', '/tools/trades/create', Record<never, never>, Record<never, never>>,
     'tools-trades-details-id': RouteRecordInfo<'tools-trades-details-id', '/tools/trades/details/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'tools-trades-update-id': RouteRecordInfo<'tools-trades-update-id', '/tools/trades/update/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    'users': RouteRecordInfo<'users', '/users', Record<never, never>, Record<never, never>>,
   }
 }
 

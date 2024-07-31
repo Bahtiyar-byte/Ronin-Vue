@@ -160,6 +160,9 @@ const sources: BundleScriptConfig = {
         "file-type-pdf",
         "building",
         "car",
+        "user-plus",
+        "user-check",
+        "user-search",
       ],
     },
     {

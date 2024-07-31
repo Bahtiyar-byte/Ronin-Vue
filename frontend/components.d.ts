@@ -96,6 +96,7 @@ declare module 'vue' {
     QuickCreateEntity: typeof import('./src/components/index/QuickCreateEntity.vue')['default']
     ReferAndEarnDialog: typeof import('./src/components/dialogs/ReferAndEarnDialog.vue')['default']
     RelatedTab: typeof import('./src/components/estimates/details/RelatedTab.vue')['default']
+    RoleInfoPanel: typeof import('./src/components/roles/RoleInfoPanel.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ScrollToTop: typeof import('./src/@core/components/ScrollToTop.vue')['default']

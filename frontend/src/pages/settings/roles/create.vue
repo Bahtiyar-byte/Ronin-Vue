@@ -2,22 +2,29 @@
 import { type RouteLocationNormalizedLoaded, useRoute, useRouter } from 'vue-router'
 import { useHead } from '@unhead/vue'
 import { computed, onBeforeMount, ref, watch } from 'vue'
-import { useTrades } from '@/composables/useTrades'
+import { useRoles } from '@/composables/useRoles'
 import type Trade from '@/types/trades/Trade'
 import type FormField from '@/types/forms/FormField'
 import { useFormFields } from '@/utils/forms/useFormFields'
 import { initialFieldsTrades } from '@/utils/initial_data/initialFieldsTrades'
 import ItemUpdate from '@/components/common/CRUD/ItemUpdate.vue'
 
-const { create: createTrade, getById: getTradeById, update: updateTrade } = useTrades()
+definePage({
+  meta: {
+    action: 'read',
+    subject: 'roles',
+  },
+})
+
+const { create: createTrade, getById: getTradeById, update: updateTrade } = useRoles()
 const router = useRouter()
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } }
 const isUpdateMode = ref(false)
-const pageTitle = ref('Create Trade')
+const pageTitle = ref('Create Role')
 
 const breadcrumbs = ref([
   { title: 'Home', to: { name: 'root' } },
-  { title: 'Roles', to: { name: 'tools-trades' } },
+  { title: 'Roles', to: { name: 'settings-roles' } },
   { title: 'New role', disabled: true },
 ])
 
@@ -71,7 +78,7 @@ const submitForm = async (values: Record<string, any>) => {
   const { data } = await action(tradeData)
 
   watch(data, newVal => {
-    router.push({ name: 'tools-trades-details-id', params: { id: newVal?.id as string } })
+    router.push({ name: 'settings-roles-details-id', params: { id: newVal?.id as string } })
   })
 }
 </script>
