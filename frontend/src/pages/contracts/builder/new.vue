@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import type { RouteLocationNormalizedLoaded } from 'vue-router'
 import type Estimate from '@/types/estimates/Estimate'
+import type Contract from '@/types/contracts/Contract'
+import coreConfig from '@core/config'
+import {formatPrice} from "@/utils/helprers";
 
 definePage({
   meta: {
@@ -11,22 +14,137 @@ definePage({
 
 const route = useRoute() as RouteLocationNormalizedLoaded & { query: { estimateId?: string } }
 
-const { getById: getEstimateById } = useEstimates()
-const estimate = ref<Estimate>()
+const { getById: getEstimate } = useEstimates()
+const estimateData = ref<Estimate>()
+
+const contractData = ref<Partial<Contract>>({
+  name: 'New contract',
+  amount: 0,
+})
 
 onBeforeMount(async () => {
   if (route.query.estimateId) {
-    const { data } = await getEstimateById(route.query.estimateId)
+    const { data } = await getEstimate(route.query.estimateId)
 
     watch(data, newVal => {
-      estimate.value = newVal as Estimate
+      estimateData.value = newVal as Estimate
+
+      if (estimateData.value.related_contact
+          && estimateData.value.related_contactId
+      ) {
+        contractData.value = {
+          ...contractData.value,
+          related_contact: estimateData.value.related_contact,
+          related_contactId: estimateData.value.related_contactId,
+        }
+      }
     })
   }
 })
+
+const loading = ref<boolean>(false)
+
+const handleSave = async (redirect?: boolean) => {
+  console.log(redirect, contractData.value)
+}
+
+const handlePreview = async () => {
+  await handleSave(true)
+}
 </script>
 
 <template>
-  <div>
-    {{ JSON.stringify(estimate) }}
-  </div>
+  <InvoiceBuilderLayout>
+    <template #leftColumn>
+      <VCard
+        class="md:!p-6 !p-12"
+        :loading="loading"
+      >
+        <InvoiceHeader>
+          <template #default>
+            <InvoiceCompanyBrandingHeader class="mb-6" />
+
+            <InvoiceCompanyAddress />
+          </template>
+        </InvoiceHeader>
+
+        <VRow>
+          <VCol>
+            I/WE, the Owner(s) <b>{{ coreConfig.company.owner.name }}</b> of the premises <b>{{ coreConfig.company.owner.address }}</b> authorize Evans Roofing
+            and Gutters, hereinafter referred to as “Contractor”, to furnish all materials and labor necessary to roof and/or improve these
+            premises according to the following terms, specifications and provisions:
+          </VCol>
+        </VRow>
+
+        <VRow>
+          <VCol>
+            <ul class="list-upper-latin ml-4 space-y-4">
+              <li>
+                <p>Description of the work and the materials to be used:</p>
+
+                <ContractBuilderSectionsInfo
+                  :sections="estimateData?.estimate_sections_related_estimate"
+                  class="my-3"
+                />
+
+                <p class="font-semibold">
+                  Zero deposit required. Full payment due upon completion.
+                </p>
+
+                <p class="font-semibold">
+                  *Any permit fees to be paid by homeowner*
+                </p>
+              </li>
+
+              <li>
+                <p>
+                  Payment: Contractor proposes to perform the above work, (subject to any additions and/or deductions pursuant to authorized change orders)
+                  , for the
+                  Total Sum of:
+                  <span
+                    v-if="estimateData?.total_price"
+                    class="font-semibold"
+                  >
+                    {{ formatPrice(Number(estimateData.total_price)) }}
+                  </span>
+                </p>
+              </li>
+            </ul>
+          </VCol>
+        </VRow>
+      </VCard>
+    </template>
+
+    <template #rightColumn>
+      <VCard :loading="loading">
+        <VCardText class="space-y-3">
+          <VBtn
+            block
+            variant="tonal"
+            color="secondary"
+            @click="() => handleSave()"
+          >
+            Save
+          </VBtn>
+
+          <VBtn
+            block
+            @click="handlePreview"
+          >
+            Preview
+          </VBtn>
+        </VCardText>
+      </VCard>
+
+      <VCard>
+        <VCardText class="space-y-3">
+          <AppTextField
+            v-model="contractData.name"
+            label="Contract name"
+            aria-required="true"
+          />
+        </VCardText>
+      </VCard>
+    </template>
+  </InvoiceBuilderLayout>
 </template>
