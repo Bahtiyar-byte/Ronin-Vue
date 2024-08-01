@@ -1,5 +1,7 @@
 import csv from 'csv-parser';
 
+import type CurrentUser from '~/@types/CurrentUser.ts';
+
 import { Response } from 'express';
 import { PassThrough } from 'stream';
 import { Service } from 'typedi';
@@ -8,9 +10,6 @@ import db from '../db/models';
 import processFile from '../middlewares/upload';
 import { IContactsService } from './interfaces/IContactsService.interface';
 import ValidationError from './notifications/errors/validation';
-interface CurrentUser {
-  id: string | null;
-}
 
 @Service()
 class ContactsService implements IContactsService {

@@ -105,6 +105,18 @@ const errors = {
         `,
       }
     },
+    appointments: {
+      created: {
+        contact: {
+          subject: '{0}: Appointment created',
+          body: `
+            <h1>You have an appointment: {0}</h1>
+           <p>Start date: {1}</p>
+           <p>End date: {2}</p>
+          `,
+        },
+      },
+    },
   },
 };
 

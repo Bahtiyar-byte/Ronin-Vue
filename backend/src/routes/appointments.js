@@ -1,6 +1,6 @@
 const express = require('express');
 
-const AppointmentsService = require('../services/appointments.ts').default;
+const AppointmentsService = require('../roninServices/appointments.js');
 const AppointmentsDBApi = require('../db/api/appointments.ts').default;
 const wrapAsync = require('../helpers').wrapAsync;
 

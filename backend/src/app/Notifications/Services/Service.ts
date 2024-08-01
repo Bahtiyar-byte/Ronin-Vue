@@ -27,7 +27,7 @@ export namespace NotificationsServices {
     }
 
     protected async getUser(id: string): Promise<User> {
-      return this.usersDbApi.findBy({ id });
+      return UsersDBApi.findBy({ id });
     }
 
     protected async getContact(id: string): Promise<Contact> {

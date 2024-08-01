@@ -1,19 +1,4 @@
 import { UserDTO } from '../../db/api/dtos/users.dto';
-interface Request {
-  file: {
-    buffer: Buffer;
-  };
-  currentUser: UserDTO;
-}
-
-interface Response {}
-
-interface Options {
-  currentUser?: UserDTO;
-  transaction?: any;
-  ignoreDuplicates?: boolean;
-  validate?: boolean;
-}
 
 interface IEstimateSectionsService {
   create(data: any, currentUser: UserDTO): Promise<void>;
