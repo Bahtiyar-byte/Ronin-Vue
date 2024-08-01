@@ -13,6 +13,7 @@ declare module 'vue' {
     AddEditAddressDialog: typeof import('./src/components/dialogs/AddEditAddressDialog.vue')['default']
     AddEditPermissionDialog: typeof import('./src/components/dialogs/AddEditPermissionDialog.vue')['default']
     AddEditRoleDialog: typeof import('./src/components/dialogs/AddEditRoleDialog.vue')['default']
+    AddNewUser: typeof import('./src/components/users/AddNewUser.vue')['default']
     AddNewUserDrawer: typeof import('./src/components/myorg/AddNewUserDrawer.vue')['default']
     AddPaymentMethodModal: typeof import('./src/components/modals/AddPaymentMethodModal.vue')['default']
     AppAutocomplete: typeof import('./src/@core/components/app-form-elements/AppAutocomplete.vue')['default']

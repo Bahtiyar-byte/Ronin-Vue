@@ -89,6 +89,12 @@ export default [
         action: "read",
         to: "settings-roles",
       },
+      // {
+      //   title: "Permissions",
+      //   subject: "chats",
+      //   action: "read",
+      //   to: "settings-permissions",
+      // },
     ],
   },
 ];

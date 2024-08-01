@@ -163,6 +163,7 @@ const sources: BundleScriptConfig = {
         "user-plus",
         "user-check",
         "user-search",
+        "upload",
       ],
     },
     {

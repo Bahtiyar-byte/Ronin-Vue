@@ -1,16 +1,23 @@
 <script setup lang="ts">
-import AddNewUserDrawer from '@/components/users/AddNewUserDrawer.vue'
+import AddNewUser from '@/components/users/AddNewUser.vue'
 import type { UserProperties } from '@db/apps/users/types'
+import type User from '@/types/users/User'
+import { useUsers } from '@/composables/useUsers'
+import { useTableManagement } from '@/utils/forms/useTableManagement'
+import avatar1 from '@images/avatars/avatar-1.png'
+import avatar2 from '@images/avatars/avatar-2.png'
+import avatar3 from '@images/avatars/avatar-3.png'
+import avatar4 from '@images/avatars/avatar-4.png'
 
 definePage({
   meta: {
     action: 'read',
-    subject: 'chats',
+    subject: 'users',
   },
 })
 
 // 👉 Store
-const searchQuery = ref('')
+// const searchQuery = ref('')
 const selectedRole = ref()
 const selectedPlan = ref()
 const selectedStatus = ref()
@@ -18,41 +25,55 @@ const selectedStatus = ref()
 // Data table options
 const itemsPerPage = ref(10)
 const page = ref(1)
-const sortBy = ref()
-const orderBy = ref()
+// const sortBy = ref()
+// const orderBy = ref()
 
-// Update data table options
-const updateOptions = (options: any) => {
-  sortBy.value = options.sortBy[0]?.key
-  orderBy.value = options.sortBy[0]?.order
-}
+const { getList, deleteUser } = useUsers()
 
 // Headers
-const headers = [
+const headersDefinition = [
   { title: 'User', key: 'user' },
   { title: 'Role', key: 'role' },
-  { title: 'Plan', key: 'plan' },
-  { title: 'Billing', key: 'billing' },
   { title: 'Status', key: 'status' },
   { title: 'Actions', key: 'actions', sortable: false },
 ]
 
-// 👉 Fetching users
-const { data: usersData, execute: fetchUsers } = await useApi<any>(createUrl('/users', {
-  query: {
-    q: searchQuery,
-    status: selectedStatus,
-    plan: selectedPlan,
-    role: selectedRole,
-    itemsPerPage,
-    page,
-    sortBy,
-    orderBy,
-  },
-}))
+const {
+  items,
+  pagination,
+  sortBy,
+  headers,
+  isLoading,
+  searchQuery,
+  selectedItems,
+  deletionDialogOptions,
+  handleItemDeletion,
+} = useTableManagement<User>('users', getList, deleteUser, headersDefinition)
 
-const users = computed((): UserProperties[] => usersData.value.users)
-const totalUsers = computed(() => usersData.value.totalUsers)
+// Update data table options
+// const updateOptions = (options: any) => {
+//   sortBy.value = options.sortBy[0]?.key
+//   orderBy.value = options.sortBy[0]?.order
+// }
+
+
+
+// 👉 Fetching users
+// const { data: usersData, execute: fetchUsers } = await useApi<any>(createUrl('/users', {
+//   query: {
+//     q: searchQuery,
+//     status: selectedStatus,
+//     plan: selectedPlan,
+//     role: selectedRole,
+//     itemsPerPage,
+//     page,
+//     sortBy,
+//     orderBy,
+//   },
+// }))
+
+// const users = computed((): UserProperties[] => usersData.value.users)
+// const totalUsers = computed(() => usersData.value.totalUsers)
 
 // 👉 search filters
 const roles = [
@@ -77,35 +98,25 @@ const status = [
 ]
 
 const resolveUserRoleVariant = (role: string) => {
-  const roleLowerCase = role.toLowerCase()
+  // const roleLowerCase = role.toLowerCase()
 
-  if (roleLowerCase === 'subscriber')
-    return { color: 'success', icon: 'tabler-user' }
-  if (roleLowerCase === 'author')
-    return { color: 'error', icon: 'tabler-device-desktop' }
-  if (roleLowerCase === 'maintainer')
-    return { color: 'info', icon: 'tabler-chart-pie' }
-  if (roleLowerCase === 'editor')
-    return { color: 'warning', icon: 'tabler-edit' }
-  if (roleLowerCase === 'admin')
-    return { color: 'primary', icon: 'tabler-crown' }
+  // if (roleLowerCase === 'subscriber')
+  //   return { color: 'success', icon: 'tabler-user' }
+  // if (roleLowerCase === 'author')
+  //   return { color: 'error', icon: 'tabler-device-desktop' }
+  // if (roleLowerCase === 'maintainer')
+  //   return { color: 'info', icon: 'tabler-chart-pie' }
+  // if (roleLowerCase === 'editor')
+  //   return { color: 'warning', icon: 'tabler-edit' }
+  // if (roleLowerCase === 'admin')
+  //   return { color: 'primary', icon: 'tabler-crown' }
 
   return { color: 'primary', icon: 'tabler-user' }
 }
 
-const resolveUserStatusVariant = (stat: string) => {
-  const statLowerCase = stat.toLowerCase()
-  if (statLowerCase === 'pending')
-    return 'warning'
-  if (statLowerCase === 'active')
-    return 'success'
-  if (statLowerCase === 'inactive')
-    return 'secondary'
+const resolveUserStatusVariant = (disabled: boolean) => disabled ? 'secondary' : 'success';
 
-  return 'primary'
-}
-
-const isAddNewUserDrawerVisible = ref(false)
+const isAddNewUserVisible = ref(false)
 
 // 👉 Add new user
 const addNewUser = async (userData: UserProperties) => {
@@ -119,15 +130,15 @@ const addNewUser = async (userData: UserProperties) => {
 }
 
 // 👉 Delete user
-const deleteUser = async (id: number) => {
-  await $api(`/apps/users/${id}`, {
-    method: 'DELETE',
-  })
+// const deleteUser = async (id: number) => {
+//   await $api(`/apps/users/${id}`, {
+//     method: 'DELETE',
+//   })
 
-  // refetch User
-  // TODO: Make this async
-  fetchUsers()
-}
+//   // refetch User
+//   // TODO: Make this async
+//   fetchUsers()
+// }
 
 const widgetData = ref([
   { title: 'Session', value: '21,459', change: 29, desc: 'Total Users', icon: 'tabler-users', iconColor: 'primary' },
@@ -281,7 +292,7 @@ const widgetData = ref([
           <!-- 👉 Add user button -->
           <VBtn
             prepend-icon="tabler-plus"
-            @click="isAddNewUserDrawerVisible = true"
+            @click="isAddNewUserVisible = true"
           >
             Add New User
           </VBtn>
@@ -291,15 +302,14 @@ const widgetData = ref([
       <VDivider />
 
       <!-- SECTION datatable -->
-      <VDataTableServer
-        v-model:items-per-page="itemsPerPage"
+      <VDataTable
         v-model:page="page"
-        :items="users"
-        :items-length="totalUsers"
+        v-model="selectedItems"
+        v-model:sort-by="sortBy"
+        :items="items"
         :headers="headers"
         class="text-no-wrap"
         show-select
-        @update:options="updateOptions"
       >
         <!-- User -->
         <template #item.user="{ item }">
@@ -310,18 +320,17 @@ const widgetData = ref([
               :color="!item.avatar ? resolveUserRoleVariant(item.role).color : undefined"
             >
               <VImg
-                v-if="item.avatar"
-                :src="item.avatar"
+                :src="avatar1"
               />
-              <span v-else>{{ avatarText(item.fullName) }}</span>
+              <!-- <span v-else>{{ avatarText(item.firstName + ' ' + item.lastName) }}</span> -->
             </VAvatar>
             <div class="d-flex flex-column">
               <h6 class="text-base">
                 <RouterLink
-                  :to="{ name: 'apps-user-view-id', params: { id: item.id } }"
+                  :to="{ name: 'users-details-id', params: { id: item.id } }"
                   class="font-weight-medium text-link"
                 >
-                  {{ item.fullName }}
+                  {{ item.firstName + ' ' + item.lastName }}
                 </RouterLink>
               </h6>
               <div class="text-sm">
@@ -341,7 +350,7 @@ const widgetData = ref([
             />
 
             <div class="text-capitalize text-high-emphasis text-body-1">
-              {{ item.role }}
+              {{ item.app_role.name }}
             </div>
           </div>
         </template>
@@ -356,12 +365,12 @@ const widgetData = ref([
         <!-- Status -->
         <template #item.status="{ item }">
           <VChip
-            :color="resolveUserStatusVariant(item.status)"
+            :color="resolveUserStatusVariant(item.disabled)"
             size="small"
             label
             class="text-capitalize"
           >
-            {{ item.status }}
+            {{ item.disabled ? 'Inactive' : 'Active' }}
           </VChip>
         </template>
 
@@ -383,7 +392,7 @@ const widgetData = ref([
             <VIcon icon="tabler-dots-vertical" />
             <VMenu activator="parent">
               <VList>
-                <VListItem :to="{ name: 'apps-user-view-id', params: { id: item.id } }">
+                <VListItem :to="{ name: 'users-details-id', params: { id: item.id } }">
                   <template #prepend>
                     <VIcon icon="tabler-eye" />
                   </template>
@@ -408,21 +417,12 @@ const widgetData = ref([
             </VMenu>
           </VBtn>
         </template>
-
-        <!-- pagination -->
-        <template #bottom>
-          <TablePagination
-            v-model:page="page"
-            :items-per-page="itemsPerPage"
-            :total-items="totalUsers"
-          />
-        </template>
-      </VDataTableServer>
+      </VDataTable>
       <!-- SECTION -->
     </VCard>
     <!-- 👉 Add New User -->
-    <AddNewUserDrawer
-      v-model:isDrawerOpen="isAddNewUserDrawerVisible"
+    <AddNewUser
+      v-model:isDrawerOpen="isAddNewUserVisible"
       @user-data="addNewUser"
     />
   </section>
