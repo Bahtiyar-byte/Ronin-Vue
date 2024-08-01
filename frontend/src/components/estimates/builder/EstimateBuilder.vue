@@ -83,12 +83,25 @@ const handleSave = async (redirect?: boolean) => {
     }
     estimateId.value = newVal.id
 
-    const createSectionsPromises = estimateData.value.sections?.map(sectionData => {
+    const createSectionsPromises = estimateData.value.sections?.map((sectionData, sectionIdx) => {
       if (sectionData.id === undefined) {
         return createEstimateSection(prepareEntityToUpdate({
           ...sectionData,
           related_estimate: newVal.id,
-        }))
+        })).then(res => {
+          watch(res.data, (createdSection: EstimateSection | null) => {
+            estimateData.value = {
+              ...estimateData.value,
+              sections: estimateData.value.sections?.map((section, idx) => {
+                if (idx === sectionIdx) {
+                  return createdSection
+                }
+
+                return section
+              }) as EstimateSection[],
+            }
+          })
+        })
       }
 
       return false

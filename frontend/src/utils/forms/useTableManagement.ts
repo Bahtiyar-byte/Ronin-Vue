@@ -36,7 +36,7 @@ export function useTableManagement<T>(
   const fetchData = async () => {
     const requestParams = {
       limit: pagination.value.itemsPerPage,
-      offset: (pagination.value.page - 1) * pagination.value.itemsPerPage,
+      page: pagination.value.page - 1,
       sortBy: '',
       sortDesc: '',
       ...route.query,
