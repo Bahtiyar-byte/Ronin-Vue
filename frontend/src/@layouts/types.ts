@@ -12,6 +12,7 @@ export interface LayoutConfig {
   app: {
     title: Lowercase<string>
     logo: VNode
+    logoDocuments: VNode
     contentWidth: (typeof ContentWidth)[keyof typeof ContentWidth]
     contentLayoutNav: (typeof AppContentLayoutNav)[keyof typeof AppContentLayoutNav]
     overlayNavFromBreakpoint: number

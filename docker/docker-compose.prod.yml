@@ -18,7 +18,7 @@ services:
       - ./../frontend/index.html:/app/index.html
       - ./../frontend/tailwind.config.js:/usr/src/app/tailwind.config.js
       - ./../frontend/vite.config.js:/app/vite.config.js
-      - ./../frontend/postcss.config.js:/usr/src/app/postcss.config.js
+      - ./../frontend/postcss.config.cjs:/usr/src/app/postcss.config.cjs
       - ./../frontend/package.json:/app/package.json
       - ./../frontend/pnpm-lock.yaml:/app/pnpm-lock.yaml
     networks:

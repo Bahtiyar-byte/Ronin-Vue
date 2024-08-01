@@ -27,7 +27,12 @@ export default class AppointmentCreatedContactEmail implements Email {
         try {
             return (new EmailUtils()).renderDefaultEmail(
                 this.subject,
-                getNotification('emails.appointments.created.contact.body')
+                getNotification(
+                    'emails.appointments.created.contact.body',
+                    this.appointment.subject,
+                    this.appointment.createdAt,
+                    this.appointment.createdAt,
+                )
             );
         } catch (error) {
             console.error('Error generating estimate creation email HTML:', error);

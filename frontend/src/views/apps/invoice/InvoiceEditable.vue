@@ -12,10 +12,6 @@ import type Estimate from '@/types/estimates/Estimate'
 import { useCurrentUserStore } from '@/@core/stores/auth/currentUser'
 import { useEstimateSectionTemplates } from '@/composables/useEstimateSectionTemplates'
 
-import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
-import { themeConfig } from '@themeConfig'
-
-import coreConfig from '@core/config'
 import InvoiceSectionManageDialog from '@/views/apps/invoice/InvoiceSectionManageDialog.vue'
 import { convertTemplateToSection } from '@/utils/estimates'
 import EstimateSectionEdit from '@/views/apps/invoice/EstimateSectionEdit.vue'
@@ -133,23 +129,11 @@ const date = ref<string | Date>(estimateData.value.createdAt ?? new Date())
     class="md:!p-6 !p-12"
     :loading="isLoading"
   >
-    <div class="d-flex flex-wrap justify-space-between flex-column rounded bg-var-theme-background flex-sm-row gap-6 p-6 mb-6">
-      <div>
-        <div class="d-flex align-center app-logo mb-6">
-          <VNodeRenderer :nodes="themeConfig.app.logoDocuments" />
+    <InvoiceHeader>
+      <template #default>
+        <InvoiceCompanyBrandingHeader class="mb-6" />
 
-          <h6 class="app-logo-title">
-            {{ coreConfig.company.name }}
-          </h6>
-        </div>
-
-        <p
-          v-for="(address, addressKey) in coreConfig.company.address.split('\n')"
-          :key="`estimate-address-${addressKey}`"
-          class="text-high-emphasis mb-0"
-        >
-          {{ address }}
-        </p>
+        <InvoiceCompanyAddress />
 
         <p class="font-semibold mt-4">
           Company representative:
@@ -163,14 +147,16 @@ const date = ref<string | Date>(estimateData.value.createdAt ?? new Date())
         <p v-if="selectedUser?.email">
           <a :href="`mailto:${selectedUser.email}`">{{ selectedUser.email }}</a>
         </p>
-      </div>
+      </template>
 
-      <div class="d-flex flex-column justify-center gap-2">
+      <template #right>
         <div class="d-flex gap-x-4 align-start align-sm-center flex-column flex-sm-row">
           <span
             class="text-high-emphasis text-sm-end"
             style="inline-size: 5.625rem;"
-          >Date Issued:</span>
+          >
+            Date Issued:
+          </span>
 
           <span style="inline-size: 9.5rem;">
             <span v-if="hideControls">
@@ -189,36 +175,20 @@ const date = ref<string | Date>(estimateData.value.createdAt ?? new Date())
             />
           </span>
         </div>
-      </div>
-    </div>
+      </template>
+    </InvoiceHeader>
 
     <VRow>
       <VCol class="text-no-wrap">
-        <h6 class="font-medium text-body mb-4">
-          Estimate To:
-        </h6>
-        <p v-if="estimateData.related_contact?.name">
-          {{ estimateData.related_contact.name }}
-        </p>
-        <p v-if="estimateData.related_contact?.phone">
-          <a :href="`tel:${estimateData.related_contact.phone}`">
-            {{ estimateData.related_contact.phone }}
-          </a>
-        </p>
-        <p v-if="estimateData.related_contact?.address">
-          {{ estimateData.related_contact.address }}
-        </p>
-        <p v-if="estimateData.related_contact?.email">
-          <a :href="`mailto:${estimateData.related_contact.email}`">
-            {{ estimateData.related_contact.email }}
-          </a>
-        </p>
+        <InvoiceToSection
+          title="Estimate To"
+          :contact="estimateData.related_contact as Contact"
+        />
       </VCol>
-
-      <VCol />
     </VRow>
 
-    <VDivider class="my-6 border-dashed border-gray-700 !opacity-60" />
+    <AppDivider />
+
     <div class="add-products-form">
       <div v-if="data.sections !== undefined">
         <div

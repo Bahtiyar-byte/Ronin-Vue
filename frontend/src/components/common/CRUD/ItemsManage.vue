@@ -16,10 +16,6 @@ interface Props {
   cardTitle?: string
 }
 
-defineOptions({
-  inheritAttrs: false,
-})
-
 const props = withDefaults(defineProps<Props>(), {
   showTitle: true,
   showItemsPerPage: true,
@@ -42,7 +38,7 @@ const showButtonsWrapper = props.showItemsPerPage || showButtonsContainer
 </script>
 
 <template>
-  <div>
+  <div class="flex flex-col">
     <PageHeader
       v-if="props.showTitle"
       :title="itemsTitle as string"
@@ -50,7 +46,7 @@ const showButtonsWrapper = props.showItemsPerPage || showButtonsContainer
     />
     <VCard
       :title="cardTitle"
-      v-bind="$attrs"
+      class="flex-1"
     >
       <template v-if="$slots.filters">
         <VCardItem class="pb-4">

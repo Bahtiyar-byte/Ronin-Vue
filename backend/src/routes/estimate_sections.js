@@ -1,6 +1,6 @@
 const express = require('express');
 
-const Estimate_sectionsService =
+const EstimateSectionsServiceService =
   require('../services/estimate_sections.ts').default;
 const Estimate_sectionsDBApi =
   require('../db/api/estimate_sections.ts').default;
@@ -13,6 +13,8 @@ const { parse } = require('json2csv');
 const { checkCrudPermissions } = require('../middlewares/check-permissions');
 
 router.use(checkCrudPermissions('estimate_sections'));
+
+const estimate_sectionsService = new EstimateSectionsServiceService()
 
 /**
  *  @swagger
@@ -85,13 +87,14 @@ router.post(
   '/',
   wrapAsync(async (req, res) => {
     const link = new URL(req.headers.referer);
-    await Estimate_sectionsService.create(
+
+    const payload = await estimate_sectionsService.create(
       req.body.data,
       req.currentUser,
       true,
       link.host,
     );
-    const payload = true;
+
     res.status(200).send(payload);
   }),
 );
@@ -135,7 +138,7 @@ router.post(
   '/bulk-import',
   wrapAsync(async (req, res) => {
     const link = new URL(req.headers.referer);
-    await Estimate_sectionsService.bulkImport(req, res, true, link.host);
+    await estimate_sectionsService.bulkImport(req, res, true, link.host);
     const payload = true;
     res.status(200).send(payload);
   }),
@@ -192,12 +195,12 @@ router.post(
 router.put(
   '/:id',
   wrapAsync(async (req, res) => {
-    await Estimate_sectionsService.update(
+    const payload = await estimate_sectionsService.update(
       req.body.data,
       req.body.id,
       req.currentUser,
     );
-    const payload = true;
+
     res.status(200).send(payload);
   }),
 );
@@ -237,7 +240,7 @@ router.put(
 router.delete(
   '/:id',
   wrapAsync(async (req, res) => {
-    await Estimate_sectionsService.remove(req.params.id, req.currentUser);
+    await estimate_sectionsService.remove(req.params.id, req.currentUser);
     const payload = true;
     res.status(200).send(payload);
   }),
@@ -278,7 +281,7 @@ router.delete(
 router.post(
   '/deleteByIds',
   wrapAsync(async (req, res) => {
-    await Estimate_sectionsService.deleteByIds(req.body.data, req.currentUser);
+    await estimate_sectionsService.deleteByIds(req.body.data, req.currentUser);
     const payload = true;
     res.status(200).send(payload);
   }),

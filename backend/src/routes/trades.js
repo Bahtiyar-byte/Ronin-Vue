@@ -70,8 +70,8 @@ router.post(
   '/',
   wrapAsync(async (req, res) => {
     const link = new URL(req.headers.referer);
-    await TradesService.create(req.body.data, req.currentUser, true, link.host);
-    const payload = true;
+    const payload = await TradesService.create(req.body.data, req.currentUser, true, link.host);
+
     res.status(200).send(payload);
   }),
 );
@@ -115,8 +115,8 @@ router.post(
   '/bulk-import',
   wrapAsync(async (req, res) => {
     const link = new URL(req.headers.referer);
-    await TradesService.bulkImport(req, res, true, link.host);
-    const payload = true;
+    const payload = await TradesService.bulkImport(req, res, true, link.host);
+
     res.status(200).send(payload);
   }),
 );
