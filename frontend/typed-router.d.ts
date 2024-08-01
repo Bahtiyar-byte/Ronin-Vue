@@ -76,6 +76,7 @@ declare module 'vue-router/auto/routes' {
     'not-authorized': RouteRecordInfo<'not-authorized', '/not-authorized', Record<never, never>, Record<never, never>>,
     'profile': RouteRecordInfo<'profile', '/profile', Record<never, never>, Record<never, never>>,
     'scheduler': RouteRecordInfo<'scheduler', '/scheduler', Record<never, never>, Record<never, never>>,
+    'settings-permissions': RouteRecordInfo<'settings-permissions', '/settings/permissions', Record<never, never>, Record<never, never>>,
     'settings-profile': RouteRecordInfo<'settings-profile', '/settings/profile', Record<never, never>, Record<never, never>>,
     'settings-roles': RouteRecordInfo<'settings-roles', '/settings/roles', Record<never, never>, Record<never, never>>,
     'settings-roles-create': RouteRecordInfo<'settings-roles-create', '/settings/roles/create', Record<never, never>, Record<never, never>>,

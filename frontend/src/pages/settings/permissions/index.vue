@@ -1,99 +1,132 @@
 <script setup lang="ts">
-import type { Permission } from '@db/apps/permission/types'
-import { usePermissions } from '@/composables/usePermissions'
-import type Permission from '@/types/permissions/Permission'
-
-import { useTableManagement } from '@/utils/forms/useTableManagement'
+import type { Permission } from "@db/apps/permission/types";
 
 definePage({
   meta: {
-    action: 'read',
-    subject: 'chats',
+    action: "read",
+    subject: "chats",
   },
-})
-
+});
 
 const headers = [
-  { title: 'Name', key: 'name' },
-  { title: 'Assigned To', key: 'assignedTo', sortable: false },
-  { title: 'Created Date', key: 'createdDate', sortable: false },
-  { title: 'Actions', key: 'actions', sortable: false },
-]
+  { title: "Name", key: "name" },
+  { title: "Assigned To", key: "assignedTo", sortable: false },
+  { title: "Created Date", key: "createdDate", sortable: false },
+  { title: "Actions", key: "actions", sortable: false },
+];
 
-const headersDefinition = [
-  { title: 'Name', key: 'name' },
-  { title: 'Actions', key: 'actions', sortable: false },
-]
-
-
-const search = ref('')
+const search = ref("");
 
 // Data table options
-const itemsPerPage = ref(10)
-const page = ref(1)
-const sortBy = ref()
-const orderBy = ref()
-
-const { getList, deletePermission } = usePermissions()
-
-const {
-  items,
-  pagination,
-  sortBy,
-  headers,
-  isLoading,
-  searchQuery,
-  selectedItems,
-  deletionDialogOptions,
-  handleItemDeletion,
-} = useTableManagement<Permission>('roles', getList, deletePermission, headersDefinition)
+const itemsPerPage = ref(10);
+const page = ref(1);
+const sortBy = ref();
+const orderBy = ref();
 
 // Update data table options
 const updateOptions = (options: any) => {
-  sortBy.value = options.sortBy[0]?.key
-  orderBy.value = options.sortBy[0]?.order
-}
+  sortBy.value = options.sortBy[0]?.key;
+  orderBy.value = options.sortBy[0]?.order;
+};
 
-const isPermissionDialogVisible = ref(false)
-const isAddPermissionDialogVisible = ref(false)
-const permissionName = ref('')
+const isPermissionDialogVisible = ref(false);
+const isAddPermissionDialogVisible = ref(false);
+const permissionName = ref("");
 
 const colors: any = {
-  'support': { color: 'info', text: 'Support' },
-  'users': { color: 'success', text: 'Users' },
-  'manager': { color: 'warning', text: 'Manager' },
-  'administrator': { color: 'primary', text: 'Administrator' },
-  'restricted-user': { color: 'error', text: 'Restricted User' },
-}
+  support: { color: "info", text: "Support" },
+  users: { color: "success", text: "Users" },
+  manager: { color: "warning", text: "Manager" },
+  administrator: { color: "primary", text: "Administrator" },
+  "restricted-user": { color: "error", text: "Restricted User" },
+};
 
-const { data: permissionsData } = await useApi<any>(createUrl('/apps/permissions', {
-  query: {
-    q: search,
-    itemsPerPage,
-    page,
-    sortBy,
-    orderBy,
+const { data: permissionsData } = await useApi<any>(
+  createUrl("/apps/permissions", {
+    query: {
+      q: search,
+      itemsPerPage,
+      page,
+      sortBy,
+      orderBy,
+    },
+  })
+);
+
+const permissions = [
+  {
+    id: 1,
+    name: "Management",
+    assignedTo: ["administrator"],
+    createdDate: "14 Apr 2021, 8:43 PM",
   },
-}))
+  {
+    id: 2,
+    assignedTo: ["administrator"],
+    name: "Manage Billing & Roles",
+    createdDate: "16 Sep 2021, 5:20 PM",
+  },
+  {
+    id: 3,
+    name: "Add & Remove Users",
+    createdDate: "14 Oct 2021, 10:20 AM",
+    assignedTo: ["administrator", "manager"],
+  },
+  {
+    id: 4,
+    name: "Project Planning",
+    createdDate: "14 Oct 2021, 10:20 AM",
+    assignedTo: ["administrator", "users", "support"],
+  },
+  {
+    id: 5,
+    name: "Manage Email Sequences",
+    createdDate: "23 Aug 2021, 2:00 PM",
+    assignedTo: ["administrator", "users", "support"],
+  },
+  {
+    id: 6,
+    name: "Client Communication",
+    createdDate: "15 Apr 2021, 11:30 AM",
+    assignedTo: ["administrator", "manager"],
+  },
+  {
+    id: 7,
+    name: "Only View",
+    createdDate: "04 Dec 2021, 8:15 PM",
+    assignedTo: ["administrator", "restricted-user"],
+  },
+  {
+    id: 8,
+    name: "Financial Management",
+    createdDate: "25 Feb 2021, 10:30 AM",
+    assignedTo: ["administrator", "manager"],
+  },
+  {
+    id: 9,
+    name: "Manage Others' Tasks",
+    createdDate: "04 Nov 2021, 11:45 AM",
+    assignedTo: ["administrator", "support"],
+  },
+]
 
-const permissions = computed((): Permission[] => permissionsData.value.permissions)
-const totalPermissions = computed(() => permissionsData.value.totalPermissions)
+const totalPermissions = permissions.length;
 
 const editPermission = (name: string) => {
-  isPermissionDialogVisible.value = true
-  permissionName.value = name
-}
+  isPermissionDialogVisible.value = true;
+  permissionName.value = name;
+};
 </script>
 
 <template>
   <VRow>
     <VCol cols="12">
       <VCard>
-        <VCardText class="d-flex align-center justify-space-between flex-wrap gap-4">
+        <VCardText
+          class="d-flex align-center justify-space-between flex-wrap gap-4"
+        >
           <div class="d-flex gap-2 align-center">
-            <p class="text-body-1 mb-0">
-              Show
-            </p>
+            <p class="text-body-1 mb-0">Show</p>
             <AppSelect
               :model-value="itemsPerPage"
               :items="[
@@ -103,7 +136,7 @@ const editPermission = (name: string) => {
                 { value: 100, title: '100' },
                 { value: -1, title: 'All' },
               ]"
-              style="inline-size: 5.5rem;"
+              style="inline-size: 5.5rem"
               @update:model-value="itemsPerPage = parseInt($event, 10)"
             />
           </div>
@@ -112,7 +145,7 @@ const editPermission = (name: string) => {
             <AppTextField
               v-model="search"
               placeholder="Search Permission"
-              style="inline-size: 15.625rem;"
+              style="inline-size: 15.625rem"
             />
             <VBtn
               density="default"
@@ -181,16 +214,10 @@ const editPermission = (name: string) => {
               variant="text"
               @click="editPermission(item.name)"
             >
-              <VIcon
-                size="22"
-                icon="tabler-edit"
-              />
+              <VIcon size="22" icon="tabler-edit" />
             </VBtn>
             <IconBtn>
-              <VIcon
-                icon="tabler-dots-vertical"
-                size="22"
-              />
+              <VIcon icon="tabler-dots-vertical" size="22" />
             </IconBtn>
           </template>
         </VDataTableServer>
@@ -200,7 +227,9 @@ const editPermission = (name: string) => {
         v-model:isDialogVisible="isPermissionDialogVisible"
         v-model:permission-name="permissionName"
       />
-      <AddEditPermissionDialog v-model:isDialogVisible="isAddPermissionDialogVisible" />
+      <AddEditPermissionDialog
+        v-model:isDialogVisible="isAddPermissionDialogVisible"
+      />
     </VCol>
   </VRow>
 </template>
