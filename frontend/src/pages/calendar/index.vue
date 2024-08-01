@@ -2,7 +2,6 @@
 import FullCalendar from '@fullcalendar/vue3'
 import type { RouteLocationNormalizedLoaded } from 'vue-router'
 import { blankEvent, useCalendar } from '@/views/apps/calendar/useCalendar'
-import { useCurrentUserStore } from '@/@core/stores/auth/currentUser'
 
 // Components
 import CalendarEventHandler from '@/views/apps/calendar/CalendarEventHandler.vue'
@@ -27,8 +26,6 @@ watch(isEventHandlerSidebarActive, val => {
 })
 
 const { isLeftSidebarOpen } = useResponsiveLeftSidebar()
-
-const { user: currentUser } = storeToRefs(useCurrentUserStore())
 
 // 👉 useCalendar
 const { refCalendar, calendarOptions, addEvent, updateEvent, removeEvent, jumpToDate } = useCalendar(event, isEventHandlerSidebarActive, isLeftSidebarOpen)
