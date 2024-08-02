@@ -44,15 +44,7 @@ const widgets = ref<WidgetCardProps[]>([
       action: {
         title: 'Add estimate for this job',
         icon: 'tabler-plus',
-        to: {
-          name: 'estimates-create',
-          query: computed(() => {
-            return {
-              related_job: jobData.value?.id || '',
-              related_contact: jobData.value?.related_contact?.id || '',
-            }
-          }),
-        },
+        to: { name: 'estimates-builder', query: { contact_id: jobData.value.related_contact?.id } } as RouteLocationRaw,
       },
     },
   },
@@ -99,6 +91,7 @@ const widgets = ref<WidgetCardProps[]>([
   },
   {
     permission: { action: 'read', subject: 'chats' },
+    to: { name: 'contacts-communications-id-type', params: { id: jobData.value.related_contact?.id, type: 'general' } },
     widget: {
       title: 'Communications',
       value: 0,

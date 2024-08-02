@@ -5,9 +5,6 @@ import type User from '@/types/users/User'
 import { useUsers } from '@/composables/useUsers'
 import { useTableManagement } from '@/utils/forms/useTableManagement'
 import avatar1 from '@images/avatars/avatar-1.png'
-import avatar2 from '@images/avatars/avatar-2.png'
-import avatar3 from '@images/avatars/avatar-3.png'
-import avatar4 from '@images/avatars/avatar-4.png'
 
 definePage({
   meta: {
@@ -126,7 +123,7 @@ const addNewUser = async (userData: UserProperties) => {
   })
 
   // refetch User
-  fetchUsers()
+  // fetchUsers()
 }
 
 // 👉 Delete user
@@ -330,7 +327,7 @@ const widgetData = ref([
                   :to="{ name: 'users-details-id', params: { id: item.id } }"
                   class="font-weight-medium text-link"
                 >
-                  {{ item.firstName + ' ' + item.lastName }}
+                  {{ resolveUserName(item) }}
                 </RouterLink>
               </h6>
               <div class="text-sm">

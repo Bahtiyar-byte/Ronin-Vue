@@ -32,8 +32,7 @@ const fetchData = async () => {
     sortBy: '',
     sortDesc: '',
     q: searchQuery?.value ?? '',
-
-    // status: 'Active',
+    status: 'Active',
 
     // ToDo: Remove this after implement search by 'q' on backend
     name: searchQuery?.value ?? '',
