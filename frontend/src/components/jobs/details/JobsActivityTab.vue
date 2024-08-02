@@ -99,6 +99,7 @@ const widgets = ref<WidgetCardProps[]>([
   },
   {
     permission: { action: 'read', subject: 'chats' },
+    to: { name: 'contacts-communications-id-type', params: { id: jobData.value.related_contact?.id, type: 'general' } },
     widget: {
       title: 'Communications',
       value: 0,
