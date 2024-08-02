@@ -88,6 +88,8 @@ module.exports = {
       'amendments',
       'estimate_sections',
       'myorg',
+      'roles',
+      'permissions',
     ];
     await queryInterface.bulkInsert(
       'permissions',

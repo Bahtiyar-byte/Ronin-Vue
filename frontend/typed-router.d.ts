@@ -76,7 +76,7 @@ declare module 'vue-router/auto/routes' {
     'not-authorized': RouteRecordInfo<'not-authorized', '/not-authorized', Record<never, never>, Record<never, never>>,
     'profile': RouteRecordInfo<'profile', '/profile', Record<never, never>, Record<never, never>>,
     'scheduler': RouteRecordInfo<'scheduler', '/scheduler', Record<never, never>, Record<never, never>>,
-    'settings': RouteRecordInfo<'settings', '/settings', Record<never, never>, Record<never, never>>,
+    'settings-permissions': RouteRecordInfo<'settings-permissions', '/settings/permissions', Record<never, never>, Record<never, never>>,
     'settings-profile': RouteRecordInfo<'settings-profile', '/settings/profile', Record<never, never>, Record<never, never>>,
     'settings-roles': RouteRecordInfo<'settings-roles', '/settings/roles', Record<never, never>, Record<never, never>>,
     'settings-roles-create': RouteRecordInfo<'settings-roles-create', '/settings/roles/create', Record<never, never>, Record<never, never>>,
@@ -90,6 +90,8 @@ declare module 'vue-router/auto/routes' {
     'tools-trades-create': RouteRecordInfo<'tools-trades-create', '/tools/trades/create', Record<never, never>, Record<never, never>>,
     'tools-trades-details-id': RouteRecordInfo<'tools-trades-details-id', '/tools/trades/details/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'tools-trades-update-id': RouteRecordInfo<'tools-trades-update-id', '/tools/trades/update/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    'users': RouteRecordInfo<'users', '/users', Record<never, never>, Record<never, never>>,
+    'users-details-id': RouteRecordInfo<'users-details-id', '/users/details/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
   }
 }
 

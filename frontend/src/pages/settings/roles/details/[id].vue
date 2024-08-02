@@ -2,34 +2,41 @@
 import { watch } from 'vue'
 import { useHead } from '@unhead/vue'
 import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router'
-import { useTrades } from '@/composables/useTrades'
-import type Trade from '@/types/trades/Trade'
+import { useRoles } from '@/composables/useRoles'
+import type Role from '@/types/roles/Role'
 
-import TradeInfoPanel from '@/components/trades/TradeInfoPanel.vue'
+import RoleInfoPanel from '@/components/roles/RoleInfoPanel.vue'
+
+definePage({
+  meta: {
+    action: 'read',
+    subject: 'roles',
+  },
+})
 
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } }
 
-const tradeTab = ref(null)
+const roleTab = ref(null)
 
 const tabs = [
   { icon: 'tabler-activity', title: 'Activity' },
   { icon: 'ph-link-light', title: 'Related' },
 ]
 
-const tradeData = ref<Trade>()
-const tradeName = ref<string>('')
+const roleData = ref<Role>()
+const roleName = ref<string>('')
 const isLoading = ref<boolean>(false)
 
 onMounted(async () => {
-  const { data, isFetching } = await useTrades().getById(route.params.id)
+  const { data, isFetching } = await useRoles().getById(route.params.id)
 
   watch(data, newVal => {
     if (newVal === null) {
       return
     }
 
-    tradeName.value = newVal.name
-    tradeData.value = newVal
+    roleName.value = newVal.name
+    roleData.value = newVal
   })
 
   watch(isFetching, newVal => {
@@ -40,7 +47,7 @@ onMounted(async () => {
 
 useHead({
   title: computed(() => {
-    return tradeData.value !== undefined ? `${tradeData.value.name} details` : null
+    return roleData.value !== undefined ? `${roleData.value.name} details` : null
   }),
 })
 </script>
@@ -54,22 +61,22 @@ useHead({
       },
       {
         title: 'Roles',
-        to: { name: 'tools-trades' },
+        to: { name: 'settings-roles' },
       },
       {
-        title: tradeName,
+        title: roleName,
         disabled: true,
       },
     ]"
     class="!pl-0"
   />
-  <VRow v-if="tradeData">
+  <VRow v-if="roleData">
     <VCol
       cols="12"
       md="5"
       lg="4"
     >
-      <TradeInfoPanel :trade-data="tradeData" />
+      <RoleInfoPanel :role-data="roleData" />
     </VCol>
   </VRow>
   <div v-else-if="!isLoading">
@@ -77,7 +84,7 @@ useHead({
       type="error"
       variant="tonal"
     >
-      Trade with ID  {{ route.params.id }} not found!
+      Role with ID  {{ route.params.id }} not found!
     </VAlert>
   </div>
 </template>

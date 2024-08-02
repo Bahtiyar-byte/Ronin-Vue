@@ -1,0 +1,56 @@
+<script setup lang="ts">
+import type Role from '@/types/roles/Role'
+
+const roleData = defineModel<Role>('roleData', { required: true })
+
+const roleEditVisible = defineModel<boolean>('roleEditVisible', {
+  default: true,
+})
+</script>
+
+<template>
+  <VRow>
+    <!-- SECTION User Details -->
+    <VCol cols="12">
+      <VCard :title="roleData.name">
+        <VCardText>
+          <!-- 👉 Details -->
+          <h5 class="text-[1.05rem] leading-[1.5] font-medium">
+            Details
+          </h5>
+
+          <VDivider class="my-4 !opacity-60" />
+
+          <!-- 👉 User Details list -->
+          <VList class="card-list mt-2">
+            <VListItem>
+              <VListItemTitle>
+                <span class="font-medium">
+                  Name:
+                </span>
+                <div class="d-inline-block text-body-1">
+                  {{ roleData.name }}
+                </div>
+              </VListItemTitle>
+            </VListItem>
+          </VList>
+        </VCardText>
+
+        <!-- 👉 Edit and Suspend button -->
+        <VCardText
+          v-if="roleEditVisible"
+          class="d-flex justify-center gap-x-4"
+        >
+          <VBtn
+            :to="{ name: 'settings-roles-update-id', params: { id: roleData.id } }"
+            variant="elevated"
+            class="w-full"
+          >
+            Edit
+          </VBtn>
+        </VCardText>
+      </VCard>
+    </VCol>
+    <!-- !SECTION -->
+  </VRow>
+</template>
