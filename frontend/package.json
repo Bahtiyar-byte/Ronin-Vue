@@ -53,6 +53,7 @@
     "roboto-fontface": "0.10.0",
     "shepherd.js": "11.2.0",
     "swiper": "11.0.7",
+    "tailwind-merge": "^2.5.1",
     "ufo": "1.4.0",
     "unplugin-vue-define-options": "1.4.2",
     "vee-validate": "^4.12.8",
@@ -64,6 +65,7 @@
     "vue-router": "4.3.0",
     "vue3-apexcharts": "1.5.2",
     "vue3-perfect-scrollbar": "1.6.1",
+    "vue3-signature": "^0.2.4",
     "vuetify": "3.5.2",
     "webfontloader": "1.6.28"
   },

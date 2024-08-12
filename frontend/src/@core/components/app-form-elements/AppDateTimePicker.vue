@@ -138,7 +138,7 @@ const elementId = computed(() => {
   <div class="app-picker-field">
     <!-- v-input -->
     <VLabel
-      v-if="fieldProps.label"
+      v-if="fieldProps.label?.length"
       class="mb-1 text-body-2"
       :for="elementId"
       :text="fieldProps.label"

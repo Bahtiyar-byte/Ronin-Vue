@@ -3,7 +3,6 @@ import type { RouteLocationNormalizedLoaded } from 'vue-router'
 import type Estimate from '@/types/estimates/Estimate'
 import type Contract from '@/types/contracts/Contract'
 import coreConfig from '@core/config'
-import {formatPrice} from "@/utils/helprers";
 
 definePage({
   meta: {
@@ -106,6 +105,62 @@ const handlePreview = async () => {
                     class="font-semibold"
                   >
                     {{ formatPrice(Number(estimateData.total_price)) }}
+                  </span>
+                </p>
+
+                <p class="mt-5">
+                  PAYMENT DUE WHEN AMOUNT: Total sum due upon completion of work.
+                </p>
+                <p class="mt-1">
+                  Down Payment (if any) $
+                  <input
+                    type="number"
+                    step="0.01"
+                    class="border-b -ml-1"
+                    min="0"
+                  >
+                </p>
+              </li>
+              <li class="flex gap-3">
+                <span>
+                  Estimated Job Start Date:
+                  <input
+                    type="text"
+                    class="border-b"
+                  />
+                </span>
+                <span>
+                  Estimated Date of Completion:
+                  <input
+                    type="text"
+                    class="border-b"
+                  />
+                </span>
+              </li>
+              <li>
+                <p>
+                  Owner’s signature below signifies acceptance of all terms and conditions of this Agreement, including all terms on the reverse side
+                  hereof. Owner understands that there are no oral agreements or understandings between the parties of this Agreement. The written
+                  terms, provisions, plans (if any) and specifications set forth in this Agreement is the entire agreement between the parties. Changes
+                  in this Agreement shall be done by written change order only and with the express approval of both parties. Changes may incur
+                  additional charges.
+                </p>
+
+                <p class="mt-6 uppercase font-bold">
+                  Right of Cancellation Pursuant to Federal Regulation and Penn. Stat. § 201-7:
+                  You, the buyer, may cancel this transaction at any time prior to midnight of the third business
+                  day after the date of this transaction. See attached notice of cancellation form for an explanation of this right.
+                </p>
+
+                <p class="flex items-center gap-3 mt-3">
+                  <span class="flex items-center gap-1.5">
+                    Customer:
+                    <AppSignatureField class="w-36" />
+                  </span>
+
+                  <span class="flex items-center gap-1.5">
+                    Date:
+                    <AppDateTimePicker class="w-28" />
                   </span>
                 </p>
               </li>

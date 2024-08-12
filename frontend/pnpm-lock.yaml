@@ -126,6 +126,9 @@ dependencies:
   swiper:
     specifier: 11.0.7
     version: 11.0.7
+  tailwind-merge:
+    specifier: ^2.5.1
+    version: 2.5.1
   ufo:
     specifier: 1.4.0
     version: 1.4.0
@@ -159,6 +162,9 @@ dependencies:
   vue3-perfect-scrollbar:
     specifier: 1.6.1
     version: 1.6.1(postcss@8.4.38)
+  vue3-signature:
+    specifier: ^0.2.4
+    version: 0.2.4(vue@3.4.21)
   vuetify:
     specifier: 3.5.2
     version: 3.5.2(typescript@5.3.3)(vite-plugin-vuetify@2.0.1)(vue-i18n@9.10.1)(vue@3.4.21)
@@ -3615,6 +3621,10 @@ packages:
     resolution: {integrity: sha512-3sUqbMEc77XqpdNO7FRyRog+eW3ph+GYCbj+rK+uYyRMuwsVy0rMiVtPn+QJlKFvWP/1PYpapqYn0Me2knFn+A==}
     engines: {node: '>=0.10.0'}
 
+  /default-passive-events@2.0.0:
+    resolution: {integrity: sha512-eMtt76GpDVngZQ3ocgvRcNCklUMwID1PaNbCNxfpDXuiOXttSh0HzBbda1HU9SIUsDc02vb7g9+3I5tlqe/qMQ==}
+    dev: false
+
   /define-data-property@1.1.4:
     resolution: {integrity: sha512-rBMvIzlpA8v6E+SJZoo++HAYqsLrkg7MSfIinMPFhmkorw7X+dOXVJQs+QT69zGkzMyfDnIMN2Wid1+NbL3T+A==}
     engines: {node: '>= 0.4'}
@@ -6999,6 +7009,10 @@ packages:
     engines: {node: '>=14'}
     dev: true
 
+  /signature_pad@3.0.0-beta.4:
+    resolution: {integrity: sha512-cOf2NhVuTiuNqe2X/ycEmizvCDXk0DoemhsEpnkcGnA4kS5iJYTCqZ9As7tFBbsch45Q1EdX61833+6sjJ8rrw==}
+    dev: false
+
   /slash@3.0.0:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
     engines: {node: '>=8'}
@@ -7480,6 +7494,10 @@ packages:
       string-width: 4.2.3
       strip-ansi: 6.0.1
     dev: true
+
+  /tailwind-merge@2.5.1:
+    resolution: {integrity: sha512-1zKDdExKvNltulO+J0x/Rqv40xQn78FHsEQVn3rxt8e4HdebRIT6o6zGeLYlGuxd3Efue9Y69qsp8vKwEhuEeg==}
+    dev: false
 
   /tailwindcss@3.4.3:
     resolution: {integrity: sha512-U7sxQk/n397Bmx4JHbJx/iSOOv5G+II3f1kpLpY2QeUv5DcPdcTsYLlusZfq1NthHS1c1cZoyFmmkex1rzke0A==}
@@ -8167,6 +8185,16 @@ packages:
       postcss-import: 12.0.1
     transitivePeerDependencies:
       - postcss
+    dev: false
+
+  /vue3-signature@0.2.4(vue@3.4.21):
+    resolution: {integrity: sha512-XFwwFVK9OG3F085pKIq2SlNVqx32WdFH+TXbGEWc5FfEKpx8oMmZuAwZZ50K/pH2FgmJSE8IRwU9DDhrLpd6iA==}
+    peerDependencies:
+      vue: ^3.2.0
+    dependencies:
+      default-passive-events: 2.0.0
+      signature_pad: 3.0.0-beta.4
+      vue: 3.4.21(typescript@5.3.3)
     dev: false
 
   /vue@3.4.21(typescript@5.3.3):

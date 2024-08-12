@@ -164,6 +164,7 @@ const sources: BundleScriptConfig = {
         "user-check",
         "user-search",
         "upload",
+        'arrow-back-up',
       ],
     },
     {
