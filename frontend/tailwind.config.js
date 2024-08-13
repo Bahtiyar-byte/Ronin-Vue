@@ -6,9 +6,10 @@ export default {
     './src/**/*.{vue,js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
-    listStyleType: {
-      'upper-latin': 'upper-latin',
+    extend: {
+      listStyleType: {
+        'upper-latin': 'upper-latin',
+      },
     },
   },
   plugins: [],
