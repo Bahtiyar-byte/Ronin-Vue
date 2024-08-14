@@ -7,11 +7,11 @@ import coreConfig from '@core/config'
 definePage({
   meta: {
     action: 'create',
-    subject: 'invoices',
+    subject: 'contracts',
   },
 })
 
-const route = useRoute() as RouteLocationNormalizedLoaded & { query: { estimateId?: string } }
+const route = useRoute() as RouteLocationNormalizedLoaded & { query: { estimateId?: string }, params: { id?: string } }
 
 const { getById: getEstimate } = useEstimates()
 const estimateData = ref<Estimate>()
@@ -42,9 +42,51 @@ onBeforeMount(async () => {
 })
 
 const loading = ref<boolean>(false)
+const { create: createContract, update: updateContract, getById: getContact } = useContracts()
+
+onBeforeMount(async () => {
+  if (route.params.id !== undefined) {
+    const { data } = await getContact(route.params.id)
+
+    watch(data, newVal => {
+      contractData.value = newVal as Contract
+    })
+  }
+})
+
+const router = useRouter()
+const contractId = ref<string | undefined>(route.params.id)
+
+const redirectToPreview = async () => {
+  await router.push({
+    name: 'contracts-builder-id',
+    params: {
+      id: contractId.value as string,
+    },
+  })
+}
 
 const handleSave = async (redirect?: boolean) => {
-  console.log(redirect, contractData.value)
+  const processRedirect = redirect ?? false
+
+  const action = contractData.value.id ? updateContract : createContract
+
+  const { data } = await action({
+    ...prepareEntityToUpdate(contractData.value) as Contract,
+  })
+
+  watch(data, async (newVal: Contract | null) => {
+    if (newVal === null) {
+      return
+    }
+
+    contractData.value = newVal
+    contractId.value = newVal.id
+
+    if (processRedirect) {
+      await redirectToPreview()
+    }
+  })
 }
 
 const handlePreview = async () => {

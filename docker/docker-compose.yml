@@ -55,19 +55,19 @@ services:
 #
 #    command: ["bash", "./start-backend.sh"]
 
-#  pgadmin:
-#    image: elestio/pgadmin:latest
-#    restart: always
-#    environment:
-#      PGADMIN_DEFAULT_EMAIL: admin@example.com
-#      PGADMIN_DEFAULT_PASSWORD: admin
-#      PGADMIN_LISTEN_PORT: 8080
-#    ports:
-#      - "8085:8080"
-#    volumes:
-#      - "./servers.json:/pgadmin4/servers.json"
-#    networks:
-#      - ronin-vue
+  pgadmin:
+    image: elestio/pgadmin:latest
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_LISTEN_PORT: 8080
+    ports:
+      - "8085:8080"
+    volumes:
+      - "./servers.json:/pgadmin4/servers.json"
+    networks:
+      - ronin-vue
 
 networks:
   ronin-vue:
