@@ -49,7 +49,7 @@ const handlePrint = () => {
   window.print()
 }
 
-const isSendPaymentSidebarVisible = ref<boolean>(false)
+const isSendEstimateSidebarVisible = ref<boolean>(false)
 
 const handleSending = async (data: {
   emailTo: string
@@ -63,7 +63,7 @@ const handleSending = async (data: {
   }
 
   generatePdf().set(opt).toContainer().toCanvas().toImg().outputPdf('blob').then(async (blob: Blob) => {
-    const { data: resultData, isFetching } = await sendEstimate(estimate.value, {
+    const { isFetching } = await sendEstimate(estimate.value, {
       ...prepareEntityToUpdate(data),
       attachments: [blob],
     })
@@ -76,82 +76,33 @@ const handleSending = async (data: {
 </script>
 
 <template>
-  <VRow>
-    <VCol
-      cols="12"
-      md="9"
-    >
-      <InvoiceEditable
-        id="invoice-editable"
-        hide-controls
-        :data="estimate as Estimate"
-      />
-    </VCol>
-    <VCol
-      cols="12"
-      md="3"
-      class="print:!hidden"
-    >
-      <div class="!sticky top-4">
-        <VCard
-          :loading="loading"
-          class="mb-8"
-        >
-          <VCardText class="space-y-3">
-            <VBtn
-              block
-              prepend-icon="tabler-send"
-              @click="isSendPaymentSidebarVisible = !isSendPaymentSidebarVisible"
-            >
-              Send
-            </VBtn>
+  <div>
+    <InvoiceBuilderLayout right-panel-class="print:!hidden">
+      <template #leftColumn>
+        <InvoiceEditable
+          id="invoice-editable"
+          hide-controls
+          :data="estimate as Estimate"
+        />
+      </template>
 
-            <VBtn
-              block
-              variant="tonal"
-              color="secondary"
-              prepend-icon="tabler-download"
-              @click="handleDownload"
-            >
-              Download
-            </VBtn>
-
-            <div class="flex gap-2.5">
-              <VBtn
-                class="flex-1"
-                variant="tonal"
-                color="secondary"
-                prepend-icon="tabler-printer"
-                @click="handlePrint"
-              >
-                Print
-              </VBtn>
-              <VBtn
-                v-if="$can('create', 'estimates')"
-                class="flex-1"
-                variant="tonal"
-                color="secondary"
-                :to="{ name: 'estimates-builder-id-edit', params: route.params }"
-              >
-                Edit
-              </VBtn>
-            </div>
-          </VCardText>
-        </VCard>
-
-        <VCard v-if="estimate.name?.length">
-          <VCardText class="space-y-3">
-            <p>{{ estimate.name }}</p>
-          </VCardText>
-        </VCard>
-      </div>
-    </VCol>
+      <template #rightColumn>
+        <EstimateDetailsRightPanel
+          v-model:loading="loading"
+          v-model:estimate="estimate as Estimate"
+          v-model:is-send-estimate-sidebar-visible="isSendEstimateSidebarVisible"
+          :handle-download="handleDownload"
+          :handle-print="handlePrint"
+          :route="route"
+        />
+      </template>
+    </InvoiceBuilderLayout>
 
     <InvoiceSendInvoiceDrawer
       v-if="estimate.id !== undefined"
-      v-model:isDrawerOpen="isSendPaymentSidebarVisible"
+      v-model:isDrawerOpen="isSendEstimateSidebarVisible"
       v-model:estimate-data="estimate"
       @submit="handleSending"
     />
-  </VRow>
+  </div>
 </template>
