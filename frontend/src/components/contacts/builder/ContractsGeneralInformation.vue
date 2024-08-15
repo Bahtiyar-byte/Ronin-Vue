@@ -32,8 +32,8 @@ const estimateData = defineModel<Estimate>('estimateData')
           v-if="estimateData?.total_price"
           class="font-semibold"
         >
-                    {{ formatPrice(Number(estimateData?.total_price)) }}
-                  </span>
+          {{ formatPrice(Number(estimateData?.total_price)) }}
+        </span>
       </p>
 
       <p class="mt-5">

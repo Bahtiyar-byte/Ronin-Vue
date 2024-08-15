@@ -1,3 +1,9 @@
+<script setup lang="ts">
+defineProps<{
+  rightPanelClass?: string
+}>()
+</script>
+
 <template>
   <VRow>
     <VCol
@@ -9,6 +15,7 @@
     <VCol
       cols="12"
       md="3"
+      :class="rightPanelClass ?? ''"
     >
       <div
         v-if="$slots.rightColumn"

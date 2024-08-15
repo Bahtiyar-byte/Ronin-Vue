@@ -1,7 +1,7 @@
 <script setup lang="ts">
 definePage({
   meta: {
-    action: 'create',
+    action: 'update',
     subject: 'contracts',
   },
 })
