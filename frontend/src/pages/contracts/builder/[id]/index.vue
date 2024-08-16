@@ -18,7 +18,7 @@ const loading = ref<boolean>(false)
 const contractData = ref<Partial<Contract>>({})
 const estimateData = ref<Partial<Estimate>>({})
 
-const { getById: getContract } = useContracts()
+const { getById: getContract, send } = useContracts()
 
 onBeforeMount(async () => {
   const { data, isFetching } = await getContract(route.params.id)
@@ -33,13 +33,13 @@ onBeforeMount(async () => {
 })
 
 const generatePdf = () => {
-  const element = document.getElementById('invoice-editable')
+  const element = document.getElementById('contract-editable')
 
   return html2pdf().from(element)
 }
 
 const handleDownload = () => {
-  generatePdf().save('estimate.pdf')
+  generatePdf().save('contract.pdf')
 }
 
 const handlePrint = () => {
@@ -47,27 +47,88 @@ const handlePrint = () => {
 }
 
 const isSendContractSidebarVisible = ref<boolean>(false)
+
+const snackbars = reactive({
+  emailSent: false,
+  emailError: false,
+})
+
+const handleSending = async (data: {
+  emailTo: string
+  subject: string
+  message: string
+}) => {
+  loading.value = true
+
+  const opt = {
+    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+  }
+
+  generatePdf().set(opt).toContainer().toCanvas().toImg().outputPdf('blob').then(async (blob: Blob) => {
+    const { data: sendingResult, isFetching } = await send(prepareEntityToUpdate(contractData.value), {
+      ...data,
+      attachments: [blob],
+    })
+
+    watch(isFetching, newVal => {
+      loading.value = newVal
+    })
+
+    watch(sendingResult, newVal => {
+      if (newVal?.sent === true) {
+        snackbars.emailSent = true
+      } else if (newVal?.sent === false) {
+        snackbars.emailError = true
+      }
+    })
+  })
+}
 </script>
 
 <template>
-  <InvoiceBuilderLayout right-panel-class="print:!hidden">
-    <template #leftColumn>
-      <ContractEditable
-        v-model:loading="loading"
-        v-model:contract-data="contractData as Contract"
-        v-model:estimate-data="estimateData as Estimate"
-      />
-    </template>
+  <div>
+    <InvoiceBuilderLayout right-panel-class="print:!hidden">
+      <template #leftColumn>
+        <ContractEditable
+          id="contract-editable"
+          v-model:loading="loading"
+          v-model:contract-data="contractData as Contract"
+          v-model:estimate-data="estimateData as Estimate"
+        />
+      </template>
 
-    <template #rightColumn>
-      <ContractDetailsRightPanel
-        v-model:contract="contractData as Contract"
-        v-model:loading="loading"
-        v-model:is-send-contract-sidebar-visible="isSendContractSidebarVisible"
-        :handle-download="handleDownload"
-        :handle-print="handlePrint"
-        :route="route"
-      />
-    </template>
-  </InvoiceBuilderLayout>
+      <template #rightColumn>
+        <ContractDetailsRightPanel
+          v-model:contract="contractData as Contract"
+          v-model:loading="loading"
+          v-model:is-send-contract-sidebar-visible="isSendContractSidebarVisible"
+          :handle-download="handleDownload"
+          :handle-print="handlePrint"
+          :route="route"
+        />
+      </template>
+    </InvoiceBuilderLayout>
+
+    <SendContractDrawer
+      v-if="contractData.id !== undefined"
+      v-model:drawer-opened="isSendContractSidebarVisible"
+      v-model:contract="contractData"
+      @submit="handleSending"
+    />
+
+    <VSnackbar
+      v-model="snackbars.emailSent"
+      :timeout="3500"
+    >
+      Contract sent successfully
+    </VSnackbar>
+
+    <VSnackbar
+      v-model="snackbars.emailError"
+      color="error"
+      :timeout="3500"
+    >
+      Contract was not sent. Some error occurred.
+    </VSnackbar>
+  </div>
 </template>

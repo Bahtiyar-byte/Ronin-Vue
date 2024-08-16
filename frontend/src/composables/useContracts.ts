@@ -1,10 +1,11 @@
 import { useApi } from './useApi'
 import type CountResponse from '@/types/common/CountRequestTypes'
-import type Contract from '@/types/contracts/Contract'
 import type {
   GetContractsRequest,
   GetContractsResponse,
 } from '@/types/contracts/GetContractsRequest'
+import type SendEmailHandlerAdditionalData from '@/types/common/SendEmailHandlerAdditionalData'
+import type Contract from '@/types/contracts/Contract'
 
 export const useContracts = () => {
   const count = async (params: object) => {
@@ -111,6 +112,23 @@ export const useContracts = () => {
     }
   }
 
+  const send = async (
+    contract: Partial<Contract>,
+    additionalData: Partial<SendEmailHandlerAdditionalData>,
+  ) => {
+    const formData = entityToFormData<Partial<Contract>>('contract', contract, additionalData)
+
+    const {
+      data,
+      isFetching,
+    } = useApi('/contracts-sender/send').post(formData).json<{ sent: boolean }>()
+
+    return {
+      data,
+      isFetching,
+    }
+  }
+
   return {
     count,
     getList,
@@ -119,5 +137,6 @@ export const useContracts = () => {
     update,
     deleteContract,
     autocomplete,
+    send,
   }
 }

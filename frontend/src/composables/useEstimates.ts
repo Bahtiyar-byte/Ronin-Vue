@@ -2,6 +2,7 @@ import { useApi } from './useApi'
 import type CountResponse from '@/types/common/CountRequestTypes'
 import type { GetEstimatesRequest, GetEstimatesResponse } from '@/types/estimates/GetEstimatesRequest'
 import type Estimate from '@/types/estimates/Estimate'
+import type SendEmailHandlerAdditionalData from '@/types/common/SendEmailHandlerAdditionalData'
 
 interface UpdateAdditionalOptions {
   attachments: string[]
@@ -126,42 +127,16 @@ export const useEstimates = () => {
     }
   }
 
-  interface AdditionalData {
-    emailTo: string
-    subject: string
-    message: string
-    attachments: Blob[]
-    notifyContact: boolean
-  }
-
   const sendEstimate = async (
     estimate: Partial<Estimate>,
-    additionalData: Partial<AdditionalData>,
+    additionalData: Partial<SendEmailHandlerAdditionalData>,
   ) => {
-    const formData = new FormData()
-
-    for (const key in estimate) {
-      if (estimate[key as keyof Estimate] !== undefined) {
-        formData.append(`estimate[${key}]`, estimate[key as keyof Estimate] as string | Blob)
-      }
-    }
-
-    for (const key in additionalData) {
-      if (additionalData[key as keyof AdditionalData] !== undefined) {
-        if (key === 'attachments') {
-          (additionalData.attachments as Blob[]).forEach((attachment, index) => {
-            formData.append('attachments', attachment, `attachment_${index}.pdf`)
-          })
-        } else {
-          formData.append(`additionalData[${key}]`, additionalData[key as keyof AdditionalData] as string | Blob)
-        }
-      }
-    }
+    const formData = entityToFormData<Partial<Estimate>>('estimate', estimate, additionalData)
 
     const {
       data,
       isFetching,
-    } = useApi('/estimates-sender/send').post(formData).json<{ result: boolean }>()
+    } = useApi('/estimates-sender/send').post(formData).json<{ sent: boolean }>()
 
     return {
       data,

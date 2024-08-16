@@ -53,6 +53,7 @@ declare module 'vue-router/auto/routes' {
     'contacts-create': RouteRecordInfo<'contacts-create', '/contacts/create', Record<never, never>, Record<never, never>>,
     'contacts-details-id': RouteRecordInfo<'contacts-details-id', '/contacts/details/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'contacts-update-id': RouteRecordInfo<'contacts-update-id', '/contacts/update/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    'contracts': RouteRecordInfo<'contracts', '/contracts', Record<never, never>, Record<never, never>>,
     'contracts-builder-id': RouteRecordInfo<'contracts-builder-id', '/contracts/builder/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'contracts-builder-id-edit': RouteRecordInfo<'contracts-builder-id-edit', '/contracts/builder/:id/edit', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'contracts-builder-new': RouteRecordInfo<'contracts-builder-new', '/contracts/builder/new', Record<never, never>, Record<never, never>>,

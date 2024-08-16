@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type Estimate from '@/types/estimates/Estimate'
+import type Contract from '@/types/contracts/Contract'
 
 interface SubmitData {
   emailTo: string
@@ -14,11 +14,11 @@ interface Emit {
 const emit = defineEmits<Emit>()
 
 const drawerOpened = defineModel<boolean>('drawerOpened', { required: true })
-const estimateData = defineModel<Partial<Estimate>>('estimateData', { required: true })
+const contract = defineModel<Partial<Contract>>('contract', { required: true })
 
 const submitData = reactive({
-  emailTo: estimateData.value.related_contact?.email ?? '',
-  subject: 'New estimate was created',
+  emailTo: contract.value.related_contact?.email ?? '',
+  subject: 'New contract was created',
   message: '',
 })
 
@@ -30,7 +30,7 @@ const onSubmit = () => {
 <template>
   <SendEmailDrawer
     v-model:drawer-opened="drawerOpened"
-    title="Send Invoice"
+    title="Send Contract"
     @submit="onSubmit"
   >
     <VCol cols="12">
@@ -45,7 +45,7 @@ const onSubmit = () => {
       <AppTextField
         v-model="submitData.subject"
         label="Subject"
-        placeholder="Estimate subject"
+        placeholder="Contract subject"
       />
     </VCol>
 
@@ -69,7 +69,7 @@ const onSubmit = () => {
             start
             icon="tabler-link"
           />
-          Estimate Attached
+          Contract Attached
         </VChip>
       </div>
     </template>
