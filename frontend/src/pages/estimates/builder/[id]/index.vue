@@ -51,6 +51,11 @@ const handlePrint = () => {
 
 const isSendEstimateSidebarVisible = ref<boolean>(false)
 
+const snackbars = reactive({
+  emailSent: false,
+  emailError: false,
+})
+
 const handleSending = async (data: {
   emailTo: string
   subject: string
@@ -63,8 +68,8 @@ const handleSending = async (data: {
   }
 
   generatePdf().set(opt).toContainer().toCanvas().toImg().outputPdf('blob').then(async (blob: Blob) => {
-    const { data: sendingResult, isFetching } = await sendEstimate(estimate.value, {
-      ...prepareEntityToUpdate(data),
+    const { data: sendingResult, isFetching } = await sendEstimate(prepareEntityToUpdate(estimate.value), {
+      ...data,
       attachments: [blob],
     })
 
@@ -73,7 +78,11 @@ const handleSending = async (data: {
     })
 
     watch(sendingResult, newVal => {
-      console.log('ToDo: Add toast with message based on result data: ', newVal)
+      if (newVal?.sent === true) {
+        snackbars.emailSent = true
+      } else if (newVal?.sent === false) {
+        snackbars.emailError = true
+      }
     })
   })
 }
@@ -108,5 +117,20 @@ const handleSending = async (data: {
       v-model:estimate-data="estimate"
       @submit="handleSending"
     />
+
+    <VSnackbar
+      v-model="snackbars.emailSent"
+      :timeout="3500"
+    >
+      Estimate sent successfully
+    </VSnackbar>
+
+    <VSnackbar
+      v-model="snackbars.emailError"
+      color="error"
+      :timeout="3500"
+    >
+      Estimate was not sent. Some error occurred.
+    </VSnackbar>
   </div>
 </template>

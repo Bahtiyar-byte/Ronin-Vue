@@ -27,6 +27,12 @@ module.exports = class RoninAppInitialise {
         )
 
         this.app.use(
+            '/api/contracts-sender',
+            this.passport.authenticate('jwt', { session: false }),
+            require('./routes/estimateSender'),
+        )
+
+        this.app.use(
             '/api/contact-attachments',
             this.passport.authenticate('jwt', { session: false }),
             require('./routes/contactAttachments'),

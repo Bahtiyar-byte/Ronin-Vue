@@ -48,6 +48,7 @@ declare global {
   const eagerComputed: typeof import('@vueuse/core')['eagerComputed']
   const effectScope: typeof import('vue')['effectScope']
   const emailValidator: typeof import('./src/@core/utils/validators')['emailValidator']
+  const entityToFormData: typeof import('./src/utils/helprers')['entityToFormData']
   const extendRef: typeof import('@vueuse/core')['extendRef']
   const fetchAutocomplete: typeof import('./src/utils/api')['fetchAutocomplete']
   const formatDate: typeof import('./src/@core/utils/formatters')['formatDate']
@@ -439,6 +440,7 @@ declare module 'vue' {
     readonly eagerComputed: UnwrapRef<typeof import('@vueuse/core')['eagerComputed']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
     readonly emailValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['emailValidator']>
+    readonly entityToFormData: UnwrapRef<typeof import('./src/utils/helprers')['entityToFormData']>
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
     readonly fetchAutocomplete: UnwrapRef<typeof import('./src/utils/api')['fetchAutocomplete']>
     readonly formatDate: UnwrapRef<typeof import('./src/@core/utils/formatters')['formatDate']>
@@ -815,6 +817,7 @@ declare module '@vue/runtime-core' {
     readonly eagerComputed: UnwrapRef<typeof import('@vueuse/core')['eagerComputed']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
     readonly emailValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['emailValidator']>
+    readonly entityToFormData: UnwrapRef<typeof import('./src/utils/helprers')['entityToFormData']>
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
     readonly fetchAutocomplete: UnwrapRef<typeof import('./src/utils/api')['fetchAutocomplete']>
     readonly formatDate: UnwrapRef<typeof import('./src/@core/utils/formatters')['formatDate']>
