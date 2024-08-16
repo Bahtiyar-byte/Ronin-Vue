@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type Contact from '@/types/contacts/Contact'
+import type Contract from '@/types/contracts/Contract'
 import ItemsManage from '@/components/common/CRUD/ItemsManage.vue'
 import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
 import { useTableManagement } from '@/utils/forms/useTableManagement'
@@ -7,17 +7,14 @@ import { useTableManagement } from '@/utils/forms/useTableManagement'
 definePage({
   meta: {
     actions: 'read',
-    subject: 'contacts',
+    subject: 'contracts',
   },
 })
 
-const { getList, deleteContact } = useContacts()
+const { getList, deleteContract } = useContracts()
 
 const headersDefinition = [
   { title: 'Name', key: 'name' },
-  { title: 'Email', key: 'email' },
-  { title: 'Phone', key: 'phone', sortable: false },
-  { title: 'Status', key: 'status' },
   { title: 'Actions', key: 'actions', sortable: false },
 ]
 
@@ -32,7 +29,7 @@ const {
   selectedItems,
   deletionDialogOptions,
   handleItemDeletion,
-} = useTableManagement<Contact>('contacts', getList, deleteContact, headersDefinition)
+} = useTableManagement<Contract>('contracts', getList, deleteContract, headersDefinition)
 </script>
 
 <template>
@@ -40,15 +37,15 @@ const {
     <ItemsManage
       v-model:items-per-page="pagination.itemsPerPage"
       v-model:search-query="searchQuery"
-      items-title="Contacts"
-      :search-settings="{ placeholder: 'Search contacts' }"
+      items-title="Contracts"
+      :search-settings="{ placeholder: 'Search contracts' }"
       :breadcrumbs="[
         {
           title: 'Home',
           to: { name: 'root' },
         },
         {
-          title: 'Contacts',
+          title: 'Contracts',
           disabled: true,
         },
       ]"
@@ -62,10 +59,11 @@ const {
 
       <template #buttons>
         <VBtn
-          :to="{ name: 'contacts-create' }"
+          v-if="$can('create', 'contracts')"
+          :to="{ name: 'contracts-builder-new' }"
           prepend-icon="tabler-plus"
         >
-          Create contact
+          Create contract
         </VBtn>
       </template>
 
@@ -87,27 +85,27 @@ const {
           </template>
 
           <template #item.name="{ item }">
-            <RouterLink :to="{ name: 'contacts-details-id', params: { id: item.id } }">
+            <RouterLink :to="{ name: 'contracts-builder-id', params: { id: item.id } }">
               {{ item.name }}
             </RouterLink>
           </template>
 
           <template #item.actions="{ item }">
             <IconBtn
-              :to="{ name: 'contacts-details-id', params: { id: item.id } }"
+              :to="{ name: 'contracts-builder-id', params: { id: item.id } }"
               title="View"
             >
               <VIcon icon="tabler-eye" />
             </IconBtn>
             <IconBtn
-              v-if="$can('update', 'contacts')"
-              :to="{ name: 'contacts-update-id', params: { id: item.id } }"
+              v-if="$can('update', 'contracts')"
+              :to="{ name: 'contracts-builder-id-edit', params: { id: item.id } }"
               title="Edit"
             >
               <VIcon icon="tabler-edit" />
             </IconBtn>
             <IconBtn
-              v-if="$can('delete', 'contacts')"
+              v-if="$can('delete', 'contracts')"
               @click="() => handleItemDeletion(item)"
             >
               <VIcon icon="tabler-trash" />
@@ -120,7 +118,7 @@ const {
     <ConfirmDialog
       v-model:is-visible="deletionDialogOptions.visible"
       :on-accept="deletionDialogOptions.onAccept"
-      title="Are you sure you want to delete this contact?"
+      title="Are you sure you want to delete this contract?"
     />
   </div>
 </template>
