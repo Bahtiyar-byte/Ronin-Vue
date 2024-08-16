@@ -161,7 +161,7 @@ export const useEstimates = () => {
     const {
       data,
       isFetching,
-    } = useApi('/estimates-sender/send').post(formData).json<{ result: boolean }>()
+    } = useApi('/estimates-sender/send').post(formData).json<{ sent: boolean }>()
 
     return {
       data,

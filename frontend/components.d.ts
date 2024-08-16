@@ -118,6 +118,8 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     ScrollToTop: typeof import('./src/@core/components/ScrollToTop.vue')['default']
     SecurityTab: typeof import('./src/components/profile/tabs/SecurityTab.vue')['default']
+    SendContractDrawer: typeof import('./src/components/contracts/SendContractDrawer.vue')['default']
+    SendEmailDrawer: typeof import('./src/components/common/SendEmailDrawer.vue')['default']
     ShareProjectDialog: typeof import('./src/components/dialogs/ShareProjectDialog.vue')['default']
     Shortcuts: typeof import('./src/@core/components/Shortcuts.vue')['default']
     SignatureDialog: typeof import('./src/components/dialogs/SignatureDialog.vue')['default']

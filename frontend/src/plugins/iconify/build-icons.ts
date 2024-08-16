@@ -165,6 +165,9 @@ const sources: BundleScriptConfig = {
         "user-search",
         "upload",
         'arrow-back-up',
+        'download',
+        'printer',
+        'link',
       ],
     },
     {

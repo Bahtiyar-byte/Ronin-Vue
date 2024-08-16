@@ -33,13 +33,13 @@ onBeforeMount(async () => {
 })
 
 const generatePdf = () => {
-  const element = document.getElementById('invoice-editable')
+  const element = document.getElementById('contract-editable')
 
   return html2pdf().from(element)
 }
 
 const handleDownload = () => {
-  generatePdf().save('estimate.pdf')
+  generatePdf().save('contract.pdf')
 }
 
 const handlePrint = () => {
@@ -47,27 +47,51 @@ const handlePrint = () => {
 }
 
 const isSendContractSidebarVisible = ref<boolean>(false)
+
+const handleSending = async (data: {
+  emailTo: string
+  subject: string
+  message: string
+}) => {
+  loading.value = true
+
+  console.log(data)
+
+  setTimeout(() => {
+    loading.value = false
+  }, 400)
+}
 </script>
 
 <template>
-  <InvoiceBuilderLayout right-panel-class="print:!hidden">
-    <template #leftColumn>
-      <ContractEditable
-        v-model:loading="loading"
-        v-model:contract-data="contractData as Contract"
-        v-model:estimate-data="estimateData as Estimate"
-      />
-    </template>
+  <div>
+    <InvoiceBuilderLayout right-panel-class="print:!hidden">
+      <template #leftColumn>
+        <ContractEditable
+          id="contract-editable"
+          v-model:loading="loading"
+          v-model:contract-data="contractData as Contract"
+          v-model:estimate-data="estimateData as Estimate"
+        />
+      </template>
 
-    <template #rightColumn>
-      <ContractDetailsRightPanel
-        v-model:contract="contractData as Contract"
-        v-model:loading="loading"
-        v-model:is-send-contract-sidebar-visible="isSendContractSidebarVisible"
-        :handle-download="handleDownload"
-        :handle-print="handlePrint"
-        :route="route"
-      />
-    </template>
-  </InvoiceBuilderLayout>
+      <template #rightColumn>
+        <ContractDetailsRightPanel
+          v-model:contract="contractData as Contract"
+          v-model:loading="loading"
+          v-model:is-send-contract-sidebar-visible="isSendContractSidebarVisible"
+          :handle-download="handleDownload"
+          :handle-print="handlePrint"
+          :route="route"
+        />
+      </template>
+    </InvoiceBuilderLayout>
+
+    <SendContractDrawer
+      v-if="contractData.id !== undefined"
+      v-model:drawer-opened="isSendContractSidebarVisible"
+      v-model:contract="contractData"
+      @submit="handleSending"
+    />
+  </div>
 </template>

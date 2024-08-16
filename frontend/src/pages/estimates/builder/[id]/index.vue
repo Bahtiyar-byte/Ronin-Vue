@@ -63,13 +63,17 @@ const handleSending = async (data: {
   }
 
   generatePdf().set(opt).toContainer().toCanvas().toImg().outputPdf('blob').then(async (blob: Blob) => {
-    const { isFetching } = await sendEstimate(estimate.value, {
+    const { data: sendingResult, isFetching } = await sendEstimate(estimate.value, {
       ...prepareEntityToUpdate(data),
       attachments: [blob],
     })
 
     watch(isFetching, newVal => {
       loading.value = newVal
+    })
+
+    watch(sendingResult, newVal => {
+      console.log('ToDo: Add toast with message based on result data: ', newVal)
     })
   })
 }
@@ -100,7 +104,7 @@ const handleSending = async (data: {
 
     <InvoiceSendInvoiceDrawer
       v-if="estimate.id !== undefined"
-      v-model:isDrawerOpen="isSendEstimateSidebarVisible"
+      v-model:drawer-opened="isSendEstimateSidebarVisible"
       v-model:estimate-data="estimate"
       @submit="handleSending"
     />
