@@ -125,6 +125,17 @@ const errors = {
         },
       },
     },
+    contract: {
+      created: {
+        subject: '{0}: Contract created',
+        body: `
+<h1>Dear, {0}</h1>
+<p>We created a new contract. See the file attached bellow.</p>
+<p>If you confirm this contract, please click the link below:</p>
+<a href="{1}" target="_blank" class="button w-100">Confirm Contract</a>
+        `,
+      }
+    },
   },
 };
 

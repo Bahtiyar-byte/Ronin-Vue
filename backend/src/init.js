@@ -1,6 +1,6 @@
 
-require('reflect-metadata')
-require('./subscribers/index.ts')
+require('./typedi')
+require('./subscribers/index')
 
 module.exports = class RoninAppInitialise {
     /**
@@ -29,7 +29,7 @@ module.exports = class RoninAppInitialise {
         this.app.use(
             '/api/contracts-sender',
             this.passport.authenticate('jwt', { session: false }),
-            require('./routes/estimateSender'),
+            require('./routes/contractsSender'),
         )
 
         this.app.use(

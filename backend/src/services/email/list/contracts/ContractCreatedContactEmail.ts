@@ -1,6 +1,6 @@
 import type Email from '~/services/email/list/Email'
-import type Estimate from '~/@types/Estimate/Estimate';
-import type Contact from '~/@types/Contact/Contact';
+import type { ContractDTO } from '~/db/api/dtos/contract.dto.ts'
+import type Contact from '~/@types/Contact/Contact'
 
 const { getNotification } = require('../../../notifications/helpers');
 const EmailUtils = require('../../utils')
@@ -12,16 +12,16 @@ export default class AppointmentCreatedContactEmail implements Email {
 
     private _subject?: string
 
-    private estimate: Estimate
+    private contract: ContractDTO
 
-    constructor(to: string, estimate: Estimate) {
+    constructor(to: string, contract: ContractDTO) {
         this.to = to
-        this.estimate = estimate
+        this.contract = contract
     }
 
     get subject() {
         return this._subject ?? getNotification(
-            'emails.estimate.created.subject',
+            'emails.contract.created.subject',
             getNotification('app.title'),
         );
     }
@@ -34,14 +34,14 @@ export default class AppointmentCreatedContactEmail implements Email {
         try {
             return (new EmailUtils()).renderDefaultEmail(
                 this.subject,
-                getNotification('emails.estimate.created.body',
-                    (this.estimate.related_contact as Contact).name,
+                getNotification('emails.contract.created.body',
+                    (this.contract.related_contact as Contact).name,
                     // ToDo: generate correct link with token
-                    (new URL(`${config.frontendUrl}/estimates/client-acceptance/${this.estimate.id}`))
+                    (new URL(`${config.frontendUrl}/contracts/client-acceptance/${this.contract.id}`))
                 )
             );
         } catch (error) {
-            console.error('Error generating estimate creation email HTML:', error);
+            console.error('Error generating contract creation email HTML:', error);
             throw error;
         }
     }

@@ -1,10 +1,10 @@
-export interface ContractDTO {
-  id?: string;
-  name: string | null;
-  amount: number | null;
-  body: string | null;
-  signed_date: Date | null;
-  importHash: string | null;
-  createdById: string | null;
-  updatedById: string | null;
+import type StandardEntity from '~/@types/StandardEntity'
+
+export interface ContractDTO extends StandardEntity {
+  name: string | null
+  amount: number | null
+  body: string | null
+  signed_date: Date | null
+  related_contactId: string | null
+  related_contact: any | null
 }

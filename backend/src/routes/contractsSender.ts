@@ -1,5 +1,5 @@
 import express, { type Response, type Request } from 'express';
-import EstimatesService from '../services/estimates.ts';
+import ContractsService from '../services/contracts.ts';
 import multer from 'multer';
 
 const router = express.Router();
@@ -12,18 +12,14 @@ router.post(
     '/send',
     upload.single('attachments'),
     wrapAsync(async (req: Request, res: Response) => {
-        res.status(200).send({
-            sent: true,
-        })
+        const contractsService =  new ContractsService()
 
-        // const estimatesService =  new EstimatesService()
-        //
-        // res.status(200).send({
-        //     sent: await estimatesService.sendToCustomer(req.body.estimate, {
-        //         ...req.body.additionalData,
-        //         attachments: [req.file],
-        //     })
-        // })
+        res.status(200).send({
+            sent: await contractsService.sendToCustomer(req.body.contract, {
+                ...req.body.additionalData,
+                attachments: [req.file],
+            })
+        })
     })
 );
 
