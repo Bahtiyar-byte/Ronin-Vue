@@ -37,5 +37,10 @@ module.exports = class RoninAppInitialise {
             this.passport.authenticate('jwt', { session: false }),
             require('./routes/contactAttachments'),
         )
+
+        this.app.use(
+            '/api/public',
+            require('./routes/publicApi'),
+        )
     }
 }
