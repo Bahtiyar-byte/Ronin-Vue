@@ -1,23 +1,25 @@
 <template>
   <div>
-    <h4 class="mt-12 mb-6 font-bold uppercase">
-      Additional terms and conditions
-    </h4>
-    <p>
-      This agreement, including the additional terms and conditions on the reverse side and any agreement executed in writing pursuant thereto (this
-      “Agreement”), is entered into between Evans Roofing and Gutters Inc. (“Company”), and the property owner(s) or property owner’s
-      representative(s) set forth on the reverse side hereof (“Customer”), for the purpose of replacing or repairing Customer’s damaged property.
-      Customer hereby certifies that Customer is the owner of the property described in this Agreement. This Agreement is subject to the laws of the
-      State in which it has been signed and executed and does not obligate the Customer or Company in any way unless it is approved by Customer’s
-      insurance company and accepted by Company. Company proposes to furnish all permits, labor and materials to complete the replacement or
-      repair described on the reverse side hereof for the estimated sum stated on the reverse side hereof or the price otherwise agreed upon between
-      Customer and Customer’s insurance company (the “Agreed Price”). Customer authorizes Company to obtain labor and materials in
-      accordance with the Agreed Price and the specifications set forth herein to accomplish the replacement or repair. Customer understands that
-      Company does not work for Customer’s insurance company and/or the insurer for the property, and that Customer alone has the authority to
-      authorize Company to perform the replacement or repair set forth in this Agreement. Customer’s signature signifies acceptance of all terms
-      and conditions of this Agreement, including all terms on the reverse side hereof.
-    </p>
-    <ol class="list-decimal mt-6 ml-4 space-y-4">
+    <div class="break-inside-avoid">
+      <h4 class="mt-12 mb-6 font-bold uppercase">
+        Additional terms and conditions
+      </h4>
+      <p>
+        This agreement, including the additional terms and conditions on the reverse side and any agreement executed in writing pursuant thereto (this
+        “Agreement”), is entered into between Evans Roofing and Gutters Inc. (“Company”), and the property owner(s) or property owner’s
+        representative(s) set forth on the reverse side hereof (“Customer”), for the purpose of replacing or repairing Customer’s damaged property.
+        Customer hereby certifies that Customer is the owner of the property described in this Agreement. This Agreement is subject to the laws of the
+        State in which it has been signed and executed and does not obligate the Customer or Company in any way unless it is approved by Customer’s
+        insurance company and accepted by Company. Company proposes to furnish all permits, labor and materials to complete the replacement or
+        repair described on the reverse side hereof for the estimated sum stated on the reverse side hereof or the price otherwise agreed upon between
+        Customer and Customer’s insurance company (the “Agreed Price”). Customer authorizes Company to obtain labor and materials in
+        accordance with the Agreed Price and the specifications set forth herein to accomplish the replacement or repair. Customer understands that
+        Company does not work for Customer’s insurance company and/or the insurer for the property, and that Customer alone has the authority to
+        authorize Company to perform the replacement or repair set forth in this Agreement. Customer’s signature signifies acceptance of all terms
+        and conditions of this Agreement, including all terms on the reverse side hereof.
+      </p>
+    </div>
+    <ol class="list-decimal ml-4">
       <li>
         <span class="underline">Approval / General Contractor</span>.
         This Agreement is subject to the credit and pricing approval of the management of Company. Customer
@@ -156,3 +158,9 @@
     </ol>
   </div>
 </template>
+
+<style scoped lang="postcss">
+li {
+  @apply break-inside-avoid pt-6;
+}
+</style>

@@ -5,7 +5,7 @@ const estimateData = defineModel<Estimate>('estimateData')
 </script>
 
 <template>
-  <ul class="list-upper-latin ml-4 space-y-4">
+  <ul class="list-upper-latin ml-4 -mt-6">
     <li>
       <p>Description of the work and the materials to be used:</p>
 
@@ -84,3 +84,9 @@ const estimateData = defineModel<Estimate>('estimateData')
     </li>
   </ul>
 </template>
+
+<style scoped lang="postcss">
+li {
+  @apply break-inside-avoid pt-6;
+}
+</style>

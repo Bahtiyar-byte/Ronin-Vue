@@ -29,7 +29,7 @@ watch([
   <VCard
     flat
     border
-    class="d-flex flex-sm-row flex-column-reverse"
+    class="d-flex flex-sm-row flex-column-reverse break-inside-avoid"
   >
     <!-- 👉 Left Form -->
     <div class="py-6 flex-grow-1">

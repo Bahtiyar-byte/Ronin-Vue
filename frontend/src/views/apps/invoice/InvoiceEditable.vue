@@ -13,12 +13,7 @@ import { useCurrentUserStore } from '@/@core/stores/auth/currentUser'
 import { useEstimateSectionTemplates } from '@/composables/useEstimateSectionTemplates'
 
 import InvoiceSectionManageDialog from '@/views/apps/invoice/InvoiceSectionManageDialog.vue'
-import { convertTemplateToSection } from '@/utils/estimates'
 import EstimateSectionEdit from '@/views/apps/invoice/EstimateSectionEdit.vue'
-
-import { resolveUserName } from '@/utils/auth'
-
-import SignatureField from '@/components/estimates/SignatureField.vue'
 
 defineProps<{
   hideControls: boolean
@@ -126,7 +121,7 @@ const date = ref<string | Date>(estimateData.value.createdAt ?? new Date())
 
 <template>
   <VCard
-    class="md:!p-6 !p-12"
+    class="md:!p-6 !p-12 print:!p-0 print:!shadow-none"
     :loading="isLoading"
   >
     <InvoiceHeader>
@@ -234,48 +229,51 @@ const date = ref<string | Date>(estimateData.value.createdAt ?? new Date())
       />
     </div>
 
-    <VDivider class="my-6 border-dashed border-gray-700 !opacity-60" />
+    <div class="break-inside-avoid">
+      <VDivider class="my-6 border-dashed border-gray-700 !opacity-60" />
 
-    <div class="flex justify-space-between flex-wrap flex-column flex-sm-row">
-      <div />
+      <div class="flex justify-space-between flex-wrap flex-column flex-sm-row">
+        <div />
 
-      <div>
-        <table class="w-100">
-          <tbody>
-            <tr>
-              <td class="pe-16">
-                Total:
-              </td>
-              <td
-                class="font-bold"
-                :class="$vuetify.locale.isRtl ? 'text-start' : 'text-end'"
-              >
-                ${{ estimateData.total_price ?? 0 }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div>
+          <table class="w-100">
+            <tbody>
+              <tr>
+                <td class="pe-16">
+                  Total:
+                </td>
+                <td
+                  class="font-bold"
+                  :class="$vuetify.locale.isRtl ? 'text-start' : 'text-end'"
+                >
+                  ${{ estimateData.total_price ?? 0 }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <VDivider class="mt-6 border-dashed border-gray-700 !opacity-60" />
+    </div>
+
+    <div class="break-inside-avoid pt-6">
+      <div class="text-sm mb-12">
+        <p>
+          This estimate includes the cost for all services provided, any materials needed, all labor hours, and transportation, along with all required overhead
+          such as any necessary insurances, certifications, and/or warranties. We do not discourage our customers from obtaining multiple service quotes in
+          order to make the best possible decision, but due to constant fluctuations in material and labor costs, the price outlined in this estimate is good for 30
+          days. If you have any questions or comments about the estimate, please contact us as soon as possible so that we can provide you with the needed
+          information.
+        </p>
+        <p class="mt-4">
+          <b>
+            If there is need work to be done or that was discussed and its not specifically listed on estimate please contact us
+          </b>
+        </p>
       </div>
     </div>
-
-    <VDivider class="my-6 border-dashed border-gray-700 !opacity-60" />
-
-    <div class="text-sm mb-12">
-      <p>
-        This estimate includes the cost for all services provided, any materials needed, all labor hours, and transportation, along with all required overhead
-        such as any necessary insurances, certifications, and/or warranties. We do not discourage our customers from obtaining multiple service quotes in
-        order to make the best possible decision, but due to constant fluctuations in material and labor costs, the price outlined in this estimate is good for 30
-        days. If you have any questions or comments about the estimate, please contact us as soon as possible so that we can provide you with the needed
-        information.
-      </p>
-      <p class="mt-4">
-        <b>
-          If there is need work to be done or that was discussed and its not specifically listed on estimate please contact us
-        </b>
-      </p>
-    </div>
-
-    <div class="space-y-6">
+    <div class="space-y-6 break-inside-avoid">
       <span class="hidden">Signatures</span>
       <VRow>
         <VCol cols="8">
