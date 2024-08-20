@@ -78,12 +78,6 @@ export default [
     subject: "chats",
     children: [
       {
-        title: "Profile",
-        subject: "chats",
-        action: "read",
-        to: "settings-profile",
-      },
-      {
         title: "Roles",
         subject: "chats",
         action: "read",
