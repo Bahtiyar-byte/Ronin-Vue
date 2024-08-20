@@ -6,6 +6,7 @@ import { resolveUserName } from '@/utils/auth'
 export const useCurrentUserStore = defineStore('currentUser', {
   state: () => ({
     user: null as CurrentUser | null,
+    isFetching: false,
   }),
   getters: {
     userName: state => {
@@ -18,7 +19,21 @@ export const useCurrentUserStore = defineStore('currentUser', {
   },
   actions: {
     async fetchUser() {
-      const { data, response } = await useAuth().me()
+      if (this.isFetching) {
+        return {
+          response: ref(null),
+        }
+      }
+
+      const {
+        data,
+        response,
+        isFetching,
+      } = await useAuth().me()
+
+      watch(isFetching, newVal => {
+        this.isFetching = newVal
+      }, { immediate: true })
 
       watch(data, (newVal: CurrentUser | null) => {
         this.user = newVal as CurrentUser
