@@ -40,17 +40,9 @@ const router = createRouter({
 })
 
 router.beforeEach(async to => {
-  const accessToken = useCookie('accessToken').value
-  const isAuthRoute = to.fullPath.includes('/auth/')
-  const isAuthenticated = accessToken !== null && accessToken !== undefined
-
-  if (!isAuthRoute && !isAuthenticated) {
-    return { name: 'auth-login' }
-  }
-
   const userStore = useCurrentUserStore()
 
-  if (!isAuthRoute && !userStore.user) {
+  if (to.meta.public !== true && to.meta.unauthenticatedOnly !== true && !userStore.user) {
     const { response } = await userStore.fetchUser()
 
     watch(response, (newVal: Response | null) => {
@@ -62,10 +54,6 @@ router.beforeEach(async to => {
         router.replace({ name: 'auth-login' })
       }
     })
-  }
-
-  if (isAuthRoute && isAuthenticated) {
-    return { name: 'root' }
   }
 })
 

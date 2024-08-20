@@ -26,6 +26,7 @@ export const useAuth = () => {
       isFetching,
       error,
       response,
+      isFinished,
     } = useApi('auth/me').get().json<CurrentUser>()
 
     return {
@@ -33,6 +34,7 @@ export const useAuth = () => {
       isFetching,
       error,
       response,
+      isFinished,
     }
   }
 
