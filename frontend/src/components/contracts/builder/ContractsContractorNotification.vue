@@ -1,5 +1,5 @@
 <template>
-  <p class="mt-6 uppercase">
+  <p class="pt-6 uppercase break-inside-avoid">
     Contractor Notification: Pursuant to Penn. Stat. § 517.7,
     the company hereby provides notification that as of the date of this agreement,
     the company maintains personal injury liability insurance in the amount

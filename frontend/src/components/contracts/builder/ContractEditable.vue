@@ -5,18 +5,15 @@ import type Contract from '@/types/contracts/Contract'
 
 const loading = defineModel<boolean>('loading')
 const estimateData = defineModel<Estimate>('estimateData', { required: true })
-const contractData = defineModel<Contract>('contractData', { required: true })
+
+// const contractData = defineModel<Contract>('contractData', { required: true })
 </script>
 
 <template>
   <VCard
-    class="md:!p-6 !p-12"
+    class="md:!p-6 !p-12 print:!p-0 print:!shadow-none"
     :loading="loading"
   >
-    <div class="hidden">
-      {{ JSON.stringify(contractData) }}
-    </div>
-
     <InvoiceHeader>
       <template #default>
         <InvoiceCompanyBrandingHeader class="mb-6" />
