@@ -4,8 +4,8 @@ import type {
   NotificationKey,
   NotificationType,
 } from '../../../@types/Notification/NotificationTypes';
-import UsersDBApi from '../../../db/api/users'
-import { ContactsDBApi } from '../../../db/api/contacts'
+import { ContactsDBApi } from '../../../db/api/contacts';
+import UsersDBApi from '../../../db/api/users';
 
 export namespace NotificationsServices {
   export abstract class Service {

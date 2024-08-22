@@ -15,6 +15,8 @@ import { useEstimateSectionTemplates } from '@/composables/useEstimateSectionTem
 import InvoiceSectionManageDialog from '@/views/apps/invoice/InvoiceSectionManageDialog.vue'
 import EstimateSectionEdit from '@/views/apps/invoice/EstimateSectionEdit.vue'
 
+import { convertTemplateToSection } from '@/utils/estimates'
+
 defineProps<{
   hideControls: boolean
 }>()
