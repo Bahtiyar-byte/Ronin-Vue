@@ -1,37 +1,42 @@
-import type Appointment from '~/@types/Appointment/Appointment'
-import type Email from '~/services/email/list/Email'
+import type Appointment from '~/@types/Appointment/Appointment';
+import type Email from '~/services/email/list/Email';
 
 const { getNotification } = require('../../../notifications/helpers');
-const EmailUtils = require('../../utils')
+const EmailUtils = require('../../utils');
 
 const config = require('../../../../config');
 
 export default class AppointmentCreatedUserEmail implements Email {
-    public to: string
+  public to: string;
 
-    private appointment: Appointment
+  private appointment: Appointment;
 
-    constructor(to: string, appointment: Appointment) {
-        this.to = to
-        this.appointment = appointment
+  constructor(to: string, appointment: Appointment) {
+    this.to = to;
+    this.appointment = appointment;
+  }
+
+  get subject() {
+    return getNotification(
+      'emails.appointments.created.user.subject',
+      getNotification('app.title'),
+    );
+  }
+
+  async html() {
+    try {
+      return new EmailUtils().renderDefaultEmail(
+        this.subject,
+        getNotification(
+          'emails.appointments.created.user.body',
+          this.appointment.subject,
+          this.appointment.createdAt,
+          this.appointment.createdAt,
+        ),
+      );
+    } catch (error) {
+      console.error('Error generating estimate creation email HTML:', error);
+      throw error;
     }
-
-    get subject() {
-        return getNotification(
-            'emails.appointments.created.user.subject',
-            getNotification('app.title'),
-        );
-    }
-
-    async html() {
-        try {
-            return (new EmailUtils()).renderDefaultEmail(
-                this.subject,
-                getNotification('emails.appointments.created.user.body')
-            );
-        } catch (error) {
-            console.error('Error generating estimate creation email HTML:', error);
-            throw error;
-        }
-    }
+  }
 }
