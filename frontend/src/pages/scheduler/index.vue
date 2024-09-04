@@ -2,6 +2,7 @@
 import { reactive, ref } from 'vue'
 import dayjs from 'dayjs'
 import Fleet from '@/components/scheduler/Fleet.vue'
+import NewSchedule from '@/components/scheduler/NewSchedule.vue'
 
 definePage({
   meta: {
@@ -121,9 +122,15 @@ const row5BarList = ref([
 
 <template>
   <div>
+
     <VCard class="mb-3">
+
+      <!-- <div class="demo-space-x"> -->
+         <NewSchedule/>
+      <!-- </div> -->
+
       <div class="demo-space-x">
-        <VBtn
+        <!-- <VBtn
           icon="tabler-arrow-left"
           rounded
           @click="handlePreviousWeek"
@@ -132,11 +139,11 @@ const row5BarList = ref([
           icon="tabler-arrow-right"
           rounded
           @click="handleNextWeek"
-        />
+        /> -->
       </div>
 
       <!-- <VLayout> -->
-      <GGanttChart
+      <!-- <GGanttChart
         :chart-start="state.chartStartDate"
         :chart-end="state.chartEndDate"
         bar-start="myBeginDate"
@@ -165,7 +172,7 @@ const row5BarList = ref([
           label="Crew 5"
           :bars="row5BarList"
         />
-      </GGanttChart>
+      </GGanttChart> -->
       <!-- </VLayout> -->
     </VCard>
 
