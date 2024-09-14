@@ -1,20 +1,169 @@
 <script lang="ts" setup>
-import Crew from "@/components/scheduler/Crew.vue";
-import LaborTicketDialogFullscreen from "@/components/scheduler/LaborTicketDialogFullscreen.vue";
+import Crew from '@/components/scheduler/Crew.vue'
+import LaborTicket from '@/components/scheduler/LaborTicket.vue'
 
-const zoomInOut = ref(10);
-const bpm = ref(40)
-const min = -12
-const max = 4
+const zoomInOut = ref(10)
+const dateRange = ref(5)
+const min = 1
+const max = 6
+
+const currentDate = new Date()
+const formattedDateStart = currentDate.toLocaleDateString('en-US', { month: 'short', day: '2-digit' }).toUpperCase()
+
+const dateRangeStart = ref(null)
+
+const dateRanges = ref([])
+
+// const currentDate = new Date();
+
+// Add 5 days to the current date
+const nextFifthDay = new Date()
+
+nextFifthDay.setDate(currentDate.getDate() + dateRange.value)
+
+const dateRangeEnd = ref(null)
+
+const getStartDate = type => {
+  let startDate = new Date()
+  if (dateRangeStart.value !== null && type === 'next') {
+    startDate = dateRangeStart.value
+    dateRangeStart.value = new Date(startDate.setDate(startDate.getDate() + dateRange.value))
+  } else if (dateRangeStart.value !== null && type === 'prev') {
+    startDate = dateRangeStart.value
+    dateRangeStart.value = new Date(startDate.setDate(startDate.getDate() - dateRange.value))
+  } else {
+    dateRangeStart.value = startDate
+  }
+}
+
+getStartDate()
+
+const getEndDate = type => {
+  let endDate = new Date()
+  if (dateRangeEnd.value !== null && type === 'next') {
+    endDate = dateRangeEnd.value
+    dateRangeEnd.value = new Date(endDate.setDate(endDate.getDate() + dateRange.value))
+  } else if (dateRangeEnd.value !== null && type === 'prev') {
+    endDate = dateRangeEnd.value
+    dateRangeEnd.value = new Date(endDate.setDate(endDate.getDate() - dateRange.value))
+  } else {
+    const currentDate = new Date()
+    const nextFifthDay = new Date()
+
+    nextFifthDay.setDate(currentDate.getDate() + dateRange.value)
+    dateRangeEnd.value = nextFifthDay
+  }
+}
+
+getEndDate()
+
+const getDatesBetween = (startDate, endDate) => {
+  const dates = []
+  const currentDateTime = new Date(startDate)
+
+  while (currentDateTime <= endDate) {
+    dates.push(new Date(currentDateTime))
+    currentDateTime.setDate(currentDateTime.getDate() + 1)
+  }
+  dateRanges.value = dates
+}
+
+const changeEndDate = () => {
+  const endDate = new Date(dateRangeStart.value)
+
+  dateRangeEnd.value = new Date(endDate.setDate(endDate.getDate() + dateRange.value))
+}
+
+const nextCalendar = () => {
+  getStartDate('next')
+  getEndDate('next')
+  getDatesBetween(dateRangeStart.value, dateRangeEnd.value)
+}
+
+const prevCalendar = () => {
+  getEndDate('prev')
+  getStartDate('prev')
+  getDatesBetween(dateRangeStart.value, dateRangeEnd.value)
+}
+
+const formatDateTime = date => {
+  return date.toLocaleDateString('en-US', { month: 'short', day: '2-digit' }).toUpperCase()
+}
+
+const getYearOfDate = date => {
+  const datetime = new Date(date)
+
+  return datetime.getFullYear()
+}
+
+getDatesBetween(dateRangeStart.value, dateRangeEnd.value)
+
+const dayOfWeek = (date: Date) => {
+  const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
+
+  return days[date.getDay()]
+}
+
+const isDateWeekend = (date: Date) => {
+  const weekDayNumber: number = date.getDay()
+
+  return !!(weekDayNumber === 0 || weekDayNumber === 6)
+}
 
 const decrement = () => {
-  if (bpm.value > min)
-    bpm.value -= 1
+  if (dateRange.value > min)
+  { dateRange.value -= 1 }
+  changeEndDate()
+  getDatesBetween(dateRangeStart.value, dateRangeEnd.value)
 }
 
 const increment = () => {
-  if (bpm.value < max)
-    bpm.value += 1
+  if (dateRange.value < max)
+  { dateRange.value += 1 }
+  changeEndDate()
+  getDatesBetween(dateRangeStart.value, dateRangeEnd.value)
+}
+
+const getTodayDate = () => {
+  dateRangeStart.value = null
+  dateRangeEnd.value = null
+  getStartDate()
+  getEndDate()
+  getDatesBetween(dateRangeStart.value, dateRangeEnd.value)
+}
+
+const laborTickets = [
+  {
+    crew: { name: 'Evans Service Crew 1', color: '#E8D213' },
+    laborTickets: [
+      { id: 1, name: 'KAREEM LEZAMA', startDate: '2024-09-10', endDate: '2024-09-11', trade: 'Aluminum', template: 'Flashing' },
+      { id: 2, name: 'BEN ANDERS', startDate: '2024-09-11', endDate: '2024-09-13', trade: 'Aluminum', template: 'Flashing' },
+    ],
+  },
+  {
+    crew: { name: 'Evans Service Crew 2', color: '#8bc541' },
+    laborTickets: [
+      { id: 3, name: 'DAVID JOHNSON', startDate: '2024-09-12', endDate: '2024-09-12', trade: 'Aluminum', template: 'Flashing' },
+      { id: 4, name: 'MIKE ROBINS', startDate: '2024-09-11', endDate: '2024-09-13', trade: 'Aluminum', template: 'Flashing' },
+    ],
+  },
+]
+
+const isTicketStarts = (dayDate: string, ticketDate: string): boolean => {
+  // Convert string dates to Date objects
+  const day: Date = new Date(dayDate)
+  const ticket: Date = new Date(ticketDate)
+
+  const dayYear: number = day.getFullYear()
+  const dayMonth: number = day.getMonth()
+  const dayDay: number = day.getDate()
+
+  const ticketYear: number = ticket.getFullYear()
+  const ticketMonth: number = ticket.getMonth()
+  const ticketDay: number = ticket.getDate()
+
+  // Compare year, month, and day for equality
+  return dayYear === ticketYear && dayMonth === ticketMonth && dayDay === ticketDay
 }
 </script>
 
@@ -23,21 +172,27 @@ const increment = () => {
     <div class="top_schedule_header">
       <div class="left__buttons">
         <div class="today__button">
-          <VBtn color="primary"> Today </VBtn>
+          <VBtn
+            color="primary"
+            @click="getTodayDate"
+          >
+            Today
+          </VBtn>
         </div>
 
         <div class="date_periods">
           <div class="date__period__button__style">
             <VBtn
-              variant="outline"
+              variant="text"
               color="primary"
               icon="tabler-arrow-left"
               rounded
+              @click="prevCalendar"
             />
           </div>
 
           <div class="date__range">
-            <div>SEP 02 - SEP 08</div>
+            <div>{{ formatDateTime(dateRangeStart) }} - {{ formatDateTime(dateRangeEnd) }}</div>
             <div
               style="
                 display: flex;
@@ -45,25 +200,26 @@ const increment = () => {
                 justify-content: space-around;
               "
             >
-              <div>2024</div>
-              <div>2024</div>
+              <div>{{ getYearOfDate(dateRangeStart) }}</div>
+              <div>{{ getYearOfDate(dateRangeEnd) }}</div>
             </div>
           </div>
 
           <div class="date__period__button__style">
             <VBtn
-              variant="outline"
+              variant="text"
               color="primary"
               icon="tabler-arrow-right"
               rounded
+              @click="nextCalendar"
             />
           </div>
         </div>
 
         <div class="date__zoom">
           <VSlider
-            v-model="bpm"
-            :color="color"
+            v-model="dateRange"
+            color="primary"
             :step="1"
             :min="min"
             :max="max"
@@ -75,7 +231,8 @@ const increment = () => {
                 size="small"
                 variant="text"
                 icon="tabler-minus"
-                :color="color"
+                color="primary"
+                rounded
                 @click="decrement"
               />
             </template>
@@ -85,7 +242,8 @@ const increment = () => {
                 size="small"
                 variant="text"
                 icon="tabler-plus"
-                :color="color"
+                color="primary"
+                rounded
                 @click="increment"
               />
             </template>
@@ -93,9 +251,109 @@ const increment = () => {
         </div>
       </div>
 
-      <!-- <div class="right__buttons">
-        <div class="today__button">Right</div>
-      </div> -->
+      <div class="right__buttons">
+        <VMenu :close-on-content-click="false">
+          <template #activator="{ props }">
+            <VBtn
+              color="primary"
+              v-bind="props"
+            >
+              Filter
+            </VBtn>
+          </template>
+
+          <VList
+            lines="six"
+            density="compact"
+            select-strategy="classic"
+            class="action-item-group-list"
+          >
+            <VListItem value="showAllScheduledEvents">
+              <template #prepend="{ isActive }">
+                <VListItemAction start>
+                  <VCheckbox
+                    :model-value="isActive"
+                    color="primary"
+                    class="mt-1"
+                  />
+                </VListItemAction>
+              </template>
+
+              <VListItemTitle>Show all Scheduled Events</VListItemTitle>
+            </VListItem>
+
+            <VListItem value="selectEvents">
+              <template #prepend="{ isActive }">
+                <VListItemAction start>
+                  <VCheckbox
+                    :model-value="isActive"
+                    color="primary"
+                    class="mt-1"
+                  />
+                </VListItemAction>
+              </template>
+
+              <VListItemTitle>Select Events</VListItemTitle>
+            </VListItem>
+
+            <VListItem value="showAllScheduledTrades">
+              <template #prepend="{ isActive }">
+                <VListItemAction start>
+                  <VCheckbox
+                    :model-value="isActive"
+                    color="primary"
+                    class="mt-1"
+                  />
+                </VListItemAction>
+              </template>
+
+              <VListItemTitle>Show all Scheduled Trades</VListItemTitle>
+            </VListItem>
+
+            <VListItem value="selectTrades">
+              <template #prepend="{ isActive }">
+                <VListItemAction start>
+                  <VCheckbox
+                    :model-value="isActive"
+                    color="primary"
+                    class="mt-1"
+                  />
+                </VListItemAction>
+              </template>
+
+              <VListItemTitle>Select Trades</VListItemTitle>
+            </VListItem>
+
+            <VListItem value="showAllScheduledCrews">
+              <template #prepend="{ isActive }">
+                <VListItemAction start>
+                  <VCheckbox
+                    :model-value="isActive"
+                    color="primary"
+                    class="mt-1"
+                  />
+                </VListItemAction>
+              </template>
+
+              <VListItemTitle>Show all Scheduled Crews</VListItemTitle>
+            </VListItem>
+
+            <VListItem value="selectCrews">
+              <template #prepend="{ isActive }">
+                <VListItemAction start>
+                  <VCheckbox
+                    :model-value="isActive"
+                    color="primary"
+                    class="mt-1"
+                  />
+                </VListItemAction>
+              </template>
+
+              <VListItemTitle>Select Crews</VListItemTitle>
+            </VListItem>
+          </VList>
+        </VMenu>
+      </div>
     </div>
 
     <div class="main__scheduler">
@@ -105,87 +363,45 @@ const increment = () => {
         </div>
 
         <div class="main__scheduler__top__dates">
-          <div class="main__scheduler__top__dates__single__day">
-            <b>MON</b> SEP 2
-          </div>
-          <div class="main__scheduler__top__dates__single__day">
-            <b>TUE</b> SEP 3
-          </div>
-          <div class="main__scheduler__top__dates__single__day">
-            <b>WED</b> SEP 4
-          </div>
-          <div class="main__scheduler__top__dates__single__day">
-            <b>THU</b> SEP 5
-          </div>
-          <div class="main__scheduler__top__dates__single__day">
-            <b>FRI</b> SEP 6
-          </div>
-          <div class="main__scheduler__top__dates__single__day">
-            <b>SAT</b> SEP 7
-          </div>
-          <div class="main__scheduler__top__dates__single__day">
-            <b>SUN</b> SEP 8
+          <div
+            v-for="(singleDate, indexRange) in dateRanges"
+            :key="`range_${indexRange}`"
+            class="main__scheduler__top__dates__single__day"
+          >
+            <b style="margin-right: 2px;"> {{ dayOfWeek(singleDate) }} </b> {{ formatDateTime(singleDate) }}
           </div>
         </div>
       </div>
 
       <div class="main__scheduler__bottom">
-        <div class="main__scheduler__bottom__trade">
-          <!-- <div class="main__scheduler__bottom__trade__crew">
-            <div class="main__scheduler__bottom__trade__crew__color__size">
-            </div>
-            <div>
-              CREW 1
-            </div>
-          </div> -->
-
-          <div
-            style="
-              max-width: 100px;
-              width: 100%;
-              padding-right: 3px;
-              background: #ebebed;
-            "
-          >
-            <Crew />
-            <!-- <Crew /> -->
+        <div
+          v-for="(crew, index) in laborTickets"
+          :key="`crew_${index}`"
+          class="main__scheduler__bottom__trade">
+          <div class="crew__container">
+            <Crew :crew="crew.crew" />
           </div>
-
           <div class="main__scheduler__bottom__trade__labor__tickets">
-            <!-- <div class="main__scheduler__bottom__trade__title">
-              Aluminum/ Flashing
-            </div> -->
             <div class="main__scheduler__bottom__trade__content">
               <div
-                class="main__scheduler__bottom__trade__content__single__day"
-              ></div>
-              <div class="main__scheduler__bottom__trade__content__single__day">
-                <div class="labor__ticket">
-                  <div class="labor__ticket__content">
-                    <span class="labor__ticket__trade">Aluminum / Flashing</span>
-                    <span class="labor__ticket__name">Evan KENEPP</span>
-                  </div>
-                  <div class="labor__ticket__details__icon">
-                    <LaborTicketDialogFullscreen />
-                  </div>
+                v-for="(singleTicket, indexTicket) in crew.laborTickets"
+                :key="`singleTicket_${indexTicket}`"
+                class="main__scheduler__trade__row"
+              >
+                <div
+                  v-for="(singleDate, indexDay) in dateRanges"
+                  :key="`singleDay_${indexDay}`"
+                  class="main__scheduler__bottom__trade__content__single__day"
+                  :style="{ background: isDateWeekend(singleDate) ? '#E9EAF5' : '#fff' }"
+                >
+                  <LaborTicket
+                    v-if="isTicketStarts(singleDate, singleTicket.startDate)"
+                    :ticket="singleTicket"
+                    :days-of-scheduler="dateRange + 1"
+                    :color="crew.crew.color"
+                  />
                 </div>
               </div>
-              <div
-                class="main__scheduler__bottom__trade__content__single__day"
-              ></div>
-              <div
-                class="main__scheduler__bottom__trade__content__single__day"
-              ></div>
-              <div
-                class="main__scheduler__bottom__trade__content__single__day"
-              ></div>
-              <div
-                class="main__scheduler__bottom__trade__content__single__day"
-              ></div>
-              <div
-                class="main__scheduler__bottom__trade__content__single__day"
-                style="border: 0"
-              ></div>
             </div>
           </div>
         </div>
@@ -197,30 +413,24 @@ const increment = () => {
 <style scoped>
 .scheduler__container {
   width: 100%;
-  /* height: 50px; */
-  /* border: 1px solid red; */
   padding-bottom: 20px;
 }
 
 .left__buttons {
-  /* border: 1px solid blue; */
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  /* align-items: baseline; */
   max-width: 600px;
   width: 100%;
 }
 
 .right__buttons {
-  /* border: 1px solid blue; */
   display: flex;
   justify-content: flex-start;
 }
 
 .top_schedule_header {
   padding: 10px 15px 10px 15px;
-  /* border: 1px solid green; */
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -235,7 +445,6 @@ const increment = () => {
 }
 
 .date_periods {
-  /* border: 1px solid brown; */
   display: flex;
   flex-direction: row;
   margin-left: 20px;
@@ -259,7 +468,7 @@ const increment = () => {
 
 .main__scheduler__top__crews {
   width: 100%;
-  max-width: 100px;
+  max-width: 125px;
   padding: 3px;
   padding-top: 10px;
   background: #ebebed;
@@ -273,31 +482,26 @@ const increment = () => {
   flex-direction: row;
   position: sticky !important;
   top: 0;
-  /*  padding: 10px; */
   z-index: 2000;
 }
 
 .main__scheduler__top__dates__single__day {
-  width: 14.2%;
+  min-width: 14.2%;
+  width: 100%;
   display: flex;
   align-items: center;
   padding-left: 3px;
 }
 
-.main__scheduler__bottom__trade__crew {
+.crew__container {
+  max-width: 125px;
   width: 100%;
-  max-width: 100px;
-  padding: 3px;
-  display: flex;
-  flex-direction: row;
-  /* margin-top: 23px; */
+  padding-right: 3px;
+  background: #ebebed;
 }
 
-.main__scheduler__bottom__trade__crew__color__size {
-  background: #8bc541;
-  width: 14px;
-  height: 47px;
-  margin-right: 2px;
+.main__scheduler__bottom {
+  background-color: #fff;
 }
 
 .main__scheduler__bottom__trade {
@@ -319,54 +523,40 @@ const increment = () => {
 
 .main__scheduler__bottom__trade__content {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  background-color: #fff;
 }
 
 .main__scheduler__bottom__trade__content__single__day {
-  width: 14.2%;
+  min-width: 14.2%;
+  width: 100%;
   display: flex;
   border-right: 1px solid gray;
   min-height: 47px;
+  padding: 1px 0 1px 1px;
 }
 
-.labor__ticket {
-  width: 100%;
-  /* height: 23px; */
-  /* padding: 2px; */
-  background: #8bc541;
-  color: #000;
-  font-weight: bold;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+.weekend__styles {
+  z-index: 211;
 }
-
-.labor__ticket__content{
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-}
-
-.labor__ticket__trade {
-  font-size: 0.7em;
-}
-
-.labor__ticket__name {
-  font-size: 0.7em;
-}
-
-.labor__ticket__details__icon {
-  display: flex;
-  align-items: center;
-  max-width: 30px;
-  width: 100%;
-  background: #edfadc;
-}
-
 
 .date__zoom {
   width: 100%;
   max-width: 200px;
+}
+
+.single__row {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.main__scheduler__trade__row {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  /* margin-bottom: 2px; */
+  background-color: #fff;
+  position: relative;
 }
 </style>

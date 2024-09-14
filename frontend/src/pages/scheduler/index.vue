@@ -122,57 +122,59 @@ const row5BarList = ref([
 
 <template>
   <div>
-
     <VCard class="mb-3">
-
       <!-- <div class="demo-space-x"> -->
-         <NewSchedule/>
+      <NewSchedule />
       <!-- </div> -->
 
       <div class="demo-space-x">
-        <!-- <VBtn
+        <!--
+          <VBtn
           icon="tabler-arrow-left"
           rounded
           @click="handlePreviousWeek"
-        />
-        <VBtn
+          />
+          <VBtn
           icon="tabler-arrow-right"
           rounded
           @click="handleNextWeek"
-        /> -->
+          />
+        -->
       </div>
 
       <!-- <VLayout> -->
-      <!-- <GGanttChart
+      <!--
+        <GGanttChart
         :chart-start="state.chartStartDate"
         :chart-end="state.chartEndDate"
         bar-start="myBeginDate"
         bar-end="myEndDate"
         push-on-overlap
         precision="hour"
-      >
+        >
         <GGanttRow
-          label="Crew 1"
-          style="color: 'red' !important"
-          :bars="row1BarList"
+        label="Crew 1"
+        style="color: 'red' !important"
+        :bars="row1BarList"
         />
         <GGanttRow
-          label="Crew 2"
-          :bars="row2BarList"
+        label="Crew 2"
+        :bars="row2BarList"
         />
         <GGanttRow
-          label="Crew 3"
-          :bars="row3BarList"
+        label="Crew 3"
+        :bars="row3BarList"
         />
         <GGanttRow
-          label="Crew 4"
-          :bars="row4BarList"
+        label="Crew 4"
+        :bars="row4BarList"
         />
         <GGanttRow
-          label="Crew 5"
-          :bars="row5BarList"
+        label="Crew 5"
+        :bars="row5BarList"
         />
-      </GGanttChart> -->
+        </GGanttChart>
+      -->
       <!-- </VLayout> -->
     </VCard>
 

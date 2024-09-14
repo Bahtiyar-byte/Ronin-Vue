@@ -22,6 +22,7 @@ const selectedStatus = ref()
 // Data table options
 const itemsPerPage = ref(10)
 const page = ref(1)
+
 // const sortBy = ref()
 // const orderBy = ref()
 
@@ -52,8 +53,6 @@ const {
 //   sortBy.value = options.sortBy[0]?.key
 //   orderBy.value = options.sortBy[0]?.order
 // }
-
-
 
 // 👉 Fetching users
 // const { data: usersData, execute: fetchUsers } = await useApi<any>(createUrl('/users', {
@@ -111,7 +110,7 @@ const resolveUserRoleVariant = (role: string) => {
   return { color: 'primary', icon: 'tabler-user' }
 }
 
-const resolveUserStatusVariant = (disabled: boolean) => disabled ? 'secondary' : 'success';
+const resolveUserStatusVariant = (disabled: boolean) => disabled ? 'secondary' : 'success'
 
 const isAddNewUserVisible = ref(false)
 
@@ -316,9 +315,7 @@ const widgetData = ref([
               :variant="!item.avatar ? 'tonal' : undefined"
               :color="!item.avatar ? resolveUserRoleVariant(item.role).color : undefined"
             >
-              <VImg
-                :src="avatar1"
-              />
+              <VImg :src="avatar1" />
               <!-- <span v-else>{{ avatarText(item.firstName + ' ' + item.lastName) }}</span> -->
             </VAvatar>
             <div class="d-flex flex-column">

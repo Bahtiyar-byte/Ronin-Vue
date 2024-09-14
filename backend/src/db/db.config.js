@@ -1,5 +1,5 @@
 
-const dev_db_port = process.env?.DEV_DB_PORT ?? 5444
+const dev_db_port = process.env?.DEV_DB_PORT ?? 5432
 
 module.exports = {
   production: {
@@ -15,7 +15,7 @@ module.exports = {
   development: {
     username: 'postgres',
     dialect: 'postgres',
-    password: '',
+    password: 'postgres',
     database: 'db_evans_crm',
     host: process.env.DEV_DB_HOST || 'localhost',
     port: dev_db_port,

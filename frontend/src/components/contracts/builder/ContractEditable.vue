@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import coreConfig from '@core/config'
 import type Estimate from '@/types/estimates/Estimate'
-import type Contract from '@/types/contracts/Contract'
 
 const loading = defineModel<boolean>('loading')
 const estimateData = defineModel<Estimate>('estimateData', { required: true })

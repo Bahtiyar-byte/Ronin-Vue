@@ -91,10 +91,27 @@ module.exports = {
       'roles',
       'permissions',
     ];
-    await queryInterface.bulkInsert(
-      'permissions',
-      entities.flatMap(createPermissions),
-    );
+    // await queryInterface.bulkInsert(
+    //   'permissions',
+    //   entities.flatMap(createPermissions),
+    // );
+    const permissions = entities.flatMap(createPermissions);
+
+    for (const permission of permissions) {
+      try {
+        await queryInterface.bulkInsert('permissions', [permission]);
+      } catch (error) {
+        // Handle duplicate or any other errors
+        if (error.name === 'SequelizeUniqueConstraintError') {
+          console.log(`Duplicate found for permission ${permission.id}, skipping...`);
+          continue;  // Skip this permission and move to the next one
+        }
+
+        // Log any other types of errors
+        console.error(`Error inserting permission ${permission.id}:`, error.message);
+        continue;
+      }
+    }
     await queryInterface.bulkInsert('permissions', [
       {
         id: getId(`READ_API_DOCS`),

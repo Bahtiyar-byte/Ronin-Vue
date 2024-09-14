@@ -55,14 +55,14 @@ const estimateData = defineModel<Estimate>('estimateData')
         <input
           type="text"
           class="border-b"
-        />
+        >
       </span>
       <span>
         Estimated Date of Completion:
         <input
           type="text"
           class="border-b"
-        />
+        >
       </span>
     </li>
     <li>
