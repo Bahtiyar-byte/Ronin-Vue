@@ -221,13 +221,13 @@ const getPaddingStyle = (index: number) =>
             </VWindowItem>
 
             <VWindowItem value="item-2">
+              <DatesEdit />
               <VTable class="text-no-wrap transaction-table">
                 <thead>
                   <tr>
                     <th>START</th>
                     <th>END</th>
                     <th>Labor Process</th>
-                    <th>Actions</th>
                   </tr>
                 </thead>
 
@@ -244,10 +244,6 @@ const getPaddingStyle = (index: number) =>
                     </td>
                     <td>
                       Completed
-                    </td>
-                    <td>
-                      
-                      <DatesEdit />
                     </td>
                   </tr>
                 </tbody>

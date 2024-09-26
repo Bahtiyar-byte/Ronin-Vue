@@ -3,7 +3,7 @@ import mastercardIcon from "@images/icons/payments/mastercard-icon.png";
 import visaIcon from "@images/icons/payments/visa-icon.png";
 
 const dateEdit = ref("");
-const checkboxOne = ref('');
+const checkboxOne = ref("");
 const currentTab = ref("item-1");
 
 const tabItemContent =
@@ -106,23 +106,19 @@ const items = [
   "Evans Service Crew 4",
 ];
 
-
+const columnRadio = ref("radio-1");
+const inlineRadio = ref("radio-1");
 
 const getPaddingStyle = (index: number) =>
   index ? "padding-block-end: 1.5rem;" : "padding-block: 1.5rem;";
 </script>
 
 <template>
-  <VDialog
-    v-model="isDialogVisible"
-    :scrim="false"
-    :width="$vuetify.display.smAndDown ? 'auto' : 1350"
-    :height="$vuetify.display.smAndDown ? 'auto' : 950"
-    transition="dialog-bottom-transition"
-  >
+  <VDialog v-model="isDialogVisible" :scrim="false" persistent :width="$vuetify.display.smAndDown ? 'auto' : 1350"
+    :height="$vuetify.display.smAndDown ? 'auto' : 950" transition="dialog-transition">
     <!-- Dialog Activator -->
     <template #activator="{ props }">
-      <VBtn v-bind="props" color="primary" variant="tonal">
+      <VBtn v-bind="props" color="primary" variant="text">
         <VIcon start icon="tabler-pencil" />
         Edit
       </VBtn>
@@ -147,7 +143,7 @@ const getPaddingStyle = (index: number) =>
         </VToolbar>
       </div>
 
-      <VCard style="height: 95vh">
+      <VCard style="height: 95vh" class="scrollable">
         <VCardText>
           <VDivider class="mb-2" />
           <span><b>EPDM Order</b></span>
@@ -163,7 +159,7 @@ const getPaddingStyle = (index: number) =>
             </VListItem>
           </VList>
 
-          <VList class="card-list m-3 ml-0">
+          <VList class="card-list m-3 ml-0" style="width: 50vw;">
             <VListItem>
               <VListItemTitle>
                 <span class="font-medium"> Assign a Crew </span>
@@ -173,26 +169,52 @@ const getPaddingStyle = (index: number) =>
                   assignments, click "Other" and type in the crew name.
                 </div>
               </VListItemTitle>
-              
-              <div style="display: flex;">
-                <AppAutocomplete
-                  label="Crew"
-                  :items="items"
-                  placeholder="Select Crew"
-                />
+              <div style="display: flex">
+                <AppAutocomplete label="Crew" :items="items" placeholder="Select Crew" />
 
-                <VCheckbox
-                  v-model="checkboxOne"
-                  label="Others"
-                />
+                <VCheckbox v-model="checkboxOne" label="Others" />
               </div>
 
-              <AppDateTimePicker
-                v-model="dateEdit"
-                label="Assigned Date"
-                placeholder="Select Date"
-              />
+              <AppDateTimePicker v-model="dateEdit" label="Assigned Date" placeholder="Select Date" />
             </VListItem>
+
+            <VDivider class="my-4" />
+            <VListItem>
+              <VListItemTitle>
+                <span class="font-medium"> Schedule Labor: </span>
+                <br />
+              </VListItemTitle>
+              <div style="display: flex">
+                <VRadioGroup v-model="inlineRadio" inline>
+                  <VRadio label="Add Dates Later" value="add_dates_later" />
+                  <VRadio label="Add Start and End Dates" value="add_start_and_end_dates" />
+                  <VRadio label="Never Schedule" value="never_schedule" />
+                </VRadioGroup>
+
+                <VCheckbox v-model="checkboxOne" label="All Day" />
+              </div>
+
+              <AppDateTimePicker v-model="dateEdit" label="Start Date" placeholder="Select Date" />
+
+              <AppDateTimePicker v-model="dateEdit" label="End Date" placeholder="Select Date" />
+            </VListItem>
+
+            <VDivider class="my-4" />
+            <VListItem>
+              <VListItemTitle>
+                <VCheckbox v-model="checkboxOne" label="Labor is Completed" />
+                <br />
+              </VListItemTitle>
+              <AppDateTimePicker v-model="dateEdit" label="Start Date" placeholder="Select Date" />
+            </VListItem>
+            <VCardText class="d-flex justify-end flex-wrap gap-3">
+              <VBtn variant="tonal" color="secondary" @click="isDialogVisible = false">
+                Cancel
+              </VBtn>
+              <VBtn @click="isDialogVisible = false">
+                Save
+              </VBtn>
+            </VCardText>
           </VList>
         </VCardText>
       </VCard>
@@ -204,5 +226,9 @@ const getPaddingStyle = (index: number) =>
 .dialog-bottom-transition-enter-active,
 .dialog-bottom-transition-leave-active {
   transition: transform 0.2s ease-in-out;
+}
+
+.scrollable {
+  overflow-y: scroll !important;
 }
 </style>

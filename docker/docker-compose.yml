@@ -24,13 +24,15 @@ services:
 #      - ronin-vue
   db:
     image: postgres
+    restart: always
     volumes:
       - ./data/db:/var/lib/postgresql/data
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
       - POSTGRES_DB=db_evans_crm
+      - POSTGRES_PASSWORD=postgres
     ports:
-      - "5444:5432"
+      - "5432:5432"
     networks:
       - ronin-vue
 #  backend:

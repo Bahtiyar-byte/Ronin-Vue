@@ -1,6 +1,33 @@
 <script lang="ts" setup>
+
 import mastercardIcon from '@images/icons/payments/mastercard-icon.png'
 import visaIcon from '@images/icons/payments/visa-icon.png'
+
+import DatesEdit from '@/components/scheduler/dates/DatesEdit.vue'
+
+import CrewEdit from '@/components/scheduler/crew/CrewEdit.vue'
+
+import CrewAdd from '@/components/scheduler/crew/CrewAdd.vue'
+
+import LaborEdit from '@/components/scheduler/labor/LaborEdit.vue'
+
+import InstructionEdit from '@/components/scheduler/instructions/InstructionEdit.vue'
+
+import DocumentsSelect from '@/components/scheduler/documents/DocumentsSelect.vue'
+
+import shared1 from '@images/shared-photos/shared1.jpg'
+import shared2 from '@images/shared-photos/shared2.jpg'
+import shared3 from '@images/shared-photos/shared3.jpg'
+import shared4 from '@images/shared-photos/shared4.jpg'
+import shared5 from '@images/shared-photos/shared4.jpg'
+
+const shared_photos: any[] = [
+  shared1,
+  shared2,
+  shared3,
+  shared4,
+  shared5
+]
 
 const currentTab = ref('item-1')
 
@@ -92,9 +119,6 @@ const crewInstructions: any[] = [
   {
     content: 'Install new metal over the hole in gutter shown in the picture that was sent to us and seal it to the box gutter. Install one new eave drop. Install new silicone tape patches on all of the damaged box gutters that were damaged by the previous roofing contractor.',
   },
-  {
-    content: 'Install new metal over the hole in gutter shown in the picture that was sent to us and seal it to the box gutter. Install one new eave drop. Install new silicone tape patches on all of the damaged box gutters that were damaged by the previous roofing contractor.',
-  },
 ]
 
 const resolveStatus: Status = {
@@ -102,6 +126,44 @@ const resolveStatus: Status = {
   Rejected: 'error',
   Pending: 'secondary',
 }
+
+const headers = [
+  { title: 'Contract', key: 'filename' },
+  { title: 'TYPE', key: 'file_type' },
+  { title: 'DATE', key: 'created_at' },
+  { title: 'REPRESENTATIVE', key: 'representative' },
+  { title: 'Preview', key: 'preview' },
+]
+
+const resolveStatusVariant = (status: number) => {
+  if (status === 1)
+    return { color: 'primary', text: 'Current' }
+  else if (status === 2)
+    return { color: 'success', text: 'Professional' }
+  else if (status === 3)
+    return { color: 'error', text: 'Rejected' }
+  else if (status === 4)
+    return { color: 'warning', text: 'Resigned' }
+  else
+    return { color: 'info', text: 'Applied' }
+}
+
+const data = [
+  {
+    id: 1,
+    filename: 'test.pdf',
+    file_type: 'pdf',
+    created_at: '9/17/2024 9:48 am',
+    representative: 'Griffin Watts',
+  },
+  {
+    id: 2,
+    filename: 'test2.pdf',
+    file_type: 'pdf',
+    created_at: '9/17/2024 9:48 am',
+    representative: 'Griffin Watts',
+  },
+]
 
 const getPaddingStyle = (index: number) =>
   index ? 'padding-block-end: 1.5rem;' : 'padding-block: 1.5rem;'
@@ -111,7 +173,7 @@ const getPaddingStyle = (index: number) =>
   <VDialog
     v-model="isDialogVisible"
     :scrim="false"
-    :width="$vuetify.display.smAndDown ? 'auto' : 950"
+    fullscreen
     :height="$vuetify.display.smAndDown ? 'auto' : 950"
     transition="dialog-bottom-transition"
   >
@@ -177,63 +239,74 @@ const getPaddingStyle = (index: number) =>
 
       <!-- <VDivider /> -->
 
-      <VList class="card-list m-3">
-        <VListItem>
-          <VListItemTitle>
+      <div style="height: 200px;">
+        <VList class="card-list m-4" style="height: 1000px !important;">
+          <VListItem>
+            <VListItemTitle>
             <span class="font-medium" style="font-size: 2em;">
               Box Gutters Order (copy)
             </span>
-          </VListItemTitle>
-        </VListItem>
+            </VListItemTitle>
+          </VListItem>
 
-        <VListItem>
-          <VListItemTitle>
+          <VListItem>
+            <VListItemTitle>
             <span class="font-medium">
               24-1364: Ben Anderson
             </span>
-            <br>
-            <span class="font-medium">
+              <br>
+              <span class="font-medium">
               3223 Wainbell Avenue, Pittsburgh, PA 15216
             </span>
-          </VListItemTitle>
-        </VListItem>
+            </VListItemTitle>
+          </VListItem>
 
-        <VListItem>
-          <VListItemTitle>
+          <VListItem>
+            <VListItemTitle>
             <span class="font-medium">
               Trade:
             </span>
-            <div class="d-inline-block text-body-1">
-              Box Gutters
-            </div>
-          </VListItemTitle>
-          <br>
-          <VListItemTitle>
+              <div class="d-inline-block text-body-1">
+                Box Gutters
+              </div>
+            </VListItemTitle>
+            <br>
+            <VListItemTitle>
             <span class="font-medium">
               Trade:
             </span>
-            <div class="d-inline-block text-body-1">
-              Box Gutters
-            </div>
-          </VListItemTitle>
-        </VListItem>
-      </VList>
+              <div class="d-inline-block text-body-1">
+                Box Gutters
+              </div>
+            </VListItemTitle>
+          </VListItem>
+        </VList>
+      </div>
 
-      <VExpansionPanels
-        multiple
-      >
-        <VExpansionPanel>
-          <VExpansionPanelTitle> Dates </VExpansionPanelTitle>
-          <VExpansionPanelText>
-            <VTable class="text-no-wrap transaction-table">
-              <thead>
+      <div class="py-4">
+        <VExpansionPanels
+          multiple
+          class="mt-2"
+        >
+          <VExpansionPanel class="mb-2">
+            <VExpansionPanelTitle>
+              <div style="width: 100vw;" class="flex flex-row justify-between">
+                <div style="font-size: 1.1em; display:flex; align-items: center">
+                  <span>Dates</span>
+                </div>
+                <DatesEdit />
+              </div>
+            </VExpansionPanelTitle>
+            <VExpansionPanelText>
+              <VTable class="text-no-wrap transaction-table">
+                <thead>
                 <tr>
                   <th>START</th>
                   <th>END</th>
                 </tr>
-              </thead>
+                </thead>
 
-              <tbody>
+                <tbody>
                 <tr
                   v-for="(transition, index) in lastTransitions"
                   :key="index"
@@ -245,26 +318,36 @@ const getPaddingStyle = (index: number) =>
                     <span class="text-sm">{{ transition.sentDate }}</span>
                   </td>
                 </tr>
-              </tbody>
-            </VTable>
-          </VExpansionPanelText>
-        </VExpansionPanel>
+                </tbody>
+              </VTable>
 
-        <!-- Crew Assignment Start -->
-        <VExpansionPanel>
-          <VExpansionPanelTitle> Crew Assignment </VExpansionPanelTitle>
-          <VExpansionPanelText>
-            <VTable class="text-no-wrap transaction-table">
-              <thead>
+            </VExpansionPanelText>
+          </VExpansionPanel>
+
+          <!-- Crew Assignment Start -->
+          <VExpansionPanel class="mb-2">
+            <VExpansionPanelTitle>
+              <div style="width: 100vw;" class="flex flex-row justify-between">
+                <div style="font-size: 1.1em; display:flex; align-items: center">
+                <span>
+                  Crew Assignment
+                </span>
+                </div>
+                <CrewEdit />
+              </div>
+            </VExpansionPanelTitle>
+            <VExpansionPanelText>
+              <VTable class="text-no-wrap transaction-table">
+                <thead>
                 <tr>
                   <th>CREW NAME</th>
                   <th>CREW CONTACT(S)</th>
                   <th>CONTACT INFO</th>
                   <th>APK LINK</th>
                 </tr>
-              </thead>
+                </thead>
 
-              <tbody>
+                <tbody>
                 <tr
                   v-for="(assignment, index) in crewAssignments"
                   :key="index"
@@ -282,26 +365,39 @@ const getPaddingStyle = (index: number) =>
                     <span class="text-sm">{{ assignment.apkLink }}</span>
                   </td>
                 </tr>
-              </tbody>
-            </VTable>
-          </VExpansionPanelText>
-        </VExpansionPanel>
-        <!-- Crew Assignment End -->
+                </tbody>
+              </VTable>
+              <CrewAdd />
+            </VExpansionPanelText>
+          </VExpansionPanel>
+          <!-- Crew Assignment End -->
 
-        <!-- Labor Contacts Start -->
-        <VExpansionPanel>
-          <VExpansionPanelTitle> Labor Contacts </VExpansionPanelTitle>
-          <VExpansionPanelText>
-            <VTable class="text-no-wrap transaction-table">
-              <thead>
+          <!-- Labor Contacts Start -->
+          <VExpansionPanel class="mb-2">
+            <VExpansionPanelTitle>
+
+              <div style="width: 100vw;" class="flex flex-row justify-between">
+                <div style="font-size: 1.1em; display:flex; align-items: center">
+                <span>
+                  Labor Contacts
+                </span>
+                </div>
+                <LaborEdit />
+              </div>
+
+            </VExpansionPanelTitle>
+
+            <VExpansionPanelText>
+              <VTable class="text-no-wrap transaction-table">
+                <thead>
                 <tr>
                   <th>NAME</th>
                   <th>JOB ROLE</th>
                   <th>PHONE/EMAIL</th>
                 </tr>
-              </thead>
+                </thead>
 
-              <tbody>
+                <tbody>
                 <tr
                   v-for="(contact, index) in laborContacts"
                   :key="index"
@@ -328,18 +424,25 @@ const getPaddingStyle = (index: number) =>
                     </span>
                   </td>
                 </tr>
-              </tbody>
-            </VTable>
-          </VExpansionPanelText>
-        </VExpansionPanel>
-        <!-- Labor Contacts End -->
+                </tbody>
+              </VTable>
+            </VExpansionPanelText>
+          </VExpansionPanel>
+          <!-- Labor Contacts End -->
 
-        <!-- Labor Order Start -->
-        <VExpansionPanel>
-          <VExpansionPanelTitle> Labor Order: 24-1322-1 </VExpansionPanelTitle>
-          <VExpansionPanelText>
-            <VTable class="text-no-wrap transaction-table">
-              <thead>
+          <!-- Labor Order Start -->
+          <VExpansionPanel class="mb-2 py-3">
+            <VExpansionPanelTitle>
+              <div style="font-size: 1.1em">
+                Labor Order: 24-1322-1
+              </div>
+
+            </VExpansionPanelTitle>
+
+
+            <VExpansionPanelText>
+              <VTable class="text-no-wrap transaction-table">
+                <thead>
                 <tr>
                   <th>LABOR ITEM</th>
                   <th>QTY</th>
@@ -347,9 +450,9 @@ const getPaddingStyle = (index: number) =>
                   <th>UNIT COST</th>
                   <th>COST</th>
                 </tr>
-              </thead>
+                </thead>
 
-              <tbody>
+                <tbody>
                 <tr
                   v-for="(order, index) in laborOrder"
                   :key="index"
@@ -372,24 +475,33 @@ const getPaddingStyle = (index: number) =>
                     <span class="text-sm"> {{ order.cost }}</span>
                   </td>
                 </tr>
-              </tbody>
-            </VTable>
-          </VExpansionPanelText>
-        </VExpansionPanel>
-        <!-- Labor Order End -->
+                </tbody>
+              </VTable>
+            </VExpansionPanelText>
+          </VExpansionPanel>
+          <!-- Labor Order End -->
 
-        <!-- Crew Instructions Start -->
-        <VExpansionPanel>
-          <VExpansionPanelTitle> Crew Instructions </VExpansionPanelTitle>
-          <VExpansionPanelText>
-            <VTable class="text-no-wrap transaction-table">
-              <thead>
+          <!-- Crew Instructions Start -->
+          <VExpansionPanel class="mb-2">
+            <VExpansionPanelTitle>
+              <div style="width: 100vw;" class="flex flex-row justify-between">
+                <div style="font-size: 1.1em; display:flex; align-items: center">
+                <span>
+                  Crew Instructions
+                </span>
+                </div>
+                <InstructionEdit />
+              </div>
+            </VExpansionPanelTitle>
+            <VExpansionPanelText>
+              <VTable class="text-no-wrap transaction-table">
+                <thead>
                 <tr>
                   <th>INSTRUCTION</th>
                 </tr>
-              </thead>
+                </thead>
 
-              <tbody>
+                <tbody>
                 <tr
                   v-for="(instruction, index) in crewInstructions"
                   :key="index"
@@ -398,27 +510,27 @@ const getPaddingStyle = (index: number) =>
                     <span class="text-sm">{{ instruction.content }}</span>
                   </td>
                 </tr>
-              </tbody>
-            </VTable>
-          </VExpansionPanelText>
-        </VExpansionPanel>
-        <!-- Crew Instructions End -->
+                </tbody>
+              </VTable>
+            </VExpansionPanelText>
+          </VExpansionPanel>
+          <!-- Crew Instructions End -->
 
-        <!-- Crew Check In Start -->
-        <VExpansionPanel>
-          <VExpansionPanelTitle> Crew Check In </VExpansionPanelTitle>
-          <VExpansionPanelText>
-            <VTable class="text-no-wrap transaction-table">
-              <thead>
+          <!-- Crew Check In Start -->
+          <VExpansionPanel class="mb-2 py-3">
+            <VExpansionPanelTitle> Crew Check In </VExpansionPanelTitle>
+            <VExpansionPanelText>
+              <VTable class="text-no-wrap transaction-table">
+                <thead>
                 <tr>
                   <th>DAY/TIME</th>
                   <th>USER</th>
                   <th>ACTION</th>
                   <th>LOCATION</th>
                 </tr>
-              </thead>
+                </thead>
 
-              <tbody>
+                <tbody>
                 <tr>
                   <td :style="getPaddingStyle(index)">
                     <span class="text-sm"> <strong>Start: Wed</strong> Sep 04 — 8:00 AM</span>
@@ -428,6 +540,36 @@ const getPaddingStyle = (index: number) =>
                   </td>
                   <td :style="getPaddingStyle(index)">
                     <span class="text-sm" />
+                  </td>
+                  <td :style="getPaddingStyle(index)">
+                    <span class="text-sm" />
+                  </td>
+                </tr>
+
+                <tr>
+                  <td :style="getPaddingStyle(index)">
+                    <span class="text-sm text-red-600"> Tue Sep 24</span>
+                  </td>
+                  <td :style="getPaddingStyle(index)">
+                    <span class="text-sm" />
+                  </td>
+                  <td :style="getPaddingStyle(index)">
+                    <span class="text-sm text-red-600" > Not Checked In </span>
+                  </td>
+                  <td :style="getPaddingStyle(index)">
+                    <span class="text-sm" />
+                  </td>
+                </tr>
+
+                <tr>
+                  <td :style="getPaddingStyle(index)">
+                    <span class="text-sm text-red-600"> Tue Sep 24</span>
+                  </td>
+                  <td :style="getPaddingStyle(index)">
+                    <span class="text-sm" />
+                  </td>
+                  <td :style="getPaddingStyle(index)">
+                    <span class="text-sm text-red-600" > Not Checked In </span>
                   </td>
                   <td :style="getPaddingStyle(index)">
                     <span class="text-sm" />
@@ -448,40 +590,95 @@ const getPaddingStyle = (index: number) =>
                     <span class="text-sm" />
                   </td>
                 </tr>
-              </tbody>
-            </VTable>
-          </VExpansionPanelText>
-        </VExpansionPanel>
-        <!-- Crew Check In  End -->
+                </tbody>
+              </VTable>
+            </VExpansionPanelText>
+          </VExpansionPanel>
+          <!-- Crew Check In  End -->
 
-        <!-- Shared Documents Start -->
-        <VExpansionPanel>
-          <VExpansionPanelTitle> Shared Documents </VExpansionPanelTitle>
-          <VExpansionPanelText />
-        </VExpansionPanel>
-        <!-- Shared Documents  End -->
+          <!-- Shared Documents Start -->
+          <VExpansionPanel class="mb-2">
+            <VExpansionPanelTitle>
+              <div style="width: 100vw;" class="flex flex-row justify-between">
+                <div style="font-size: 1.1em; display:flex; align-items: center">
+                <span>
+                  Shared Documents
+                </span>
+                </div>
+                <DocumentsSelect />
+              </div>
+            </VExpansionPanelTitle>
+            <VExpansionPanelText>
+              <VDataTable
+                :headers="headers"
+                :items="data"
+                :items-per-page="5"
+                show-select
+              >
 
-        <!-- Shared Photos Start -->
-        <VExpansionPanel>
-          <VExpansionPanelTitle> Shared Photos </VExpansionPanelTitle>
-          <VExpansionPanelText />
-        </VExpansionPanel>
-        <!-- Shared Photos  End -->
 
-        <!-- Checklist Start -->
-        <VExpansionPanel>
-          <VExpansionPanelTitle> Checklist </VExpansionPanelTitle>
-          <VExpansionPanelText />
-        </VExpansionPanel>
-        <!-- Checklist  End -->
+                <!-- status -->
+                <template #item.preview="{ item }">
+                  <VChip
+                    :color="'primary'"
+                    class="font-weight-medium"
+                    size="small"
+                  >
+                    Preview
+                  </VChip>
+                </template>
+              </VDataTable>
+            </VExpansionPanelText>
+          </VExpansionPanel>
+          <!-- Shared Documents  End -->
 
-        <!-- Disclaimer Start -->
-        <VExpansionPanel>
-          <VExpansionPanelTitle> Disclaimer </VExpansionPanelTitle>
-          <VExpansionPanelText />
-        </VExpansionPanel>
-        <!-- Disclaimer  End -->
-      </VExpansionPanels>
+          <!-- Shared Photos Start -->
+          <VExpansionPanel>
+            <VExpansionPanelTitle> Shared Photos </VExpansionPanelTitle>
+            <VExpansionPanelText>
+<!--              <VFileInput-->
+<!--                label="Underlined"-->
+<!--                variant="underlined"-->
+<!--                density="default"-->
+<!--              />-->
+
+              <VBtn @click="isDialogVisible = false" color="secondary" class="m-4 ml-0" :size="200">
+                Add Location View Photo
+              </VBtn>
+
+              <VAvatar
+                v-for="(photo, index) in shared_photos"
+                rounded
+                :size="200"
+                :color="'primary'"
+                :variant="'tonal'"
+                :key="index"
+                class="m-4 ml-0"
+              >
+                <VImg
+                  :src="photo"
+                />
+              </VAvatar>
+
+            </VExpansionPanelText>
+          </VExpansionPanel>
+          <!-- Shared Photos  End -->
+
+          <!-- Checklist Start -->
+          <VExpansionPanel>
+            <VExpansionPanelTitle> Checklist </VExpansionPanelTitle>
+            <VExpansionPanelText />
+          </VExpansionPanel>
+          <!-- Checklist  End -->
+
+          <!-- Disclaimer Start -->
+          <VExpansionPanel>
+            <VExpansionPanelTitle> Disclaimer </VExpansionPanelTitle>
+            <VExpansionPanelText />
+          </VExpansionPanel>
+          <!-- Disclaimer  End -->
+        </VExpansionPanels>
+      </div>
     </VCard>
   </VDialog>
 </template>

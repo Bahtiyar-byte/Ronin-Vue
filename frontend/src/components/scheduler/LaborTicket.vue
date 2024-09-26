@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 // import LaborTicketDialogFullscreen from '@/components/scheduler/LaborTicketDialogFullscreen.vue'
-import LaborTicketDialogFullscreen2 from '@/components/scheduler/LaborTicketDialogFullscreen2.vue'
+import LaborTicketDialogFullscreen2 from '@/components/scheduler/LaborTicketDialogFullscreen.vue'
 
 const props = defineProps<Props>()
 

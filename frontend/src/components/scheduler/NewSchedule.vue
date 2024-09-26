@@ -136,15 +136,15 @@ const laborTickets = [
   {
     crew: { name: 'Evans Service Crew 1', color: '#E8D213' },
     laborTickets: [
-      { id: 1, name: 'KAREEM LEZAMA', startDate: '2024-09-10', endDate: '2024-09-11', trade: 'Aluminum', template: 'Flashing' },
-      { id: 2, name: 'BEN ANDERS', startDate: '2024-09-11', endDate: '2024-09-13', trade: 'Aluminum', template: 'Flashing' },
+      { id: 1, name: 'KAREEM LEZAMA', startDate: '2024-09-24', endDate: '2024-09-26', trade: 'Aluminum', template: 'Flashing' },
+      { id: 2, name: 'BEN ANDERS', startDate: '2024-09-24', endDate: '2024-09-25', trade: 'Aluminum', template: 'Flashing' },
     ],
   },
   {
     crew: { name: 'Evans Service Crew 2', color: '#8bc541' },
     laborTickets: [
-      { id: 3, name: 'DAVID JOHNSON', startDate: '2024-09-12', endDate: '2024-09-12', trade: 'Aluminum', template: 'Flashing' },
-      { id: 4, name: 'MIKE ROBINS', startDate: '2024-09-11', endDate: '2024-09-13', trade: 'Aluminum', template: 'Flashing' },
+      { id: 3, name: 'DAVID JOHNSON', startDate: '2024-09-22', endDate: '2024-09-25', trade: 'Aluminum', template: 'Flashing' },
+      { id: 4, name: 'MIKE ROBINS', startDate: '2024-09-21', endDate: '2024-09-24', trade: 'Aluminum', template: 'Flashing' },
     ],
   },
 ]
