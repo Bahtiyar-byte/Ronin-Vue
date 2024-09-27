@@ -9,7 +9,7 @@ export const initialFieldsTrades: Array<FormField | FormFieldsGroup> = [
     fields: [
       {
         type: 'input',
-        name: 'name',
+        name: 'Name',
         label: 'Name',
         value: '',
         rules: yup.string().required('Name is required'),
