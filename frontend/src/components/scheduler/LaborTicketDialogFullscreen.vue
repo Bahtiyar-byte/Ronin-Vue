@@ -15,6 +15,10 @@ import InstructionEdit from '@/components/scheduler/instructions/InstructionEdit
 
 import DocumentsSelect from '@/components/scheduler/documents/DocumentsSelect.vue'
 
+import AddPhotos from '@/components/scheduler/shared-photos/AddPhotos.vue'
+
+import SelectPhotos from '@/components/scheduler/shared-photos/SelectPhotos.vue'
+
 import shared1 from '@images/shared-photos/shared1.jpg'
 import shared2 from '@images/shared-photos/shared2.jpg'
 import shared3 from '@images/shared-photos/shared3.jpg'
@@ -182,9 +186,10 @@ const getPaddingStyle = (index: number) =>
       <VBtn
         v-bind="props"
         size="30"
-        icon="tabler-eye"
+        icon="tabler-plus"
         variant="text"
       />
+<!--      <SelectPhotos />-->
     </template>
 
     <!-- Dialog Content -->
@@ -218,24 +223,24 @@ const getPaddingStyle = (index: number) =>
         </VToolbar>
       </div>
 
-      
-        <!-- <VCard>
-        <VTabs v-model="currentTab">
-        <VTab>Dates</VTab>
-        <VTab>Crew Assignment</VTab>
-        <VTab>Labor Contacts</VTab>
-        <VTab>Labor Order</VTab>
-        </VTabs>
 
-        <VCardText>
-        <VWindow v-model="currentTab">
-        <VWindowItem v-for="item in 3" :key="item" :value="`item-${item}`">
-        {{ tabItemContent }}
-        </VWindowItem>
-        </VWindow>
-        </VCardText>
-        </VCard> -->
-     
+      <!-- <VCard>
+      <VTabs v-model="currentTab">
+      <VTab>Dates</VTab>
+      <VTab>Crew Assignment</VTab>
+      <VTab>Labor Contacts</VTab>
+      <VTab>Labor Order</VTab>
+      </VTabs>
+
+      <VCardText>
+      <VWindow v-model="currentTab">
+      <VWindowItem v-for="item in 3" :key="item" :value="`item-${item}`">
+      {{ tabItemContent }}
+      </VWindowItem>
+      </VWindow>
+      </VCardText>
+      </VCard> -->
+
 
       <!-- <VDivider /> -->
 
@@ -633,18 +638,17 @@ const getPaddingStyle = (index: number) =>
           <!-- Shared Documents  End -->
 
           <!-- Shared Photos Start -->
-          <VExpansionPanel>
+          <VExpansionPanel class="mb-2">
             <VExpansionPanelTitle> Shared Photos </VExpansionPanelTitle>
             <VExpansionPanelText>
-<!--              <VFileInput-->
-<!--                label="Underlined"-->
-<!--                variant="underlined"-->
-<!--                density="default"-->
-<!--              />-->
+              <!--              <VFileInput-->
+              <!--                label="Underlined"-->
+              <!--                variant="underlined"-->
+              <!--                density="default"-->
+              <!--              />-->
 
-              <VBtn @click="isDialogVisible = false" color="secondary" class="m-4 ml-0" :size="200">
-                Add Location View Photo
-              </VBtn>
+
+              <AddPhotos />
 
               <VAvatar
                 v-for="(photo, index) in shared_photos"
