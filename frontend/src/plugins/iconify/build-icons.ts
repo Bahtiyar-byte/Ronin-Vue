@@ -173,6 +173,9 @@ const sources: BundleScriptConfig = {
         'link',
         'file',
         'pencil',
+        'camera',
+        'file-upload',
+        'cloud-upload'
       ],
     },
     {
