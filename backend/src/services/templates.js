@@ -11,14 +11,12 @@ module.exports = class TemplatesService {
   static async create(data, currentUser) {
     const transaction = await db.sequelize.transaction();
     try {
-      const template = await TemplatesDBApi.create(data, {
+      await TemplatesDBApi.create(data, {
         currentUser,
         transaction,
       });
 
       await transaction.commit();
-      console.log('template ______________________________________ ', template);
-      return template;
     } catch (error) {
       await transaction.rollback();
       throw error;

@@ -17,6 +17,8 @@ module.exports = class TemplatesDBApi {
 
         name: data.name || null,
         description: data.description || null,
+        is_email_template: data.is_email_template || false,
+
         importHash: data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
@@ -24,7 +26,7 @@ module.exports = class TemplatesDBApi {
       { transaction },
     );
 
-    await templates.setRelated_trade(data.related_trade || null, {
+    await templates.setRelated_trade(data.related_trade || [], {
       transaction,
     });
 
@@ -41,6 +43,8 @@ module.exports = class TemplatesDBApi {
 
       name: item.name || null,
       description: item.description || null,
+      is_email_template: item.is_email_template || false,
+
       importHash: item.importHash || null,
       createdById: currentUser.id,
       updatedById: currentUser.id,
@@ -67,12 +71,14 @@ module.exports = class TemplatesDBApi {
       {
         name: data.name || null,
         description: data.description || null,
+        is_email_template: data.is_email_template || false,
+
         updatedById: currentUser.id,
       },
       { transaction },
     );
 
-    await templates.setRelated_trade(data.related_trade || null, {
+    await templates.setRelated_trade(data.related_trade || [], {
       transaction,
     });
 
@@ -164,6 +170,16 @@ module.exports = class TemplatesDBApi {
       {
         model: db.trades,
         as: 'related_trade',
+        through: filter.templatesRelated_tradeTrades
+          ? {
+              where: {
+                [Op.or]: filter.related_trade.split('|').map((item) => {
+                  return { ['Id']: Utils.uuid(item) };
+                }),
+              },
+            }
+          : null,
+        required: filter.related_trade ? true : null,
       },
     ];
 
@@ -201,14 +217,10 @@ module.exports = class TemplatesDBApi {
         };
       }
 
-      if (filter.related_trade) {
-        var listItems = filter.related_trade.split('|').map((item) => {
-          return Utils.uuid(item);
-        });
-
+      if (filter.is_email_template) {
         where = {
           ...where,
-          related_tradeId: { [Op.or]: listItems },
+          is_email_template: filter.is_email_template,
         };
       }
 

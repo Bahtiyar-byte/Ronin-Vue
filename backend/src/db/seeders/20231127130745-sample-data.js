@@ -2474,7 +2474,7 @@ module.exports = {
 
     await Jobs.bulkCreate(JobsData);
 
-    await Templates.bulkCreate(TemplatesData);
+    // await Templates.bulkCreate(TemplatesData);
 
     await Trades.bulkCreate(TradesData);
 

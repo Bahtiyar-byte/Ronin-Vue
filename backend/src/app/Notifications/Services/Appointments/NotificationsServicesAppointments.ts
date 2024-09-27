@@ -10,7 +10,7 @@ import WsNotificationsService from '../../WsNotificationsService';
 import AppointmentCreatedContactEmail from '../../../../services/email/list/appointments/AppointmentCreatedContactEmail';
 import type Contact from '~/@types/Contact/Contact';
 import UsersDBApi from '../../../../db/api/users';
-import { ContactsDBApi } from '../../../../db/api/contacts';
+import ContactsDBApi  from '../../../../db/api/contacts';
 
 export const NotificationServiceToken = new Token<NotificationsServicesAppointments.NotificationService>();
 
