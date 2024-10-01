@@ -12,7 +12,7 @@ const shared_photos: any[] = [
   shared2,
   shared3,
   shared4,
-  shared5
+  shared5,
 ]
 
 const dateEdit = ref('')
@@ -159,15 +159,15 @@ const headers = [
 
 const resolveStatusVariant = (status: number) => {
   if (status === 1)
-    return { color: 'primary', text: 'Current' }
+  { return { color: 'primary', text: 'Current' } }
   else if (status === 2)
-    return { color: 'success', text: 'Professional' }
+  { return { color: 'success', text: 'Professional' } }
   else if (status === 3)
-    return { color: 'error', text: 'Rejected' }
+  { return { color: 'error', text: 'Rejected' } }
   else if (status === 4)
-    return { color: 'warning', text: 'Resigned' }
+  { return { color: 'warning', text: 'Resigned' } }
   else
-    return { color: 'info', text: 'Applied' }
+  { return { color: 'info', text: 'Applied' } }
 }
 
 const data = [
@@ -186,7 +186,6 @@ const data = [
     representative: 'Griffin Watts',
   },
 ]
-
 </script>
 
 <template>
@@ -248,7 +247,6 @@ const data = [
         style="height: 95vh"
         class="scrollable"
       >
-
         <VTabs v-model="currentTab">
           <VTab>Job Documents</VTab>
           <VTab>Company Documents</VTab>
@@ -263,19 +261,16 @@ const data = [
             >
               {{ tabItemContent }}
 
-
               <VDataTable
                 :headers="headers"
                 :items="data"
                 :items-per-page="5"
                 show-select
               >
-
-
                 <!-- status -->
                 <template #item.preview="{ item }">
                   <VChip
-                    :color="'primary'"
+                    color="primary"
                     class="font-weight-medium"
                     size="small"
                   >
@@ -298,9 +293,6 @@ const data = [
             </VBtn>
           </VCardText>
         </VCardText>
-
-
-
       </VCard>
     </VCard>
   </VDialog>
@@ -316,4 +308,3 @@ const data = [
   overflow-y: scroll !important;
 }
 </style>
-

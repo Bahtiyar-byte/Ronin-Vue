@@ -1,7 +1,7 @@
 const express = require('express');
 
-const ContactsService = require('../services/contacts').default;
-const ContactsDBApi  = require('../db/api/contacts')
+const ContactsService = require('../services/contacts.ts').default;
+const ContactsDBApi  = require('../db/api/contacts.ts').default;
 const wrapAsync = require('../helpers').wrapAsync;
 
 const router = express.Router();

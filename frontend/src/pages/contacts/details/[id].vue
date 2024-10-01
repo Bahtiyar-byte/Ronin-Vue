@@ -40,6 +40,7 @@ onMounted(async () => {
   watch(isFetching, newVal => {
     isLoading.value = newVal
   }, { immediate: true })
+
 })
 
 useHead({
@@ -47,6 +48,8 @@ useHead({
     return contactData.value !== undefined ? `${contactData.value.name} details` : null
   }),
 })
+
+
 </script>
 
 <template>

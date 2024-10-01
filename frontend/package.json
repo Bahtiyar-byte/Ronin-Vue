@@ -16,6 +16,7 @@
   "dependencies": {
     "@casl/ability": "6.7.0",
     "@casl/vue": "2.2.2",
+    "@docuseal/vue": "1.0.33",
     "@floating-ui/dom": "1.6.1",
     "@iconify-json/fa": "1.1.8",
     "@iconify-json/ic": "^1.1.17",

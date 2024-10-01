@@ -5,6 +5,7 @@ import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router'
 import type Estimate from '@/types/estimates/Estimate'
 import InvoiceEditable from '@/views/apps/invoice/InvoiceEditable.vue'
 import InvoiceSendInvoiceDrawer from '@/views/apps/invoice/InvoiceSendInvoiceDrawer.vue'
+import InvoiceSectionManageDocuSeal from '@/views/apps/invoice/InvoiceSectionManageDocuSeal.vue'
 
 definePage({
   meta: {
@@ -19,6 +20,9 @@ const { getById, sendEstimate } = useEstimates()
 const estimate = ref<Partial<Estimate>>({})
 
 const loading = ref<boolean>(false)
+const isDocuSealVisible = ref<boolean>(false)
+const isDocuSealToken = ref<string>("")
+
 
 onBeforeMount(async () => {
   const { data, isFetching } = await getById(route.params.id)
@@ -56,6 +60,14 @@ const snackbars = reactive({
   emailError: false,
 })
 
+const pdfMetadata = {
+  title: 'Invoice',
+  subject: 'Invoice for services',
+  author: 'Pena Muhammedov',
+  keywords: 'invoice, services, payment',
+  creator: 'html2pdf.js'
+};
+
 const handleSending = async (data: {
   emailTo: string
   subject: string
@@ -64,6 +76,8 @@ const handleSending = async (data: {
   loading.value = true
 
   const opt = {
+    title: 'Invoice',
+    subject: 'Invoice for services',
     jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
   }
 
@@ -78,8 +92,10 @@ const handleSending = async (data: {
     })
 
     watch(sendingResult, newVal => {
-      if (newVal?.sent === true) {
+      if (newVal?.sent) {
         snackbars.emailSent = true
+        isDocuSealVisible.value = true
+        isDocuSealToken.value = newVal.sent
       } else if (newVal?.sent === false) {
         snackbars.emailError = true
       }
@@ -111,19 +127,14 @@ const handleSending = async (data: {
       </template>
     </InvoiceBuilderLayout>
 
+    <InvoiceSectionManageDocuSeal v-model:dialog-visible="isDocuSealVisible" v-model:token="isDocuSealToken" />
+
     <InvoiceSendInvoiceDrawer
       v-if="estimate.id !== undefined"
       v-model:drawer-opened="isSendEstimateSidebarVisible"
       v-model:estimate-data="estimate"
       @submit="handleSending"
     />
-
-    <VSnackbar
-      v-model="snackbars.emailSent"
-      :timeout="3500"
-    >
-      Estimate sent successfully
-    </VSnackbar>
 
     <VSnackbar
       v-model="snackbars.emailError"

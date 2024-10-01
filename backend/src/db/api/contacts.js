@@ -175,8 +175,7 @@ module.exports = class ContactsDBApi {
   static async findBy(where, options) {
     const transaction = (options && options.transaction) || undefined;
 
-    const contacts = await db.contacts.findOne({ where }, { transaction });
-
+    const contacts = await db.contacts.findOne({ where }, { transaction });console.log('contacts ==================================== ' , contacts)
     if (!contacts) {
       return contacts;
     }

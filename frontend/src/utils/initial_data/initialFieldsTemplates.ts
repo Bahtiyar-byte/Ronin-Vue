@@ -21,6 +21,8 @@ export const initialFieldsTemplates: Array<FormField | FormFieldsGroup> = [
         name: 'related_trade',
         label: 'Trade',
         value: '',
+        multiple: true,
+        eager: true,
         autocomplete_function: async (query: string = '') => {
           const { data } = await autocompleteTrades(query)
           if (data.value === null) {
@@ -32,7 +34,8 @@ export const initialFieldsTemplates: Array<FormField | FormFieldsGroup> = [
             title: item.label,
           }))
         },
-        rules: yup.string().required('Trade is required'),
+
+        // rules: yup.array().required('Trade is required'),
       },
       {
         type: 'textarea',
