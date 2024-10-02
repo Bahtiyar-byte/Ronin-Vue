@@ -90,7 +90,17 @@ const {
           {{ item.city }}
         </template>
 
-        <!-- Add more templates for additional address fields -->
+        <template #item.is_mailing_address="{ item }">
+          {{ item.is_mailing_address ? 'Yes' : 'No' }}
+        </template>
+
+        <template #item.is_location="{ item }">
+          {{ item.is_location ? 'Yes' : 'No' }}
+        </template>
+
+        <template #item.is_billing_Address="{ item }">
+          {{ item.is_billing_Address ? 'Yes' : 'No' }}
+        </template>
 
         <template #item.actions="{ item }">
           <IconBtn
