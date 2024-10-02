@@ -11,12 +11,13 @@ module.exports = class CrewService {
   static async create(data, currentUser) {
     const transaction = await db.sequelize.transaction();
     try {
-      await CrewDBApi.create(data, {
+      const crew = await CrewDBApi.create(data, {
         currentUser,
         transaction,
       });
 
       await transaction.commit();
+      return crew
     } catch (error) {
       await transaction.rollback();
       throw error;

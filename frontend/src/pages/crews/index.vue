@@ -1,23 +1,21 @@
 <script setup lang="ts">
-import { useTemplates } from '@/composables/useTemplates'
-import type Template from '@/types/templates/Template'
+import { useCrews } from '@/composables/useCrews'
+import type Crew from '@/types/crews/Crew'
 import ItemsManage from '@/components/common/CRUD/ItemsManage.vue'
 import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
 import { useTableManagement } from '@/utils/forms/useTableManagement'
 
 definePage({
   meta: {
-    action: 'read',
-    subject: 'templates',
+    action: 'manage',
+    subject: 'crew',
   },
 })
 
-const { getList, deleteTemplate } = useTemplates()
+const { getList, deleteCrew } = useCrews()
 
 const headersDefinition = [
   { title: 'Name', key: 'name' },
-  { title: 'Description', key: 'description' },
-  { title: 'Trade', key: 'related_trade.name', sortable: false },
   { title: 'Actions', key: 'actions', sortable: false },
 ]
 
@@ -31,7 +29,7 @@ const {
   selectedItems,
   deletionDialogOptions,
   handleItemDeletion,
-} = useTableManagement<Template>('templates', getList, deleteTemplate, headersDefinition)
+} = useTableManagement<Crew>('crews', getList, deleteCrew, headersDefinition)
 </script>
 
 <template>

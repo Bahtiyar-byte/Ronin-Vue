@@ -5,7 +5,6 @@ import { registerPlugins } from '@core/utils/plugins'
 
 // Styles
 import '@core/scss/template/index.scss'
-import ganttastic from '@infectoone/vue-ganttastic'
 import '@styles/index.css'
 import '@styles/styles.scss'
 
@@ -16,5 +15,4 @@ const app = createApp(App)
 registerPlugins(app)
 
 // Mount vue app
-app.use(ganttastic)
 app.mount('#app')

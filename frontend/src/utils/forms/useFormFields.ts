@@ -10,7 +10,7 @@ export const useFormFields = (
   | 'contacts'
   | 'appointments'
   | 'trades'
-  | 'templates',
+  | 'templates' | 'crews'
 ) => {
   const { getVariants } = useFilters()
   const formFields = ref<Array<FormField | FormFieldsGroup>>([])

@@ -66,6 +66,7 @@ declare module 'vue' {
     CrewAdd: typeof import('./src/components/scheduler/crew/CrewAdd.vue')['default']
     CrewCreate: typeof import('./src/components/scheduler/crew/CrewCreate.vue')['default']
     CrewEdit: typeof import('./src/components/scheduler/crew/CrewEdit.vue')['default']
+    CrewInfoPanel: typeof import('./src/components/crews/CrewInfoPanel.vue')['default']
     CrmAnalyticsSales: typeof import('./src/components/dashboards/CrmAnalyticsSales.vue')['default']
     CrmRevenueGrowth: typeof import('./src/components/dashboards/CrmRevenueGrowth.vue')['default']
     CustomCheckboxes: typeof import('./src/@core/components/app-form-elements/CustomCheckboxes.vue')['default']

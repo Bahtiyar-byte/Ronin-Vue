@@ -2,10 +2,17 @@
 import { watch } from 'vue'
 import { useHead } from '@unhead/vue'
 import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router'
-import { useTemplates } from '@/composables/useTemplates'
-import type Template from '@/types/templates/Template'
+import { useCrews } from '@/composables/useCrews'
+import type Crew from '@/types/crews/Crew'
 
-import TemplateInfoPanel from '@/components/templates/TemplateInfoPanel.vue'
+import CrewInfoPanel from '@/components/crews/CrewInfoPanel.vue'
+
+definePage({
+  meta: {
+    action: 'manage',
+    subject: 'crew',
+  },
+})
 
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } }
 
@@ -16,20 +23,19 @@ const tabs = [
   { icon: 'ph-link-light', title: 'Related' },
 ]
 
-const templateData = ref<Template>()
-const templateName = ref<string>('')
+const crewData = ref<Crew>()
+const crewName = ref<string>('')
 const isLoading = ref<boolean>(false)
 
 onMounted(async () => {
-  const { data, isFetching } = await useTemplates().getById(route.params.id)
-
+  const { data, isFetching } = await useCrews().getById(route.params.id)
   watch(data, newVal => {
     if (newVal === null) {
       return
     }
 
-    templateName.value = newVal.name
-    templateData.value = newVal
+    crewName.value = newVal.name
+    crewData.value = newVal
   })
 
   watch(isFetching, newVal => {
@@ -39,7 +45,7 @@ onMounted(async () => {
 
 useHead({
   title: computed(() => {
-    return templateData.value !== undefined ? `${templateData.value.name} details` : null
+    return crewData.value !== undefined ? `${crewData.value.name} details` : null
   }),
 })
 </script>
@@ -56,19 +62,19 @@ useHead({
         to: { name: 'crews' },
       },
       {
-        title: templateName,
+        title: crewName,
         disabled: true,
       },
     ]"
     class="!pl-0"
   />
-  <VRow v-if="templateData">
+  <VRow v-if="crewData">
     <VCol
       cols="12"
       md="5"
       lg="4"
     >
-      <TemplateInfoPanel :template-data="templateData" />
+      <CrewInfoPanel :crew-data="crewData" />
     </VCol>
 
     <VCol

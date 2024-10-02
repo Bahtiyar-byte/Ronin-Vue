@@ -1,11 +1,6 @@
-require('dotenv').config()
-
 const express = require('express');
 const cors = require('cors');
 const app = express();
-
-app.use(express.json({ limit: '10mb' }));
-
 const passport = require('passport');
 const path = require('path');
 const fs = require('fs');
@@ -60,6 +55,20 @@ const amendmentsRoutes = require('./routes/amendments');
 
 const estimate_sectionsRoutes = require('./routes/estimate_sections');
 
+const contact_phonesRoutes = require('./routes/contact_phones');
+
+const contact_emailsRoutes = require('./routes/contact_emails');
+
+const labor_ticketRoutes = require('./routes/labor_ticket');
+
+const crewRoutes = require('./routes/crew');
+
+const subcontractorRoutes = require('./routes/subcontractor');
+
+const historyRoutes = require('./routes/history');
+
+const addressRoutes = require('./routes/address');
+
 const options = {
   definition: {
     openapi: '3.0.0',
@@ -67,7 +76,7 @@ const options = {
       version: '1.0.0',
       title: 'Evans CRM',
       description:
-        'Evans CRM Online REST API for Testing and Prototyping application. You can perform all major operations with your entities - create, delete and etc.',
+          'Evans CRM Online REST API for Testing and Prototyping application. You can perform all major operations with your entities - create, delete and etc.',
     },
     servers: [
       {
@@ -100,13 +109,13 @@ const options = {
 
 const specs = swaggerJsDoc(options);
 app.use(
-  '/api-docs',
-  function (req, res, next) {
-    swaggerUI.host = req.get('host');
-    next();
-  },
-  swaggerUI.serve,
-  swaggerUI.setup(specs),
+    '/api-docs',
+    function (req, res, next) {
+      swaggerUI.host = req.get('host');
+      next();
+    },
+    swaggerUI.serve,
+    swaggerUI.setup(specs),
 );
 
 app.use(cors({ origin: true }));
@@ -119,135 +128,172 @@ app.use('/api/file', fileRoutes);
 app.enable('trust proxy');
 
 app.use(
-  '/api/users',
-  passport.authenticate('jwt', { session: false }),
-  usersRoutes,
+    '/api/users',
+    passport.authenticate('jwt', { session: false }),
+    usersRoutes,
 );
 
 app.use(
-  '/api/contacts',
-  passport.authenticate('jwt', { session: false }),
-  contactsRoutes,
+    '/api/contacts',
+    passport.authenticate('jwt', { session: false }),
+    contactsRoutes,
 );
 
 app.use(
-  '/api/estimates',
-  passport.authenticate('jwt', { session: false }),
-  estimatesRoutes,
+    '/api/estimates',
+    passport.authenticate('jwt', { session: false }),
+    estimatesRoutes,
 );
 
 app.use(
-  '/api/jobs',
-  passport.authenticate('jwt', { session: false }),
-  jobsRoutes,
+    '/api/jobs',
+    passport.authenticate('jwt', { session: false }),
+    jobsRoutes,
 );
 
 app.use(
-  '/api/roles',
-  passport.authenticate('jwt', { session: false }),
-  rolesRoutes,
+    '/api/roles',
+    passport.authenticate('jwt', { session: false }),
+    rolesRoutes,
 );
 
 app.use(
-  '/api/permissions',
-  passport.authenticate('jwt', { session: false }),
-  permissionsRoutes,
+    '/api/permissions',
+    passport.authenticate('jwt', { session: false }),
+    permissionsRoutes,
 );
 
 app.use(
-  '/api/templates',
-  passport.authenticate('jwt', { session: false }),
-  templatesRoutes,
+    '/api/templates',
+    passport.authenticate('jwt', { session: false }),
+    templatesRoutes,
 );
 
 app.use(
-  '/api/trades',
-  passport.authenticate('jwt', { session: false }),
-  tradesRoutes,
+    '/api/trades',
+    passport.authenticate('jwt', { session: false }),
+    tradesRoutes,
 );
 
 app.use(
-  '/api/invoices',
-  passport.authenticate('jwt', { session: false }),
-  invoicesRoutes,
+    '/api/invoices',
+    passport.authenticate('jwt', { session: false }),
+    invoicesRoutes,
 );
 
 app.use(
-  '/api/orders',
-  passport.authenticate('jwt', { session: false }),
-  ordersRoutes,
+    '/api/orders',
+    passport.authenticate('jwt', { session: false }),
+    ordersRoutes,
 );
 
 app.use(
-  '/api/images',
-  passport.authenticate('jwt', { session: false }),
-  imagesRoutes,
+    '/api/images',
+    passport.authenticate('jwt', { session: false }),
+    imagesRoutes,
 );
 
 app.use(
-  '/api/documents',
-  passport.authenticate('jwt', { session: false }),
-  documentsRoutes,
+    '/api/documents',
+    passport.authenticate('jwt', { session: false }),
+    documentsRoutes,
 );
 
 app.use(
-  '/api/emails',
-  passport.authenticate('jwt', { session: false }),
-  emailsRoutes,
+    '/api/emails',
+    passport.authenticate('jwt', { session: false }),
+    emailsRoutes,
 );
 
 app.use(
-  '/api/chats',
-  passport.authenticate('jwt', { session: false }),
-  chatsRoutes,
+    '/api/chats',
+    passport.authenticate('jwt', { session: false }),
+    chatsRoutes,
 );
 
 app.use(
-  '/api/appointments',
-  passport.authenticate('jwt', { session: false }),
-  appointmentsRoutes,
+    '/api/appointments',
+    passport.authenticate('jwt', { session: false }),
+    appointmentsRoutes,
 );
 
 app.use(
-  '/api/tasks',
-  passport.authenticate('jwt', { session: false }),
-  tasksRoutes,
+    '/api/tasks',
+    passport.authenticate('jwt', { session: false }),
+    tasksRoutes,
 );
 
 app.use(
-  '/api/contracts',
-  passport.authenticate('jwt', { session: false }),
-  contractsRoutes,
+    '/api/contracts',
+    passport.authenticate('jwt', { session: false }),
+    contractsRoutes,
 );
 
 app.use(
-  '/api/amendments',
-  passport.authenticate('jwt', { session: false }),
-  amendmentsRoutes,
+    '/api/amendments',
+    passport.authenticate('jwt', { session: false }),
+    amendmentsRoutes,
 );
 
 app.use(
-  '/api/estimate_sections',
-  passport.authenticate('jwt', { session: false }),
-  estimate_sectionsRoutes,
+    '/api/estimate_sections',
+    passport.authenticate('jwt', { session: false }),
+    estimate_sectionsRoutes,
 );
 
 app.use(
-  '/api/openai',
-  passport.authenticate('jwt', { session: false }),
-  openaiRoutes,
+    '/api/contact_phones',
+    passport.authenticate('jwt', { session: false }),
+    contact_phonesRoutes,
 );
 
 app.use(
-  '/api/search',
-  passport.authenticate('jwt', { session: false }),
-  searchRoutes,
+    '/api/contact_emails',
+    passport.authenticate('jwt', { session: false }),
+    contact_emailsRoutes,
 );
 
-const RoninAppInitialise = require('./init');
-const roninApp = new RoninAppInitialise(app, passport);
+app.use(
+    '/api/labor_ticket',
+    passport.authenticate('jwt', { session: false }),
+    labor_ticketRoutes,
+);
 
-roninApp.initApp();
+app.use(
+    '/api/crew',
+    passport.authenticate('jwt', { session: false }),
+    crewRoutes,
+);
+
+app.use(
+    '/api/subcontractor',
+    passport.authenticate('jwt', { session: false }),
+    subcontractorRoutes,
+);
+
+app.use(
+    '/api/history',
+    passport.authenticate('jwt', { session: false }),
+    historyRoutes,
+);
+
+app.use(
+    '/api/address',
+    passport.authenticate('jwt', { session: false }),
+    addressRoutes,
+);
+
+app.use(
+    '/api/openai',
+    passport.authenticate('jwt', { session: false }),
+    openaiRoutes,
+);
+
+app.use(
+    '/api/search',
+    passport.authenticate('jwt', { session: false }),
+    searchRoutes,
+);
 
 const publicDir = path.join(__dirname, '../public');
 
@@ -259,17 +305,12 @@ if (fs.existsSync(publicDir)) {
   });
 }
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8090;
 
 db.sequelize.sync().then(function () {
-  const server = app.listen(PORT, () => {
+  app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
   });
-
-  const WebSocketManager = require('./websockets/WebSocketManager');
-
-  // Initialize the WebSocket server
-  WebSocketManager.initialize(server);
 });
 
 module.exports = app;

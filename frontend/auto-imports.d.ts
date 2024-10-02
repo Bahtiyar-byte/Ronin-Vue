@@ -207,6 +207,7 @@ declare global {
   const useContracts: typeof import('./src/composables/useContracts')['useContracts']
   const useCookie: typeof import('./src/@core/composable/useCookie')['useCookie']
   const useCounter: typeof import('@vueuse/core')['useCounter']
+  const useCrews: typeof import('./src/composables/useCrews')['useCrews']
   const useCssModule: typeof import('vue')['useCssModule']
   const useCssVar: typeof import('@vueuse/core')['useCssVar']
   const useCssVars: typeof import('vue')['useCssVars']
@@ -592,6 +593,7 @@ declare module 'vue' {
     readonly useContracts: UnwrapRef<typeof import('./src/composables/useContracts')['useContracts']>
     readonly useCookie: UnwrapRef<typeof import('./src/@core/composable/useCookie')['useCookie']>
     readonly useCounter: UnwrapRef<typeof import('@vueuse/core')['useCounter']>
+    readonly useCrews: UnwrapRef<typeof import('./src/composables/useCrews')['useCrews']>
     readonly useCssModule: UnwrapRef<typeof import('vue')['useCssModule']>
     readonly useCssVar: UnwrapRef<typeof import('@vueuse/core')['useCssVar']>
     readonly useCssVars: UnwrapRef<typeof import('vue')['useCssVars']>
@@ -970,6 +972,7 @@ declare module '@vue/runtime-core' {
     readonly useContracts: UnwrapRef<typeof import('./src/composables/useContracts')['useContracts']>
     readonly useCookie: UnwrapRef<typeof import('./src/@core/composable/useCookie')['useCookie']>
     readonly useCounter: UnwrapRef<typeof import('@vueuse/core')['useCounter']>
+    readonly useCrews: UnwrapRef<typeof import('./src/composables/useCrews')['useCrews']>
     readonly useCssModule: UnwrapRef<typeof import('vue')['useCssModule']>
     readonly useCssVar: UnwrapRef<typeof import('@vueuse/core')['useCssVar']>
     readonly useCssVars: UnwrapRef<typeof import('vue')['useCssVars']>
