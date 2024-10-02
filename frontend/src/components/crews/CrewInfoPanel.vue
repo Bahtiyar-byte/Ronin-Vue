@@ -34,6 +34,19 @@ const crewEditVisible = defineModel<boolean>('crewEditVisible', {
               </VListItemTitle>
             </VListItem>
           </VList>
+
+          <VList class="card-list mt-2">
+            <VListItem>
+              <VListItemTitle>
+                <span class="font-medium">
+                  Members:
+                </span>
+                <div class="d-inline-block text-body-1">
+                  {{ crewData.users.map(user => user.firstName).join(' ') }}
+                </div>
+              </VListItemTitle>
+            </VListItem>
+          </VList>
         </VCardText>
 
         <!-- 👉 Edit and Suspend button -->

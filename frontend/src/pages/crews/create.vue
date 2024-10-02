@@ -46,6 +46,10 @@ const fetchCrewData = async (id: string) => {
         field.fields.forEach(subField => {
           if (hasKey(crew, subField.name)) {
             subField.value = crew[subField.name]
+            if (subField.name === 'users') {
+              const ids = crew[subField.name].map(trade => trade.id)
+              subField.value = ids
+            }
           }
         })
       } else if (hasKey(crew, field.name)) {

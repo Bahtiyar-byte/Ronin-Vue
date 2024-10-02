@@ -53,6 +53,9 @@ const getComponentType = (type: string) => {
     <Component
       :is="getComponentType(field.type)"
       v-model="value"
+      :multiple="field.multiple"
+      :clearable="field.clearable"
+      :eager="field.eager"
       :label="field.label"
       v-bind="attrs"
       :items="field.variants"
