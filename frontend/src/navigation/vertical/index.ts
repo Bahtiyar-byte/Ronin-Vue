@@ -72,7 +72,7 @@ export default [
     subject: 'chats',
   },
   {
-    title: 'Address',
+    title: 'Addresses',
     to: { name: 'addresses' },
     icon: { icon: 'tabler-location' },
     action: 'read',
