@@ -17,6 +17,13 @@ export const initialFieldsCrews: Array<FormField | FormFieldsGroup> = [
         rules: yup.string().required('Name is required'),
       },
       {
+        type: 'input',
+        name: 'color',
+        label: 'Color',
+        value: '',
+        rules: yup.string().required('Color is required'),
+      },
+      {
         type: 'autocomplete',
         name: 'users',
         label: 'Users',
@@ -36,7 +43,7 @@ export const initialFieldsCrews: Array<FormField | FormFieldsGroup> = [
           }))
         },
 
-        // rules: yup.array().required('Trade is required'),
+        rules: yup.array().required('Crew is required'),
       },
     ],
   },

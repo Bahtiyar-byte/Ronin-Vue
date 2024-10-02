@@ -16,6 +16,7 @@ const { getList, deleteCrew } = useCrews()
 
 const headersDefinition = [
   { title: 'Name', key: 'name' },
+  { title: 'Color', key: 'color' },
   { title: 'Actions', key: 'actions', sortable: false },
 ]
 
@@ -79,6 +80,10 @@ const {
           <RouterLink :to="{ name: 'crews-details-id', params: { id: item.id } }">
             {{ item.name }}
           </RouterLink>
+        </template>
+
+        <template #item.color="{ item }">
+          <div :style="{ width: '40px', height: '20px', background: item.color ? item.color : '#8BC541' }"></div>
         </template>
 
         <template #item.actions="{ item }">
