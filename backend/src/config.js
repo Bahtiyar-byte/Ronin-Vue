@@ -1,6 +1,9 @@
 const os = require('os');
 
 const config = {
+  docuseal_user_email: process.env.DOCUSEAL_USER_EMAIL,
+  docuseal_integration_email: process.env.DOCUSEAL_INTEGRATION_EMAIL,
+  docuseal_token: process.env.DOCUSEAL_TOKEN ? process.env.DOCUSEAL_TOKEN : '',
   gcloud: {
     bucket: 'fldemo-files',
     hash: 'f6b1c9cc694d7961a63afdf0df8487e3',

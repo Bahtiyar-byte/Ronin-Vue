@@ -16,20 +16,26 @@ import {
 } from '../app/Notifications/Services/Estimates/NotificationsServicesEstimates';
 import { UserDTO } from '~/db/api/dtos/users.dto';
 import jwt from "jsonwebtoken";
+import {json} from "express";
+import config from "../config";
 
 const notificationService = Container.get(NotificationServiceToken);
 
 
 
-async function convertPdfToBase64(filePath: string):  Promise<any>  {
+async function convertPdfToBase64(estimate: Estimate, filePath: string):  Promise<any>  {
+    const pdfSubject = {
+        estimate_id: estimate.id,
+        related_contact: estimate.related_contact,
+    }
     const pdfFile = fs.readFileSync(filePath);
     // Load the PDF document
     const pdfDoc = await PDFDocument.load(pdfFile);
 
     // Add or modify metadata
     pdfDoc.setTitle('Modified PDF Title');
-    pdfDoc.setAuthor('Pena Muhammedov');
-    pdfDoc.setSubject('Updated PDF Metadata Example');
+    pdfDoc.setAuthor('Evans CRM');
+    pdfDoc.setSubject(JSON.stringify(pdfSubject));
     pdfDoc.setKeywords(['PDF', 'Base64', 'Metadata']);
 
     // Save the modified PDF and return as Uint8Array
@@ -65,12 +71,11 @@ async function uploadTemplate(base64: string): Promise<any> {
     return false;
 }
 
-async function getToken(documentUrl: string, template_id: number): Promise<string>{
+async function getToken(documentUrl: string, template_id: number, estimate: Estimate): Promise<string>{
 
     const waitForDocumentUrl = async (interval: number, maxRetries: number): Promise<string> => {
         let retries = 0;
         while (!documentUrl && retries < maxRetries) {
-            console.log('Waiting for documentUrl...');
             await new Promise((resolve) => setTimeout(resolve, interval)); // Wait for the specified interval
             retries++;
         }
@@ -78,17 +83,25 @@ async function getToken(documentUrl: string, template_id: number): Promise<strin
     };
 
     // Call the helper function to wait for the documentUrl
-    const url = "https://www.irs.gov/pub/irs-pdf/fw9.pdf";
+    const url = waitForDocumentUrl;
 
-    console.log('documentUrl =================================================================',documentUrl)
-        return jwt.sign({
-            user_email: 'pena@thedigitalronin.com',
-            integration_email: 'signer@example.com',
-            external_id: 'TestForm123',
-            name: 'Estimate',
-            template_id: template_id,
-            document_urls: [documentUrl],
-        }, 'wJcEYmfa4YdA5VR9u4udfn27tyNLhGcvFYvK16nrkHe');
+        // return jwt.sign({
+        //     user_email: 'pena@thedigitalronin.com',
+        //     integration_email: 'signer@example.com',
+        //     external_id: estimate.related_contact,
+        //     name: 'Estimate',
+        //     template_id: template_id,
+        //     document_urls: [url],
+        // }, 'wJcEYmfa4YdA5VR9u4udfn27tyNLhGcvFYvK16nrkHe');
+
+    return jwt.sign({
+        user_email: config.docuseal_user_email,
+        integration_email: config.docuseal_integration_email,
+        external_id: estimate.related_contact,
+        name: 'Estimate',
+        template_id: template_id,
+        document_urls: [url],
+    }, config.docuseal_token);
 
     return 'not token found'
 }
@@ -120,11 +133,11 @@ export default class EstimatesService
 
     async prepareToken (estimate: Estimate, additionalData: SendNotificationAdditionalData): Promise<any> {
         if (additionalData.attachments && additionalData.attachments.length > 0) {
-            const base64Pdf = convertPdfToBase64(additionalData.attachments[0].path);
+            const base64Pdf = convertPdfToBase64(estimate, additionalData.attachments[0].path);
             if (base64Pdf){
                 const {url, template_id} = await uploadTemplate(await base64Pdf)
                 if (await url){
-                    return getToken(await url, template_id)
+                    return getToken(await url, template_id, estimate)
                 }
             }
         }
