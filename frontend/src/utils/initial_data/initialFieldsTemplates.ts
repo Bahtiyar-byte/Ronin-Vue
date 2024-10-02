@@ -20,9 +20,10 @@ export const initialFieldsTemplates: Array<FormField | FormFieldsGroup> = [
         type: 'autocomplete',
         name: 'related_trade',
         label: 'Trade',
-        value: '',
+        value: [],
         multiple: true,
         eager: true,
+        clearable: true,
         autocomplete_function: async (query: string = '') => {
           const { data } = await autocompleteTrades(query)
           if (data.value === null) {
