@@ -377,7 +377,8 @@ const isTicketStarts = (dayDate: string, ticketDate: string): boolean => {
         <div
           v-for="(crew, index) in laborTickets"
           :key="`crew_${index}`"
-          class="main__scheduler__bottom__trade">
+          class="main__scheduler__bottom__trade"
+        >
           <div class="crew__container">
             <Crew :crew="crew.crew" />
           </div>

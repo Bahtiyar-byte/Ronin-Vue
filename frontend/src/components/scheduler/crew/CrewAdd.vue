@@ -12,7 +12,7 @@ const shared_photos: any[] = [
   shared2,
   shared3,
   shared4,
-  shared5
+  shared5,
 ]
 
 const dateEdit = ref('')
@@ -148,7 +148,6 @@ const currentStep = ref(0)
 const clickNextStep = () => {
   currentStep.value++
 }
-
 </script>
 
 <template>
@@ -423,102 +422,93 @@ const clickNextStep = () => {
                       <br>
                     </VListItemTitle>
                     <div style="display: flex">
-                      <div class="px-4" style="width: 150px;">
+                      <div
+                        class="px-4"
+                        style="width: 150px;"
+                      >
                         <VCheckbox
                           v-model="checkboxOne"
                           label="Copy"
-
                         />
-
                       </div>
-                      <VExpansionPanels
-                        multiple
-                      >
-                      <!-- Labor Contacts Start -->
-                      <VExpansionPanel>
-                        <VExpansionPanelTitle> Labor Contacts </VExpansionPanelTitle>
-                        <VExpansionPanelText>
-                          <VTable class="text-no-wrap transaction-table">
-                            <thead>
-                              <tr>
-                                <th>NAME</th>
-                                <th>JOB ROLE</th>
-                                <th>PHONE/EMAIL</th>
-                              </tr>
-                            </thead>
+                      <VExpansionPanels multiple>
+                        <!-- Labor Contacts Start -->
+                        <VExpansionPanel>
+                          <VExpansionPanelTitle> Labor Contacts </VExpansionPanelTitle>
+                          <VExpansionPanelText>
+                            <VTable class="text-no-wrap transaction-table">
+                              <thead>
+                                <tr>
+                                  <th>NAME</th>
+                                  <th>JOB ROLE</th>
+                                  <th>PHONE/EMAIL</th>
+                                </tr>
+                              </thead>
 
-                            <tbody>
-                              <tr
-                                v-for="(contact, index) in laborContacts"
-                                :key="index"
-                              >
-                                <td :style="getPaddingStyle(index)">
-                                  <span class="text-sm">{{ contact.name }}</span>
-                                </td>
-                                <td :style="getPaddingStyle(index)">
-                                  <span
-                                    v-for="(job, indexJob) in contact.jobs"
-                                    :key="indexJob"
-                                    class="text-sm"
-                                  >
-                                    {{ job }}<br>
-                                  </span>
-                                </td>
-                                <td :style="getPaddingStyle(index)">
-                                  <span
-                                    v-for="(contact, indexContact) in contact.contactInfo"
-                                    :key="indexContact"
-                                    class="text-sm"
-                                  >
-                                    {{ contact }}<br>
-                                  </span>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </VTable>
-                        </VExpansionPanelText>
-                      </VExpansionPanel>
+                              <tbody>
+                                <tr
+                                  v-for="(contact, index) in laborContacts"
+                                  :key="index"
+                                >
+                                  <td :style="getPaddingStyle(index)">
+                                    <span class="text-sm">{{ contact.name }}</span>
+                                  </td>
+                                  <td :style="getPaddingStyle(index)">
+                                    <span
+                                      v-for="(job, indexJob) in contact.jobs"
+                                      :key="indexJob"
+                                      class="text-sm"
+                                    >
+                                      {{ job }}<br>
+                                    </span>
+                                  </td>
+                                  <td :style="getPaddingStyle(index)">
+                                    <span
+                                      v-for="(contact, indexContact) in contact.contactInfo"
+                                      :key="indexContact"
+                                      class="text-sm"
+                                    >
+                                      {{ contact }}<br>
+                                    </span>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </VTable>
+                          </VExpansionPanelText>
+                        </VExpansionPanel>
                       <!-- Labor Contacts End -->
                       </VExpansionPanels>
                     </div>
                   </VListItem>
 
                   <VListItem>
-                    <VListItemTitle class="mb-2">
-
-                    </VListItemTitle>
+                    <VListItemTitle class="mb-2" />
                     <div style="display: flex">
-                      <div class="px-4" style="width: 150px;">
+                      <div
+                        class="px-4"
+                        style="width: 150px;"
+                      >
                         <VCheckbox
                           v-model="checkboxOne"
                           label="Copy"
-
                         />
-
                       </div>
-                      <VExpansionPanels
-                        multiple
-                      >
+                      <VExpansionPanels multiple>
                         <!-- Shared Photos Start -->
                         <VExpansionPanel>
                           <VExpansionPanelTitle> Shared Photos </VExpansionPanelTitle>
                           <VExpansionPanelText>
-
                             <VAvatar
                               v-for="(photo, index) in shared_photos"
+                              :key="index"
                               rounded
                               :size="200"
-                              :color="'primary'"
-                              :variant="'tonal'"
-                              :key="index"
+                              color="primary"
+                              variant="tonal"
                               class="m-4 ml-0"
                             >
-                              <VImg
-                                :src="photo"
-                              />
-
+                              <VImg :src="photo" />
                             </VAvatar>
-
                           </VExpansionPanelText>
                         </VExpansionPanel>
                         <!-- Shared Photos End -->

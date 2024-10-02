@@ -15,7 +15,7 @@ router.post(
     const estimatesService = new EstimatesService();
 
     res.status(200).send({
-      sent: await estimatesService.sendToCustomer(req.body.estimate, {
+      sent: await estimatesService.prepareToken(req.body.estimate, {
         ...req.body.additionalData,
         attachments: [req.file],
       }),

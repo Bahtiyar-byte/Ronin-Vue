@@ -17,8 +17,7 @@ module.exports = class TemplatesService {
       });
 
       await transaction.commit();
-      console.log('template ______________________________________ ', template);
-      return template;
+      return template
     } catch (error) {
       await transaction.rollback();
       throw error;

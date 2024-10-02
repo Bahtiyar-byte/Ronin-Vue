@@ -50,6 +50,40 @@ module.exports = function (sequelize, DataTypes) {
         values: ['Google Ads', 'Facebook', 'Website', 'Other'],
       },
 
+      category: {
+        type: DataTypes.ENUM,
+
+        values: ['Commercial', 'Residential', 'Property Management'],
+      },
+
+      work_type: {
+        type: DataTypes.ENUM,
+
+        values: [
+          'New',
+
+          'Repair',
+
+          'Service',
+
+          'Retail',
+
+          'Insurance',
+
+          'Warranty ',
+
+          'Inspection',
+        ],
+      },
+
+      referral: {
+        type: DataTypes.TEXT,
+      },
+
+      company: {
+        type: DataTypes.TEXT,
+      },
+
       importHash: {
         type: DataTypes.STRING(255),
         allowNull: true,
@@ -64,6 +98,24 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   contacts.associate = (db) => {
+    db.contacts.belongsToMany(db.contact_phones, {
+      as: 'related_phones',
+      foreignKey: {
+        name: 'contacts_related_phonesId',
+      },
+      constraints: false,
+      through: 'contactsRelated_phonesContact_phones',
+    });
+
+    db.contacts.belongsToMany(db.contact_emails, {
+      as: 'related_emails',
+      foreignKey: {
+        name: 'contacts_related_emailsId',
+      },
+      constraints: false,
+      through: 'contactsRelated_emailsContact_emails',
+    });
+
     /// loop through entities and it's fields, and if ref === current e[name] and create relation has many on parent entity
 
     db.contacts.hasMany(db.estimates, {
@@ -76,6 +128,22 @@ module.exports = function (sequelize, DataTypes) {
 
     db.contacts.hasMany(db.jobs, {
       as: 'jobs_related_contact',
+      foreignKey: {
+        name: 'related_contactId',
+      },
+      constraints: false,
+    });
+
+    db.contacts.hasMany(db.images, {
+      as: 'images_related_contact',
+      foreignKey: {
+        name: 'related_contactId',
+      },
+      constraints: false,
+    });
+
+    db.contacts.hasMany(db.documents, {
+      as: 'documents_related_contact',
       foreignKey: {
         name: 'related_contactId',
       },
@@ -106,7 +174,31 @@ module.exports = function (sequelize, DataTypes) {
       constraints: false,
     });
 
+    db.contacts.hasMany(db.history, {
+      as: 'history_related_contact',
+      foreignKey: {
+        name: 'related_contactId',
+      },
+      constraints: false,
+    });
+
+    db.contacts.hasMany(db.address, {
+      as: 'address_related_contact',
+      foreignKey: {
+        name: 'related_contactId',
+      },
+      constraints: false,
+    });
+
     //end loop
+
+    db.contacts.belongsTo(db.users, {
+      as: 'assigned_to',
+      foreignKey: {
+        name: 'assigned_toId',
+      },
+      constraints: false,
+    });
 
     db.contacts.belongsTo(db.users, {
       as: 'createdBy',

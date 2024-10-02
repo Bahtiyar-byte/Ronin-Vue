@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const moment = require('moment');
 
 module.exports = function (sequelize, DataTypes) {
+  const templatesRelated_tradeTrades = sequelize.define('templatesRelated_tradeTrades', {});
   const templates = sequelize.define(
     'templates',
     {
@@ -22,6 +23,13 @@ module.exports = function (sequelize, DataTypes) {
         type: DataTypes.TEXT,
       },
 
+      is_email_template: {
+        type: DataTypes.BOOLEAN,
+
+        allowNull: false,
+        defaultValue: false,
+      },
+
       importHash: {
         type: DataTypes.STRING(255),
         allowNull: true,
@@ -36,6 +44,15 @@ module.exports = function (sequelize, DataTypes) {
   );
 
   templates.associate = (db) => {
+    db.templates.belongsToMany(db.trades, {
+      as: 'related_trade',
+      foreignKey: {
+        name: 'templates_related_tradeId',
+      },
+      constraints: false,
+      through: templatesRelated_tradeTrades,
+    });
+
     /// loop through entities and it's fields, and if ref === current e[name] and create relation has many on parent entity
 
     db.templates.hasMany(db.estimate_sections, {
@@ -47,14 +64,6 @@ module.exports = function (sequelize, DataTypes) {
     });
 
     //end loop
-
-    db.templates.belongsTo(db.trades, {
-      as: 'related_trade',
-      foreignKey: {
-        name: 'related_tradeId',
-      },
-      constraints: false,
-    });
 
     db.templates.belongsTo(db.users, {
       as: 'createdBy',

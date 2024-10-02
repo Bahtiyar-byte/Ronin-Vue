@@ -1,7 +1,7 @@
 const express = require('express');
 
-const { ContactsServiceInstance } = require('../services/contacts');
-const { ContactsDBApiInstance } = require('../db/api/contacts');
+const ContactsService = require('../services/contacts.ts').default;
+const ContactsDBApi  = require('../db/api/contacts.ts').default;
 const wrapAsync = require('../helpers').wrapAsync;
 
 const router = express.Router();
@@ -11,9 +11,6 @@ const { parse } = require('json2csv');
 const { checkCrudPermissions } = require('../middlewares/check-permissions');
 
 router.use(checkCrudPermissions('contacts'));
-
-const ContactsDBApi = new ContactsDBApiInstance();
-const ContactsService = new ContactsServiceInstance();
 
 /**
  *  @swagger

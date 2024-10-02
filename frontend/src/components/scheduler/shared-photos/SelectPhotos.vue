@@ -27,7 +27,7 @@ const shared_photos: any[] = [
   {
     bgImage: shared5,
     value: 'basic5',
-  }
+  },
 ]
 
 const dateEdit = ref('')
@@ -174,15 +174,15 @@ const headers = [
 
 const resolveStatusVariant = (status: number) => {
   if (status === 1)
-    return { color: 'primary', text: 'Current' }
+  { return { color: 'primary', text: 'Current' } }
   else if (status === 2)
-    return { color: 'success', text: 'Professional' }
+  { return { color: 'success', text: 'Professional' } }
   else if (status === 3)
-    return { color: 'error', text: 'Rejected' }
+  { return { color: 'error', text: 'Rejected' } }
   else if (status === 4)
-    return { color: 'warning', text: 'Resigned' }
+  { return { color: 'warning', text: 'Resigned' } }
   else
-    return { color: 'info', text: 'Applied' }
+  { return { color: 'info', text: 'Applied' } }
 }
 
 const data = [
@@ -217,16 +217,21 @@ const file = ref()
     transition="dialog-transition"
   >
     <!-- Dialog Activator -->
-    <template  #activator="{ props }">
-<!--      <VBtn-->
-<!--        v-bind="props"-->
-<!--        color="primary"-->
-<!--        variant="text"-->
-<!--      >-->
-        <VBtn @click="isDialogVisible = true" color="secondary" class="m-4 ml-0" :size="200">
-          Add Location View Photo
-        </VBtn>
-<!--      </VBtn>-->
+    <template #activator="{ props }">
+      <!--      <VBtn -->
+      <!--        v-bind="props" -->
+      <!--        color="primary" -->
+      <!--        variant="text" -->
+      <!--      > -->
+      <VBtn
+        color="secondary"
+        class="m-4 ml-0"
+        :size="200"
+        @click="isDialogVisible = true"
+      >
+        Add Location View Photo
+      </VBtn>
+      <!--      </VBtn> -->
     </template>
 
     <!-- Dialog Content -->
@@ -264,23 +269,24 @@ const file = ref()
         style="height: 95vh"
         class="scrollable"
       >
-
         <VTabs v-model="currentTab">
-          <VTab> <VIcon
-            size="30"
-            :icon="'tabler-camera'"
-          /> Photos</VTab>
           <VTab>
             <VIcon
               size="30"
-              :icon="'tabler-file-upload'"
+              icon="tabler-camera"
+            /> Photos
+          </VTab>
+          <VTab>
+            <VIcon
+              size="30"
+              icon="tabler-file-upload"
             />
             Upload
           </VTab>
           <VTab>
             <VIcon
               size="30"
-              :icon="'tabler-file-upload'"
+              icon="tabler-file-upload"
             />
             Google Drive
           </VTab>
@@ -288,7 +294,7 @@ const file = ref()
           <VTab>
             <VIcon
               size="30"
-              :icon="'tabler-file-upload'"
+              icon="tabler-file-upload"
             />
             Dropbox
           </VTab>
@@ -296,24 +302,19 @@ const file = ref()
 
         <VCardText>
           <VWindow v-model="currentTab">
-            <VWindowItem
-              :value="`item-1`"
-            >
-             <h2>Added 9/23/24 by Matt Gross 1 (5)</h2>
+            <VWindowItem value="item-1">
+              <h2>Added 9/23/24 by Matt Gross 1 (5)</h2>
 
               <CustomCheckboxesWithImage
                 v-model:selected-checkbox="selectedCheckbox"
                 :checkbox-content="shared_photos"
                 :grid-column="{ sm: '2', md: '2', cols: '4' }"
               />
-
-
-
             </VWindowItem>
 
             <VWindowItem
               class="py-2"
-              :value="`item-2`"
+              value="item-2"
             >
               <VFileInput
                 v-model="file"
@@ -322,15 +323,11 @@ const file = ref()
                 label="Browse Your Computer"
                 variant="outlined"
               />
-
-
-
-
             </VWindowItem>
 
             <VWindowItem
               class="py-2"
-              :value="`item-3`"
+              value="item-3"
             >
               <VFileInput
                 v-model="file"
@@ -339,15 +336,11 @@ const file = ref()
                 label="Browse Google Drive"
                 variant="outlined"
               />
-
-
-
-
             </VWindowItem>
 
             <VWindowItem
               class="py-2"
-              :value="`item-3`"
+              value="item-3"
             >
               <VFileInput
                 v-model="file"
@@ -356,10 +349,6 @@ const file = ref()
                 label="Browse Dropbox"
                 variant="outlined"
               />
-
-
-
-
             </VWindowItem>
           </VWindow>
           <VCardText class="d-flex justify-space-between flex-wrap gap-3">
@@ -370,22 +359,19 @@ const file = ref()
             >
               Cancel
             </VBtn>
-           <div>
-             <p>
-               <strong>Files Selected:</strong> 0
-             </p>
-             <p>
-               <strong>Total size:</strong> 0.0 / 25 MB
-             </p>
-           </div>
+            <div>
+              <p>
+                <strong>Files Selected:</strong> 0
+              </p>
+              <p>
+                <strong>Total size:</strong> 0.0 / 25 MB
+              </p>
+            </div>
             <VBtn @click="isDialogVisible = false">
               Upload
             </VBtn>
           </VCardText>
         </VCardText>
-
-
-
       </VCard>
     </VCard>
   </VDialog>

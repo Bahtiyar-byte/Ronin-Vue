@@ -35,6 +35,10 @@ module.exports = class UsersDBApi {
           data.data.passwordResetTokenExpiresAt || null,
         provider: data.data.provider || null,
         name: data.data.name || null,
+        isActive: data.data.isActive || false,
+
+        isVerified: data.data.isVerified || false,
+
         importHash: data.data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
@@ -98,6 +102,10 @@ module.exports = class UsersDBApi {
       passwordResetTokenExpiresAt: item.passwordResetTokenExpiresAt || null,
       provider: item.provider || null,
       name: item.name || null,
+      isActive: item.isActive || false,
+
+      isVerified: item.isVerified || false,
+
       importHash: item.importHash || null,
       createdById: currentUser.id,
       updatedById: currentUser.id,
@@ -163,6 +171,10 @@ module.exports = class UsersDBApi {
         passwordResetTokenExpiresAt: data.passwordResetTokenExpiresAt || null,
         provider: data.provider || null,
         name: data.name || null,
+        isActive: data.isActive || false,
+
+        isVerified: data.isVerified || false,
+
         updatedById: currentUser.id,
       },
       { transaction },
@@ -247,6 +259,10 @@ module.exports = class UsersDBApi {
 
     const output = users.get({ plain: true });
 
+    output.contacts_assigned_to = await users.getContacts_assigned_to({
+      transaction,
+    });
+
     output.jobs_assigned_to = await users.getJobs_assigned_to({
       transaction,
     });
@@ -260,6 +276,10 @@ module.exports = class UsersDBApi {
     });
 
     output.tasks_assigned_to = await users.getTasks_assigned_to({
+      transaction,
+    });
+
+    output.history_related_user = await users.getHistory_related_user({
       transaction,
     });
 
@@ -475,6 +495,20 @@ module.exports = class UsersDBApi {
         };
       }
 
+      if (filter.isActive) {
+        where = {
+          ...where,
+          isActive: filter.isActive,
+        };
+      }
+
+      if (filter.isVerified) {
+        where = {
+          ...where,
+          isVerified: filter.isVerified,
+        };
+      }
+
       if (filter.app_role) {
         var listItems = filter.app_role.split('|').map((item) => {
           return Utils.uuid(item);
@@ -561,15 +595,15 @@ module.exports = class UsersDBApi {
     }
 
     const records = await db.users.findAll({
-      attributes: ['id', 'name', 'firstName'],
+      attributes: ['id', 'firstName'],
       where,
       limit: limit ? Number(limit) : undefined,
-      orderBy: [['name', 'ASC'], ['firstName', 'ASC']],
+      orderBy: [['firstName', 'ASC']],
     });
 
     return records.map((record) => ({
       id: record.id,
-      label: record.name === null || record.name.length === 0 ? record.firstName : record.name,
+      label: record.firstName,
     }));
   }
 

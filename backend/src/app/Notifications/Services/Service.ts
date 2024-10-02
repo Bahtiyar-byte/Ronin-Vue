@@ -4,18 +4,16 @@ import type {
   NotificationKey,
   NotificationType,
 } from '../../../@types/Notification/NotificationTypes';
-import { ContactsDBApi } from '../../../db/api/contacts';
+import ContactsDBApi  from '../../../db/api/contacts';
 import UsersDBApi from '../../../db/api/users';
 
 export namespace NotificationsServices {
   export abstract class Service {
     private usersDbApi: UsersDBApi;
 
-    private contactsDbApi: ContactsDBApi;
 
     protected constructor() {
       this.usersDbApi = new UsersDBApi();
-      this.contactsDbApi = new ContactsDBApi();
     }
 
     checkIfNotificationEnabled(
@@ -31,7 +29,7 @@ export namespace NotificationsServices {
     }
 
     protected async getContact(id: string): Promise<Contact> {
-      return this.contactsDbApi.findBy({ id });
+      return ContactsDBApi.findBy({ id });
     }
   }
 }

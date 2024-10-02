@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-
 import mastercardIcon from '@images/icons/payments/mastercard-icon.png'
 import visaIcon from '@images/icons/payments/visa-icon.png'
 
@@ -17,8 +16,6 @@ import DocumentsSelect from '@/components/scheduler/documents/DocumentsSelect.vu
 
 import AddPhotos from '@/components/scheduler/shared-photos/AddPhotos.vue'
 
-import SelectPhotos from '@/components/scheduler/shared-photos/SelectPhotos.vue'
-
 import shared1 from '@images/shared-photos/shared1.jpg'
 import shared2 from '@images/shared-photos/shared2.jpg'
 import shared3 from '@images/shared-photos/shared3.jpg'
@@ -30,7 +27,7 @@ const shared_photos: any[] = [
   shared2,
   shared3,
   shared4,
-  shared5
+  shared5,
 ]
 
 const currentTab = ref('item-1')
@@ -141,15 +138,15 @@ const headers = [
 
 const resolveStatusVariant = (status: number) => {
   if (status === 1)
-    return { color: 'primary', text: 'Current' }
+  { return { color: 'primary', text: 'Current' } }
   else if (status === 2)
-    return { color: 'success', text: 'Professional' }
+  { return { color: 'success', text: 'Professional' } }
   else if (status === 3)
-    return { color: 'error', text: 'Rejected' }
+  { return { color: 'error', text: 'Rejected' } }
   else if (status === 4)
-    return { color: 'warning', text: 'Resigned' }
+  { return { color: 'warning', text: 'Resigned' } }
   else
-    return { color: 'info', text: 'Applied' }
+  { return { color: 'info', text: 'Applied' } }
 }
 
 const data = [
@@ -189,7 +186,7 @@ const getPaddingStyle = (index: number) =>
         icon="tabler-plus"
         variant="text"
       />
-<!--      <SelectPhotos />-->
+      <!--      <SelectPhotos /> -->
     </template>
 
     <!-- Dialog Content -->
@@ -223,63 +220,69 @@ const getPaddingStyle = (index: number) =>
         </VToolbar>
       </div>
 
+      <!--
+        <VCard>
+        <VTabs v-model="currentTab">
+        <VTab>Dates</VTab>
+        <VTab>Crew Assignment</VTab>
+        <VTab>Labor Contacts</VTab>
+        <VTab>Labor Order</VTab>
+        </VTabs>
 
-      <!-- <VCard>
-      <VTabs v-model="currentTab">
-      <VTab>Dates</VTab>
-      <VTab>Crew Assignment</VTab>
-      <VTab>Labor Contacts</VTab>
-      <VTab>Labor Order</VTab>
-      </VTabs>
-
-      <VCardText>
-      <VWindow v-model="currentTab">
-      <VWindowItem v-for="item in 3" :key="item" :value="`item-${item}`">
-      {{ tabItemContent }}
-      </VWindowItem>
-      </VWindow>
-      </VCardText>
-      </VCard> -->
-
+        <VCardText>
+        <VWindow v-model="currentTab">
+        <VWindowItem v-for="item in 3" :key="item" :value="`item-${item}`">
+        {{ tabItemContent }}
+        </VWindowItem>
+        </VWindow>
+        </VCardText>
+        </VCard>
+      -->
 
       <!-- <VDivider /> -->
 
       <div style="height: 200px;">
-        <VList class="card-list m-4" style="height: 1000px !important;">
+        <VList
+          class="card-list m-4"
+          style="height: 1000px !important;"
+        >
           <VListItem>
             <VListItemTitle>
-            <span class="font-medium" style="font-size: 2em;">
-              Box Gutters Order (copy)
-            </span>
+              <span
+                class="font-medium"
+                style="font-size: 2em;"
+              >
+                Box Gutters Order (copy)
+              </span>
             </VListItemTitle>
           </VListItem>
 
           <VListItem>
             <VListItemTitle>
-            <span class="font-medium">
-              24-1364: Ben Anderson
-            </span>
+              <span class="font-medium">
+                24-1364: Ben Anderson
+              </span>
               <br>
               <span class="font-medium">
-              3223 Wainbell Avenue, Pittsburgh, PA 15216
-            </span>
+                3223 Wainbell Avenue, Pittsburgh, PA 15216
+              </span>
             </VListItemTitle>
           </VListItem>
 
           <VListItem>
             <VListItemTitle>
-            <span class="font-medium">
-              Trade:
-            </span>
+              <span class="font-medium">
+                Trade:
+              </span>
               <div class="d-inline-block text-body-1">
                 Box Gutters
               </div>
             </VListItemTitle>
             <br>
             <VListItemTitle>
-            <span class="font-medium">
-              Trade:
-            </span>
+              <span class="font-medium">
+                Trade:
+              </span>
               <div class="d-inline-block text-body-1">
                 Box Gutters
               </div>
@@ -295,7 +298,10 @@ const getPaddingStyle = (index: number) =>
         >
           <VExpansionPanel class="mb-2">
             <VExpansionPanelTitle>
-              <div style="width: 100vw;" class="flex flex-row justify-between">
+              <div
+                style="width: 100vw;"
+                class="flex flex-row justify-between"
+              >
                 <div style="font-size: 1.1em; display:flex; align-items: center">
                   <span>Dates</span>
                 </div>
@@ -305,38 +311,40 @@ const getPaddingStyle = (index: number) =>
             <VExpansionPanelText>
               <VTable class="text-no-wrap transaction-table">
                 <thead>
-                <tr>
-                  <th>START</th>
-                  <th>END</th>
-                </tr>
+                  <tr>
+                    <th>START</th>
+                    <th>END</th>
+                  </tr>
                 </thead>
 
                 <tbody>
-                <tr
-                  v-for="(transition, index) in lastTransitions"
-                  :key="index"
-                >
-                  <td :style="getPaddingStyle(index)">
-                    <span class="text-sm">{{ transition.sentDate }}</span>
-                  </td>
-                  <td :style="getPaddingStyle(index)">
-                    <span class="text-sm">{{ transition.sentDate }}</span>
-                  </td>
-                </tr>
+                  <tr
+                    v-for="(transition, index) in lastTransitions"
+                    :key="index"
+                  >
+                    <td :style="getPaddingStyle(index)">
+                      <span class="text-sm">{{ transition.sentDate }}</span>
+                    </td>
+                    <td :style="getPaddingStyle(index)">
+                      <span class="text-sm">{{ transition.sentDate }}</span>
+                    </td>
+                  </tr>
                 </tbody>
               </VTable>
-
             </VExpansionPanelText>
           </VExpansionPanel>
 
           <!-- Crew Assignment Start -->
           <VExpansionPanel class="mb-2">
             <VExpansionPanelTitle>
-              <div style="width: 100vw;" class="flex flex-row justify-between">
+              <div
+                style="width: 100vw;"
+                class="flex flex-row justify-between"
+              >
                 <div style="font-size: 1.1em; display:flex; align-items: center">
-                <span>
-                  Crew Assignment
-                </span>
+                  <span>
+                    Crew Assignment
+                  </span>
                 </div>
                 <CrewEdit />
               </div>
@@ -344,32 +352,32 @@ const getPaddingStyle = (index: number) =>
             <VExpansionPanelText>
               <VTable class="text-no-wrap transaction-table">
                 <thead>
-                <tr>
-                  <th>CREW NAME</th>
-                  <th>CREW CONTACT(S)</th>
-                  <th>CONTACT INFO</th>
-                  <th>APK LINK</th>
-                </tr>
+                  <tr>
+                    <th>CREW NAME</th>
+                    <th>CREW CONTACT(S)</th>
+                    <th>CONTACT INFO</th>
+                    <th>APK LINK</th>
+                  </tr>
                 </thead>
 
                 <tbody>
-                <tr
-                  v-for="(assignment, index) in crewAssignments"
-                  :key="index"
-                >
-                  <td :style="getPaddingStyle(index)">
-                    <span class="text-sm">{{ assignment.crewName }}</span>
-                  </td>
-                  <td :style="getPaddingStyle(index)">
-                    <span class="text-sm">{{ assignment.crewContacts }}</span>
-                  </td>
-                  <td :style="getPaddingStyle(index)">
-                    <span class="text-sm">{{ assignment.contactInfo }}</span>
-                  </td>
-                  <td :style="getPaddingStyle(index)">
-                    <span class="text-sm">{{ assignment.apkLink }}</span>
-                  </td>
-                </tr>
+                  <tr
+                    v-for="(assignment, index) in crewAssignments"
+                    :key="index"
+                  >
+                    <td :style="getPaddingStyle(index)">
+                      <span class="text-sm">{{ assignment.crewName }}</span>
+                    </td>
+                    <td :style="getPaddingStyle(index)">
+                      <span class="text-sm">{{ assignment.crewContacts }}</span>
+                    </td>
+                    <td :style="getPaddingStyle(index)">
+                      <span class="text-sm">{{ assignment.contactInfo }}</span>
+                    </td>
+                    <td :style="getPaddingStyle(index)">
+                      <span class="text-sm">{{ assignment.apkLink }}</span>
+                    </td>
+                  </tr>
                 </tbody>
               </VTable>
               <CrewAdd />
@@ -380,55 +388,56 @@ const getPaddingStyle = (index: number) =>
           <!-- Labor Contacts Start -->
           <VExpansionPanel class="mb-2">
             <VExpansionPanelTitle>
-
-              <div style="width: 100vw;" class="flex flex-row justify-between">
+              <div
+                style="width: 100vw;"
+                class="flex flex-row justify-between"
+              >
                 <div style="font-size: 1.1em; display:flex; align-items: center">
-                <span>
-                  Labor Contacts
-                </span>
+                  <span>
+                    Labor Contacts
+                  </span>
                 </div>
                 <LaborEdit />
               </div>
-
             </VExpansionPanelTitle>
 
             <VExpansionPanelText>
               <VTable class="text-no-wrap transaction-table">
                 <thead>
-                <tr>
-                  <th>NAME</th>
-                  <th>JOB ROLE</th>
-                  <th>PHONE/EMAIL</th>
-                </tr>
+                  <tr>
+                    <th>NAME</th>
+                    <th>JOB ROLE</th>
+                    <th>PHONE/EMAIL</th>
+                  </tr>
                 </thead>
 
                 <tbody>
-                <tr
-                  v-for="(contact, index) in laborContacts"
-                  :key="index"
-                >
-                  <td :style="getPaddingStyle(index)">
-                    <span class="text-sm">{{ contact.name }}</span>
-                  </td>
-                  <td :style="getPaddingStyle(index)">
-                    <span
-                      v-for="(job, indexJob) in contact.jobs"
-                      :key="indexJob"
-                      class="text-sm"
-                    >
-                      {{ job }}<br>
-                    </span>
-                  </td>
-                  <td :style="getPaddingStyle(index)">
-                    <span
-                      v-for="(contact, indexContact) in contact.contactInfo"
-                      :key="indexContact"
-                      class="text-sm"
-                    >
-                      {{ contact }}<br>
-                    </span>
-                  </td>
-                </tr>
+                  <tr
+                    v-for="(contact, index) in laborContacts"
+                    :key="index"
+                  >
+                    <td :style="getPaddingStyle(index)">
+                      <span class="text-sm">{{ contact.name }}</span>
+                    </td>
+                    <td :style="getPaddingStyle(index)">
+                      <span
+                        v-for="(job, indexJob) in contact.jobs"
+                        :key="indexJob"
+                        class="text-sm"
+                      >
+                        {{ job }}<br>
+                      </span>
+                    </td>
+                    <td :style="getPaddingStyle(index)">
+                      <span
+                        v-for="(contact, indexContact) in contact.contactInfo"
+                        :key="indexContact"
+                        class="text-sm"
+                      >
+                        {{ contact }}<br>
+                      </span>
+                    </td>
+                  </tr>
                 </tbody>
               </VTable>
             </VExpansionPanelText>
@@ -441,45 +450,43 @@ const getPaddingStyle = (index: number) =>
               <div style="font-size: 1.1em">
                 Labor Order: 24-1322-1
               </div>
-
             </VExpansionPanelTitle>
-
 
             <VExpansionPanelText>
               <VTable class="text-no-wrap transaction-table">
                 <thead>
-                <tr>
-                  <th>LABOR ITEM</th>
-                  <th>QTY</th>
-                  <th>UNIT</th>
-                  <th>UNIT COST</th>
-                  <th>COST</th>
-                </tr>
+                  <tr>
+                    <th>LABOR ITEM</th>
+                    <th>QTY</th>
+                    <th>UNIT</th>
+                    <th>UNIT COST</th>
+                    <th>COST</th>
+                  </tr>
                 </thead>
 
                 <tbody>
-                <tr
-                  v-for="(order, index) in laborOrder"
-                  :key="index"
-                >
-                  <td :style="getPaddingStyle(index)">
-                    <span class="text-sm">{{ order.laborItem }}</span>
-                  </td>
-                  <td :style="getPaddingStyle(index)">
-                    <span class="text-sm">
-                      {{ order.qty }}
-                    </span>
-                  </td>
-                  <td :style="getPaddingStyle(index)">
-                    <span class="text-sm"> {{ order.unit }}</span>
-                  </td>
-                  <td :style="getPaddingStyle(index)">
-                    <span class="text-sm"> {{ order.unit_cost }}</span>
-                  </td>
-                  <td :style="getPaddingStyle(index)">
-                    <span class="text-sm"> {{ order.cost }}</span>
-                  </td>
-                </tr>
+                  <tr
+                    v-for="(order, index) in laborOrder"
+                    :key="index"
+                  >
+                    <td :style="getPaddingStyle(index)">
+                      <span class="text-sm">{{ order.laborItem }}</span>
+                    </td>
+                    <td :style="getPaddingStyle(index)">
+                      <span class="text-sm">
+                        {{ order.qty }}
+                      </span>
+                    </td>
+                    <td :style="getPaddingStyle(index)">
+                      <span class="text-sm"> {{ order.unit }}</span>
+                    </td>
+                    <td :style="getPaddingStyle(index)">
+                      <span class="text-sm"> {{ order.unit_cost }}</span>
+                    </td>
+                    <td :style="getPaddingStyle(index)">
+                      <span class="text-sm"> {{ order.cost }}</span>
+                    </td>
+                  </tr>
                 </tbody>
               </VTable>
             </VExpansionPanelText>
@@ -489,11 +496,14 @@ const getPaddingStyle = (index: number) =>
           <!-- Crew Instructions Start -->
           <VExpansionPanel class="mb-2">
             <VExpansionPanelTitle>
-              <div style="width: 100vw;" class="flex flex-row justify-between">
+              <div
+                style="width: 100vw;"
+                class="flex flex-row justify-between"
+              >
                 <div style="font-size: 1.1em; display:flex; align-items: center">
-                <span>
-                  Crew Instructions
-                </span>
+                  <span>
+                    Crew Instructions
+                  </span>
                 </div>
                 <InstructionEdit />
               </div>
@@ -501,20 +511,20 @@ const getPaddingStyle = (index: number) =>
             <VExpansionPanelText>
               <VTable class="text-no-wrap transaction-table">
                 <thead>
-                <tr>
-                  <th>INSTRUCTION</th>
-                </tr>
+                  <tr>
+                    <th>INSTRUCTION</th>
+                  </tr>
                 </thead>
 
                 <tbody>
-                <tr
-                  v-for="(instruction, index) in crewInstructions"
-                  :key="index"
-                >
-                  <td :style="getPaddingStyle(index)">
-                    <span class="text-sm">{{ instruction.content }}</span>
-                  </td>
-                </tr>
+                  <tr
+                    v-for="(instruction, index) in crewInstructions"
+                    :key="index"
+                  >
+                    <td :style="getPaddingStyle(index)">
+                      <span class="text-sm">{{ instruction.content }}</span>
+                    </td>
+                  </tr>
                 </tbody>
               </VTable>
             </VExpansionPanelText>
@@ -527,74 +537,74 @@ const getPaddingStyle = (index: number) =>
             <VExpansionPanelText>
               <VTable class="text-no-wrap transaction-table">
                 <thead>
-                <tr>
-                  <th>DAY/TIME</th>
-                  <th>USER</th>
-                  <th>ACTION</th>
-                  <th>LOCATION</th>
-                </tr>
+                  <tr>
+                    <th>DAY/TIME</th>
+                    <th>USER</th>
+                    <th>ACTION</th>
+                    <th>LOCATION</th>
+                  </tr>
                 </thead>
 
                 <tbody>
-                <tr>
-                  <td :style="getPaddingStyle(index)">
-                    <span class="text-sm"> <strong>Start: Wed</strong> Sep 04 — 8:00 AM</span>
-                  </td>
-                  <td :style="getPaddingStyle(index)">
-                    <span class="text-sm" />
-                  </td>
-                  <td :style="getPaddingStyle(index)">
-                    <span class="text-sm" />
-                  </td>
-                  <td :style="getPaddingStyle(index)">
-                    <span class="text-sm" />
-                  </td>
-                </tr>
+                  <tr>
+                    <td :style="getPaddingStyle(index)">
+                      <span class="text-sm"> <strong>Start: Wed</strong> Sep 04 — 8:00 AM</span>
+                    </td>
+                    <td :style="getPaddingStyle(index)">
+                      <span class="text-sm" />
+                    </td>
+                    <td :style="getPaddingStyle(index)">
+                      <span class="text-sm" />
+                    </td>
+                    <td :style="getPaddingStyle(index)">
+                      <span class="text-sm" />
+                    </td>
+                  </tr>
 
-                <tr>
-                  <td :style="getPaddingStyle(index)">
-                    <span class="text-sm text-red-600"> Tue Sep 24</span>
-                  </td>
-                  <td :style="getPaddingStyle(index)">
-                    <span class="text-sm" />
-                  </td>
-                  <td :style="getPaddingStyle(index)">
-                    <span class="text-sm text-red-600" > Not Checked In </span>
-                  </td>
-                  <td :style="getPaddingStyle(index)">
-                    <span class="text-sm" />
-                  </td>
-                </tr>
+                  <tr>
+                    <td :style="getPaddingStyle(index)">
+                      <span class="text-sm text-red-600"> Tue Sep 24</span>
+                    </td>
+                    <td :style="getPaddingStyle(index)">
+                      <span class="text-sm" />
+                    </td>
+                    <td :style="getPaddingStyle(index)">
+                      <span class="text-sm text-red-600"> Not Checked In </span>
+                    </td>
+                    <td :style="getPaddingStyle(index)">
+                      <span class="text-sm" />
+                    </td>
+                  </tr>
 
-                <tr>
-                  <td :style="getPaddingStyle(index)">
-                    <span class="text-sm text-red-600"> Tue Sep 24</span>
-                  </td>
-                  <td :style="getPaddingStyle(index)">
-                    <span class="text-sm" />
-                  </td>
-                  <td :style="getPaddingStyle(index)">
-                    <span class="text-sm text-red-600" > Not Checked In </span>
-                  </td>
-                  <td :style="getPaddingStyle(index)">
-                    <span class="text-sm" />
-                  </td>
-                </tr>
+                  <tr>
+                    <td :style="getPaddingStyle(index)">
+                      <span class="text-sm text-red-600"> Tue Sep 24</span>
+                    </td>
+                    <td :style="getPaddingStyle(index)">
+                      <span class="text-sm" />
+                    </td>
+                    <td :style="getPaddingStyle(index)">
+                      <span class="text-sm text-red-600"> Not Checked In </span>
+                    </td>
+                    <td :style="getPaddingStyle(index)">
+                      <span class="text-sm" />
+                    </td>
+                  </tr>
 
-                <tr>
-                  <td :style="getPaddingStyle(index)">
-                    <span class="text-sm"> <strong>End: Thu</strong> Sep 05 </span>
-                  </td>
-                  <td :style="getPaddingStyle(index)">
-                    <span class="text-sm" />
-                  </td>
-                  <td :style="getPaddingStyle(index)">
-                    <span class="text-sm" />
-                  </td>
-                  <td :style="getPaddingStyle(index)">
-                    <span class="text-sm" />
-                  </td>
-                </tr>
+                  <tr>
+                    <td :style="getPaddingStyle(index)">
+                      <span class="text-sm"> <strong>End: Thu</strong> Sep 05 </span>
+                    </td>
+                    <td :style="getPaddingStyle(index)">
+                      <span class="text-sm" />
+                    </td>
+                    <td :style="getPaddingStyle(index)">
+                      <span class="text-sm" />
+                    </td>
+                    <td :style="getPaddingStyle(index)">
+                      <span class="text-sm" />
+                    </td>
+                  </tr>
                 </tbody>
               </VTable>
             </VExpansionPanelText>
@@ -604,11 +614,14 @@ const getPaddingStyle = (index: number) =>
           <!-- Shared Documents Start -->
           <VExpansionPanel class="mb-2">
             <VExpansionPanelTitle>
-              <div style="width: 100vw;" class="flex flex-row justify-between">
+              <div
+                style="width: 100vw;"
+                class="flex flex-row justify-between"
+              >
                 <div style="font-size: 1.1em; display:flex; align-items: center">
-                <span>
-                  Shared Documents
-                </span>
+                  <span>
+                    Shared Documents
+                  </span>
                 </div>
                 <DocumentsSelect />
               </div>
@@ -620,12 +633,10 @@ const getPaddingStyle = (index: number) =>
                 :items-per-page="5"
                 show-select
               >
-
-
                 <!-- status -->
                 <template #item.preview="{ item }">
                   <VChip
-                    :color="'primary'"
+                    color="primary"
                     class="font-weight-medium"
                     size="small"
                   >
@@ -641,29 +652,25 @@ const getPaddingStyle = (index: number) =>
           <VExpansionPanel class="mb-2">
             <VExpansionPanelTitle> Shared Photos </VExpansionPanelTitle>
             <VExpansionPanelText>
-              <!--              <VFileInput-->
-              <!--                label="Underlined"-->
-              <!--                variant="underlined"-->
-              <!--                density="default"-->
-              <!--              />-->
-
+              <!--              <VFileInput -->
+              <!--                label="Underlined" -->
+              <!--                variant="underlined" -->
+              <!--                density="default" -->
+              <!--              /> -->
 
               <AddPhotos />
 
               <VAvatar
                 v-for="(photo, index) in shared_photos"
+                :key="index"
                 rounded
                 :size="200"
-                :color="'primary'"
-                :variant="'tonal'"
-                :key="index"
+                color="primary"
+                variant="tonal"
                 class="m-4 ml-0"
               >
-                <VImg
-                  :src="photo"
-                />
+                <VImg :src="photo" />
               </VAvatar>
-
             </VExpansionPanelText>
           </VExpansionPanel>
           <!-- Shared Photos  End -->

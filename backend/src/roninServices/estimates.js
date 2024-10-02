@@ -2,6 +2,7 @@
 const EstimatesDBApi = require('../db/api/estimates');
 const EstimatesService = require('../services/estimates');
 const db = require("../db/models");
+const jwt = require('jsonwebtoken');
 
 const eventEmitter = require('../utils/eventEmitter')
 
