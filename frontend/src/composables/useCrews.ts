@@ -88,7 +88,7 @@ export const useCrews = () => {
     }
   }
 
-  const deleteContact = async (crew: Crew) => {
+  const deleteCrew = async (crew: Crew) => {
     const { data, isFetching, error } = useApi(`/crew/${crew.id}`)
       .delete()
       .json<boolean>()
@@ -117,7 +117,7 @@ export const useCrews = () => {
     getById,
     create,
     update,
-    deleteContact,
+    deleteCrew,
     autocomplete,
   }
 }
