@@ -1,7 +1,7 @@
 const express = require('express');
 
-const Contact_emailsService = require('../services/contact_emails');
-const Contact_emailsDBApi = require('../db/api/contact_emails');
+const Contact_emailsService = require('../services/contact_emails.ts').default;
+const Contact_emailsDBApi = require('../db/api/contact_emails.ts').default;
 const wrapAsync = require('../helpers').wrapAsync;
 
 const router = express.Router();

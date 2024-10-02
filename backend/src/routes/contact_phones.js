@@ -1,7 +1,7 @@
 const express = require('express');
 
-const Contact_phonesService = require('../services/contact_phones');
-const Contact_phonesDBApi = require('../db/api/contact_phones');
+const Contact_phonesService = require('../services/contact_phones.ts').default;
+const Contact_phonesDBApi = require('../db/api/contact_phones.ts').default;
 const wrapAsync = require('../helpers').wrapAsync;
 
 const router = express.Router();

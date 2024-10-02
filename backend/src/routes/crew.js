@@ -1,7 +1,7 @@
 const express = require('express');
 
-const CrewService = require('../services/crew');
-const CrewDBApi = require('../db/api/crew');
+const CrewService = require('../services/crew.ts').default;
+const CrewDBApi = require('../db/api/crew.ts').default;
 const wrapAsync = require('../helpers').wrapAsync;
 
 const router = express.Router();

@@ -1,7 +1,7 @@
 const express = require('express');
 
-const Labor_ticketService = require('../services/labor_ticket');
-const Labor_ticketDBApi = require('../db/api/labor_ticket');
+const Labor_ticketService = require('../services/labor_ticket.ts').default;
+const Labor_ticketDBApi = require('../db/api/labor_ticket.ts').default;
 const wrapAsync = require('../helpers').wrapAsync;
 
 const router = express.Router();

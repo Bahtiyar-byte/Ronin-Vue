@@ -1,7 +1,7 @@
 const express = require('express');
 
-const SubcontractorService = require('../services/subcontractor');
-const SubcontractorDBApi = require('../db/api/subcontractor');
+const SubcontractorService = require('../services/subcontractor.ts').default;
+const SubcontractorDBApi = require('../db/api/subcontractor.ts').default;
 const wrapAsync = require('../helpers').wrapAsync;
 
 const router = express.Router();

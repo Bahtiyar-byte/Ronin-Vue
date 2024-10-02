@@ -1,7 +1,7 @@
 const express = require('express');
 
-const AddressService = require('../services/address');
-const AddressDBApi = require('../db/api/address');
+const AddressService = require('../services/address.ts').default;
+const AddressDBApi = require('../db/api/address.ts').default;
 const wrapAsync = require('../helpers').wrapAsync;
 
 const router = express.Router();

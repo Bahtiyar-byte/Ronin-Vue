@@ -1,7 +1,7 @@
 const express = require('express');
 
-const HistoryService = require('../services/history');
-const HistoryDBApi = require('../db/api/history');
+const HistoryService = require('../services/history.ts').default;
+const HistoryDBApi = require('../db/api/history.ts').default;
 const wrapAsync = require('../helpers').wrapAsync;
 
 const router = express.Router();
