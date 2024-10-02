@@ -1,6 +1,11 @@
+require('dotenv').config()
+
 const express = require('express');
 const cors = require('cors');
 const app = express();
+
+app.use(express.json({ limit: '10mb' }));
+
 const passport = require('passport');
 const path = require('path');
 const fs = require('fs');
@@ -295,6 +300,11 @@ app.use(
     searchRoutes,
 );
 
+const RoninAppInitialise = require('./init');
+const roninApp = new RoninAppInitialise(app, passport);
+
+roninApp.initApp();
+
 const publicDir = path.join(__dirname, '../public');
 
 if (fs.existsSync(publicDir)) {
@@ -308,9 +318,14 @@ if (fs.existsSync(publicDir)) {
 const PORT = process.env.PORT || 8090;
 
 db.sequelize.sync().then(function () {
-  app.listen(PORT, () => {
+  const server = app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`);
   });
+
+  const WebSocketManager = require('./websockets/WebSocketManager');
+
+  // Initialize the WebSocket server
+  WebSocketManager.initialize(server);
 });
 
 module.exports = app;
