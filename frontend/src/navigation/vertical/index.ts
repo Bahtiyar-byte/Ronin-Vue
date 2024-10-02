@@ -72,6 +72,33 @@ export default [
     subject: 'chats',
   },
   {
+    title: 'Address',
+    to: { name: 'addresses' },
+    icon: { icon: 'tabler-location' },
+    action: 'read',
+    subject: 'chats',
+  },
+  {
+    title: 'Tools',
+    icon: { icon: 'tabler-tool' },
+    action: 'read',
+    subject: 'trades',
+    children: [
+      {
+        title: 'Trades',
+        subject: 'trades',
+        action: 'read',
+        to: 'tools-trades',
+      },
+      {
+        title: 'Templates',
+        subject: 'templates',
+        action: 'read',
+        to: 'tools-templates',
+      },
+    ],
+  },
+  {
     title: 'Settings',
     icon: { icon: 'tabler-settings' },
     action: 'read',

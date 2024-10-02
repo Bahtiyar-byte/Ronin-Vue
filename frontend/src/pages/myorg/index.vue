@@ -3,8 +3,8 @@ import CompanyGeneralDocuments from '@/components/myorg/CompanyGeneralDocuments.
 
 definePage({
   meta: {
-    action: 'read',
-    subject: 'myorg',
+    action: 'manage',
+    subject: 'crew',
   },
 })
 </script>

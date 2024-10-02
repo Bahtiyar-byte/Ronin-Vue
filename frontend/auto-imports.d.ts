@@ -168,6 +168,7 @@ declare global {
   const useAbility: typeof import('./src/plugins/casl/composables/useAbility')['useAbility']
   const useAbs: typeof import('@vueuse/math')['useAbs']
   const useActiveElement: typeof import('@vueuse/core')['useActiveElement']
+  const useAddress: typeof import('./src/composables/useAddress')['useAddress']
   const useAnimate: typeof import('@vueuse/core')['useAnimate']
   const useApi: typeof import('./src/composables/useApi')['useApi']
   const useAppointments: typeof import('./src/composables/useAppointments')['useAppointments']
@@ -554,6 +555,7 @@ declare module 'vue' {
     readonly useAbility: UnwrapRef<typeof import('./src/plugins/casl/composables/useAbility')['useAbility']>
     readonly useAbs: UnwrapRef<typeof import('@vueuse/math')['useAbs']>
     readonly useActiveElement: UnwrapRef<typeof import('@vueuse/core')['useActiveElement']>
+    readonly useAddress: UnwrapRef<typeof import('./src/composables/useAddress')['useAddress']>
     readonly useAnimate: UnwrapRef<typeof import('@vueuse/core')['useAnimate']>
     readonly useApi: UnwrapRef<typeof import('./src/composables/useApi')['useApi']>
     readonly useAppointments: UnwrapRef<typeof import('./src/composables/useAppointments')['useAppointments']>
@@ -933,6 +935,7 @@ declare module '@vue/runtime-core' {
     readonly useAbility: UnwrapRef<typeof import('./src/plugins/casl/composables/useAbility')['useAbility']>
     readonly useAbs: UnwrapRef<typeof import('@vueuse/math')['useAbs']>
     readonly useActiveElement: UnwrapRef<typeof import('@vueuse/core')['useActiveElement']>
+    readonly useAddress: UnwrapRef<typeof import('./src/composables/useAddress')['useAddress']>
     readonly useAnimate: UnwrapRef<typeof import('@vueuse/core')['useAnimate']>
     readonly useApi: UnwrapRef<typeof import('./src/composables/useApi')['useApi']>
     readonly useAppointments: UnwrapRef<typeof import('./src/composables/useAppointments')['useAppointments']>
