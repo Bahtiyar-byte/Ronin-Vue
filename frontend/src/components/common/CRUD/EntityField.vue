@@ -4,6 +4,7 @@ import AppTextField from '@core/components/app-form-elements/AppTextField.vue'
 import AppSelect from '@core/components/app-form-elements/AppSelect.vue'
 import AppAutocomplete from '@core/components/app-form-elements/AppAutocomplete.vue'
 import AppTextarea from '@core/components/app-form-elements/AppTextarea.vue'
+import Checkbox from '@core/components/app-form-elements/Checkbox.vue'
 import type FormField from '@/types/forms/FormField'
 
 const props = defineProps<{
@@ -41,6 +42,8 @@ const getComponentType = (type: string) => {
     return AppAutocomplete
   } else if (type === 'textarea') {
     return AppTextarea
+  } else if (type === 'checkbox') {
+    return Checkbox
   }
 
   return AppTextField
@@ -53,7 +56,13 @@ const getComponentType = (type: string) => {
     <Component
       :is="getComponentType(field.type)"
       v-model="value"
+      :multiple="field.multiple"
+      :clearable="field.clearable"
+      :eager="field.eager"
       :label="field.label"
+      :selectedCheckbox="field.selectedCheckbox"
+      :checkboxContent="field.checkboxContent"
+      :modelValue="field.modelValue"
       v-bind="attrs"
       :items="field.variants"
       :error-messages="errorMessages"

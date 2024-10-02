@@ -73,8 +73,7 @@ router.post(
       req.headers.referer ||
       `${req.protocol}://${req.hostname}${req.originalUrl}`;
     const link = new URL(referer);
-    await CrewService.create(req.body.data, req.currentUser, true, link.host);
-    const payload = true;
+    const payload = await CrewService.create(req.body.data, req.currentUser, true, link.host);
     res.status(200).send(payload);
   }),
 );

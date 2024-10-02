@@ -11,12 +11,13 @@ module.exports = class AddressService {
   static async create(data, currentUser) {
     const transaction = await db.sequelize.transaction();
     try {
-      await AddressDBApi.create(data, {
+      const address = await AddressDBApi.create(data, {
         currentUser,
         transaction,
       });
 
       await transaction.commit();
+      return address
     } catch (error) {
       await transaction.rollback();
       throw error;

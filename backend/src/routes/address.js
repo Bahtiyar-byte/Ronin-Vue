@@ -84,13 +84,13 @@ router.post(
       req.headers.referer ||
       `${req.protocol}://${req.hostname}${req.originalUrl}`;
     const link = new URL(referer);
-    await AddressService.create(
+    const payload = await AddressService.create(
       req.body.data,
       req.currentUser,
       true,
       link.host,
     );
-    const payload = true;
+
     res.status(200).send(payload);
   }),
 );

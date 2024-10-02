@@ -2,18 +2,25 @@
 import { computed, onBeforeMount, ref, watch } from 'vue'
 import { type RouteLocationNormalizedLoaded, useRoute, useRouter } from 'vue-router'
 import { useHead } from '@unhead/vue'
-import { useTemplates } from '@/composables/useTemplates'
-import type Template from '@/types/templates/Template'
+import { useCrews } from '@/composables/useCrews'
+import type Crew from '@/types/crews/Crew'
 import { useFormFields } from '@/utils/forms/useFormFields'
-import { initialFieldsTemplates } from '@/utils/initial_data/initialFieldsTemplates'
+import { initialFieldsCrews } from '@/utils/initial_data/initialFieldsCrews'
 import type FormField from '@/types/forms/FormField'
 import ItemUpdate from '@/components/common/CRUD/ItemUpdate.vue'
 
-const { create: createTemplate, getById: getTemplateById, update: updateTemplate } = useTemplates()
+definePage({
+  meta: {
+    action: 'manage',
+    subject: 'crew',
+  },
+})
+
+const { create: createCrew, getById: getCrewById, update: updateCrew } = useCrews()
 const router = useRouter()
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } }
 const isUpdateMode = ref(false)
-const pageTitle = ref('Create Template')
+const pageTitle = ref('Create Crew')
 
 const breadcrumbs = ref([
   { title: 'Home', to: { name: 'root' } },
@@ -21,57 +28,58 @@ const breadcrumbs = ref([
   { title: 'New crew', disabled: true },
 ])
 
-const { formFields, initializeFields } = useFormFields('templates')
-const templateRef = ref<Template>()
+const { formFields, initializeFields } = useFormFields('crews')
+const crewRef = ref<Crew>()
 const dataLoaded = ref(false)
 
-const fetchTemplateData = async (id: string) => {
-  const { data } = await getTemplateById(id)
+const fetchCrewData = async (id: string) => {
+  const { data } = await getCrewById(id)
 
-  watch(data, (template: Template | null) => {
-    if (template === null) {
+  watch(data, (crew: Crew | null) => {
+    if (crew === null) {
       return
     }
 
-    templateRef.value = template
+    crewRef.value = crew
     formFields.value.forEach(field => {
       if ('fields' in field) {
         field.fields.forEach(subField => {
-          if (hasKey(template, subField.name)) {
-            subField.value = template[subField.name]
-            if (subField.name === 'related_trade') {
-              subField.value = template[subField.name].id
+          if (hasKey(crew, subField.name)) {
+            subField.value = crew[subField.name]
+            if (subField.name === 'users') {
+              const ids = crew[subField.name].map(trade => trade.id)
+              subField.value = ids
             }
           }
         })
-      } else if (hasKey(template, field.name)) {
-        field.value = template[field.name]
+      } else if (hasKey(crew, field.name)) {
+        field.value = crew[field.name]
       }
     })
-    pageTitle.value = `Update ${template.name}`
-    breadcrumbs.value[2] = { title: `Update ${template.name}`, disabled: true }
+    pageTitle.value = `Update ${crew.name}`
+    breadcrumbs.value[2] = { title: `Update ${crew.name}`, disabled: true }
   })
 }
 
 onBeforeMount(async () => {
-  await initializeFields(initialFieldsTemplates)
+  await initializeFields(initialFieldsCrews)
 
-  const templateId = route.params.id as string
-  if (templateId) {
+  const crewId = route.params.id as string
+  if (crewId) {
     isUpdateMode.value = true
-    await fetchTemplateData(templateId)
+    await fetchCrewData(crewId)
   }
   dataLoaded.value = true
 })
 
 useHead({
-  title: computed(() => (isUpdateMode.value && templateRef.value ? `Edit ${templateRef.value.name}` : 'Create new template')),
+  title: computed(() => (isUpdateMode.value && crewRef.value ? `Edit ${crewRef.value.name}` : 'Create new crew')),
 })
 
 const submitForm = async (values: Record<string, any>) => {
-  const templateData = { ...templateRef.value, ...values } as Template
-  const action = templateData.id ? updateTemplate : createTemplate
-  const { data } = await action(templateData)
+  const crewData = { ...crewRef.value, ...values } as Crew
+  const action = crewData.id ? updateCrew : createCrew
+  const { data } = await action(crewData)
 
   watch(data, newVal => {
     router.push({ name: 'crews-details-id', params: { id: newVal?.id as string } })

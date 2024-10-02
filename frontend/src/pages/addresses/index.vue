@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useCrews } from '@/composables/useCrews'
-import type Crew from '@/types/crews/Crew'
+import { useAddress } from '@/composables/useAddress'
+import type Address from '@/types/address/Address'
 import ItemsManage from '@/components/common/CRUD/ItemsManage.vue'
 import ConfirmDialog from '@/components/common/ConfirmDialog.vue'
 import { useTableManagement } from '@/utils/forms/useTableManagement'
@@ -12,12 +12,17 @@ definePage({
   },
 })
 
-const { getList, deleteCrew } = useCrews()
+const { getList, deleteAddress } = useAddress()
 
 const headersDefinition = [
-  { title: 'Name', key: 'name' },
-  { title: 'Color', key: 'color' },
-  { title: 'Members', key: 'members' },
+  { title: 'Street', key: 'street' },
+  { title: 'Suit/Apartment/Unit', key: 'suite_apt_unit' },
+  { title: 'City', key: 'city' },
+  { title: 'State', key: 'state' },
+  { title: 'Zip Code', key: 'zip' },
+  { title: 'Mailing Address', key: 'is_mailing_address' },
+  { title: 'Location', key: 'is_location' },
+  { title: 'Billing Address', key: 'is_billing_Address' },
   { title: 'Actions', key: 'actions', sortable: false },
 ]
 
@@ -31,32 +36,32 @@ const {
   selectedItems,
   deletionDialogOptions,
   handleItemDeletion,
-} = useTableManagement<Crew>('crews', getList, deleteCrew, headersDefinition)
+} = useTableManagement<Address>('addresses', getList, deleteAddress, headersDefinition)
 </script>
 
 <template>
   <ItemsManage
     v-model:items-per-page="pagination.itemsPerPage"
     v-model:search-query="searchQuery"
-    items-title="Crews"
-    :search-settings="{ placeholder: 'Search crews' }"
+    items-title="Addresses"
+    :search-settings="{ placeholder: 'Search address' }"
     :breadcrumbs="[
       {
         title: 'Home',
         to: { name: 'root' },
       },
       {
-        title: 'Crews',
+        title: 'Address',
         disabled: true,
       },
     ]"
   >
     <template #buttons>
       <VBtn
-        :to="{ name: 'crews-create' }"
+        :to="{ name: 'addresses-create' }"
         prepend-icon="tabler-plus"
       >
-        Create crew
+        Create address
       </VBtn>
     </template>
 
@@ -77,29 +82,35 @@ const {
           />
         </template>
 
-        <template #item.name="{ item }">
-          <RouterLink :to="{ name: 'crews-details-id', params: { id: item.id } }">
-            {{ item.name }}
-          </RouterLink>
+        <template #item.street="{ item }">
+          {{ item.street }}
         </template>
 
-        <template #item.color="{ item }">
-          <div :style="{ width: '40px', height: '20px', background: item.color ? item.color : '#8BC541' }"></div>
+        <template #item.city="{ item }">
+          {{ item.city }}
         </template>
 
-        <template #item.members="{ item }">
-          {{item.users.length}}
+        <template #item.is_mailing_address="{ item }">
+          {{ item.is_mailing_address ? 'Yes' : 'No' }}
+        </template>
+
+        <template #item.is_location="{ item }">
+          {{ item.is_location ? 'Yes' : 'No' }}
+        </template>
+
+        <template #item.is_billing_Address="{ item }">
+          {{ item.is_billing_Address ? 'Yes' : 'No' }}
         </template>
 
         <template #item.actions="{ item }">
           <IconBtn
-            :to="{ name: 'crews-details-id', params: { id: item.id } }"
+            :to="{ name: 'addresses-details-id', params: { id: item.id } }"
             title="View"
           >
             <VIcon icon="tabler-eye" />
           </IconBtn>
           <IconBtn
-            :to="{ name: 'crews-update-id', params: { id: item.id } }"
+            :to="{ name: 'addresses-update-id', params: { id: item.id } }"
             title="Edit"
           >
             <VIcon icon="tabler-edit" />
@@ -115,6 +126,6 @@ const {
   <ConfirmDialog
     v-model:is-visible="deletionDialogOptions.visible"
     :on-accept="deletionDialogOptions.onAccept"
-    title="Are you sure you want to delete this crew?"
+    title="Are you sure you want to delete this address?"
   />
 </template>

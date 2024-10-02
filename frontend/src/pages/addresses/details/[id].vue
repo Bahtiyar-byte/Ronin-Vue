@@ -2,40 +2,34 @@
 import { watch } from 'vue'
 import { useHead } from '@unhead/vue'
 import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router'
-import { useCrews } from '@/composables/useCrews'
-import type Crew from '@/types/crews/Crew'
+import { useAddress } from '@/composables/useAddress'
+import type Address from '@/types/address/Address'
 
-import CrewInfoPanel from '@/components/crews/CrewInfoPanel.vue'
+import AddressInfoPanel from '@/components/address/AddressInfoPanel.vue'
 
 definePage({
   meta: {
-    action: 'manage',
-    subject: 'crew',
+    actions: 'read',
+    subject: 'address',
   },
 })
 
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } }
 
-const templateTab = ref(null)
-
-const tabs = [
-  { icon: 'tabler-activity', title: 'Activity' },
-  { icon: 'ph-link-light', title: 'Related' },
-]
-
-const crewData = ref<Crew>()
-const crewName = ref<string>('')
+const addressData = ref<Address>()
+const addressName = ref<string>('')
 const isLoading = ref<boolean>(false)
 
 onMounted(async () => {
-  const { data, isFetching } = await useCrews().getById(route.params.id)
+  const { data, isFetching } = await useAddress().getById(route.params.id)
+
   watch(data, newVal => {
     if (newVal === null) {
       return
     }
 
-    crewName.value = newVal.name
-    crewData.value = newVal
+    addressName.value = newVal.street
+    addressData.value = newVal
   })
 
   watch(isFetching, newVal => {
@@ -45,7 +39,7 @@ onMounted(async () => {
 
 useHead({
   title: computed(() => {
-    return crewData.value !== undefined ? `${crewData.value.name} details` : null
+    return addressData.value !== undefined ? `${addressData.value.street} details` : null
   }),
 })
 </script>
@@ -58,23 +52,23 @@ useHead({
         to: { name: 'root' },
       },
       {
-        title: 'Crews',
-        to: { name: 'crews' },
+        title: 'Addresses',
+        to: { name: 'addresses' },
       },
       {
-        title: crewName,
+        title: addressName,
         disabled: true,
       },
     ]"
     class="!pl-0"
   />
-  <VRow v-if="crewData">
+  <VRow v-if="addressData">
     <VCol
       cols="12"
       md="5"
       lg="4"
     >
-      <CrewInfoPanel :crew-data="crewData" />
+      <AddressInfoPanel :address-data="addressData" />
     </VCol>
 
     <VCol
@@ -88,7 +82,7 @@ useHead({
       type="error"
       variant="tonal"
     >
-      Crew with ID  {{ route.params.id }} not found!
+      Address with ID  {{ route.params.id }} not found!
     </VAlert>
   </div>
 </template>
