@@ -17,6 +17,7 @@ const { getList, deleteCrew } = useCrews()
 const headersDefinition = [
   { title: 'Name', key: 'name' },
   { title: 'Color', key: 'color' },
+  { title: 'Members', key: 'members' },
   { title: 'Actions', key: 'actions', sortable: false },
 ]
 
@@ -84,6 +85,10 @@ const {
 
         <template #item.color="{ item }">
           <div :style="{ width: '40px', height: '20px', background: item.color ? item.color : '#8BC541' }"></div>
+        </template>
+
+        <template #item.members="{ item }">
+          {{item.users.length}}
         </template>
 
         <template #item.actions="{ item }">
