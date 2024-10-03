@@ -75,6 +75,7 @@ module.exports = class TradesDBApi {
         id: {
           [Op.in]: ids,
         },
+        orderBy: [['name', 'ASC']],
       },
       transaction,
     });
