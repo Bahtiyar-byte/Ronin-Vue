@@ -33,6 +33,8 @@ const Amendments = db.amendments;
 
 const EstimateSections = db.estimate_sections;
 
+const templatesRelated_tradeTrades = db.templatesRelated_tradeTrades;
+
 const ContactsData = [
   {
     name: 'Albert Einstein',
@@ -394,29 +396,122 @@ const JobsData = [
   },
 ];
 
+const TradesData = [
+  {
+    name: 'Aluminum/ Flashing',
+  },
+  {
+    name: 'Box Gutters',
+  },
+  {
+    name: 'Chimney Cap',
+  },
+  {
+    name: 'Downspouts',
+  },
+  {
+    name: 'EPDM',
+  },
+  {
+    name: 'Flat Roof',
+  },
+  {
+    name: 'Gutter Cleaning',
+  },
+  {
+    name: 'Gutter Guards',
+  },
+  {
+    name: 'Gutters',
+  },
+  {
+    name: 'Metal',
+  },
+  {
+    name: 'Pressure Washing',
+  },
+  {
+    name: 'Service Repairs',
+  },
+  {
+    name: 'Service: Call Back',
+  },
+  {
+    name: 'Shingles',
+  },
+  {
+    name: 'Siding',
+  },
+  {
+    name: 'Silicone',
+  },
+  {
+    name: 'Sky light',
+  },
+  {
+    name: 'Slate',
+  },
+  {
+    name: 'Soffit/ Fascia',
+  },
+  {
+    name: 'Tile',
+  },
+  {
+    name: 'TPO',
+  },
+  {
+    name: 'Vent install',
+  },
+  {
+    name: 'Ventilation',
+  },
+];
+
 const TemplatesData = [
   {
-    name: 'Erwin Schrodinger',
+    name: 'Aluminum/ Flashing',
 
-    description:
-      'Death is a natural part of life. Rejoice for those around you who transform into the Force. Mourn them do not. Miss them do not. Attachment leads to jealously. The shadow of greed, that is.',
+    description: 'Aluminum/ Flashing',
 
-    // type code here for "relation_one" field
-  },
+    trade : 'Aluminum/ Flashing',
 
-  {
-    name: 'Alfred Wegener',
-
-    description:
-      'Much to learn you still have my old padawan. ... This is just the beginning!',
+    related_trade: []
 
     // type code here for "relation_one" field
   },
 
   {
-    name: 'August Kekule',
+    name: 'Box Gutter Service- Mule Hide',
 
-    description: 'Truly wonderful, the mind of a child is.',
+    description: 'Install new Mule-Hide silicone patch to necessary seams, cracks, holes and eave tubes in gutter system.\n' +
+        'Install new Mule-Hide silicone rubber system to entire box gutter system.',
+
+    trade: 'Box Gutters',
+
+    related_trade: []
+  },
+
+  {
+    name: 'Box Gutter Service: Gaco',
+
+    description: 'Install new Gaco silicone patch to necessary seams, cracks, holes and eave tubes in gutter system.\n' +
+        'Install new Gaco silicone rubber system to entire box gutter system.',
+
+    trade: 'Box Gutters',
+
+    related_trade: []
+    // type code here for "relation_one" field
+  },
+
+  {
+    name: 'Inspection Report',
+
+    description: 'Evans Roofing and Gutters Completed and Inspection Report on this Property the findings to follow',
+
+    trade: 'Box Gutters',
+
+    related_trade: []
 
     // type code here for "relation_one" field
   },
@@ -426,37 +521,491 @@ const TemplatesData = [
 
     description: 'Younglings, younglings gather ’round.',
 
-    // type code here for "relation_one" field
-  },
+    trade: 'Box Gutters',
 
-  {
-    name: 'Ernst Mayr',
-
-    description: 'Good relations with the Wookiees, I have.',
+    related_trade: []
 
     // type code here for "relation_one" field
   },
-];
 
-const TradesData = [
   {
-    name: 'Lucretius',
+    name: 'Downspouts',
+
+    description: 'Downspouts',
+
+    trade: 'Downspouts',
+
+    related_trade: []
   },
 
   {
-    name: 'Nicolaus Copernicus',
+    name: 'EPDM Roof',
+
+    description: 'Remove existing roof down to roof deck.\n' +
+        'Install new half-inch fiber insulation board to entire roof.\n' +
+        'Install new EPDM 0.60 mil glue-down system rubber roof.',
+
+    trade: 'EPDM',
+
+    related_trade: []
   },
 
   {
-    name: 'Wilhelm Wundt',
+    name: 'Inspection Report',
+
+    description: 'Evans Roofing and Gutters Completed and Inspection Report on this Property the findings to follow: ',
+
+    trade: 'EPDM',
+
+    related_trade: []
+
   },
 
   {
-    name: 'Robert Koch',
+    name: 'Flat Roofing',
+
+    description: 'Flat Roofing',
+
+    trade: 'Flat Roof',
+
+    related_trade: []
+
   },
 
   {
-    name: 'Anton van Leeuwenhoek',
+    name: 'Shur Flo Gutter Guards 5"',
+
+    description: 'Install new aluminum Shur Flo gutter guard system. Zip screw gutter guards to the existing gutters. Warranty: Labor comes with 15-year labor warranty.',
+
+    trade: 'Gutter Guards',
+
+    related_trade: []
+
+  },
+
+  {
+    name: 'Shur Flo Gutter Guards 6"',
+
+    description: 'Install new aluminum Shur Flo gutter guard system. Zip screw gutter guards to the existing gutters. Warranty: Labor comes with 15-year labor warranty.',
+
+    trade: 'Gutter Guards',
+
+    related_trade: []
+
+  },
+
+  {
+    name: '5" Gutters',
+
+    description: '\n' +
+        '- We will remove and dispose of the existing gutters and downspouts.\n' +
+        '- New 5" aluminum seamless gutters will be installed.  Color selection to be picked out by homeowner.\n' +
+        '- Install new 2x3 downspouts.',
+
+    trade: 'Gutters',
+
+    related_trade: []
+
+  },
+
+  {
+    name: '6" Gutters',
+
+    description: '- We will remove and dispose of the existing gutters and downspouts.\n' +
+        '- New 6" aluminum seamless gutters will be installed.  Color selection to be picked out by homeowner.\n' +
+        '- Install new downspouts.',
+
+    trade: 'Gutters',
+
+    related_trade: []
+
+  },
+
+  {
+    name: 'Box Gutter Service- Mule Hide',
+
+    description: 'Install new Mule-Hide silicone patch to necessary seams, cracks, holes and eave tubes in gutter system.\n' +
+        'Install new Mule-Hide silicone rubber system to entire box gutter system.',
+
+    trade: 'Gutters',
+
+    related_trade: []
+
+  },
+
+  {
+    name: 'Box Gutter Service: Gaco',
+
+    description: 'Install new Gaco silicone patch to necessary seams, cracks, holes and eave tubes in gutter system.\n' +
+        'Install new Gaco silicone rubber system to entire box gutter system',
+
+    trade: 'Gutters',
+
+    related_trade: []
+
+  },
+
+  {
+    name: 'Downspouts',
+
+    description: 'Downspouts',
+
+    trade: 'Gutters',
+
+    related_trade: []
+
+  },
+
+  {
+    name: 'Inspection Report',
+
+    description: 'Evans Roofing and Gutters Completed and Inspection Report on this Property the findings to follow: ',
+
+    trade: 'Gutters',
+
+    related_trade: []
+
+  },
+
+  {
+    name: 'Shur Flo Gutter Guards 5"',
+
+    description: 'Install new aluminum Shur Flo gutter guard system. Zip screw gutter guards to the existing gutters.\n' +
+        '\n' +
+        'Warranty: Labor comes with 15-year labor warranty',
+
+    trade: 'Gutters',
+
+    related_trade: []
+
+  },
+
+  {
+    name: 'Shur Flo Gutter Guards 6"',
+
+    description: 'Install new aluminum Shur Flo gutter guard system. Zip screw gutter guards to the existing gutters.\n' +
+        '\n' +
+        'Warranty: Labor comes with 15-year labor warranty',
+
+    trade: 'Gutters',
+
+    related_trade: []
+
+  },
+
+  {
+    name: 'Inspection Report',
+
+    description: 'Evans Roofing and Gutters Completed and Inspection Report on this Property the findings to follow: ',
+
+    trade: 'Metal',
+
+    related_trade: []
+
+  },
+
+  {
+    name: 'Metal Roofing',
+
+    description: 'Remove existing layer of roof down to roof deck.\n' +
+        'Removal of any additional layers will be an additional cost of $75 per square. Tighten down any loose decking using eight-penny nails. Any bad lumber will be replaced at an additional $5.50/linear foot or $75 per 7/16 sheet OSB',
+
+    trade: 'Metal',
+
+    related_trade: []
+
+  },
+
+  {
+    name: 'Ventilation',
+
+    description: 'Install Lomanco Deck-Air ventilation at the eaves. (     )\n' +
+        'The Deck-Air®, when properly installed with proper exhaust vents, provides a balanced ventilation system to rid your attic space of trapped heat and moisture',
+    trade: 'Metal',
+
+    related_trade: []
+
+  },
+
+  {
+    name: 'Brad GAF Template',
+
+    description: 'Remove existing layer of roof down to roof deck. Removal of any additional layers will be an additional cost of $75 per square.\n' +
+        'Tighten down any loose decking using eight-penny nails.  Any bad lumber will be replaced at an additional $5.50/linear foot OR $75 per 7/16 sheet OSB',
+    trade: 'Roofing',
+
+    related_trade: []
+
+  },
+
+  {
+    name: 'EPDM Roof',
+
+    description: 'Remove existing roof down to roof deck.\n' +
+        'Install new half-inch fiber insulation board to entire roof.\n' +
+        'Install new EPDM 0.60 mil glue-down system rubber roof',
+    trade: 'Roofing',
+
+    related_trade: []
+
+  },
+
+  {
+    name: 'Gaco',
+
+    description: 'Install new Gaco silicone patch to necessary seams, drains, pipes, and extrusions on entire roof. \n' +
+        'Install new Gaco silicone roof system to entire roof.\n' +
+        'Clean up and haul away all debris',
+    trade: 'Roofing',
+
+    related_trade: []
+
+  },
+
+  {
+    name: 'GAF Timberline HDZ- ABC',
+
+    description: 'Remove existing layer of roof down to roof deck. Removal of any additional layers will be an additional cost of $75 per square.\n' +
+        'Tighten down any loose decking using eight-penny nails.  Any bad lumber will be replaced at an additional $5.50/linear foot OR $75 per 7/16 sheet OSB',
+    trade: 'Roofing',
+
+    related_trade: []
+
+  },
+
+  {
+    name: 'Mule Hide',
+
+    description: 'Install new Mule-Hide silicone patch to necessary seams, drains, pipes, and extrusions on entire roof.\n' +
+        'Install new Mule-Hide silicone roof system to entire roof.\n' +
+        'Clean up and haul away all debris',
+    trade: 'Roofing',
+
+    related_trade: []
+
+  },
+
+  {
+    name: 'Slate Service Call',
+
+    description: 'Service slate roof by replacing any missing or damaged slate.\n' +
+        'Slate will be replaced at an additional $50/piece.',
+    trade: 'Roofing',
+
+    related_trade: []
+
+  },
+
+  {
+    name: 'Service Repairs',
+
+    description: 'Service Repairs',
+    trade: 'Service Repairs',
+
+    related_trade: []
+
+  },
+
+  {
+    name: 'Service Repairs: Tile Roof',
+
+    description: 'Service tile roof by replacing any missing or damaged slate.\n' +
+        'Tile will be replaced at an additional $50/piece',
+    trade: 'Service Repairs',
+
+    related_trade: []
+
+  },
+
+  {
+    name: 'Slate Service Call',
+
+    description: 'Service slate roof by replacing any missing or damaged slate.\n' +
+        'Slate will be replaced at an additional $50/piece.',
+    trade: 'Service Repairs',
+
+    related_trade: []
+
+  },
+
+  {
+    name: 'Brad GAF Template',
+
+    description: 'Remove existing layer of roof down to roof deck. Removal of any additional layers will be an additional cost of $75 per square.\n' +
+        'Tighten down any loose decking using eight-penny nails.  Any bad lumber will be replaced at an additional $5.50/linear foot OR $75 per 7/16 sheet OSB',
+    trade: 'Singles',
+
+    related_trade: []
+
+  },
+
+  {
+    name: 'GAF Roof or Owens Corning',
+
+    description: 'Remove existing layer of roof down to roof deck. Removal of any additional layers will be an additional cost of $75 per square.\n' +
+        'Tighten down any loose decking using eight-penny nails. Any bad lumber will be replaced at an additional $5.50/linear foot or $75 per 7/16 sheet OSB',
+    trade: 'Singles',
+
+    related_trade: []
+
+  },
+
+  {
+    name: 'GAF Timberline HDZ- ABC',
+
+    description: 'Remove existing layer of roof down to roof deck. Removal of any additional layers will be an additional cost of $75 per square.\n' +
+        'Tighten down any loose decking using eight-penny nails.  Any bad lumber will be replaced at an additional $5.50/linear foot OR $75 per 7/16 sheet OSB',
+    trade: 'Singles',
+
+    related_trade: []
+
+  },
+
+  {
+    name: 'Inspection Report',
+
+    description: 'Evans Roofing and Gutters Completed and Inspection Report on this Property the findings to follow: ',
+    trade: 'Singles',
+
+    related_trade: []
+
+  },
+
+  {
+    name: 'Owens Corning',
+
+    description: 'Remove existing layer of roof down to roof deck. Removal of any additional layers will be an additional cost of $75 per square. \n' +
+        'Tighten down any loose decking using eight-penny nails. Any bad lumber will be replaced at an additional $5.50/linear foot or $75 per 7/16 sheet OSB',
+    trade: 'Singles',
+
+    related_trade: []
+
+  },
+
+  {
+    name: 'Ventilation',
+
+    description: 'Install Lomanco Deck-Air ventilation at the eaves. (     )\n' +
+        'The Deck-Air®, when properly installed with proper exhaust vents, provides a balanced ventilation system to rid your attic space of trapped heat and moisture.',
+    trade: 'Singles',
+
+    related_trade: []
+
+  },
+
+  {
+    name: 'Siding Template',
+
+    description: 'Siding',
+    trade: 'Siding',
+
+    related_trade: []
+
+  },
+
+  {
+    name: 'Gaco',
+
+    description: 'Install new Gaco silicone patch to necessary seams, drains, pipes, and extrusions on entire roof. \n' +
+        'Install new Gaco silicone roof system to entire roof.\n' +
+        'Clean up and haul away all debris.',
+    trade: 'Silicone',
+    related_trade: []
+
+  },
+
+
+  {
+    name: 'Henry Silicone',
+
+    description: 'Install new Henry silicone patch to necessary seams, drains, pipes, and extrusions on entire roof. \n' +
+        'Install new Henry silicone roof system to entire roof.\n' +
+        'Clean up and haul away all debris.',
+    trade: 'Silicone',
+    related_trade: []
+
+  },
+
+  {
+    name: 'Inspection Report',
+
+    description: 'Evans Roofing and Gutters Completed and Inspection Report on this Property the findings to follow',
+    trade: 'Silicone',
+    related_trade: []
+
+  },
+
+  {
+    name: 'Mule Hide',
+
+    description: 'Install new Mule-Hide silicone patch to necessary seams, drains, pipes, and extrusions on entire roof.\n' +
+        'Install new Mule-Hide silicone roof system to entire roof.\n' +
+        'Clean up and haul away all debris',
+    trade: 'Silicone',
+    related_trade: []
+
+  },
+
+  {
+    name: 'Inspection Report',
+
+    description: 'Evans Roofing and Gutters Completed and Inspection Report on this Property the findings to follow: ',
+    trade: 'Slate',
+    related_trade: []
+
+  },
+
+  {
+    name: 'Slate Service Call',
+
+    description: 'Service slate roof by replacing any missing or damaged slate.\n' +
+        'Slate will be replaced at an additional $50/piece',
+    trade: 'Slate',
+    related_trade: []
+
+  },
+
+  {
+    name: 'Inspection Report',
+
+    description: '\n' +
+        'Evans Roofing and Gutters Completed and Inspection Report on this Property the findings to follow:',
+    trade: 'Tile',
+    related_trade: []
+
+  },
+
+  {
+    name: 'Service Repairs: Tile Roof',
+
+    description: 'Service tile roof by replacing any missing or damaged slate.\n' +
+        'Tile will be replaced at an additional $50/piece.',
+    trade: 'Tile',
+    related_trade: []
+
+  },
+
+  {
+    name: 'TPO',
+
+    description: '\n' +
+        'GAF TPO RE-COVER\n' +
+        '• REMOVE ALL WALL FLASHINGS, TERMINATION BAR, PIPE FLASHINGS TO PREP FOR NEW ROOFING SYSTEM.\n' +
+        '• REMOVE LAST APPIED ROOFING SYSTEM LEAVING THE ORIGINAL IN TACT',
+    trade: 'Tile',
+    related_trade: []
+
+  },
+
+  {
+    name: 'Ventilation',
+
+    description: 'Install Lomanco Deck-Air ventilation at the eaves. (     )\n' +
+        'The Deck-Air®, when properly installed with proper exhaust vents, provides a balanced ventilation system to rid your attic space of trapped heat and moisture.',
+    trade: 'Ventilation',
+
+    related_trade: []
+
   },
 ];
 
@@ -1336,50 +1885,88 @@ async function associateTemplateWithRelated_trade() {
     await Template0.setRelated_trade(relatedRelated_trade0);
   }
 
-  const relatedRelated_trade1 = await Trades.findOne({
-    offset: Math.floor(Math.random() * (await Trades.count())),
-  });
-  const Template1 = await Templates.findOne({
-    order: [['id', 'ASC']],
-    offset: 1,
-  });
-  if (Template1?.setRelated_trade) {
-    await Template1.setRelated_trade(relatedRelated_trade1);
-  }
+  // const relatedRelated_trade1 = await Trades.findOne({
+  //   offset: Math.floor(Math.random() * (await Trades.count())),
+  // });
+  // const Template1 = await Templates.findOne({
+  //   order: [['id', 'ASC']],
+  //   offset: 1,
+  // });
+  // if (Template1?.setRelated_trade) {
+  //   await Template1.setRelated_trade(relatedRelated_trade1);
+  // }
 
-  const relatedRelated_trade2 = await Trades.findOne({
-    offset: Math.floor(Math.random() * (await Trades.count())),
-  });
-  const Template2 = await Templates.findOne({
-    order: [['id', 'ASC']],
-    offset: 2,
-  });
-  if (Template2?.setRelated_trade) {
-    await Template2.setRelated_trade(relatedRelated_trade2);
-  }
-
-  const relatedRelated_trade3 = await Trades.findOne({
-    offset: Math.floor(Math.random() * (await Trades.count())),
-  });
-  const Template3 = await Templates.findOne({
-    order: [['id', 'ASC']],
-    offset: 3,
-  });
-  if (Template3?.setRelated_trade) {
-    await Template3.setRelated_trade(relatedRelated_trade3);
-  }
-
-  const relatedRelated_trade4 = await Trades.findOne({
-    offset: Math.floor(Math.random() * (await Trades.count())),
-  });
-  const Template4 = await Templates.findOne({
-    order: [['id', 'ASC']],
-    offset: 4,
-  });
-  if (Template4?.setRelated_trade) {
-    await Template4.setRelated_trade(relatedRelated_trade4);
-  }
+  // const relatedRelated_trade2 = await Trades.findOne({
+  //   offset: Math.floor(Math.random() * (await Trades.count())),
+  // });
+  // const Template2 = await Templates.findOne({
+  //   order: [['id', 'ASC']],
+  //   offset: 2,
+  // });
+  // if (Template2?.setRelated_trade) {
+  //   await Template2.setRelated_trade(relatedRelated_trade2);
+  // }
+  //
+  // const relatedRelated_trade3 = await Trades.findOne({
+  //   offset: Math.floor(Math.random() * (await Trades.count())),
+  // });
+  // const Template3 = await Templates.findOne({
+  //   order: [['id', 'ASC']],
+  //   offset: 3,
+  // });
+  // if (Template3?.setRelated_trade) {
+  //   await Template3.setRelated_trade(relatedRelated_trade3);
+  // }
+  //
+  // const relatedRelated_trade4 = await Trades.findOne({
+  //   offset: Math.floor(Math.random() * (await Trades.count())),
+  // });
+  // const Template4 = await Templates.findOne({
+  //   order: [['id', 'ASC']],
+  //   offset: 4,
+  // });
+  // if (Template4?.setRelated_trade) {
+  //   await Template4.setRelated_trade(relatedRelated_trade4);
+  // }
 }
+
+// async function associateTemplateWithRelated_trade() {
+//   for (const template of TemplatesData) {
+//     try {
+//
+//       const transaction = await db.sequelize.transaction();
+//       // Search for the trade in the Trades model based on the trade keyword
+//       const relatedTrade = await Trades.findOne({
+//         where: { name: template.trade } // Assuming `trade` is the field name in Trades model
+//       });
+//
+//       if (relatedTrade) {
+//
+//         if (!template.name) {
+//           continue; // Skip this iteration if 'name' is undefined
+//         }
+//
+//         // Find the current template in the Templates model
+//         const currentTemplate = await db.templates.findOne({
+//           where: { name: template.name } // Assuming each template object in TemplatesData has an 'id'
+//         }, { transaction });
+//
+//         if (currentTemplate) {
+//
+//           const templates = await db.templates.findByPk(currentTemplate.id, {}, { transaction });
+//
+//           await templates.setRelated_trade(relatedTrade.id);
+//
+//
+//           await transaction.commit();
+//         }
+//       }
+//     } catch (error) {
+//       console.error(`Error associating trade for template :`, error);
+//     }
+//   }
+// }
+
 
 async function associateInvoiceWithRelated_job() {
   const relatedRelated_job0 = await Jobs.findOne({
@@ -2466,6 +3053,41 @@ async function associateEstimateSectionWithRelated_template() {
   }
 }
 
+async function insertTemplateRelatesTrada(templateId, tradeId) {
+  try {
+    // Write raw SQL insert query
+    // const query = `
+    //   INSERT INTO Templates (name, description, trade, createdAt, updatedAt)
+    //   VALUES (:name, :description, :trade, NOW(), NOW())
+    // `;
+
+    // Execute raw SQL insert using sequelize.query()
+    // await db.sequelize.query(query, {
+    //   replacements: {
+    //     name: name,
+    //     description: description,
+    //     trade: trade
+    //   }
+    // });
+  } catch (err) {}
+}
+
+// // Write raw SQL insert query
+// const query = `
+//       INSERT INTO Templates (name, description, trade, createdAt, updatedAt)
+//       VALUES (:name, :description, :trade, NOW(), NOW())
+//     `;
+//
+// // Execute raw SQL insert using sequelize.query()
+// await sequelize.query(query, {
+//   replacements: {
+//     name: name,
+//     description: description,
+//     trade: trade
+//   }
+// });
+
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await Contacts.bulkCreate(ContactsData);
@@ -2474,7 +3096,7 @@ module.exports = {
 
     await Jobs.bulkCreate(JobsData);
 
-    // await Templates.bulkCreate(TemplatesData);
+    await Templates.bulkCreate(TemplatesData);
 
     await Trades.bulkCreate(TradesData);
 
@@ -2511,7 +3133,7 @@ module.exports = {
 
       await associateJobWithRelated_contact(),
 
-      await associateTemplateWithRelated_trade(),
+      // await associateTemplateWithRelated_trade(),
 
       await associateInvoiceWithRelated_job(),
 
