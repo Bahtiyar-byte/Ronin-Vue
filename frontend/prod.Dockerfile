@@ -10,10 +10,18 @@ COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
 # Copy the rest of the application code
 COPY . .
 
-RUN yarn global add pnpm && pnpm i --frozen-lockfile;
+RUN corepack enable
+
+RUN corepack prepare pnpm@8.6.2 --activate
+
+RUN #npm install -g pnpm@10.8.3;
+
+RUN pnpm install;
+
+RUN pnpm i --frozen-lockfile;
 
 # Build vue.js based on the preferred package manager
-RUN pnpm run build;
+RUN pnpm run dev;
 
 # Use Nginx as the production server
 FROM nginx:stable-alpine

@@ -170,18 +170,18 @@ module.exports = class TemplatesDBApi {
       {
         model: db.trades,
         as: 'related_trade',
-        through: filter.templatesRelated_tradeTrades
+        through: 'templatesRelated_tradeTrades'
           ? {
-              where: {
-                [Op.or]: filter.related_trade.split('|').map((item) => {
-                  return { ['Id']: Utils.uuid(item) };
-                }),
-              },
+              where: filter.related_trade ? {
+                tradeId: Utils.uuid(filter.related_trade),
+              } : {},
             }
           : null,
         required: filter.related_trade ? true : null,
       },
     ];
+
+    console.log('include ================================================================= ', include)
 
     if (filter) {
       if (filter.id) {
@@ -191,12 +191,12 @@ module.exports = class TemplatesDBApi {
         };
       }
 
-      if (filter.name) {
-        where = {
-          ...where,
-          [Op.and]: Utils.ilike('templates', 'name', filter.name),
-        };
-      }
+      // if (filter.name) {
+      //   where = {
+      //     ...where,
+      //     [Op.and]: Utils.ilike('templates', 'name', filter.name),
+      //   };
+      // }
 
       if (filter.description) {
         where = {
