@@ -65,7 +65,7 @@ const toggleTemplateCreation = () => {
     <DialogCloseBtn @click="dialogModelValueUpdate(false)" />
     <VCard
       class="!p-2 sm:!p-4"
-      title="Manage Docuseal"
+      title="Signature"
     >
       <VCardText>
 
