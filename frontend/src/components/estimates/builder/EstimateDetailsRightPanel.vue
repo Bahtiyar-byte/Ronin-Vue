@@ -22,6 +22,7 @@ const isSendEstimateSidebarVisible = defineModel<boolean>('isSendEstimateSidebar
       <VCardText class="space-y-3">
         <VBtn
           block
+          prepend-icon="tabler-send"
           @click="isSendEstimateSidebarVisible = !isSendEstimateSidebarVisible"
         >
           Signature

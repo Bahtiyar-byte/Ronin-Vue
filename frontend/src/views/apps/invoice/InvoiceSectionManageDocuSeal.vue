@@ -83,7 +83,7 @@ const toggleTemplateCreation = () => {
       v-model="showTemplateCreatedSnackbar"
       :timeout="3500"
     >
-      New section template created
+      New Estimate created
     </VSnackbar>
   </VDialog>
 </template>

@@ -47,9 +47,9 @@ async function convertPdfToBase64(estimate: Estimate, filePath: string):  Promis
     return base64String;
 }
 
-async function uploadTemplate(base64: string): Promise<any> {
+async function uploadTemplate(base64: string, estimateName: string): Promise<any> {
     const data = {
-        "name": "Estimate",
+        "name": estimateName,
         "body": "Test body",
         "message": {
             "subject": "Test subject",
@@ -57,7 +57,7 @@ async function uploadTemplate(base64: string): Promise<any> {
         },
         "documents": [
             {
-                "name": "Estimate",
+                "name": estimateName,
                 "file" : base64
             }
         ]
@@ -104,7 +104,7 @@ async function getToken(documentUrl: string, template_id: number, estimate: Esti
         user_email: config.docuseal_user_email,
         integration_email: config.docuseal_integration_email,
         external_id: estimate.related_contact,
-        name: 'Estimate',
+        name: estimate.name,
         template_id: template_id,
         message:{
             subject: "test estimate",
@@ -145,7 +145,7 @@ export default class EstimatesService
         if (additionalData.attachments && additionalData.attachments.length > 0) {
             const base64Pdf = convertPdfToBase64(estimate, additionalData.attachments[0].path);
             if (base64Pdf){
-                const {url, template_id} = await uploadTemplate(await base64Pdf)
+                const {url, template_id} = await uploadTemplate(await base64Pdf, estimate.name)
                 if (await url){
                     return getToken(await url, template_id, estimate)
                 }

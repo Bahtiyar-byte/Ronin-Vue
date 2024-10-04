@@ -9,11 +9,11 @@ import type EstimateSection from '@/types/estimateSections/EstimateSection'
 
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id?: string } }
 
-const { create: createEstimate, update: updateEstimate, getById: getEstimate } = useEstimates()
+const { create: createEstimate, update: updateEstimate, getById: getEstimate, count: countEstimates } = useEstimates()
 const { create: createEstimateSection } = useEstimateSections()
 
 const estimateData = ref<Partial<Estimate>>({
-  name: 'New estimate',
+  name: '',
   createdAt: new Date(),
   related_contact: null,
   sections: [],
@@ -118,6 +118,20 @@ const handleSave = async (redirect?: boolean) => {
 const handlePreview = async () => {
   await handleSave(true)
 }
+
+const { data } = await countEstimates()
+if (data){
+  estimateData.value.name = ++data.value.count
+}
+watch(estimateData, async(newVal: Estimate) => {
+  const { data, isFetching } = await countEstimates()
+  const sectionNames = newVal.sections?.map(section => section.name).join('-')
+  if (sectionNames) {
+    estimateData.value.name = `${++data.value.count}-${sectionNames}`
+  }
+})
+
+
 </script>
 
 <template>
@@ -141,7 +155,7 @@ const handlePreview = async () => {
             color="secondary"
             @click="() => handleSave()"
           >
-            Save
+            Signature
           </VBtn>
 
           <VBtn

@@ -46,7 +46,7 @@ const generatePdf = () => {
 }
 
 const handleDownload = () => {
-  generatePdf().save('estimate.pdf')
+  generatePdf().save(`${estimate.value.name}.pdf`)
 }
 
 const handlePrint = () => {
@@ -59,14 +59,6 @@ const snackbars = reactive({
   emailSent: false,
   emailError: false,
 })
-
-const pdfMetadata = {
-  title: 'Invoice',
-  subject: 'Invoice for services',
-  author: 'Pena Muhammedov',
-  keywords: 'invoice, services, payment',
-  creator: 'html2pdf.js'
-};
 
 const handleSending = async (data: {
   emailTo: string
