@@ -1,17 +1,17 @@
 import { useApi } from './useApi'
 import type CountResponse from '@/types/common/CountRequestTypes'
-import type Contact from '@/types/contacts/Contact'
 import type {
-  GetContactsRequest,
-  GetContactsResponse,
-} from '@/types/contacts/GetContactsRequest'
+  GetPhoneNumberRequest,
+  GetPhoneNumerResponse,
+} from '@/types/contactphones/GetPhoneNumberRequest'
+import type ContactPhone from '@/types/contactphones/ContactPhone'
 
-export const useContacts = () => {
+export const useContactPhones = () => {
   const count = async (params: object) => {
     const url = computed(() => {
       const qParams = new URLSearchParams(params as Record<string, string>)
 
-      return `/contacts/count?${qParams.toString()}`
+      return `/contact_phones/count?${qParams.toString()}`
     })
 
     const { data, isFetching, error, response } = await useApi(url.value)
@@ -26,18 +26,18 @@ export const useContacts = () => {
     }
   }
 
-  const getList = async (requestParams: GetContactsRequest) => {
+  const getList = async (requestParams: Partial<GetPhoneNumberRequest>) => {
     const url = computed(() => {
       const qParams = new URLSearchParams(
         requestParams as Record<string, string>,
       )
 
-      return `/contacts/?${qParams.toString()}`
+      return `/contact_phones/?${qParams.toString()}`
     })
 
     const { data, isFetching, error, response } = useApi(url.value)
       .get()
-      .json<GetContactsResponse>()
+      .json<GetPhoneNumerResponse>()
 
     return {
       data,
@@ -48,9 +48,9 @@ export const useContacts = () => {
   }
 
   const getById = async (id: string) => {
-    const { data, isFetching, error } = useApi(`/contacts/${id}`)
+    const { data, isFetching, error } = useApi(`/contact_phones/${id}`)
       .get()
-      .json<Contact>()
+      .json<ContactPhone>()
 
     return {
       data,
@@ -59,12 +59,12 @@ export const useContacts = () => {
     }
   }
 
-  const create = async (contact: Contact) => {
-    const { data, isFetching, error } = useApi('/contacts/')
+  const create = async (contactPhone: ContactPhone) => {
+    const { data, isFetching, error } = useApi('/contact_phones/')
       .post({
-        data: contact,
+        data: contactPhone,
       })
-      .json<Contact>()
+      .json<ContactEmail>()
 
     return {
       data,
@@ -73,13 +73,13 @@ export const useContacts = () => {
     }
   }
 
-  const update = async (contact: Contact) => {
-    const { data, isFetching, error } = useApi(`/contacts/${contact.id}`)
+  const update = async (contactPhone: ContactPhone) => {
+    const { data, isFetching, error } = useApi(`/contact_phones/${contactPhone.id}`)
       .put({
-        id: contact.id,
-        data: contact,
+        id: contactPhone.id,
+        data: contactPhone,
       })
-      .json<Contact>()
+      .json<ContactPhone>()
 
     return {
       data,
@@ -88,23 +88,8 @@ export const useContacts = () => {
     }
   }
 
-  const assignContact = async (contact: Contact) => {
-    const { data, isFetching, error } = useApi(`/contacts/assignContact/${contact.id}`)
-      .put({
-        id: contact.id,
-        data: contact,
-      })
-      .json<Contact>()
-
-    return {
-      data,
-      isFetching,
-      error,
-    }
-  }
-
-  const deleteContact = async (contact: Contact) => {
-    const { data, isFetching, error } = useApi(`/contacts/${contact.id}`)
+  const deletePhone = async (contactPhone: ContactPhone) => {
+    const { data, isFetching, error } = useApi(`/contact_phones/${contactPhone.id}`)
       .delete()
       .json<boolean>()
 
@@ -117,7 +102,7 @@ export const useContacts = () => {
 
   const autocomplete = async (query: string, limit: number = 100) => {
     const { data, isFetching } = await useApi(
-      `/contacts/autocomplete/?query=${query}&limit=${limit}`,
+      `/contact_phones/autocomplete/?query=${query}&limit=${limit}`,
     ).json<{ id: string; label: string }[]>()
 
     return {
@@ -132,8 +117,7 @@ export const useContacts = () => {
     getById,
     create,
     update,
-    assignContact,
-    deleteContact,
+    deletePhone,
     autocomplete,
   }
 }

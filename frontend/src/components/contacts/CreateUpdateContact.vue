@@ -36,7 +36,12 @@ const fetchContactData = async (id: string) => {
       if ('fields' in field) {
         field.fields.forEach(subField => {
           if (hasKey(contact, subField.name)) {
-            subField.value = contact[subField.name]
+            if (subField.name === 'address_related_contact' || subField.name === 'related_phones' || subField.name === 'related_emails') {
+              const ids = contact[subField.name].map(address => address.id)
+              subField.value = ids
+            } else {
+              subField.value = contact[subField.name]
+            }
           }
         })
       } else if (hasKey(contact, field.name)) {

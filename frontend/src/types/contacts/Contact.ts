@@ -12,4 +12,7 @@ export default interface Contact extends Entity {
   estimate: any[]
   appointment: any[]
   source: string
+  address_related_contact: []
+  related_emails: []
+  related_phones: []
 }

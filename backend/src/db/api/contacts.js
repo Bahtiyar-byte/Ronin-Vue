@@ -46,6 +46,10 @@ module.exports = class ContactsDBApi {
       transaction,
     });
 
+    await contacts.setAddress_related_contact(data.address_related_contact || [], {
+      transaction,
+    });
+
     return contacts;
   }
 
@@ -122,6 +126,42 @@ module.exports = class ContactsDBApi {
       transaction,
     });
 
+    await contacts.setAddress_related_contact(data.address_related_contact || [], {
+      transaction,
+    });
+
+    return contacts;
+  }
+
+  static async assignContact(id, data, options) {
+    const currentUser = (options && options.currentUser) || { id: null };
+    const transaction = (options && options.transaction) || undefined;
+
+    const contacts = await db.contacts.findByPk(id, {}, { transaction });
+
+    await contacts.update(
+        {
+          name: data.name || null,
+          email: data.email || null,
+          phone: data.phone || null,
+          address: data.address || null,
+          status: data.status || null,
+          firstName: data.firstName || null,
+          lastName: data.lastName || null,
+          source: data.source || null,
+          category: data.category || null,
+          work_type: data.work_type || null,
+          referral: data.referral || null,
+          company: data.company || null,
+          updatedById: currentUser.id,
+        },
+        { transaction },
+    );
+
+    await contacts.setAssigned_to(data.assigned_to || null, {
+      transaction,
+    });
+
     return contacts;
   }
 
@@ -175,7 +215,7 @@ module.exports = class ContactsDBApi {
   static async findBy(where, options) {
     const transaction = (options && options.transaction) || undefined;
 
-    const contacts = await db.contacts.findOne({ where }, { transaction });console.log('contacts ==================================== ' , contacts)
+    const contacts = await db.contacts.findOne({ where }, { transaction });
     if (!contacts) {
       return contacts;
     }

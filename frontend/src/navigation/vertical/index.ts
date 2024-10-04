@@ -23,6 +23,20 @@ export default [
     subject: 'contacts',
   },
   {
+    title: 'Contact Emails',
+    to: { name: 'contactemails' },
+    icon: { icon: 'tabler-mailbox' },
+    action: 'read',
+    subject: 'contacts',
+  },
+  {
+    title: 'Contact Phone',
+    to: { name: 'contactphones' },
+    icon: { icon: 'tabler-phone' },
+    action: 'read',
+    subject: 'contacts',
+  },
+  {
     title: 'Calendar',
     to: { name: 'calendar' },
     icon: { icon: 'tabler-calendar' },

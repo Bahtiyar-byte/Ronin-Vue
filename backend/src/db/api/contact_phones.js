@@ -131,7 +131,6 @@ module.exports = class Contact_phonesDBApi {
 
   static async findBy(where, options) {
     const transaction = (options && options.transaction) || undefined;
-
     const contact_phones = await db.contact_phones.findOne(
       { where },
       { transaction },
@@ -279,7 +278,7 @@ module.exports = class Contact_phonesDBApi {
     }
 
     const records = await db.contact_phones.findAll({
-      attributes: ['id', 'phone_number'],
+      attributes: ['id', 'phone_number', 'type', 'is_primary'],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['phone_number', 'ASC']],
@@ -287,7 +286,7 @@ module.exports = class Contact_phonesDBApi {
 
     return records.map((record) => ({
       id: record.id,
-      label: record.phone_number,
+      label: `${record.phone_number} ${record.type.toUpperCase()} ${record.is_primary ? 'Primary' : 'Not Primary'}`,
     }));
   }
 };

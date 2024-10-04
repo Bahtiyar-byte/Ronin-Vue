@@ -5,6 +5,7 @@ import AppSelect from '@core/components/app-form-elements/AppSelect.vue'
 import AppAutocomplete from '@core/components/app-form-elements/AppAutocomplete.vue'
 import AppTextarea from '@core/components/app-form-elements/AppTextarea.vue'
 import Checkbox from '@core/components/app-form-elements/Checkbox.vue'
+import AppEmailField from '@core/components/app-form-elements/AppEmailField.vue'
 import type FormField from '@/types/forms/FormField'
 
 const props = defineProps<{
@@ -16,7 +17,6 @@ const props = defineProps<{
 
 const value = defineModel<string | string[]>()
 const field = props.field
-
 const fetchAutocompleteVariants = async (query: string = '') => {
   if (field.type === 'autocomplete' && typeof field.autocomplete_function === 'function') {
     field.variants = await field.autocomplete_function(query) as Array<{ value: string; title: string }>
@@ -44,8 +44,9 @@ const getComponentType = (type: string) => {
     return AppTextarea
   } else if (type === 'checkbox') {
     return Checkbox
+  } else if (type === 'contact_emails') {
+    return AppEmailField
   }
-
   return AppTextField
 }
 </script>

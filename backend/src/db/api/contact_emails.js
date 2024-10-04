@@ -262,7 +262,7 @@ module.exports = class Contact_emailsDBApi {
     }
 
     const records = await db.contact_emails.findAll({
-      attributes: ['id', 'email'],
+      attributes: ['id', 'email', 'type'],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['email', 'ASC']],
@@ -270,7 +270,7 @@ module.exports = class Contact_emailsDBApi {
 
     return records.map((record) => ({
       id: record.id,
-      label: record.email,
+      label: `${record.email} ${record.type.toUpperCase()}`,
     }));
   }
 };

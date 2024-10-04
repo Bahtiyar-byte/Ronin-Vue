@@ -7,8 +7,23 @@ const contactEditVisible = defineModel<boolean>('contactEditVisible', {
   default: true,
 })
 
-const { update } = useContacts()
+const { assignContact, getById } = useContacts()
 const { autocomplete: autocompleteUsers } = useUsers()
+
+/**
+ * Get the latest data for the contact and update the component.
+ */
+const getLastUpdatedData = async (contact_id:string) => {
+  const { data, isFetching } = await getById(contact_id)
+
+  watch(data, newVal => {
+    if (newVal === null) {
+      return
+    }
+
+    contactData.value = newVal
+  })
+}
 
 const saveItem = async (type: string, newValue: string) => {
   const updatedData = {
@@ -16,13 +31,13 @@ const saveItem = async (type: string, newValue: string) => {
     [type]: newValue,
   } as Contact
 
-  const { data, isFetching } = await update(updatedData)
+  const { data, isFetching } = await assignContact(updatedData)
 
   watch(data, newVal => {
     if (newVal === null) {
       return
     }
-
+    getLastUpdatedData(newVal.id)
     contactData.value = newVal
   })
 
@@ -43,7 +58,7 @@ onBeforeMount(async () => {
   <VRow>
     <!-- SECTION User Details -->
     <VCol cols="12">
-      <VCard :title="contactData.name">
+      <VCard :title="`${contactData.firstName} ${contactData.lastName}`">
         <VCardText>
           <!-- 👉 Details -->
           <h5 class="text-[1.05rem] leading-[1.5] font-medium">
@@ -57,10 +72,10 @@ onBeforeMount(async () => {
             <VListItem>
               <VListItemTitle>
                 <span class="font-medium">
-                  Name:
+                  First Name:
                 </span>
                 <div class="d-inline-block text-body-1">
-                  {{ contactData.name }}
+                  {{ contactData.firstName }}
                 </div>
               </VListItemTitle>
             </VListItem>
@@ -68,27 +83,42 @@ onBeforeMount(async () => {
             <VListItem>
               <VListItemTitle>
                 <span class="font-medium">
-                  Email:
+                  Last Name:
                 </span>
+                <div class="d-inline-block text-body-1">
+                  {{ contactData.lastName }}
+                </div>
+              </VListItemTitle>
+            </VListItem>
+
+            <VListItem>
+              <span class="font-medium">
+                Email:
+              </span>
+              <VListItemTitle>
                 <a
-                  :href="`mailto:${contactData.email}`"
+                  v-for="(singleEmail, index) in contactData.related_emails"
+                  :key="index"
+                  :href="`mailto:${singleEmail.email}`"
                   class="text-primary"
                 >
-                  {{ contactData.email }}
+                  {{ singleEmail.email }}
                 </a>
               </VListItemTitle>
             </VListItem>
 
             <VListItem>
+              <span class="font-medium">
+                Phone:
+              </span>
               <VListItemTitle>
-                <span class="font-medium">
-                  Phone:
-                </span>
                 <a
-                  :href="`tel:${contactData.phone}`"
+                  v-for="(singlePhone, index) in contactData.related_phones"
+                  :key="index"
+                  :href="`tel:${singlePhone.phone_number}`"
                   class="text-primary"
                 >
-                  {{ contactData.phone }}
+                  {{ singlePhone.phone_number }}
                 </a>
               </VListItemTitle>
             </VListItem>
@@ -104,13 +134,19 @@ onBeforeMount(async () => {
               </VListItemTitle>
             </VListItem>
 
-            <VListItem v-if="contactData.address?.length">
+            <VListItem v-if="contactData.address_related_contact?.length">
+              <span class="font-medium">
+                Address:
+              </span>
               <VListItemTitle>
-                <span class="font-medium">
-                  Address:
-                </span>
                 <div class="d-inline-block text-body-1">
-                  {{ contactData.address }}
+                  <span
+                    v-for="(singleAddress, index) in contactData.address_related_contact"
+                    :key="index"
+                    class="break-words"
+                  >
+                    {{ `${singleAddress.suite_apt_unit} ${singleAddress.street} ${singleAddress.city} ${singleAddress.state}, ${singleAddress.zip}` }}
+                  </span>
                 </div>
               </VListItemTitle>
             </VListItem>
@@ -122,6 +158,19 @@ onBeforeMount(async () => {
                 </span>
                 <div class="d-inline-block text-body-1">
                   {{ contactData.source }}
+                </div>
+              </VListItemTitle>
+            </VListItem>
+
+            <VListItem v-if="contactData.source?.length">
+              <VListItemTitle>
+                <span class="font-medium">
+                  Assigned:
+                </span>
+                <div class="d-inline-block text-body-1">
+                  {{ contactData.assigned_to
+                    ? `${contactData.assigned_to.firstName || ''} ${contactData.assigned_to.lastName || ''}`.trim()
+                    : 'Unassigned' }}
                 </div>
               </VListItemTitle>
             </VListItem>

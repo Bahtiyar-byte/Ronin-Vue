@@ -203,6 +203,8 @@ declare global {
   const useCloned: typeof import('@vueuse/core')['useCloned']
   const useColorMode: typeof import('@vueuse/core')['useColorMode']
   const useConfirmDialog: typeof import('@vueuse/core')['useConfirmDialog']
+  const useContactEmails: typeof import('./src/composables/useContactEmails')['useContactEmails']
+  const useContactPhones: typeof import('./src/composables/useContactPhones')['useContactPhones']
   const useContacts: typeof import('./src/composables/useContacts')['useContacts']
   const useContactsAttachments: typeof import('./src/composables/useContactsAttachments')['useContactsAttachments']
   const useContracts: typeof import('./src/composables/useContracts')['useContracts']
@@ -590,6 +592,8 @@ declare module 'vue' {
     readonly useCloned: UnwrapRef<typeof import('@vueuse/core')['useCloned']>
     readonly useColorMode: UnwrapRef<typeof import('@vueuse/core')['useColorMode']>
     readonly useConfirmDialog: UnwrapRef<typeof import('@vueuse/core')['useConfirmDialog']>
+    readonly useContactEmails: UnwrapRef<typeof import('./src/composables/useContactEmails')['useContactEmails']>
+    readonly useContactPhones: UnwrapRef<typeof import('./src/composables/useContactPhones')['useContactPhones']>
     readonly useContacts: UnwrapRef<typeof import('./src/composables/useContacts')['useContacts']>
     readonly useContactsAttachments: UnwrapRef<typeof import('./src/composables/useContactsAttachments')['useContactsAttachments']>
     readonly useContracts: UnwrapRef<typeof import('./src/composables/useContracts')['useContracts']>
@@ -970,6 +974,8 @@ declare module '@vue/runtime-core' {
     readonly useCloned: UnwrapRef<typeof import('@vueuse/core')['useCloned']>
     readonly useColorMode: UnwrapRef<typeof import('@vueuse/core')['useColorMode']>
     readonly useConfirmDialog: UnwrapRef<typeof import('@vueuse/core')['useConfirmDialog']>
+    readonly useContactEmails: UnwrapRef<typeof import('./src/composables/useContactEmails')['useContactEmails']>
+    readonly useContactPhones: UnwrapRef<typeof import('./src/composables/useContactPhones')['useContactPhones']>
     readonly useContacts: UnwrapRef<typeof import('./src/composables/useContacts')['useContacts']>
     readonly useContactsAttachments: UnwrapRef<typeof import('./src/composables/useContactsAttachments')['useContactsAttachments']>
     readonly useContracts: UnwrapRef<typeof import('./src/composables/useContracts')['useContracts']>

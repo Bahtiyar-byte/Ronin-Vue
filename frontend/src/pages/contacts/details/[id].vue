@@ -33,7 +33,7 @@ onMounted(async () => {
       return
     }
 
-    contactName.value = newVal.name
+    contactName.value = `${newVal.firstName} ${newVal.lastName}`
     contactData.value = newVal
   })
 

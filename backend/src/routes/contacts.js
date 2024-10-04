@@ -204,6 +204,19 @@ router.put(
     }),
 );
 
+router.put(
+    '/assignContact/:id',
+    wrapAsync(async (req, res) => {
+        const payload = await ContactsService.assignContact(
+            req.body.data,
+            req.body.id,
+            req.currentUser,
+        );
+
+        res.status(200).send(payload);
+    }),
+);
+
 /**
  * @swagger
  *  /api/contacts/{id}:

@@ -11,12 +11,13 @@ module.exports = class Contact_phonesService {
   static async create(data, currentUser) {
     const transaction = await db.sequelize.transaction();
     try {
-      await Contact_phonesDBApi.create(data, {
+      const phone = await Contact_phonesDBApi.create(data, {
         currentUser,
         transaction,
       });
 
       await transaction.commit();
+      return phone;
     } catch (error) {
       await transaction.rollback();
       throw error;
