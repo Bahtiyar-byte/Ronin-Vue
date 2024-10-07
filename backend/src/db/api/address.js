@@ -445,7 +445,7 @@ module.exports = class AddressDBApi {
     }
 
     const records = await db.address.findAll({
-      attributes: ['id', 'id'],
+      attributes: ['id', 'suite_apt_unit', 'street', 'city', 'state', 'zip', 'country' ],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['id', 'ASC']],
@@ -453,7 +453,7 @@ module.exports = class AddressDBApi {
 
     return records.map((record) => ({
       id: record.id,
-      label: record.id,
+      label: record.suite_apt_unit + ' ' + record.street + ' '+ record.city + ', '+ record.state + ' ' + record.country + ' ' + record.zip,
     }));
   }
 };

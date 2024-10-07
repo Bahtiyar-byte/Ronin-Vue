@@ -73,13 +73,12 @@ router.post(
       req.headers.referer ||
       `${req.protocol}://${req.hostname}${req.originalUrl}`;
     const link = new URL(referer);
-    await Contact_emailsService.create(
+    const payload = await Contact_emailsService.create(
       req.body.data,
       req.currentUser,
       true,
       link.host,
     );
-    const payload = true;
     res.status(200).send(payload);
   }),
 );

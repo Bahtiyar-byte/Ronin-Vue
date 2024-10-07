@@ -72,13 +72,6 @@ export default [
     subject: 'chats',
   },
   {
-    title: 'Addresses',
-    to: { name: 'addresses' },
-    icon: { icon: 'tabler-location' },
-    action: 'read',
-    subject: 'chats',
-  },
-  {
     title: 'Tools',
     icon: { icon: 'tabler-tool' },
     action: 'read',

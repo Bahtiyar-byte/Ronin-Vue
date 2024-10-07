@@ -17,7 +17,7 @@ const { getList, deleteTemplate } = useTemplates()
 const headersDefinition = [
   { title: 'Name', key: 'name' },
   { title: 'Description', key: 'description' },
-  { title: 'Trade', key: 'related_trade.name', sortable: false },
+  { title: 'Trade', key: 'related_trade', sortable: false },
   { title: 'Actions', key: 'actions', sortable: false },
 ]
 
@@ -81,6 +81,10 @@ const {
           <RouterLink :to="{ name: 'tools-templates-details-id', params: { id: item.id } }">
             {{ item.name }}
           </RouterLink>
+        </template>
+
+        <template #item.related_trade="{ item }">
+            {{ item.related_trade?.length }}
         </template>
 
         <template #item.actions="{ item }">

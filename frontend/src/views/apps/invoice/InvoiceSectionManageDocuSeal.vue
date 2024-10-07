@@ -65,7 +65,7 @@ const toggleTemplateCreation = () => {
     <DialogCloseBtn @click="dialogModelValueUpdate(false)" />
     <VCard
       class="!p-2 sm:!p-4"
-      title="Manage Docuseal"
+      title="Signature"
     >
       <VCardText>
 
@@ -83,7 +83,7 @@ const toggleTemplateCreation = () => {
       v-model="showTemplateCreatedSnackbar"
       :timeout="3500"
     >
-      New section template created
+      New Estimate created
     </VSnackbar>
   </VDialog>
 </template>

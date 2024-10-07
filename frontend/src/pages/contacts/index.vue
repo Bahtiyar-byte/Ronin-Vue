@@ -14,7 +14,8 @@ definePage({
 const { getList, deleteContact } = useContacts()
 
 const headersDefinition = [
-  { title: 'Name', key: 'name' },
+  { title: 'First Name', key: 'firstName' },
+  { title: 'Last Name', key: 'lastName' },
   { title: 'Email', key: 'email' },
   { title: 'Phone', key: 'phone', sortable: false },
   { title: 'Status', key: 'status' },
@@ -90,6 +91,14 @@ const {
             <RouterLink :to="{ name: 'contacts-details-id', params: { id: item.id } }">
               {{ item.name }}
             </RouterLink>
+          </template>
+
+          <template #item.email="{ item }">
+            <span v-html="item.related_emails.map(email => email.email).join('<br>')"></span>
+          </template>
+
+          <template #item.phone="{ item }">
+            <span v-html="item.related_phones.map(phone => phone.phone_number).join('<br>')"></span>
           </template>
 
           <template #item.actions="{ item }">

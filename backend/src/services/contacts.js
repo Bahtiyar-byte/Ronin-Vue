@@ -81,6 +81,28 @@ module.exports = class ContactsService {
     }
   }
 
+  static async assignContact(data, id, currentUser) {
+    const transaction = await db.sequelize.transaction();
+    try {
+      let contacts = await ContactsDBApi.findBy({ id }, { transaction });
+
+      if (!contacts) {
+        throw new ValidationError('contactsNotFound');
+      }
+
+      await ContactsDBApi.assignContact(id, data, {
+        currentUser,
+        transaction,
+      });
+
+      await transaction.commit();
+      return contacts;
+    } catch (error) {
+      await transaction.rollback();
+      throw error;
+    }
+  }
+
   static async deleteByIds(ids, currentUser) {
     const transaction = await db.sequelize.transaction();
 

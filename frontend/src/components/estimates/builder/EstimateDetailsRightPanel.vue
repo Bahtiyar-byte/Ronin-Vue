@@ -25,7 +25,7 @@ const isSendEstimateSidebarVisible = defineModel<boolean>('isSendEstimateSidebar
           prepend-icon="tabler-send"
           @click="isSendEstimateSidebarVisible = !isSendEstimateSidebarVisible"
         >
-          Send
+          Signature
         </VBtn>
 
         <VBtn

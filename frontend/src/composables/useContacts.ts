@@ -88,6 +88,21 @@ export const useContacts = () => {
     }
   }
 
+  const assignContact = async (contact: Contact) => {
+    const { data, isFetching, error } = useApi(`/contacts/assignContact/${contact.id}`)
+      .put({
+        id: contact.id,
+        data: contact,
+      })
+      .json<Contact>()
+
+    return {
+      data,
+      isFetching,
+      error,
+    }
+  }
+
   const deleteContact = async (contact: Contact) => {
     const { data, isFetching, error } = useApi(`/contacts/${contact.id}`)
       .delete()
@@ -117,6 +132,7 @@ export const useContacts = () => {
     getById,
     create,
     update,
+    assignContact,
     deleteContact,
     autocomplete,
   }

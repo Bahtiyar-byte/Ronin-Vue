@@ -46,7 +46,7 @@ const generatePdf = () => {
 }
 
 const handleDownload = () => {
-  generatePdf().save('estimate.pdf')
+  generatePdf().save(`${estimate.value.name}.pdf`)
 }
 
 const handlePrint = () => {
@@ -59,14 +59,6 @@ const snackbars = reactive({
   emailSent: false,
   emailError: false,
 })
-
-const pdfMetadata = {
-  title: 'Invoice',
-  subject: 'Invoice for services',
-  author: 'Pena Muhammedov',
-  keywords: 'invoice, services, payment',
-  creator: 'html2pdf.js'
-};
 
 const handleSending = async (data: {
   emailTo: string
@@ -102,6 +94,17 @@ const handleSending = async (data: {
     })
   })
 }
+
+watch(isSendEstimateSidebarVisible, newVal => {
+  if (newVal === true) {
+    handleSending({
+      emailTo: 'info@thedigitalronin.com',
+      subject: 'Estimate subject',
+      message: 'Estimate message',
+    })
+  }
+})
+
 </script>
 
 <template>
@@ -129,12 +132,12 @@ const handleSending = async (data: {
 
     <InvoiceSectionManageDocuSeal v-model:dialog-visible="isDocuSealVisible" v-model:token="isDocuSealToken" />
 
-    <InvoiceSendInvoiceDrawer
-      v-if="estimate.id !== undefined"
-      v-model:drawer-opened="isSendEstimateSidebarVisible"
-      v-model:estimate-data="estimate"
-      @submit="handleSending"
-    />
+<!--    <InvoiceSendInvoiceDrawer-->
+<!--      v-if="estimate.id !== undefined"-->
+<!--      v-model:drawer-opened="isSendEstimateSidebarVisible"-->
+<!--      v-model:estimate-data="estimate"-->
+<!--      @submit="handleSending"-->
+<!--    />-->
 
     <VSnackbar
       v-model="snackbars.emailError"

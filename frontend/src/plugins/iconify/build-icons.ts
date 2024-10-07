@@ -177,7 +177,9 @@ const sources: BundleScriptConfig = {
         'file-upload',
         'cloud-upload',
         'tool',
-        'location'
+        'location',
+        'mailbox',
+        'x'
       ],
     },
     {
@@ -192,6 +194,7 @@ const sources: BundleScriptConfig = {
         'alert-circle',
         'check-circle',
         'alert',
+        'contact-mail',
       ],
     },
     {

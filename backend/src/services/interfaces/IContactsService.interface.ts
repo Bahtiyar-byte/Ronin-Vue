@@ -13,6 +13,7 @@ export interface IContactsService {
     host?: string,
   ): Promise<void>;
   update(data: any, id: string, currentUser: CurrentUser): Promise<any>;
+  assignContact(data: any, id: string, currentUser: CurrentUser): Promise<any>;
   deleteByIds(ids: string[], currentUser: CurrentUser): Promise<void>;
   remove(id: string, currentUser: CurrentUser): Promise<void>;
 }

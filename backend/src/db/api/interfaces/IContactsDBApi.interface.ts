@@ -13,6 +13,7 @@ interface IContactsDBApi {
   create(data: ContactDTO, options?: Options): Promise<any>;
   bulkImport(data: ContactDTO[], options?: Options): Promise<any>;
   update(id: string, data: ContactDTO, options?: Options): Promise<any>;
+  assignContact(id: string, data: ContactDTO, options?: Options): Promise<any>;
   deleteByIds(ids: string[], options?: Options): Promise<any>;
   remove(id: string, options?: Options): Promise<any>;
   findBy(where: object, options?: Options): Promise<any>;
