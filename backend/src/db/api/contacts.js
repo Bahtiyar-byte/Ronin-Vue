@@ -38,17 +38,125 @@ module.exports = class ContactsDBApi {
       transaction,
     });
 
-    await contacts.setRelated_phones(data.related_phones || [], {
-      transaction,
-    });
+    // await contacts.setRelated_phones(data.related_phones || [], {
+    //   transaction,
+    // });
 
-    await contacts.setRelated_emails(data.related_emails || [], {
-      transaction,
-    });
+    if (data.related_phones){
+      const phoneIds = new Set();
+      for (var singlePhone of data.related_phones){
+        const phone = await db.contact_phones.findOne({
+          where: { phone_number: singlePhone.phone_number },
+          transaction
+        });
+        if (phone){
+          phoneIds.add(phone.id)
+          continue
+        } else {
+          const phone = await db.contact_phones.create(
+              {
+                id: singlePhone.id || undefined,
+                phone_number: singlePhone.phone_number || null,
+                type: singlePhone.type || null,
+                is_primary: singlePhone.is_primary || false,
+                importHash: singlePhone.importHash || null,
+                createdById: currentUser.id,
+                updatedById: currentUser.id,
+              },
+              { transaction },
+          );
+          phoneIds.add(phone.id)
+        }
+      }
+      // await contacts.setRelated_emails(Array.from(emailIds) || [], {
+      //   transaction,
+      // });
+      await contacts.setRelated_phones(Array.from(phoneIds) || [], {
+        transaction,
+      });
+    }
 
-    await contacts.setAddress_related_contact(data.address_related_contact || [], {
-      transaction,
-    });
+    // await contacts.setRelated_emails(data.related_emails || [], {
+    //   transaction,
+    // });
+
+    if (data.related_emails){
+      const emailIds = new Set();
+      for (var singleEmail of data.related_emails){
+        const email = await db.contact_emails.findOne({
+          where: { email: singleEmail.email },
+          transaction
+        });
+        if (email){
+          emailIds.add(email.id)
+          continue
+        } else {
+          const email = await db.contact_emails.create(
+              {
+                id: singleEmail.id || undefined,
+                email: singleEmail.email || null,
+                type: singleEmail.type || null,
+                importHash: singleEmail.importHash || null,
+                createdById: currentUser.id,
+                updatedById: currentUser.id,
+              },
+              { transaction },
+          );
+          emailIds.add(email.id)
+        }
+      }
+      await contacts.setRelated_emails(Array.from(emailIds) || [], {
+        transaction,
+      });
+    }
+
+    // await contacts.setAddress_related_contact(data.address_related_contact || [], {
+    //   transaction,
+    // });
+
+    if (data.address_related_contact){
+      const addressIds = new Set();
+      for (var singleAddress of data.address_related_contact){
+        const address = await db.address.findOne({
+          where: { id: singleAddress.id },
+          transaction
+        });
+        if (address){
+          addressIds.add(address.id)
+          continue
+        } else {
+          const address = await db.address.create(
+              {
+                id: singleEmail.id || undefined,
+
+                street: singleEmail.street || null,
+                suite_apt_unit: singleEmail.suite_apt_unit || null,
+                city: singleEmail.city || null,
+                state: singleEmail.state || null,
+                zip: singleEmail.zip || null,
+                country: singleEmail.country || null,
+                is_mailing_address: singleEmail.is_mailing_address || false,
+
+                is_location: singleEmail.is_location || false,
+
+                is_billing_Address: singleEmail.is_billing_Address || false,
+
+                latitude: singleEmail.latitude || null,
+                longitude: singleEmail.longitude || null,
+                importHash: singleEmail.importHash || null,
+                createdById: currentUser.id,
+                updatedById: currentUser.id,
+
+              },
+              { transaction },
+          );
+          addressIds.add(address.id)
+        }
+      }
+      await contacts.setAddress_related_contact(Array.from(addressIds) || [], {
+        transaction,
+      });
+    }
 
     return contacts;
   }
@@ -114,21 +222,174 @@ module.exports = class ContactsDBApi {
       { transaction },
     );
 
-    await contacts.setAssigned_to(data.assigned_to || null, {
-      transaction,
-    });
+    // await contacts.setAssigned_to(data.assigned_to || null, {
+    //   transaction,
+    // });
 
-    await contacts.setRelated_phones(data.related_phones || [], {
-      transaction,
-    });
+    // await contacts.setRelated_phones(data.related_phones || [], {
+    //   transaction,
+    // });
 
-    await contacts.setRelated_emails(data.related_emails || [], {
-      transaction,
-    });
+    if (data.related_phones){
+      const phoneIds = new Set();
+      for (var singlePhone of data.related_phones){
+        if (singlePhone.id){
+            const phone = await db.contact_phones.findOne({
+                where: { phone_number: singlePhone.phone_number },
+                transaction
+            });
+            await phone.update(
+                {
+                    phone_number: singlePhone.phone_number || null,
+                    type: singlePhone.type || null,
+                    is_primary: singlePhone.is_primary || false,
+                    importHash: singlePhone.importHash || null,
+                    createdById: currentUser.id,
+                    updatedById: currentUser.id,
+                },
+                { transaction },
+            );
+            phoneIds.add(phone.id)
+          continue
+        } else {
+          const phone = await db.contact_phones.create(
+              {
+                id: singlePhone.id || undefined,
+                phone_number: singlePhone.phone_number || null,
+                type: singlePhone.type || null,
+                is_primary: singlePhone.is_primary || false,
+                importHash: singlePhone.importHash || null,
+                createdById: currentUser.id,
+                updatedById: currentUser.id,
+              },
+              { transaction },
+          );
+          phoneIds.add(phone.id)
+        }
+      }
+      // await contacts.setRelated_emails(Array.from(emailIds) || [], {
+      //   transaction,
+      // });
+      await contacts.setRelated_phones(Array.from(phoneIds) || [], {
+        transaction,
+      });
+    }
 
-    await contacts.setAddress_related_contact(data.address_related_contact || [], {
-      transaction,
-    });
+    //
+    // await contacts.setRelated_emails(data.related_emails || [], {
+    //   transaction,
+    // });
+
+    if (data.related_emails){
+      const emailIds = new Set();
+      for (var singleEmail of data.related_emails){
+
+        if (singleEmail.id){
+            const email = await db.contact_emails.findOne({
+                where: { email: singleEmail.email },
+                transaction
+            });
+            await email.update(
+                {
+                    email: singleEmail.email || null,
+                    type: singleEmail.type || null,
+                    importHash: singleEmail.importHash || null,
+                    createdById: currentUser.id,
+                    updatedById: currentUser.id,
+                },
+                { transaction },
+            );
+            emailIds.add(email.id)
+          continue
+        } else {
+          const email = await db.contact_emails.create(
+              {
+                id: singleEmail.id || undefined,
+                email: singleEmail.email || null,
+                type: singleEmail.type || null,
+                importHash: singleEmail.importHash || null,
+                createdById: currentUser.id,
+                updatedById: currentUser.id,
+              },
+              { transaction },
+          );
+          emailIds.add(email.id)
+        }
+      }
+      await contacts.setRelated_emails(Array.from(emailIds) || [], {
+        transaction,
+      });
+    }
+
+    // await contacts.setAddress_related_contact(data.address_related_contact || [], {
+    //   transaction,
+    // });
+
+      if (data.address_related_contact){
+          const addressIds = new Set();
+          for (var singleAddress of data.address_related_contact){
+
+              if (singleAddress.id){
+                  const address = await db.address.findOne({
+                      where: { id: singleAddress.id },
+                      transaction
+                  });
+                  await address.update(
+                      {
+                          street: singleAddress.street || null,
+                          suite_apt_unit: singleAddress.suite_apt_unit || null,
+                          city: singleAddress.city || null,
+                          state: singleAddress.state || null,
+                          zip: singleAddress.zip || null,
+                          country: singleAddress.country || null,
+                          is_mailing_address: singleAddress.is_mailing_address || false,
+
+                          is_location: singleAddress.is_location || false,
+
+                          is_billing_Address: singleAddress.is_billing_Address || false,
+
+                          latitude: singleAddress.latitude || null,
+                          longitude: singleAddress.longitude || null,
+                          importHash: singleAddress.importHash || null,
+                          updatedById: currentUser.id,
+                      },
+                      { transaction },
+                  );
+                  addressIds.add(address.id)
+                  continue
+              } else {
+                  const address = await db.address.create(
+                      {
+                          id: singleAddress.id || undefined,
+
+                          street: singleAddress.street || null,
+                          suite_apt_unit: singleAddress.suite_apt_unit || null,
+                          city: singleAddress.city || null,
+                          state: singleAddress.state || null,
+                          zip: singleAddress.zip || null,
+                          country: singleAddress.country || null,
+                          is_mailing_address: singleAddress.is_mailing_address || false,
+
+                          is_location: singleAddress.is_location || false,
+
+                          is_billing_Address: singleAddress.is_billing_Address || false,
+
+                          latitude: singleAddress.latitude || null,
+                          longitude: singleAddress.longitude || null,
+                          importHash: singleAddress.importHash || null,
+                          createdById: currentUser.id,
+                          updatedById: currentUser.id,
+
+                      },
+                      { transaction },
+                  );
+                  addressIds.add(address.id)
+              }
+          }
+          await contacts.setAddress_related_contact(Array.from(addressIds) || [], {
+              transaction,
+          });
+      }
 
     return contacts;
   }
@@ -161,6 +422,8 @@ module.exports = class ContactsDBApi {
     await contacts.setAssigned_to(data.assigned_to || null, {
       transaction,
     });
+
+
 
     return contacts;
   }

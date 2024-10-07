@@ -36,20 +36,22 @@ const fetchContactData = async (id: string) => {
       if ('fields' in field) {
         field.fields.forEach(subField => {
           if (hasKey(contact, subField.name)) {
-            if (subField.name === 'address_related_contact' || subField.name === 'related_phones' || subField.name === 'related_emails') {
-              const ids = contact[subField.name].map(address => address.id)
-              subField.value = ids
-            } else {
+            // if (subField.name === 'address_related_contact') {
+            //   const ids = contact[subField.name].map(address => address.id)
+            //   subField.value = ids
+            // } else {
               subField.value = contact[subField.name]
-            }
+              // console.log('subField.name ', subField.name)
+              // console.log('subField.value ', subField.value)
+            // }
           }
         })
       } else if (hasKey(contact, field.name)) {
         field.value = contact[field.name]
       }
     })
-    pageTitle.value = `Update ${contact.name}`
-    breadcrumbs.value[2] = { title: `Update ${contact.name}`, disabled: true }
+    pageTitle.value = `Update ${contact.firstName} ${contact.lastName}`
+    breadcrumbs.value[2] = { title: `Update ${contact.firstName} ${contact.lastName}`, disabled: true }
   })
 }
 
@@ -65,7 +67,7 @@ onBeforeMount(async () => {
 })
 
 useHead({
-  title: computed(() => (isUpdateMode.value && contactRef.value ? `Edit ${contactRef.value.name}` : 'Create new contact')),
+  title: computed(() => (isUpdateMode.value && contactRef.value ? `Edit ${contactRef.value.firstName}` : 'Create new contact')),
 })
 
 const submitForm = async (values: Record<string, any>) => {

@@ -103,6 +103,7 @@ onBeforeMount(async () => {
                   class="text-primary"
                 >
                   {{ singleEmail.email }}
+                  <br>
                 </a>
               </VListItemTitle>
             </VListItem>
@@ -119,6 +120,7 @@ onBeforeMount(async () => {
                   class="text-primary"
                 >
                   {{ singlePhone.phone_number }}
+                  <br>
                 </a>
               </VListItemTitle>
             </VListItem>
@@ -146,6 +148,7 @@ onBeforeMount(async () => {
                     class="break-words"
                   >
                     {{ `${singleAddress.suite_apt_unit} ${singleAddress.street} ${singleAddress.city} ${singleAddress.state}, ${singleAddress.zip}` }}
+                    <br>
                   </span>
                 </div>
               </VListItemTitle>

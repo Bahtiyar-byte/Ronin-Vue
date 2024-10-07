@@ -29,12 +29,24 @@ export const initialFieldsContacts = (): (FormField | FormFieldsGroup)[] => {
           value: '',
           rules: yup.string().required('Last Name is required'),
         },
-        // {
-        //   type: 'contact_emails',
-        //   name: 'related_emails',
-        //   label: 'Emails',
-        //   value: [0],
-        // },
+        {
+          type: 'contact_emails',
+          name: 'related_emails',
+          label: 'Emails',
+          value: [],
+        },
+        {
+          type: 'related_phones',
+          name: 'related_phones',
+          label: 'Phones',
+          value: [],
+        },
+        {
+          type: 'address_related_contact',
+          name: 'address_related_contact',
+          label: 'Address',
+          value: [],
+        },
         // {
         //   type: 'input',
         //   name: 'email',
@@ -42,28 +54,28 @@ export const initialFieldsContacts = (): (FormField | FormFieldsGroup)[] => {
         //   value: '',
         //   rules: yup.string().email('Invalid email').required('Email is required'),
         // },
-        {
-          type: 'autocomplete',
-          name: 'related_emails',
-          label: 'Emails',
-          value: [],
-          multiple: true,
-          eager: true,
-          clearable: true,
-          autocomplete_function: async (query: string = '') => {
-            const { data } = await autocompleteEmail(query)
-            if (data.value === null) {
-              return
-            }
-
-            return data.value.map(item => ({
-              value: item.id,
-              title: item.label,
-            }))
-          },
-          rules: yup
-            .array().required('Email is required'),
-        },
+        // {
+        //   type: 'autocomplete',
+        //   name: 'related_emails',
+        //   label: 'Emails',
+        //   value: [],
+        //   multiple: true,
+        //   eager: true,
+        //   clearable: true,
+        //   autocomplete_function: async (query: string = '') => {
+        //     const { data } = await autocompleteEmail(query)
+        //     if (data.value === null) {
+        //       return
+        //     }
+        //
+        //     return data.value.map(item => ({
+        //       value: item.id,
+        //       title: item.label,
+        //     }))
+        //   },
+        //   rules: yup
+        //     .array().required('Email is required'),
+        // },
         {
           type: 'select',
           name: 'status',
@@ -80,52 +92,52 @@ export const initialFieldsContacts = (): (FormField | FormFieldsGroup)[] => {
         //   rules: yup.string().required('Phone Number is required'),
         // },
         // related_emails
-        {
-          type: 'autocomplete',
-          name: 'related_phones',
-          label: 'Phone Number',
-          value: [],
-          multiple: true,
-          eager: true,
-          clearable: true,
-          autocomplete_function: async (query: string = '') => {
-            const { data } = await autocompletePhone(query)
-            if (data.value === null) {
-              return
-            }
-
-            return data.value.map(item => ({
-              value: item.id,
-              title: item.label,
-            }))
-          },
-
-          rules: yup
-            .array().required('Phone Number is required'),
-        },
-        {
-          type: 'autocomplete',
-          name: 'address_related_contact',
-          label: 'Address',
-          value: [],
-          multiple: true,
-          eager: true,
-          clearable: true,
-          autocomplete_function: async (query: string = '') => {
-            const { data } = await autocompleteAddress(query)
-            if (data.value === null) {
-              return
-            }
-
-            return data.value.map(item => ({
-              value: item.id,
-              title: item.label,
-            }))
-          },
-
-          rules: yup
-            .array().required('Address is required'),
-        },
+        // {
+        //   type: 'autocomplete',
+        //   name: 'related_phones',
+        //   label: 'Phone Number',
+        //   value: [],
+        //   multiple: true,
+        //   eager: true,
+        //   clearable: true,
+        //   autocomplete_function: async (query: string = '') => {
+        //     const { data } = await autocompletePhone(query)
+        //     if (data.value === null) {
+        //       return
+        //     }
+        //
+        //     return data.value.map(item => ({
+        //       value: item.id,
+        //       title: item.label,
+        //     }))
+        //   },
+        //
+        //   rules: yup
+        //     .array().required('Phone Number is required'),
+        // },
+        // {
+        //   type: 'autocomplete',
+        //   name: 'address_related_contact',
+        //   label: 'Address',
+        //   value: [],
+        //   multiple: true,
+        //   eager: true,
+        //   clearable: true,
+        //   autocomplete_function: async (query: string = '') => {
+        //     const { data } = await autocompleteAddress(query)
+        //     if (data.value === null) {
+        //       return
+        //     }
+        //
+        //     return data.value.map(item => ({
+        //       value: item.id,
+        //       title: item.label,
+        //     }))
+        //   },
+        //
+        //   rules: yup
+        //     .array().required('Address is required'),
+        // },
         {
           type: 'select',
           name: 'source',

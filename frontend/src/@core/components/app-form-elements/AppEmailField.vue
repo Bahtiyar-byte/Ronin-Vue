@@ -1,14 +1,34 @@
 <script lang="ts" setup>
+import { toRaw } from 'vue';
 defineOptions({
   name: 'AppTextField',
   inheritAttrs: false,
 })
 
+const emailData = {
+  email: '',
+  type: ''
+}
+
+const singleEmail = ref([emailData])
+
+const attrs = useAttrs()
 const elementId = computed(() => {
-  const attrs = useAttrs()
+  // const attrs = useAttrs()
   const _elementIdToken = attrs.id || attrs.label
-  // console.log('$attrs ', attrs)
-  console.log('attrs ', attrs)
+
+  const value = attrs.modelValue
+  const label = attrs.label
+  const rawArray = toRaw(value)
+  if (rawArray?.length === 0 && label === 'Emails') {
+    attrs['onUpdate:modelValue'](singleEmail.value)
+  } else {
+    const rawArray = toRaw(value)
+    for(const key in rawArray) {
+      singleEmail.value[key] = rawArray[key]
+    }
+  }
+
   return _elementIdToken ? `app-contact-emails-field-${_elementIdToken}-${Math.random().toString(36).slice(2, 7)}` : undefined
 })
 
@@ -17,8 +37,27 @@ const emailTypeitems = [
   { title: 'Work', value: 'work' },
   { title: 'Other', value: 'other' },
 ]
-const label = computed(() => useAttrs().label as string | undefined)
 
+const label = computed(() => useAttrs().label as string | undefined)
+const optionCounter = ref(1)
+
+
+
+
+const addOneMoreEmail = () => {
+  singleEmail.value.push({email: '', type:''})
+  optionCounter.value++
+  attrs['onUpdate:modelValue'](singleEmail.value)
+}
+
+const onUpdateValue = (index: number, newValue: string, fieldType: string) => {
+  attrs['onUpdate:modelValue'](singleEmail.value)
+}
+
+const removeFromTable = (indexToRemove: number) => {
+  singleEmail.value.splice(indexToRemove, 1)
+  attrs['onUpdate:modelValue'](singleEmail.value)
+}
 </script>
 
 <template>
@@ -33,49 +72,82 @@ const label = computed(() => useAttrs().label as string | undefined)
       style="line-height: 15px;"
       :text="label"
     />
-    <div style="display:flex; flex-direction: row">
-      <VTextField
-        :onUpdate:modelValue="($event) => setup.value = $event"
-        v-bind="{
-        ...$attrs,
-        class: null,
-        label: undefined,
-        variant: 'outlined',
-        id: elementId,
-      }"
+    <div style="">
+      <!-- 👉 Variants -->
+
+      <template
+        v-for="(email, index) in singleEmail"
+        :key="index"
       >
-        <template
-          v-for="(_, name) in $slots"
-          #[name]="slotProps"
-        >
-          <slot
-            :name="name"
-            v-bind="slotProps || {}"
-          />
-        </template>
-      </VTextField>
-      <VSelect
-        :items="emailTypeitems"
-        item-title="title"
-        item-value="value"
-        v-bind="{
-        class: null,
-        label: undefined,
-        variant: 'outlined',
-        id: elementId,
-        menuProps: { contentClass: ['app-inner-list', 'app-select__content', 'v-select__content', $attrs.multiple !== undefined ? 'v-list-select-multiple' : ''] },
-      }"
+        <VRow>
+          <VCol
+            cols="12"
+            md="4"
+          >
+            <AppTextField
+              v-bind="{
+                ...$attrs,
+                class: null,
+                label: 'Email',
+                variant: 'outlined',
+                id: elementId,
+              }"
+              v-model="singleEmail[index]['email']"
+              @update:modelValue="onUpdateValue(i, $event, 'email')"
+              label="Email"
+            >
+              <template
+                v-for="(_, name) in $slots"
+                #[name]="slotProps"
+              >
+                <slot
+                  :name="name"
+                  v-bind="slotProps || {}"
+                />
+              </template>
+            </AppTextField>
+
+          </VCol>
+
+          <VCol
+            cols="12"
+            md="4"
+          >
+            <AppSelect
+              :items="[{title: 'Personal', value: 'personal' }, { title: 'Work', value: 'work' }, { title: 'Other', value: 'other'  }]"
+              item-value="value"
+              item-title="title"
+              v-model="singleEmail[index]['type']"
+              @update:modelValue="onUpdateValue(i, $event, 'type')"
+              placeholder="Select Type"
+              label="Type"
+            />
+
+          </VCol>
+
+          <VCol
+            cols="12"
+            md="4"
+            class="d-flex align-self-end"
+          >
+            <VBtn
+              icon="tabler-x"
+              variant="text"
+              color="secondary"
+              :disabled="singleEmail.length <= 1"
+              @click="removeFromTable(index)"
+            />
+          </VCol>
+        </VRow>
+      </template>
+
+      <VBtn
+        class="mt-6"
+        prepend-icon="tabler-plus"
+        @click="addOneMoreEmail"
       >
-        <template
-          v-for="(_, name) in $slots"
-          #[name]="slotProps"
-        >
-          <slot
-            :name="name"
-            v-bind="slotProps || {}"
-          />
-        </template>
-      </VSelect>
+        Add another email
+      </VBtn>
     </div>
   </div>
 </template>

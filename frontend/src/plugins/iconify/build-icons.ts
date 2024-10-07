@@ -178,7 +178,8 @@ const sources: BundleScriptConfig = {
         'cloud-upload',
         'tool',
         'location',
-        'mailbox'
+        'mailbox',
+        'x'
       ],
     },
     {
