@@ -24,6 +24,13 @@ module.exports = function (sequelize, DataTypes) {
         values: ['personal', 'work', 'other'],
       },
 
+        is_primary: {
+            type: DataTypes.BOOLEAN,
+
+            allowNull: false,
+            defaultValue: false,
+        },
+
       importHash: {
         type: DataTypes.STRING(255),
         allowNull: true,

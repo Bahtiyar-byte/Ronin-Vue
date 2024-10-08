@@ -64,6 +64,18 @@ module.exports = {
         { transaction },
       );
 
+        await queryInterface.addColumn(
+            'contact_emails',
+            'is_primary',
+            {
+                type: Sequelize.DataTypes.BOOLEAN,
+
+                defaultValue: false,
+                allowNull: false,
+            },
+            { transaction },
+        );
+
       await transaction.commit();
     } catch (err) {
       await transaction.rollback();

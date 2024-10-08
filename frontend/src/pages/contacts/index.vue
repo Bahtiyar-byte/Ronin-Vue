@@ -94,11 +94,11 @@ const {
           </template>
 
           <template #item.email="{ item }">
-            <span v-html="item.related_emails.map(email => email.email).join('<br>')"></span>
+            <span v-html="item.related_emails.filter(email => email?.is_primary)[0]?.email"></span>
           </template>
 
           <template #item.phone="{ item }">
-            <span v-html="item.related_phones.map(phone => phone.phone_number).join('<br>')"></span>
+            <span v-html="item.related_phones.filter(phone => phone.is_primary === true)[0]?.phone_number"></span>
           </template>
 
           <template #item.actions="{ item }">

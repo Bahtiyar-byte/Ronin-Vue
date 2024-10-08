@@ -45,14 +45,7 @@ module.exports = class ContactsDBApi {
     if (data.related_phones){
       const phoneIds = new Set();
       for (var singlePhone of data.related_phones){
-        const phone = await db.contact_phones.findOne({
-          where: { phone_number: singlePhone.phone_number },
-          transaction
-        });
-        if (phone){
-          phoneIds.add(phone.id)
-          continue
-        } else {
+
           const phone = await db.contact_phones.create(
               {
                 id: singlePhone.id || undefined,
@@ -66,7 +59,7 @@ module.exports = class ContactsDBApi {
               { transaction },
           );
           phoneIds.add(phone.id)
-        }
+
       }
       // await contacts.setRelated_emails(Array.from(emailIds) || [], {
       //   transaction,
@@ -83,18 +76,12 @@ module.exports = class ContactsDBApi {
     if (data.related_emails){
       const emailIds = new Set();
       for (var singleEmail of data.related_emails){
-        const email = await db.contact_emails.findOne({
-          where: { email: singleEmail.email },
-          transaction
-        });
-        if (email){
-          emailIds.add(email.id)
-          continue
-        } else {
+console.log('singleEmail ========================================= ', singleEmail)
           const email = await db.contact_emails.create(
               {
                 id: singleEmail.id || undefined,
                 email: singleEmail.email || null,
+                  is_primary: singleEmail.is_primary || true,
                 type: singleEmail.type || null,
                 importHash: singleEmail.importHash || null,
                 createdById: currentUser.id,
@@ -103,7 +90,7 @@ module.exports = class ContactsDBApi {
               { transaction },
           );
           emailIds.add(email.id)
-        }
+
       }
       await contacts.setRelated_emails(Array.from(emailIds) || [], {
         transaction,
@@ -117,33 +104,26 @@ module.exports = class ContactsDBApi {
     if (data.address_related_contact){
       const addressIds = new Set();
       for (var singleAddress of data.address_related_contact){
-        const address = await db.address.findOne({
-          where: { id: singleAddress.id },
-          transaction
-        });
-        if (address){
-          addressIds.add(address.id)
-          continue
-        } else {
+          console.log('singleAddress ========================================== ', singleAddress.is_mailing_address)
           const address = await db.address.create(
               {
-                id: singleEmail.id || undefined,
+                id: singleAddress.id || undefined,
 
-                street: singleEmail.street || null,
-                suite_apt_unit: singleEmail.suite_apt_unit || null,
-                city: singleEmail.city || null,
-                state: singleEmail.state || null,
-                zip: singleEmail.zip || null,
-                country: singleEmail.country || null,
-                is_mailing_address: singleEmail.is_mailing_address || false,
+                street: singleAddress.street || null,
+                suite_apt_unit: singleAddress.suite_apt_unit || null,
+                city: singleAddress.city || null,
+                state: singleAddress.state || null,
+                zip: singleAddress.zip || null,
+                country: singleAddress.country || null,
+                is_mailing_address: singleAddress.is_mailing_address || true,
 
-                is_location: singleEmail.is_location || false,
+                is_location: singleAddress.is_location || false,
 
-                is_billing_Address: singleEmail.is_billing_Address || false,
+                is_billing_Address: singleAddress.is_billing_Address || false,
 
-                latitude: singleEmail.latitude || null,
-                longitude: singleEmail.longitude || null,
-                importHash: singleEmail.importHash || null,
+                latitude: singleAddress.latitude || null,
+                longitude: singleAddress.longitude || null,
+                importHash: singleAddress.importHash || null,
                 createdById: currentUser.id,
                 updatedById: currentUser.id,
 
@@ -151,7 +131,7 @@ module.exports = class ContactsDBApi {
               { transaction },
           );
           addressIds.add(address.id)
-        }
+
       }
       await contacts.setAddress_related_contact(Array.from(addressIds) || [], {
         transaction,
@@ -286,15 +266,14 @@ module.exports = class ContactsDBApi {
 
         if (singleEmail.id){
             const email = await db.contact_emails.findOne({
-                where: { email: singleEmail.email },
+                where: { id: singleEmail.id },
                 transaction
             });
             await email.update(
                 {
                     email: singleEmail.email || null,
                     type: singleEmail.type || null,
-                    importHash: singleEmail.importHash || null,
-                    createdById: currentUser.id,
+                    is_primary: singleEmail.is_primary || false,
                     updatedById: currentUser.id,
                 },
                 { transaction },
@@ -778,7 +757,7 @@ module.exports = class ContactsDBApi {
     }
 
     const records = await db.contacts.findAll({
-      attributes: ['id', 'name'],
+      attributes: ['id', 'firstName', 'lastName'],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['name', 'ASC']],
@@ -786,7 +765,7 @@ module.exports = class ContactsDBApi {
 
     return records.map((record) => ({
       id: record.id,
-      label: record.name,
+      label: `${record.firstName} ${record.lastName}`,
     }));
   }
 };

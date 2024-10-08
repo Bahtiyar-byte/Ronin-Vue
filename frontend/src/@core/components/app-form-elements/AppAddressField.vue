@@ -15,7 +15,7 @@ const addressData = {
   country: '',
   is_mailing_address: true,
   is_location: true,
-  is_billing_Address: true
+  is_billing_Address: true,
 }
 
 const singleAddress = ref([addressData])
@@ -67,14 +67,69 @@ const onUpdateValue = (index: number, newValue: string, fieldType: string) => {
 }
 
 const states = [
-  'AL', 'AK', 'AZ', 'AR', 'AS', 'CA', 'CO', 'CT', 'DE', 'DC', 'FM', 'FL', 'GA',
-  'GU', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MH', 'MD', 'MA',
-  'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND',
-  'MP', 'OH', 'OK', 'OR', 'PW', 'PA', 'PR', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT',
-  'VT', 'VI', 'VA', 'WA', 'WV', 'WI', 'WY'
+  'AL',
+  'AK',
+  'AZ',
+  'AR',
+  'AS',
+  'CA',
+  'CO',
+  'CT',
+  'DE',
+  'DC',
+  'FM',
+  'FL',
+  'GA',
+  'GU',
+  'HI',
+  'ID',
+  'IL',
+  'IN',
+  'IA',
+  'KS',
+  'KY',
+  'LA',
+  'ME',
+  'MH',
+  'MD',
+  'MA',
+  'MI',
+  'MN',
+  'MS',
+  'MO',
+  'MT',
+  'NE',
+  'NV',
+  'NH',
+  'NJ',
+  'NM',
+  'NY',
+  'NC',
+  'ND',
+  'MP',
+  'OH',
+  'OK',
+  'OR',
+  'PW',
+  'PA',
+  'PR',
+  'RI',
+  'SC',
+  'SD',
+  'TN',
+  'TX',
+  'UT',
+  'VT',
+  'VI',
+  'VA',
+  'WA',
+  'WV',
+  'WI',
+  'WY',
 ]
 
 const isBillingAddress = ref(true)
+
 const handleIsBillingAddressChange = (billingAddressStatus: boolean) => {
   const addressDataForBillingAddress = {
     street: '',
@@ -85,17 +140,15 @@ const handleIsBillingAddressChange = (billingAddressStatus: boolean) => {
     country: '',
     is_mailing_address: false,
     is_location: true,
-    is_billing_Address: true
+    is_billing_Address: true,
   }
 
-  if (billingAddressStatus){
-    // singleAddress.value[1] = addressDataForBillingAddress
-    singleAddress.value.splice(1, 1);
-  }else{
+  if (billingAddressStatus) {
+    singleAddress.value.splice(1, 1)
+    attrs['onUpdate:modelValue'](singleAddress.value)
+  } else {
     singleAddress.value[1] = addressDataForBillingAddress
   }
-
-
 }
 </script>
 
@@ -121,7 +174,7 @@ const handleIsBillingAddressChange = (billingAddressStatus: boolean) => {
         <VRow>
           <VCol
             cols="12"
-            md="4"
+            md="8"
           >
             <AppTextField
               v-bind="{
@@ -131,9 +184,9 @@ const handleIsBillingAddressChange = (billingAddressStatus: boolean) => {
                 variant: 'outlined',
                 id: elementId,
               }"
+              v-model="singleAddress[index].street"
               label="Street"
               placeholder="Street"
-              v-model="singleAddress[index].street"
               @update:model-value="onUpdateValue(i, $event, 'street')"
             >
               <template
@@ -148,93 +201,103 @@ const handleIsBillingAddressChange = (billingAddressStatus: boolean) => {
             </AppTextField>
           </VCol>
 
-
-
           <VCol
             cols="4"
             md="4"
             class="d-flex flex-row align-self-end"
           >
             <AppTextField
+              v-model="singleAddress[index].suite_apt_unit"
               label="Suit/Apartment/Unit"
               placeholder="Suit/Apartment/Unit"
-              v-model="singleAddress[index].suite_apt_unit"
               @update:model-value="onUpdateValue(i, $event, 'suite_apt_unit')"
             />
           </VCol>
 
           <VCol
             cols="4"
-            md="4"
+            md="3"
             class="d-flex flex-row align-self-end"
           >
             <AppTextField
+              v-model="singleAddress[index].city"
               label="City"
               placeholder="City"
-              v-model="singleAddress[index].city"
               @update:model-value="onUpdateValue(i, $event, 'city')"
             />
           </VCol>
 
           <VCol
             cols="4"
-            md="4"
+            md="3"
             class="d-flex flex-row align-self-end"
           >
             <AppSelect
-              :items="states"
               v-model="singleAddress[index].state"
-              @update:model-value="onUpdateValue(i, $event, 'state')"
+              :items="states"
               placeholder="State"
               label="State"
+              @update:model-value="onUpdateValue(i, $event, 'state')"
             />
           </VCol>
 
           <VCol
             cols="4"
-            md="4"
+            md="3"
             class="d-flex flex-row align-self-end"
           >
             <AppTextField
+              v-model="singleAddress[index].zip"
               label="Zip Code"
               placeholder="Zip Code"
-              v-model="singleAddress[index].zip"
               @update:model-value="onUpdateValue(i, $event, 'zip')"
             />
           </VCol>
 
           <VCol
             cols="4"
-            md="4"
+            md="3"
             class="d-flex flex-row align-self-end"
           >
             <AppSelect
+              v-model="singleAddress[index].country"
               :items="['USA']"
-              @update:modelValue="onUpdateValue(i, $event, 'type')"
               placeholder="Country"
               label="Country"
-              v-model="singleAddress[index].country"
               @update:model-value="onUpdateValue(i, $event, 'country')"
             />
           </VCol>
 
+
+
+        </VRow>
+
+        <VRow>
+          <VDivider
+            v-if="index === 0"
+            class="border-gray-300 !opacity-60"
+          />
+
+          <VLabel
+            v-if="index === 0"
+            class="mt-4 ml-3 text-body-2 text-wrap"
+            style="line-height: 15px;"
+            text="Billing Address"
+          />
           <VCol
-            cols="4"
-            md="4"
+            v-if="index === 0"
+            cols="12"
+            md="12"
             class="d-flex flex-row align-self-end"
-            v-if="singleAddress[index].is_billing_Address === false"
           >
             <VCheckbox
               v-model="isBillingAddress"
-              @change="handleIsBillingAddressChange(isBillingAddress)"
               label="Same as Mailing Address"
+              @change="handleIsBillingAddressChange(isBillingAddress)"
             />
           </VCol>
         </VRow>
-
-
       </template>
-
     </div>
   </div>
 </template>

@@ -6,6 +6,9 @@ const app = express();
 
 app.use(express.json({ limit: '10mb' }));
 
+const RoninEstimatesService = require('./roninServices/estimates');
+RoninEstimatesService.readEmailInbox()
+
 const passport = require('passport');
 const path = require('path');
 const fs = require('fs');
@@ -74,6 +77,9 @@ const historyRoutes = require('./routes/history');
 
 const addressRoutes = require('./routes/address');
 
+
+
+
 const options = {
   definition: {
     openapi: '3.0.0',
@@ -131,7 +137,7 @@ app.use(bodyParser.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/file', fileRoutes);
 app.enable('trust proxy');
-
+app.use('/uploads', express.static(path.join(__dirname, '../' , 'uploads')));
 app.use(
     '/api/users',
     passport.authenticate('jwt', { session: false }),

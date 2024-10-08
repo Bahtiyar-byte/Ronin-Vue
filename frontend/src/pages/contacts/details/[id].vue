@@ -45,7 +45,7 @@ onMounted(async () => {
 
 useHead({
   title: computed(() => {
-    return contactData.value !== undefined ? `${contactData.value.name} details` : null
+    return contactData.value !== undefined ? `${contactData.value.firstName} ${contactData.value.lastName} details` : null
   }),
 })
 

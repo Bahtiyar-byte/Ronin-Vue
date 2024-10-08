@@ -58,7 +58,7 @@ onBeforeMount(async () => {
   <VRow>
     <!-- SECTION User Details -->
     <VCol cols="12">
-      <VCard :title="`${contactData.firstName} ${contactData.lastName}`">
+      <VCard >
         <VCardText>
           <!-- 👉 Details -->
           <h5 class="text-[1.05rem] leading-[1.5] font-medium">
@@ -69,29 +69,18 @@ onBeforeMount(async () => {
 
           <!-- 👉 User Details list -->
           <VList class="card-list mt-2">
-            <VListItem>
+            <VListItem style="padding: 0 0 10px 0 !important;">
               <VListItemTitle>
                 <span class="font-medium">
-                  First Name:
+                  Name:
                 </span>
                 <div class="d-inline-block text-body-1">
-                  {{ contactData.firstName }}
+                  {{ contactData.firstName }} {{ contactData.lastName }}
                 </div>
               </VListItemTitle>
             </VListItem>
 
-            <VListItem>
-              <VListItemTitle>
-                <span class="font-medium">
-                  Last Name:
-                </span>
-                <div class="d-inline-block text-body-1">
-                  {{ contactData.lastName }}
-                </div>
-              </VListItemTitle>
-            </VListItem>
-
-            <VListItem>
+            <VListItem style="padding: 0 0 10px 0 !important;">
               <span class="font-medium">
                 Email:
               </span>
@@ -101,6 +90,7 @@ onBeforeMount(async () => {
                   :key="index"
                   :href="`mailto:${singleEmail.email}`"
                   class="text-primary"
+                  v-show="singleEmail?.is_primary"
                 >
                   {{ singleEmail.email }}
                   <br>
@@ -108,24 +98,45 @@ onBeforeMount(async () => {
               </VListItemTitle>
             </VListItem>
 
-            <VListItem>
+            <VListItem style="padding: 0 0 10px 0 !important;">
               <span class="font-medium">
                 Phone:
               </span>
-              <VListItemTitle>
+              <VListItemTitle >
                 <a
                   v-for="(singlePhone, index) in contactData.related_phones"
                   :key="index"
                   :href="`tel:${singlePhone.phone_number}`"
                   class="text-primary"
+                  v-show="singlePhone?.is_primary"
                 >
+
                   {{ singlePhone.phone_number }}
                   <br>
                 </a>
               </VListItemTitle>
             </VListItem>
 
-            <VListItem>
+            <VListItem style="padding: 0 0 10px 0 !important;" v-if="contactData.address_related_contact?.length">
+              <span class="font-medium">
+                Address:
+              </span>
+              <VListItemTitle>
+                <div class="d-inline-block text-body-1">
+                  <span
+                    v-for="(singleAddress, index) in contactData.address_related_contact"
+                    :key="index"
+                    class="break-words"
+                    v-show="singleAddress.is_mailing_address"
+                  >
+                    {{ `${singleAddress.suite_apt_unit} ${singleAddress.street} ${singleAddress.city} ${singleAddress.state}, ${singleAddress.zip}` }}
+                    <br>
+                  </span>
+                </div>
+              </VListItemTitle>
+            </VListItem>
+
+            <VListItem style="padding: 0 0 10px 0 !important;">
               <VListItemTitle>
                 <span class="font-medium">
                   Status:
@@ -136,25 +147,7 @@ onBeforeMount(async () => {
               </VListItemTitle>
             </VListItem>
 
-            <VListItem v-if="contactData.address_related_contact?.length">
-              <span class="font-medium">
-                Address:
-              </span>
-              <VListItemTitle>
-                <div class="d-inline-block text-body-1">
-                  <span
-                    v-for="(singleAddress, index) in contactData.address_related_contact"
-                    :key="index"
-                    class="break-words"
-                  >
-                    {{ `${singleAddress.suite_apt_unit} ${singleAddress.street} ${singleAddress.city} ${singleAddress.state}, ${singleAddress.zip}` }}
-                    <br>
-                  </span>
-                </div>
-              </VListItemTitle>
-            </VListItem>
-
-            <VListItem v-if="contactData.source?.length">
+            <VListItem style="padding: 0 0 10px 0 !important;" v-if="contactData.source?.length">
               <VListItemTitle>
                 <span class="font-medium">
                   Source:
@@ -165,10 +158,10 @@ onBeforeMount(async () => {
               </VListItemTitle>
             </VListItem>
 
-            <VListItem v-if="contactData.source?.length">
+            <VListItem style="padding: 0 0 10px 0 !important;" v-if="contactData.source?.length">
               <VListItemTitle>
                 <span class="font-medium">
-                  Assigned:
+                  Assigned To:
                 </span>
                 <div class="d-inline-block text-body-1">
                   {{ contactData.assigned_to
