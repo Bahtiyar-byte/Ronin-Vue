@@ -12,6 +12,7 @@ interface Options {
 
 interface IEstimatesService {
   create(data: any, currentUser: UserDTO): Promise<void>;
+  // saveSignedEstimate(submissionId: string): Promise<void>;
   bulkImport(
     req: Request,
     res: Response,

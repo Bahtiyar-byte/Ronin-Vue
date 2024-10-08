@@ -24,7 +24,7 @@ module.exports = class EstimatesDBApi {
         markup: data.markup || null,
         profit_margin: data.profit_margin || null,
         total_price: data.total_price || null,
-        status: data.status || null,
+        status: data.status || 'New',
         importHash: data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,

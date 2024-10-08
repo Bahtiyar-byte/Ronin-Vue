@@ -44,7 +44,7 @@ export const initialFieldsContacts = (): (FormField | FormFieldsGroup)[] => {
         {
           type: 'address_related_contact',
           name: 'address_related_contact',
-          label: 'Address',
+          label: 'Mailing Address',
           value: [],
         },
         // {

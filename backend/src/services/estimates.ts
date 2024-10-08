@@ -91,15 +91,6 @@ async function getToken(documentUrl: string, template_id: number, estimate: Esti
     // Call the helper function to wait for the documentUrl
     const url = waitForDocumentUrl;
 
-        // return jwt.sign({
-        //     user_email: 'pena@thedigitalronin.com',
-        //     integration_email: 'signer@example.com',
-        //     external_id: estimate.related_contact,
-        //     name: 'Estimate',
-        //     template_id: template_id,
-        //     document_urls: [url],
-        // }, 'wJcEYmfa4YdA5VR9u4udfn27tyNLhGcvFYvK16nrkHe');
-
     return jwt.sign({
         user_email: config.docuseal_user_email,
         integration_email: config.docuseal_integration_email,
@@ -153,10 +144,5 @@ export default class EstimatesService
         }
         // return notificationService.sendToCustomer(estimate, additionalData)
     }
-
-
-
-
-
 
 }

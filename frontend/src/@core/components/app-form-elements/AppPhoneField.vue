@@ -9,7 +9,7 @@ defineOptions({
 const phoneData = {
   phone_number: '',
   type: '',
-  is_primary: false
+  is_primary: true,
 }
 
 const singlePhone = ref([phoneData])
@@ -59,6 +59,9 @@ const removeFromTable = (indexToRemove: number) => {
 }
 
 const changeRadioValue = (index: number, isPrimary: boolean) => {
+  singlePhone.value.forEach((email, i) => {
+    email.is_primary = false
+  })
   singlePhone.value[index].is_primary = isPrimary
   attrs['onUpdate:modelValue'](singlePhone.value)
 }
@@ -133,22 +136,21 @@ const changeRadioValue = (index: number, isPrimary: boolean) => {
             class="d-flex flex-row align-self-end"
           >
             <VRow>
-
               <VCol md="8">
                 <VRadioGroup v-model="singlePhone[index].is_primary">
                   <VRadio
                     v-if="singlePhone[index].is_primary"
                     label="Primary"
-                    @click="changeRadioValue(index, false)"
                     :value="true"
+                    @click="changeRadioValue(index, false)"
                   />
                 </VRadioGroup>
                 <VRadioGroup v-model="singlePhone[index].is_primary">
                   <VRadio
                     v-if="!singlePhone[index].is_primary"
                     label="Primary"
-                    @click="changeRadioValue(index, false)"
                     :value="true"
+                    @click="changeRadioValue(index, false)"
                   />
                 </VRadioGroup>
               </VCol>
@@ -162,9 +164,7 @@ const changeRadioValue = (index: number, isPrimary: boolean) => {
                   @click="removeFromTable(index)"
                 />
               </VCol>
-
             </VRow>
-
           </VCol>
         </VRow>
       </template>
@@ -172,9 +172,11 @@ const changeRadioValue = (index: number, isPrimary: boolean) => {
       <VBtn
         class="mt-6"
         prepend-icon="tabler-plus"
+        variant="text"
+        color="primary"
         @click="addOneMoreEmail"
       >
-        Add another phone number
+        Add new Email
       </VBtn>
     </div>
   </div>

@@ -111,6 +111,9 @@ importers:
       ofetch:
         specifier: 1.3.3
         version: 1.3.3
+      pdf-vue3:
+        specifier: ^1.0.12
+        version: 1.0.12
       php-date:
         specifier: ^4.0.1
         version: 4.0.1
@@ -3413,6 +3416,9 @@ packages:
   pbf@3.3.0:
     resolution: {integrity: sha512-XDF38WCH3z5OV/OVa8GKUNtLAyneuzbCisx7QUCF8Q6Nutx0WnJrQe5O+kOtBlLfRNUws98Y58Lblp+NJG5T4Q==}
     hasBin: true
+
+  pdf-vue3@1.0.12:
+    resolution: {integrity: sha512-7SMTx1RfRwdc+2WPniDzqM8MxJLqTNNzdyV0SeQTxeRLJGndb5Wv/fz5afO13oBSIvvaqcbZ/S3gF+XjqkSb9g==}
 
   pend@1.2.0:
     resolution: {integrity: sha512-F3asv42UuXchdzt+xXqfW1OGlVBe+mxa2mqI0pg5yAHZPvFmY3Y6drSf/GQ1A86WgWEN9Kzh/WrgKa6iGcHXLg==}
@@ -8270,6 +8276,8 @@ snapshots:
     dependencies:
       ieee754: 1.2.1
       resolve-protobuf-schema: 2.1.0
+
+  pdf-vue3@1.0.12: {}
 
   pend@1.2.0: {}
 

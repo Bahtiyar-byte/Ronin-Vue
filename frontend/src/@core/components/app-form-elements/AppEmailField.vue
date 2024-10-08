@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { toRaw } from 'vue';
+import { toRaw } from 'vue'
+
 defineOptions({
   name: 'AppTextField',
   inheritAttrs: false,
@@ -7,12 +8,14 @@ defineOptions({
 
 const emailData = {
   email: '',
-  type: ''
+  type: '',
+  is_primary: true,
 }
 
 const singleEmail = ref([emailData])
 
 const attrs = useAttrs()
+
 const elementId = computed(() => {
   // const attrs = useAttrs()
   const _elementIdToken = attrs.id || attrs.label
@@ -24,7 +27,7 @@ const elementId = computed(() => {
     attrs['onUpdate:modelValue'](singleEmail.value)
   } else {
     const rawArray = toRaw(value)
-    for(const key in rawArray) {
+    for (const key in rawArray) {
       singleEmail.value[key] = rawArray[key]
     }
   }
@@ -41,11 +44,8 @@ const emailTypeitems = [
 const label = computed(() => useAttrs().label as string | undefined)
 const optionCounter = ref(1)
 
-
-
-
 const addOneMoreEmail = () => {
-  singleEmail.value.push({email: '', type:''})
+  singleEmail.value.push({ email: '', type: '', is_primary: false })
   optionCounter.value++
   attrs['onUpdate:modelValue'](singleEmail.value)
 }
@@ -56,6 +56,14 @@ const onUpdateValue = (index: number, newValue: string, fieldType: string) => {
 
 const removeFromTable = (indexToRemove: number) => {
   singleEmail.value.splice(indexToRemove, 1)
+  attrs['onUpdate:modelValue'](singleEmail.value)
+}
+
+const changeRadioValue = (index: number, isPrimary: boolean) => {
+  singleEmail.value.forEach((email, i) => {
+    email.is_primary = false
+  })
+  singleEmail.value[index].is_primary = isPrimary
   attrs['onUpdate:modelValue'](singleEmail.value)
 }
 </script>
@@ -92,9 +100,9 @@ const removeFromTable = (indexToRemove: number) => {
                 variant: 'outlined',
                 id: elementId,
               }"
-              v-model="singleEmail[index]['email']"
-              @update:modelValue="onUpdateValue(i, $event, 'email')"
+              v-model="singleEmail[index].email"
               label="Email"
+              @update:model-value="onUpdateValue(i, $event, 'email')"
             >
               <template
                 v-for="(_, name) in $slots"
@@ -106,7 +114,6 @@ const removeFromTable = (indexToRemove: number) => {
                 />
               </template>
             </AppTextField>
-
           </VCol>
 
           <VCol
@@ -114,35 +121,72 @@ const removeFromTable = (indexToRemove: number) => {
             md="4"
           >
             <AppSelect
-              :items="[{title: 'Personal', value: 'personal' }, { title: 'Work', value: 'work' }, { title: 'Other', value: 'other'  }]"
+              v-model="singleEmail[index].type"
+              :items="[{ title: 'Personal', value: 'personal' }, { title: 'Work', value: 'work' }, { title: 'Other', value: 'other' }]"
               item-value="value"
               item-title="title"
-              v-model="singleEmail[index]['type']"
-              @update:modelValue="onUpdateValue(i, $event, 'type')"
               placeholder="Select Type"
               label="Type"
+              @update:model-value="onUpdateValue(i, $event, 'type')"
             />
-
           </VCol>
 
+          <!--          <VCol -->
+          <!--            cols="12" -->
+          <!--            md="4" -->
+          <!--            class="d-flex align-self-end" -->
+          <!--          > -->
+          <!--            <VBtn -->
+          <!--              icon="tabler-x" -->
+          <!--              variant="text" -->
+          <!--              color="secondary" -->
+          <!--              :disabled="singleEmail.length <= 1" -->
+          <!--              @click="removeFromTable(index)" -->
+          <!--            /> -->
+          <!--          </VCol> -->
+
           <VCol
-            cols="12"
+            cols="4"
             md="4"
-            class="d-flex align-self-end"
+            class="d-flex flex-row align-self-end"
           >
-            <VBtn
-              icon="tabler-x"
-              variant="text"
-              color="secondary"
-              :disabled="singleEmail.length <= 1"
-              @click="removeFromTable(index)"
-            />
+            <VRow>
+              <VCol md="8">
+                <VRadioGroup v-model="singleEmail[index].is_primary">
+                  <VRadio
+                    v-if="singleEmail[index].is_primary"
+                    label="Primary"
+                    :value="true"
+                    @click="changeRadioValue(index, false)"
+                  />
+                </VRadioGroup>
+                <VRadioGroup v-model="singleEmail[index].is_primary">
+                  <VRadio
+                    v-if="!singleEmail[index].is_primary"
+                    label="Primary"
+                    :value="true"
+                    @click="changeRadioValue(index, false)"
+                  />
+                </VRadioGroup>
+              </VCol>
+
+              <VCol md="4">
+                <VBtn
+                  icon="tabler-x"
+                  variant="text"
+                  color="secondary"
+                  :disabled="singleEmail.length <= 1"
+                  @click="removeFromTable(index)"
+                />
+              </VCol>
+            </VRow>
           </VCol>
         </VRow>
       </template>
 
       <VBtn
         class="mt-6"
+        variant="text"
         prepend-icon="tabler-plus"
         @click="addOneMoreEmail"
       >
