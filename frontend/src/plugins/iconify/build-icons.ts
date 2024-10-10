@@ -179,7 +179,9 @@ const sources: BundleScriptConfig = {
         'tool',
         'location',
         'mailbox',
-        'x'
+        'x',
+        'clipboard-list',
+        'checklist'
       ],
     },
     {

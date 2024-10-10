@@ -11,12 +11,13 @@ module.exports = class OrdersService {
   static async create(data, currentUser) {
     const transaction = await db.sequelize.transaction();
     try {
-      await OrdersDBApi.create(data, {
+      const order = await OrdersDBApi.create(data, {
         currentUser,
         transaction,
       });
 
       await transaction.commit();
+      return order;
     } catch (error) {
       await transaction.rollback();
       throw error;

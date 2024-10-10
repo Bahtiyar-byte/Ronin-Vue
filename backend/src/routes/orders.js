@@ -74,8 +74,7 @@ router.post(
   '/',
   wrapAsync(async (req, res) => {
     const link = new URL(req.headers.referer);
-    await OrdersService.create(req.body.data, req.currentUser, true, link.host);
-    const payload = true;
+    const payload = await OrdersService.create(req.body.data, req.currentUser, true, link.host);
     res.status(200).send(payload);
   }),
 );
@@ -176,8 +175,7 @@ router.post(
 router.put(
   '/:id',
   wrapAsync(async (req, res) => {
-    await OrdersService.update(req.body.data, req.body.id, req.currentUser);
-    const payload = true;
+    const payload = await OrdersService.update(req.body.data, req.body.id, req.currentUser);
     res.status(200).send(payload);
   }),
 );

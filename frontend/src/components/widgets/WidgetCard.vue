@@ -3,10 +3,13 @@ import { computed, mergeProps } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 
 import type WidgetCardProps from '@/types/widgets/WidgetCardProps'
+import type {GetEstimatesRequest} from "@/types/estimates/GetEstimatesRequest";
 
 const props = defineProps<WidgetCardProps>()
 
 const containerTag = computed(() => (props.to ? RouterLink : 'div'))
+
+const isVisibleOrderCreateForm = defineModel<boolean>('isVisibleOrderCreateForm', { default: {} })
 
 const items = [
   { title: 'Emails', value: 'emails' },
@@ -83,7 +86,7 @@ function prefixWithPlus(value: number): string {
             >
               <template #activator="{ props: tooltipProps }">
                 <RouterLink
-                  v-if="widget.title !== 'Communications'"
+                  v-if="widget.title !== 'Communications' && widget.title !== 'Order'"
                   :to="widget.action.to"
                   @click.stop="(e: Event) => {
                     e.stopPropagation()
@@ -130,6 +133,25 @@ function prefixWithPlus(value: number): string {
                       </RouterLink>
                     </VListItem>
                   </VList>
+                </VMenu>
+
+                <VMenu v-if="widget.title === 'Order'">
+                  <template #activator="{ props: menuProps }">
+                    <VBtn
+                      class="w-1/2"
+                      :color="widget?.iconColor ?? 'primary'"
+                      variant="tonal"
+                      :icon="widget.action.icon"
+                      size="42"
+                      rounded
+                      @click="isVisibleOrderCreateForm = !isVisibleOrderCreateForm"
+                      v-bind="mergeProps(menuProps, tooltipProps)"
+                      @click.stop="(e: Event) => {
+                        e.stopPropagation()
+                        e.preventDefault()
+                      }"
+                    />
+                  </template>
                 </VMenu>
               </template>
             </VTooltip>
