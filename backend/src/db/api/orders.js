@@ -11,12 +11,42 @@ module.exports = class OrdersDBApi {
     const currentUser = (options && options.currentUser) || { id: null };
     const transaction = (options && options.transaction) || undefined;
 
+    const date = new Date();
+    const year = date.getFullYear();
+    const lastTwoDigits = year % 100;
+
+    let allOrders = await db.orders.count();
+
+    const orderAmount = await OrdersDBApi.generateOrderNumber(++allOrders)
+
+    let contactName = ''
+    if (data.related_estimate){
+
+      const estimate = await db.estimates.findByPk(data.related_estimate, {}, { transaction });
+
+      if (estimate) {
+        const contact = await db.contacts.findByPk(estimate.related_contactId, {}, { transaction });
+
+        if (contact) {
+          contactName = `${contact.firstName} ${contact.lastName}`
+        }
+      }
+    }
+
     const orders = await db.orders.create(
       {
         id: data.id || undefined,
 
+        order_name: data.related_trade + ' Order' || null,
         order_number: data.order_number || null,
+        order_po_number: `${lastTwoDigits}-${orderAmount}: ${contactName}` || null,
+        material_description: data.material_description || null,
+        unit: data.unit || null,
+        crew_instructions: data.crew_instructions || null,
+        notes: data.notes || null,
         total_amount: data.total_amount || null,
+        quantity: data.quantity || null,
+
         importHash: data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
@@ -33,6 +63,16 @@ module.exports = class OrdersDBApi {
     });
 
     return orders;
+  }
+
+  static async generateOrderNumber(orderAmount) {
+    // Take the last 3 digits of the order amount using modulo 1000
+    let orderNumber = orderAmount % 1000;
+
+    // Pad the number with leading zeros if it's less than 3 digits
+    orderNumber = orderNumber.toString().padStart(3, '0');
+
+    return orderNumber;
   }
 
   static async bulkImport(data, options) {
@@ -67,8 +107,15 @@ module.exports = class OrdersDBApi {
 
     await orders.update(
       {
+        order_name: data.order_name || null,
         order_number: data.order_number || null,
+        order_po_number: data.order_po_number || null,
+        material_description: data.material_description || null,
+        unit: data.unit || null,
+        crew_instructions: data.crew_instructions || null,
+        notes: data.notes || null,
         total_amount: data.total_amount || null,
+        quantity: data.quantity || null,
         updatedById: currentUser.id,
       },
       { transaction },

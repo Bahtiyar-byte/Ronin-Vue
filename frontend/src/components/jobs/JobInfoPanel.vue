@@ -34,18 +34,18 @@ const saveItem = async (type: string, newValue: string) => {
   <VRow>
     <!-- SECTION User Details -->
     <VCol cols="12">
-      <VCard :title="jobData.name">
+      <VCard >
         <VCardText>
           <!-- 👉 Details -->
-          <h5 class="text-[1.05rem] leading-[1.5] font-medium">
+          <h5 class="text-[1.08rem] leading-[1.5] font-medium text-primary">
             Details
           </h5>
 
           <VDivider class="my-4 !opacity-60" />
 
           <!-- 👉 User Details list -->
-          <VList class="card-list mt-2">
-            <VListItem>
+          <VList class="card-list item__style">
+            <VListItem style="padding: 0 0 10px 0 !important">
               <VListItemTitle>
                 <span class="font-medium">
                   Name:
@@ -56,7 +56,7 @@ const saveItem = async (type: string, newValue: string) => {
               </VListItemTitle>
             </VListItem>
 
-            <VListItem v-if="jobData.address">
+            <VListItem v-if="jobData.address" style="padding: 0 0 10px 0 !important">
               <VListItemTitle>
                 <span class="font-medium">
                   Address:
@@ -67,7 +67,7 @@ const saveItem = async (type: string, newValue: string) => {
               </VListItemTitle>
             </VListItem>
 
-            <VListItem v-if="jobData.category">
+            <VListItem v-if="jobData.category" style="padding: 0 0 10px 0 !important">
               <VListItemTitle>
                 <span class="font-medium">
                   Category:
@@ -78,7 +78,7 @@ const saveItem = async (type: string, newValue: string) => {
               </VListItemTitle>
             </VListItem>
 
-            <VListItem v-if="jobData.type">
+            <VListItem v-if="jobData.type" style="padding: 0 0 10px 0 !important">
               <VListItemTitle>
                 <span class="font-medium">
                   Type:
@@ -89,7 +89,7 @@ const saveItem = async (type: string, newValue: string) => {
               </VListItemTitle>
             </VListItem>
 
-            <VListItem v-if="jobData.status">
+            <VListItem v-if="jobData.status" style="padding: 0 0 10px 0 !important">
               <VListItemTitle>
                 <span class="font-medium">
                   Status:
@@ -100,7 +100,7 @@ const saveItem = async (type: string, newValue: string) => {
               </VListItemTitle>
             </VListItem>
 
-            <VListItem v-if="jobData.start_date">
+            <VListItem v-if="jobData.start_date" style="padding: 0 0 10px 0 !important">
               <VListItemTitle>
                 <span class="font-medium">
                   Start date:
@@ -111,7 +111,7 @@ const saveItem = async (type: string, newValue: string) => {
               </VListItemTitle>
             </VListItem>
 
-            <VListItem v-if="jobData.end_date">
+            <VListItem v-if="jobData.end_date" style="padding: 0 0 10px 0 !important">
               <VListItemTitle>
                 <span class="font-medium">
                   End date:
@@ -122,7 +122,7 @@ const saveItem = async (type: string, newValue: string) => {
               </VListItemTitle>
             </VListItem>
 
-            <VListItem v-if="jobData.description?.length">
+            <VListItem v-if="jobData.description?.length" style="padding: 0 0 10px 0 !important">
               <VListItemTitle>
                 <span class="font-medium">
                   Description:
@@ -134,14 +134,10 @@ const saveItem = async (type: string, newValue: string) => {
             </VListItem>
           </VList>
 
-          <h5 class="text-[1.05rem] leading-[1.5] font-medium mt-6">
-            Related
-          </h5>
-
           <VDivider class="my-4 !opacity-60" />
 
           <VList class="card-list mt-2">
-            <VListItem v-if="jobData.related_contact">
+            <VListItem style="padding: 0 0 10px 0 !important" v-if="jobData.related_contact">
               <VListItemTitle>
                 <span class="font-medium">
                   Related contact:
@@ -153,6 +149,7 @@ const saveItem = async (type: string, newValue: string) => {
             </VListItem>
 
             <EditableInfoItem
+              style="padding: 0 0 10px 0 !important"
               label="Assigned to"
               type="autocomplete"
               :value="jobData.assigned_toId as string"

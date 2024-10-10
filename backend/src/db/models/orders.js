@@ -14,7 +14,35 @@ module.exports = function (sequelize, DataTypes) {
         primaryKey: true,
       },
 
+      order_name: {
+        type: DataTypes.STRING,
+      },
+
       order_number: {
+        type: DataTypes.TEXT,
+      },
+
+      order_po_number: {
+        type: DataTypes.STRING,
+      },
+
+      crew_instructions: {
+        type: DataTypes.TEXT,
+      },
+
+      notes: {
+        type: DataTypes.TEXT,
+      },
+
+      material_description: {
+        type: DataTypes.TEXT,
+      },
+
+      quantity: {
+        type: DataTypes.TEXT,
+      },
+
+      unit: {
         type: DataTypes.TEXT,
       },
 

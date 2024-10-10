@@ -2,12 +2,14 @@
 import type { RouteLocationRaw } from 'vue-router'
 import type WidgetCardProps from '@/types/widgets/WidgetCardProps'
 import type Job from '@/types/jobs/Job'
+import CreateUpdateOrderDialog from '@/components/orders/CreateUpdateOrderDialog.vue'
 import type { GetEstimatesRequest } from '@/types/estimates/GetEstimatesRequest'
 import { useAbility } from '@/plugins/casl/composables/useAbility'
 
 const jobData = defineModel<Job>('jobData', { required: true })
 
 const { count: estimatesCount } = useEstimates()
+const { count: orderCount } = useOrders()
 const { count: invoicesCount } = useInvoices()
 const { count: documentsCount } = useDocuments()
 
@@ -15,6 +17,7 @@ const dialogsVisibility = reactive({
   estimates: false,
   invoices: false,
   documents: false,
+  orders: false
 })
 
 const widgets = ref<WidgetCardProps[]>([
@@ -122,6 +125,41 @@ const widgets = ref<WidgetCardProps[]>([
       },
     },
   },
+  {
+    permission: { action: 'read', subject: 'chats' },
+    action: () => {
+      dialogsVisibility.orders = !dialogsVisibility.orders
+    },
+    widget: {
+      title: 'Order',
+      value: (await orderCount({ related_job: jobData.value.id })).data.value?.count,
+      icon: 'tabler-clipboard-list',
+      iconColor: 'primary',
+      action: {
+        title: 'Add New Order',
+        icon: 'tabler-plus',
+        to: {
+          name: 'root',
+        },
+      },
+    },
+  },
+  {
+    permission: { action: 'read', subject: 'chats' },
+    widget: {
+      title: 'Labor Ticket',
+      value: 0,
+      icon: 'tabler-checklist',
+      iconColor: 'primary',
+      action: {
+        title: 'Add New Labor Ticket',
+        icon: 'tabler-plus',
+        to: {
+          name: 'root',
+        },
+      },
+    },
+  },
 ])
 
 const ability = useAbility()
@@ -136,6 +174,12 @@ const estimatesSearchParams: GetEstimatesRequest = {
 
 const invoicesSearchParams: GetEstimatesRequest = estimatesSearchParams
 const documentsSearchParams: GetEstimatesRequest = estimatesSearchParams
+
+const isVisibleOrderCreateForm = ref(false)
+
+const renderer = ref(true)
+watch(isVisibleOrderCreateForm, newValue => {
+})
 </script>
 
 <template>
@@ -148,12 +192,20 @@ const documentsSearchParams: GetEstimatesRequest = estimatesSearchParams
         md="4"
         sm="6"
       >
-        <WidgetCard v-bind="widgetData" />
+        <WidgetCard
+          v-bind="widgetData"
+          v-model:isVisibleOrderCreateForm="isVisibleOrderCreateForm"
+        />
       </VCol>
     </VRow>
 
     <EstimaesList
       v-model:is-dialog-visible="dialogsVisibility.estimates"
+      v-model:search-params="estimatesSearchParams"
+    />
+
+    <OrdersList
+      v-model:is-dialog-visible="dialogsVisibility.orders"
       v-model:search-params="estimatesSearchParams"
     />
 
@@ -166,5 +218,11 @@ const documentsSearchParams: GetEstimatesRequest = estimatesSearchParams
       v-model:is-dialog-visible="dialogsVisibility.documents"
       v-model:search-params="documentsSearchParams"
     />
+
+    <CreateUpdateOrderDialog
+      v-model:is-dialog-visible="isVisibleOrderCreateForm"
+      v-model:search-params="estimatesSearchParams"
+    />
   </div>
 </template>
+

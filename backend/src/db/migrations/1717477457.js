@@ -1217,14 +1217,77 @@ module.exports = {
 
       await queryInterface.addColumn(
         'orders',
-        'order_number',
+        'order_name',
         {
-          type: Sequelize.DataTypes.TEXT,
+          type: Sequelize.DataTypes.STRING,
         },
         { transaction },
       );
 
-      await queryInterface.addColumn(
+        await queryInterface.addColumn(
+            'orders',
+            'order_number',
+            {
+                type: Sequelize.DataTypes.TEXT,
+            },
+            { transaction },
+        );
+
+        await queryInterface.addColumn(
+            'orders',
+            'order_po_number',
+            {
+                type: Sequelize.DataTypes.STRING,
+            },
+            { transaction },
+        );
+
+        await queryInterface.addColumn(
+            'orders',
+            'crew_instructions',
+            {
+                type: Sequelize.DataTypes.STRING,
+            },
+            { transaction },
+        );
+
+        await queryInterface.addColumn(
+            'orders',
+            'notes',
+            {
+                type: Sequelize.DataTypes.STRING,
+            },
+            { transaction },
+        );
+
+        await queryInterface.addColumn(
+            'orders',
+            'material_description',
+            {
+                type: Sequelize.DataTypes.STRING,
+            },
+            { transaction },
+        );
+
+        await queryInterface.addColumn(
+            'orders',
+            'quantity',
+            {
+                type: Sequelize.DataTypes.STRING,
+            },
+            { transaction },
+        );
+
+        await queryInterface.addColumn(
+            'orders',
+            'unit',
+            {
+                type: Sequelize.DataTypes.STRING,
+            },
+            { transaction },
+        );
+
+        await queryInterface.addColumn(
         'orders',
         'total_amount',
         {

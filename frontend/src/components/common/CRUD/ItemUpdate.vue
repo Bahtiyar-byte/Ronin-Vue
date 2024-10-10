@@ -17,6 +17,12 @@ const props = defineProps<{
   isUpdateMode: boolean
 }>()
 
+const isVisibleMaterial = defineModel<boolean>('isVisibleMaterial', { required: true })
+
+const materialDescription = defineModel<string>('materialDescription', { required: true })
+const quantity = defineModel<string>('quantity', { required: true })
+const unit = defineModel<string>('unit', { required: true })
+
 const initializeFormData = (fields: Array<FormField | FormFieldsGroup>) => {
   const data = {} as Record<string, any>
 
@@ -159,6 +165,82 @@ const onSubmit = handleSubmit(async (values: Record<string, any>) => {
               <slot :name="`append_${fieldAttrs.name}`" />
             </template>
           </EntityField>
+
+          <VBtn
+            v-if="props.fields[0]['title'] === 'Create New Order'"
+            class="my-2" color="primary"
+            @click="isVisibleMaterial = !isVisibleMaterial"
+          >
+            Add Material
+          </VBtn>
+
+          <VForm v-show="isVisibleMaterial" @submit.prevent="() => {}">
+            <VRow>
+              <VCol cols="12">
+                <VRow>
+                  <VCol
+                    cols="12"
+                    md="6"
+                  >
+                    <label
+                      class="v-label text-body-2 text-high-emphasis"
+                      for="materialDescription"
+                    >Material Description</label>
+                    <VTextarea
+                      id="materialDescription"
+                      v-model="materialDescription"
+                      placeholder="Material Description"
+                      persistent-placeholder
+                    />
+                  </VCol>
+
+                  <VCol
+                    cols="12"
+                    md="6"
+                  >
+                    <VRow>
+                      <VCol
+                        cols="12"
+                        md="12"
+                      >
+                        <label
+                          class="v-label text-body-2 text-high-emphasis"
+                          for="quantity"
+                        >Quantity</label>
+                        <AppTextField
+                          id="quantity"
+                          v-model="quantity"
+                          placeholder="Quantity"
+                          persistent-placeholder
+                        />
+                      </VCol>
+                    </VRow>
+
+                    <VRow>
+                      <VCol
+                        cols="12"
+                        md="12"
+                      >
+                        <label
+                          class="v-label text-body-2 text-high-emphasis"
+                          for="unit"
+                        >Unit</label>
+                        <AppTextField
+                          id="unit"
+                          v-model="unit"
+                          placeholder="Unit"
+                          persistent-placeholder
+                        />
+                      </VCol>
+                    </VRow>
+                  </VCol>
+                </VRow>
+
+
+              </VCol>
+            </VRow>
+          </VForm>
+
         </div>
       </VCardText>
       <VCardActions>
