@@ -15,6 +15,7 @@ import { useEstimateSectionTemplates } from '@/composables/useEstimateSectionTem
 import { convertTemplateToSection } from '@/utils/estimates'
 
 import { useOrders } from '@/composables/useOrders'
+import CreateUpdateOrderDialog from "@/components/orders/CreateUpdateOrderDialog.vue";
 
 defineProps<{
   hideControls: boolean
@@ -145,6 +146,8 @@ const updateMaterials = async () => {
 }
 
 const date = ref<string | Date>(orderData.value?.createdAt ?? new Date())
+
+
 </script>
 
 <template>
@@ -246,6 +249,8 @@ const date = ref<string | Date>(orderData.value?.createdAt ?? new Date())
       <!--        }" -->
       <!--      /> -->
     </div>
+
+
 
     <VDivider class="my-4 border-dashed border-gray-700 !opacity-60" />
     <VRow>

@@ -13,17 +13,23 @@ const getFormattedDate = (date: string) => {
 
   return timestamp.format('MM/DD/YYYY h:mm A')
 }
+const isVisibleOrderUpdateForm = ref(false)
+const orderId = ref('')
+const handleEditOrder = (selectedOrderId: string) => {
+  orderId.value = selectedOrderId
+  isVisibleOrderUpdateForm.value = !isVisibleOrderUpdateForm.value
+}
 </script>
 
 <template>
   <VDialog
     :model-value="isDialogVisible"
-    :width="$vuetify.display.smAndDown ? 'auto' : 950"
+    :width="$vuetify.display.smAndDown ? 'auto' : 1150"
   >
     <!-- 👉 dialog close btn -->
     <DialogCloseBtn @click="isDialogVisible = !isDialogVisible" />
 
-    <VCard class="sm:!p-10 !p-2">
+    <VCard class="">
       <VCardText>
         <ActivityDialogHeader title="Related orders" />
 
@@ -45,6 +51,7 @@ const getFormattedDate = (date: string) => {
               <th>
                 Created Date
               </th>
+              <th>Actions</th>
             </tr>
           </thead>
 
@@ -76,10 +83,26 @@ const getFormattedDate = (date: string) => {
               <td>
                 {{ getFormattedDate(item.createdAt) }}
               </td>
+              <td>
+                <IconBtn
+                  title="Edit"
+                  color="primary"
+                  @click="handleEditOrder(item.id)"
+                >
+                  <VIcon icon="tabler-edit" />
+                </IconBtn>
+              </td>
             </tr>
           </tbody>
         </VTable>
       </VCardText>
     </VCard>
   </VDialog>
+
+  <UpdateOrderDialog
+    v-if="isVisibleOrderUpdateForm"
+    v-model:is-dialog-visible="isVisibleOrderUpdateForm"
+    v-model:orderId="orderId"
+    v-model:search-params="estimatesSearchParams"
+  />
 </template>

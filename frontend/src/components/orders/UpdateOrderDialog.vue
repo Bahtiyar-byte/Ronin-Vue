@@ -6,16 +6,18 @@ import { useOrders } from '@/composables/useOrders'
 import { hasKey } from '@core/utils/helpers'
 import type Order from '@/types/orders/Order'
 import { useFormFields } from '@/utils/forms/useFormFields'
-import { initialFieldsOrders } from '@/utils/initial_data/initialFieldsOrders'
+import { initialFieldsUpdateOrders } from '@/utils/initial_data/initialFieldsUpdateOrders'
 import type FormField from '@/types/forms/FormField'
 
 const { create: createOrder, getById: getOrderById, update: updateOrder } = useOrders()
 const router = useRouter()
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } }
-const isUpdateMode = ref(false)
+const isUpdateMode = ref(true)
 const pageTitle = ref('Create Order')
 const isDialogVisible = defineModel<boolean>('isDialogVisible', { required: true })
-const isUpdateForm = defineModel<boolean>('isUpdateForm', { required: true })
+const orderId = defineModel<string>('orderId', { required: true })
+
+const isUpdateForm = ref(true)
 const materialDescription = ref('')
 const quantity = ref('')
 const unit = ref<''>()
@@ -37,7 +39,9 @@ const fetchOrderData = async (id: string) => {
     if (order === null) {
       return
     }
-
+    materialDescription.value = order.material_description
+    quantity.value = order.quantity
+    unit.value = order.unit
     orderRef.value = order
     formFields.value.forEach(field => {
       if ('fields' in field) {
@@ -60,19 +64,26 @@ const fetchOrderData = async (id: string) => {
 }
 
 onBeforeMount(async () => {
-  await initializeFields(initialFieldsOrders())
+  await initializeFields(initialFieldsUpdateOrders())
+  let currentOrderId = ''
+  if (!orderId){
+    currentOrderId = route.params.id as string
+    console.log('current order ')
+  } else {
+    console.log('update order')
+    currentOrderId = orderId.value
+  }
 
-  const jobId = route.params.id as string
-  if (jobId) {
-    isUpdateMode.value = false
+  if (currentOrderId) {
+    isUpdateMode.value = true
 
-    // await fetchOrderData(jobId)
+    await fetchOrderData(currentOrderId)
   }
   dataLoaded.value = true
 })
 
 useHead({
-  title: computed(() => (isUpdateMode.value && orderRef.value ? `Edit ${orderRef.value.order_name}` : 'Create new order')),
+  title: computed(() => (isUpdateMode.value && orderRef.value ? `Edit ${orderRef.value.order_name}` : 'Update Order')),
 })
 
 const submitForm = async (values: Record<string, any>) => {
@@ -83,7 +94,7 @@ const submitForm = async (values: Record<string, any>) => {
   orderData.quantity = quantity.value
   orderData.unit = unit.value
 
-  const action = createOrder
+  const action = updateOrder
 
   const { data } = await action(orderData)
 
@@ -97,7 +108,6 @@ const submitForm = async (values: Record<string, any>) => {
 const isVisibleMaterial = ref(false)
 
 watch(isVisibleMaterial, newVal => {
-  // console.log('isVisibleMaterial ', newVal)
 })
 </script>
 
@@ -114,6 +124,7 @@ watch(isVisibleMaterial, newVal => {
       v-model:materialDescription="materialDescription"
       v-model:quantity="quantity"
       v-model:unit="unit"
+      v-model:isUpdateForm="isUpdateForm"
       title=""
       :breadcrumbs="[]"
       :fields="formFields as FormField[]"

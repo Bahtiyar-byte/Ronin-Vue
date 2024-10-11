@@ -121,13 +121,13 @@ module.exports = class OrdersDBApi {
       { transaction },
     );
 
-    await orders.setRelated_job(data.related_job || null, {
-      transaction,
-    });
+    // await orders.setRelated_job(data.related_job || null, {
+    //   transaction,
+    // });
 
-    await orders.setRelated_estimate(data.related_estimate || null, {
-      transaction,
-    });
+    // await orders.setRelated_estimate(data.related_estimate || null, {
+    //   transaction,
+    // });
 
     return orders;
   }
