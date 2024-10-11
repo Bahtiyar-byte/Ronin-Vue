@@ -2,7 +2,6 @@
 import type { RouteLocationNormalizedLoaded } from 'vue-router'
 import moment from 'moment'
 import type Estimate from '@/types/estimates/Estimate'
-import type User from '@/types/users/User'
 
 defineProps<{
   handleDownload: () => void
@@ -89,6 +88,8 @@ const getAddress = (address: any) => {
     locationAddress.value = address.find(address => address.is_mailing_address)
   }
 }
+
+const isVisibleOrderUpdateForm = ref(false)
 </script>
 
 <template>
@@ -131,13 +132,18 @@ const getAddress = (address: any) => {
             class="flex-1"
             variant="tonal"
             color="secondary"
-            :to="{ name: 'estimates-builder-id-edit', params: route.params }"
+            @click="isVisibleOrderUpdateForm = !isVisibleOrderUpdateForm"
           >
             Edit
           </VBtn>
         </div>
       </VCardText>
     </VCard>
+
+    <UpdateOrderDialog
+      v-model:is-dialog-visible="isVisibleOrderUpdateForm"
+      v-model:search-params="estimatesSearchParams"
+    />
 
     <!-- 👉 Customer Details  -->
     <VCard class="mb-6">

@@ -169,6 +169,7 @@ declare module 'vue' {
     TradeSelectionDialog: typeof import('./src/components/crews/dialogs/TradeSelectionDialog.vue')['default']
     TradesRelatedTab: typeof import('./src/components/crews/details/TradesRelatedTab.vue')['default']
     TwoFactorAuthDialog: typeof import('./src/components/dialogs/TwoFactorAuthDialog.vue')['default']
+    UpdateOrderDialog: typeof import('./src/components/orders/UpdateOrderDialog.vue')['default']
     User: typeof import('./src/components/settings/user/index.vue')['default']
     UserBioPanel: typeof import('./src/components/settings/view/UserBioPanel.vue')['default']
     UserInfoEditDialog: typeof import('./src/components/dialogs/UserInfoEditDialog.vue')['default']

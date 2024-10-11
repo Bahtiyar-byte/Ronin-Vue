@@ -22,6 +22,8 @@ const isVisibleMaterial = defineModel<boolean>('isVisibleMaterial', { required: 
 const materialDescription = defineModel<string>('materialDescription', { required: true })
 const quantity = defineModel<string>('quantity', { required: true })
 const unit = defineModel<string>('unit', { required: true })
+const isUpdateForm = defineModel<string>('isUpdateForm', { required: true })
+
 
 const initializeFormData = (fields: Array<FormField | FormFieldsGroup>) => {
   const data = {} as Record<string, any>
@@ -167,7 +169,7 @@ const onSubmit = handleSubmit(async (values: Record<string, any>) => {
           </EntityField>
 
           <VBtn
-            v-if="props.fields[0]['title'] === 'Create New Order'"
+            v-if="props.fields[0]['title'] === 'Create New Order' || props.fields[0]['title'] === 'Update Order'"
             class="my-2" color="primary"
             @click="isVisibleMaterial = !isVisibleMaterial"
           >
