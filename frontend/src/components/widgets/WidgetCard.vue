@@ -10,6 +10,7 @@ const props = defineProps<WidgetCardProps>()
 const containerTag = computed(() => (props.to ? RouterLink : 'div'))
 
 const isVisibleOrderCreateForm = defineModel<boolean>('isVisibleOrderCreateForm', { default: {} })
+const isVisibleLaborTicketCreateForm = defineModel<boolean>('isVisibleLaborTicketCreateForm', { default: {} })
 
 const items = [
   { title: 'Emails', value: 'emails' },
@@ -36,7 +37,7 @@ function prefixWithPlus(value: number): string {
     :is="containerTag"
     :to="to"
     :class="{ 'cursor-pointer': props.action || props.to }"
-    @click="props.action"
+
   >
     <VCard>
       <VCardText>
@@ -73,6 +74,7 @@ function prefixWithPlus(value: number): string {
               variant="tonal"
               rounded
               size="42"
+              @click="props.action"
             >
               <VIcon
                 :icon="widget.icon"
@@ -86,7 +88,7 @@ function prefixWithPlus(value: number): string {
             >
               <template #activator="{ props: tooltipProps }">
                 <RouterLink
-                  v-if="widget.title !== 'Communications' && widget.title !== 'Order'"
+                  v-if="widget.title !== 'Communications' && widget.title !== 'Order' &&  widget.title !== 'Labor Ticket'"
                   :to="widget.action.to"
                   @click.stop="(e: Event) => {
                     e.stopPropagation()
@@ -150,6 +152,20 @@ function prefixWithPlus(value: number): string {
                         e.stopPropagation()
                         e.preventDefault()
                       }"
+                    />
+                  </template>
+                </VMenu>
+
+                <VMenu v-if="widget.title === 'Labor Ticket'">
+                  <template #activator="{ props: menuProps }">
+                    <VBtn
+                      class="w-1/2"
+                      :color="widget?.iconColor ?? 'primary'"
+                      variant="tonal"
+                      :icon="widget.action.icon"
+                      size="42"
+                      rounded
+                      @click="isVisibleLaborTicketCreateForm = !isVisibleLaborTicketCreateForm"
                     />
                   </template>
                 </VMenu>

@@ -10,6 +10,7 @@ const jobData = defineModel<Job>('jobData', { required: true })
 
 const { count: estimatesCount } = useEstimates()
 const { count: orderCount } = useOrders()
+const { count: laborTicketCount } = useLaborTickets()
 const { count: invoicesCount } = useInvoices()
 const { count: documentsCount } = useDocuments()
 
@@ -17,7 +18,8 @@ const dialogsVisibility = reactive({
   estimates: false,
   invoices: false,
   documents: false,
-  orders: false
+  orders: false,
+  laborTickets: false,
 })
 
 const widgets = ref<WidgetCardProps[]>([
@@ -146,9 +148,12 @@ const widgets = ref<WidgetCardProps[]>([
   },
   {
     permission: { action: 'read', subject: 'chats' },
+    action: () => {
+      dialogsVisibility.laborTickets = !dialogsVisibility.laborTickets
+    },
     widget: {
       title: 'Labor Ticket',
-      value: 0,
+      value: (await laborTicketCount({ related_job: jobData.value.id })).data.value?.count,
       icon: 'tabler-checklist',
       iconColor: 'primary',
       action: {
@@ -176,10 +181,8 @@ const invoicesSearchParams: GetEstimatesRequest = estimatesSearchParams
 const documentsSearchParams: GetEstimatesRequest = estimatesSearchParams
 
 const isVisibleOrderCreateForm = ref(false)
+const isVisibleLaborTicketCreateForm = ref(false)
 
-const renderer = ref(true)
-watch(isVisibleOrderCreateForm, newValue => {
-})
 </script>
 
 <template>
@@ -195,6 +198,7 @@ watch(isVisibleOrderCreateForm, newValue => {
         <WidgetCard
           v-bind="widgetData"
           v-model:isVisibleOrderCreateForm="isVisibleOrderCreateForm"
+          v-model:isVisibleLaborTicketCreateForm="isVisibleLaborTicketCreateForm"
         />
       </VCol>
     </VRow>
@@ -206,6 +210,11 @@ watch(isVisibleOrderCreateForm, newValue => {
 
     <OrdersList
       v-model:is-dialog-visible="dialogsVisibility.orders"
+      v-model:search-params="estimatesSearchParams"
+    />
+
+    <LaborTicketsList
+      v-model:is-dialog-labor-ticket-visible="dialogsVisibility.laborTickets"
       v-model:search-params="estimatesSearchParams"
     />
 
@@ -221,6 +230,11 @@ watch(isVisibleOrderCreateForm, newValue => {
 
     <CreateUpdateOrderDialog
       v-model:is-dialog-visible="isVisibleOrderCreateForm"
+      v-model:search-params="estimatesSearchParams"
+    />
+
+    <CreateUpdateLaborTicketDialog
+      v-model:is-dialog-visible="isVisibleLaborTicketCreateForm"
       v-model:search-params="estimatesSearchParams"
     />
   </div>

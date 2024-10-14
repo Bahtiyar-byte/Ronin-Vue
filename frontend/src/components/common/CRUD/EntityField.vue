@@ -8,6 +8,7 @@ import Checkbox from '@core/components/app-form-elements/Checkbox.vue'
 import AppEmailField from '@core/components/app-form-elements/AppEmailField.vue'
 import AppPhoneField from '@core/components/app-form-elements/AppPhoneField.vue'
 import AppAddressField from '@core/components/app-form-elements/AppAddressField.vue'
+import AppDateTimePicker from '@core/components/app-form-elements/AppDateTimePicker.vue'
 import type FormField from '@/types/forms/FormField'
 
 const props = defineProps<{
@@ -52,6 +53,8 @@ const getComponentType = (type: string) => {
     return AppPhoneField
   } else if (type === 'address_related_contact') {
     return AppAddressField
+  } else if (type === 'datetime') {
+    return AppDateTimePicker
   }
   return AppTextField
 }

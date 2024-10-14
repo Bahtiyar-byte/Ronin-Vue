@@ -1,7 +1,6 @@
 <script lang="ts" setup>
-import { computed, onBeforeMount, ref, watch } from 'vue'
+import { onBeforeMount, ref, watch } from 'vue'
 import { type RouteLocationNormalizedLoaded, useRoute, useRouter } from 'vue-router'
-import { useHead } from '@unhead/vue'
 import { useOrders } from '@/composables/useOrders'
 import { hasKey } from '@core/utils/helpers'
 import type Order from '@/types/orders/Order'
@@ -66,11 +65,9 @@ const fetchOrderData = async (id: string) => {
 onBeforeMount(async () => {
   await initializeFields(initialFieldsUpdateOrders())
   let currentOrderId = ''
-  if (!orderId){
+  if (!orderId.value) {
     currentOrderId = route.params.id as string
-    console.log('current order ')
   } else {
-    console.log('update order')
     currentOrderId = orderId.value
   }
 
@@ -80,10 +77,6 @@ onBeforeMount(async () => {
     await fetchOrderData(currentOrderId)
   }
   dataLoaded.value = true
-})
-
-useHead({
-  title: computed(() => (isUpdateMode.value && orderRef.value ? `Edit ${orderRef.value.order_name}` : 'Update Order')),
 })
 
 const submitForm = async (values: Record<string, any>) => {
@@ -113,40 +106,39 @@ watch(isVisibleMaterial, newVal => {
 
 <template>
   <VCard>
-  <VDialog
-    :model-value="isDialogVisible"
-    :width="$vuetify.display.smAndDown ? 'auto' : 750"
-  >
-    <DialogCloseBtn @click="isDialogVisible = !isDialogVisible" />
-    <ItemUpdate
-      v-if="dataLoaded"
-      v-model:isVisibleMaterial="isVisibleMaterial"
-      v-model:materialDescription="materialDescription"
-      v-model:quantity="quantity"
-      v-model:unit="unit"
-      v-model:isUpdateForm="isUpdateForm"
-      title=""
-      :breadcrumbs="[]"
-      :fields="formFields as FormField[]"
-      :submit-handler="submitForm"
-      :is-update-mode="isUpdateMode"
-
+    <VDialog
+      :model-value="isDialogVisible"
+      :width="$vuetify.display.smAndDown ? 'auto' : 750"
     >
-      <template #append_related_contactId>
-        <VTooltip text="Add new order">
-          <template #activator="{ props }">
-            <IconBtn
-              v-bind="props"
-              :to="{ name: 'contacts-create' }"
-              target="_blank"
-              class="ml-2"
-            >
-              <VIcon icon="tabler-plus" />
-            </IconBtn>
-          </template>
-        </VTooltip>
-      </template>
-    </ItemUpdate>
-  </VDialog>
+      <DialogCloseBtn @click="isDialogVisible = !isDialogVisible" />
+      <ItemUpdate
+        v-if="dataLoaded"
+        v-model:isVisibleMaterial="isVisibleMaterial"
+        v-model:materialDescription="materialDescription"
+        v-model:quantity="quantity"
+        v-model:unit="unit"
+        v-model:isUpdateForm="isUpdateForm"
+        title=""
+        :breadcrumbs="[]"
+        :fields="formFields as FormField[]"
+        :submit-handler="submitForm"
+        :is-update-mode="isUpdateMode"
+      >
+        <template #append_related_contactId>
+          <VTooltip text="Add new order">
+            <template #activator="{ props }">
+              <IconBtn
+                v-bind="props"
+                :to="{ name: 'contacts-create' }"
+                target="_blank"
+                class="ml-2"
+              >
+                <VIcon icon="tabler-plus" />
+              </IconBtn>
+            </template>
+          </VTooltip>
+        </template>
+      </ItemUpdate>
+    </VDialog>
   </VCard>
 </template>

@@ -19,11 +19,9 @@ const props = defineProps<{
 
 const isVisibleMaterial = defineModel<boolean>('isVisibleMaterial', { required: true })
 
-const materialDescription = defineModel<string>('materialDescription', { required: true })
-const quantity = defineModel<string>('quantity', { required: true })
-const unit = defineModel<string>('unit', { required: true })
-const isUpdateForm = defineModel<string>('isUpdateForm', { required: true })
-
+const materialDescription = defineModel<string>('materialDescription', { required: true, default: '' })
+const quantity = defineModel<string>('quantity', { required: true, default: '' })
+const unit = defineModel<string>('unit', { required: true, default: '' })
 
 const initializeFormData = (fields: Array<FormField | FormFieldsGroup>) => {
   const data = {} as Record<string, any>
@@ -55,7 +53,6 @@ const initializeValidationSchema = (fields: Array<FormField | FormFieldsGroup>) 
       schema[field.name] = field.rules
     }
   })
-
   return yup.object().shape(schema)
 }
 
