@@ -1,7 +1,7 @@
 import type * as yup from 'yup'
 
 export default interface FormField {
-  type: 'input' | 'textarea' | 'select' | 'autocomplete' | 'checkbox' | 'button'
+  type: 'input' | 'textarea' | 'select' | 'autocomplete' | 'checkbox' | 'button' | 'datetime'
   value?: any
   multiple?: boolean
   eager?: boolean

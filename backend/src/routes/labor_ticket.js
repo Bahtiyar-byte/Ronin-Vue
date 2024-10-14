@@ -81,13 +81,12 @@ router.post(
       req.headers.referer ||
       `${req.protocol}://${req.hostname}${req.originalUrl}`;
     const link = new URL(referer);
-    await Labor_ticketService.create(
+    const payload = await Labor_ticketService.create(
       req.body.data,
       req.currentUser,
       true,
       link.host,
     );
-    const payload = true;
     res.status(200).send(payload);
   }),
 );

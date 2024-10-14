@@ -11,12 +11,13 @@ module.exports = class Labor_ticketService {
   static async create(data, currentUser) {
     const transaction = await db.sequelize.transaction();
     try {
-      await Labor_ticketDBApi.create(data, {
+      const laborTicket = await Labor_ticketDBApi.create(data, {
         currentUser,
         transaction,
       });
 
       await transaction.commit();
+      return laborTicket
     } catch (error) {
       await transaction.rollback();
       throw error;

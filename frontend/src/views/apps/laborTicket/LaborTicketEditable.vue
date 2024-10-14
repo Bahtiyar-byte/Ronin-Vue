@@ -31,11 +31,10 @@ const { user: currentUser } = storeToRefs(useCurrentUserStore())
 const { getById: getContactById } = useContacts()
 const { getById: getUserById } = useUsers()
 const { getById: getOrderById } = useOrders()
+const { getById: getLaborTicketById } = useLaborTickets()
 
 const orderData = defineModel<Partial<Order>>('data', { required: true })
 const isVisibleAddButton = defineModel<boolean>('isVisibleAddButton', { required: true })
-
-
 
 const isLoading = ref<boolean>()
 const contactId = ref<string>()
@@ -48,19 +47,29 @@ const quantity = ref('')
 const unit = ref('')
 
 const route = useRoute() as RouteLocationNormalizedLoaded & { query: Partial<{ contact_id: string }> }
+const laborTicketData = ref({})
 
-onMounted(async () => {
-  const orderId = route.params.id as string
+const getOrder = async (orderId: string) => {
   const { data } = await getOrderById(orderId)
 
-  // console.log('data ', data)
-
-  watch(data, newVal => {
+  watch(data, async newVal => {
     if (newVal) {
       orderData.value = newVal
       materialDescription.value = newVal.material_description
       quantity.value = newVal.quantity
       unit.value = newVal.unit
+    }
+  })
+}
+
+onMounted(async () => {
+  const laborTicketId = route.params.id as string
+  const { data } = await getLaborTicketById(laborTicketId)
+
+  watch(data, async newVal => {
+    if (newVal) {
+      laborTicketData.value = newVal
+      getOrder(newVal.related_orderId)
     }
   })
 
@@ -122,8 +131,6 @@ const updateMaterials = async () => {
   // const orderId = route.params.id as string
   // const { data } = await getOrderById(orderId)
 
-  // console.log('data ', data)
-
   // watch(data, newVal => {
   //   if (newVal) {
   //     orderData.value = newVal
@@ -141,11 +148,13 @@ const updateMaterials = async () => {
       isDialogVisible.value = false
     }
   })
-
 }
 
 const date = ref<string | Date>(orderData.value?.createdAt ?? new Date())
 
+const computedUnit = computed(() => {
+  return unit.value ?? '';
+});
 
 </script>
 
@@ -191,7 +200,7 @@ const date = ref<string | Date>(orderData.value?.createdAt ?? new Date())
 
           <span style="inline-size: 9.5rem;">
             <span v-if="hideControls">
-              {{ formatDate(orderData?.createdAt as string, {
+              {{ formatDate(laborTicketData?.createdAt as string, {
                 year: 'numeric',
                 month: '2-digit',
                 day: '2-digit',
@@ -202,21 +211,47 @@ const date = ref<string | Date>(orderData.value?.createdAt ?? new Date())
               v-model="date"
               placeholder="YYYY-MM-DD"
               :config="{ position: 'auto right' }"
-
             />
           </span>
         </div>
       </template>
     </InvoiceHeader>
 
+    <VRow>
+      <VCol class="text-no-wrap">
+        <h6 class="text-h6 mb-4 text-primary font-weight-bold">
+          Labor Section:
+        </h6>
+
+        <table>
+          <tbody>
+            <tr>
+              <td class="pe-4 pb-4 font-weight-bold">
+                Labor :
+              </td>
+              <td>
+                <p class="text-wrap me-4">
+                  {{ laborTicketData?.assigned_crew ? laborTicketData?.assigned_crew[0].name : '' }}
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td class="pe-4 font-weight-bold">
+                Crew Instructions :
+              </td>
+              <td>{{ laborTicketData?.crew_instructions }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </VCol>
+    </VRow>
+
     <!--    <AppDivider /> -->
     <div class="break-inside-avoid">
-      <!--      <VDivider class="my-6 border-dashed border-gray-700 !opacity-60" /> -->
-
-      <!--      <VDivider class="mt-6 border-dashed border-gray-700 !opacity-60" /> -->
+      <VDivider class="my-4 border-dashed border-gray-700 !opacity-60" />
     </div>
 
-    <div class="add-products-form">
+    <div class="add-products-form mb-2">
       <VBtn
         v-if="hideControls && isVisibleAddButton"
         size="small"
@@ -230,28 +265,15 @@ const date = ref<string | Date>(orderData.value?.createdAt ?? new Date())
         v-if="hideControls"
         v-model:materialDescription="materialDescription"
         v-model:quantity="quantity"
-        v-model:unit="unit"
+        v-model:unit="computedUnit"
         v-model:dialog-visible="tradesDialogVisible"
-        :submit-handler="submitForm"
         @save-material="(tradeId: string) => {
           isDialogVisible = true
           updateMaterials()
         }"
       />
-
-      <!--      <InvoiceSectionManageDialog -->
-      <!--        v-if="!hideControls" -->
-      <!--        v-model:dialog-visible="isDialogVisible" -->
-      <!--        v-model:trades-uuid="tradesUuid" -->
-      <!--        @save-section-clicked="(templateId: string) => { -->
-      <!--          handleTemplateSectionSelected(templateId) -->
-      <!--        }" -->
-      <!--      /> -->
     </div>
 
-
-
-    <VDivider class="my-4 border-dashed border-gray-700 !opacity-60" />
     <VRow>
       <VCol class="text-no-wrap">
         <h6 class="text-h6 mb-4 text-primary font-weight-bold">

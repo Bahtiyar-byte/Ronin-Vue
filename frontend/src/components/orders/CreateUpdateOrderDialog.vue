@@ -72,7 +72,7 @@ onBeforeMount(async () => {
 })
 
 useHead({
-  title: computed(() => (isUpdateMode.value && orderRef.value ? `Edit ${orderRef.value.order_name}` : 'Create new order')),
+  // title: computed(() => (isUpdateMode.value && orderRef.value ? `Edit ${orderRef.value.order_name}` : 'Create new order')),
 })
 
 const submitForm = async (values: Record<string, any>) => {

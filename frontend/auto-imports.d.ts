@@ -265,6 +265,7 @@ declare global {
   const useInvoices: typeof import('./src/composables/useInvoices')['useInvoices']
   const useJobs: typeof import('./src/composables/useJobs')['useJobs']
   const useKeyModifier: typeof import('@vueuse/core')['useKeyModifier']
+  const useLaborTickets: typeof import('./src/composables/useLaborTickets')['useLaborTickets']
   const useLastChanged: typeof import('@vueuse/core')['useLastChanged']
   const useLocalStorage: typeof import('@vueuse/core')['useLocalStorage']
   const useMagicKeys: typeof import('@vueuse/core')['useMagicKeys']
@@ -655,6 +656,7 @@ declare module 'vue' {
     readonly useInvoices: UnwrapRef<typeof import('./src/composables/useInvoices')['useInvoices']>
     readonly useJobs: UnwrapRef<typeof import('./src/composables/useJobs')['useJobs']>
     readonly useKeyModifier: UnwrapRef<typeof import('@vueuse/core')['useKeyModifier']>
+    readonly useLaborTickets: UnwrapRef<typeof import('./src/composables/useLaborTickets')['useLaborTickets']>
     readonly useLastChanged: UnwrapRef<typeof import('@vueuse/core')['useLastChanged']>
     readonly useLocalStorage: UnwrapRef<typeof import('@vueuse/core')['useLocalStorage']>
     readonly useMagicKeys: UnwrapRef<typeof import('@vueuse/core')['useMagicKeys']>
@@ -1038,6 +1040,7 @@ declare module '@vue/runtime-core' {
     readonly useInvoices: UnwrapRef<typeof import('./src/composables/useInvoices')['useInvoices']>
     readonly useJobs: UnwrapRef<typeof import('./src/composables/useJobs')['useJobs']>
     readonly useKeyModifier: UnwrapRef<typeof import('@vueuse/core')['useKeyModifier']>
+    readonly useLaborTickets: UnwrapRef<typeof import('./src/composables/useLaborTickets')['useLaborTickets']>
     readonly useLastChanged: UnwrapRef<typeof import('@vueuse/core')['useLastChanged']>
     readonly useLocalStorage: UnwrapRef<typeof import('@vueuse/core')['useLocalStorage']>
     readonly useMagicKeys: UnwrapRef<typeof import('@vueuse/core')['useMagicKeys']>

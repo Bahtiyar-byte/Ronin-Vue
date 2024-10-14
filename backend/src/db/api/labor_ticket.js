@@ -11,17 +11,34 @@ module.exports = class Labor_ticketDBApi {
     const currentUser = (options && options.currentUser) || { id: null };
     const transaction = (options && options.transaction) || undefined;
 
+    const order = await db.orders.findByPk(
+        data.related_order,
+        {},
+        { transaction },
+    );
+
+    let job = {}
+
+    if (order) {
+      job = await db.jobs.findByPk(
+          order.related_jobId,
+          {},
+          { transaction },
+      );
+    }
+
+
     const labor_ticket = await db.labor_ticket.create(
       {
         id: data.id || undefined,
 
-        name: data.name || null,
-        start_date: data.start_date || null,
-        end_date: data.end_date || null,
+        name: order.order_name || null,
+        start_date: job.start_date || null,
+        end_date: job.end_date || null,
         crew_instructions: data.crew_instructions || null,
-        actual_start_time: data.actual_start_time || null,
-        actual_end_time: data.actual_end_time || null,
-        crew_actions: data.crew_actions || null,
+        actual_start_time: job.actual_start_time || null,
+        actual_end_time: job.actual_end_time || null,
+        crew_actions: 'Not Checked In' || null,
         labor_progress: data.labor_progress || null,
         disclaimer: data.disclaimer || null,
         assigned_date: data.assigned_date || null,
@@ -32,7 +49,7 @@ module.exports = class Labor_ticketDBApi {
       { transaction },
     );
 
-    await labor_ticket.setRelated_job(data.related_job || null, {
+    await labor_ticket.setRelated_job(job.id || null, {
       transaction,
     });
 

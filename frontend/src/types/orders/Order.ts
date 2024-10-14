@@ -16,7 +16,7 @@ export default interface Order extends Entity {
   related_job?: any | null
   material_description?: string | null
   quantity?: string | null
-  unit?: any[]
+  unit?: string | null
   total_amount?: any[]
   related_trade: string | null
   createdAt: string | null

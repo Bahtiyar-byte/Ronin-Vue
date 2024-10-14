@@ -377,7 +377,7 @@ module.exports = class OrdersDBApi {
     }
 
     const records = await db.orders.findAll({
-      attributes: ['id', 'order_number'],
+      attributes: ['id', 'order_name', 'order_po_number'],
       where,
       limit: limit ? Number(limit) : undefined,
       orderBy: [['order_number', 'ASC']],
@@ -385,7 +385,7 @@ module.exports = class OrdersDBApi {
 
     return records.map((record) => ({
       id: record.id,
-      label: record.order_number,
+      label: `${record.order_name} ${record.order_po_number}`,
     }));
   }
 };
