@@ -6,6 +6,7 @@ import type Estimate from '@/types/estimates/Estimate'
 defineProps<{
   handleDownload: () => void
   handlePrint: () => void
+  handleLaborTicket: () => void
   route: RouteLocationNormalizedLoaded
 }>()
 
@@ -135,6 +136,17 @@ const isVisibleOrderUpdateForm = ref(false)
             @click="isVisibleOrderUpdateForm = !isVisibleOrderUpdateForm"
           >
             Edit
+          </VBtn>
+        </div>
+
+        <div class="flex gap-2.5">
+          <VBtn
+              class="flex-1"
+              variant="tonal"
+              color="secondary"
+              @click="handleLaborTicket"
+          >
+            New Labor Ticket
           </VBtn>
         </div>
       </VCardText>

@@ -183,7 +183,7 @@ const getPaddingStyle = (index: number) =>
       <VBtn
         v-bind="props"
         size="30"
-        icon="tabler-plus"
+        icon="tabler-eye"
         variant="text"
       />
       <!--      <SelectPhotos /> -->
