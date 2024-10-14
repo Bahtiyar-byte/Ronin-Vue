@@ -22,10 +22,10 @@ const isVisibleAddButton = ref(true)
 const loading = ref<boolean>(false)
 const isDocuSealVisible = ref<boolean>(false)
 const isDocuSealToken = ref<string>('')
-
+const orderId = ref('')
 onBeforeMount(async () => {
   const { data, isFetching } = await getById(route.params.id)
-
+  orderId.value = route.params.id
   watch(data, newVal => {
     order.value = {
       ...newVal as Order,
@@ -116,6 +116,12 @@ watch(isSendEstimateSidebarVisible, newVal => {
     })
   }
 })
+
+const isVisibleLaborTicketCreateForm = ref(false)
+
+const handleLaborTicket = () => {
+  isVisibleLaborTicketCreateForm.value = !isVisibleLaborTicketCreateForm.value
+}
 </script>
 
 <template>
@@ -137,10 +143,13 @@ watch(isSendEstimateSidebarVisible, newVal => {
           v-model:is-send-estimate-sidebar-visible="isSendEstimateSidebarVisible"
           :handle-download="handleDownload"
           :handle-print="handlePrint"
+          :handle-labor-ticket="handleLaborTicket"
           :route="route"
         />
       </template>
     </InvoiceBuilderLayout>
+
+    <CreateUpdateLaborTicketDialog v-model:orderId="orderId" v-model:is-dialog-visible="isVisibleLaborTicketCreateForm" />
 
     <!--    <InvoiceSendInvoiceDrawer -->
     <!--      v-if="estimate.id !== undefined" -->
