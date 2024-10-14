@@ -21,7 +21,7 @@ RUN pnpm install;
 RUN pnpm i --frozen-lockfile;
 
 # Build vue.js based on the preferred package manager
-RUN pnpm run dev;
+RUN pnpm run build;
 
 # Use Nginx as the production server
 FROM nginx:stable-alpine

@@ -121,7 +121,7 @@ watch(isSendEstimateSidebarVisible, newVal => {
       <template #rightColumn>
         <EstimateDetailsRightPanel
           v-model:loading="loading"
-          v-model:estimate="estimate as Estimate"
+          v-model:estimate="estimate"
           v-model:is-send-estimate-sidebar-visible="isSendEstimateSidebarVisible"
           :handle-download="handleDownload"
           :handle-print="handlePrint"
