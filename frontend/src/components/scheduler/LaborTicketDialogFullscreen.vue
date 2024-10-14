@@ -22,6 +22,58 @@ import shared3 from '@images/shared-photos/shared3.jpg'
 import shared4 from '@images/shared-photos/shared4.jpg'
 import shared5 from '@images/shared-photos/shared4.jpg'
 
+const props = defineProps<Props>()
+
+interface Props {
+  ticket: { id: number; name: string; start_date: string; end_date: string; trade: string; template: string; related_order: { related_estimate: { related_contact: object } } }
+  daysOfScheduler: number
+  color: string
+  crew: {}
+}
+
+const contactName = ref('')
+const estimateId = ref('')
+const { getById } = useContacts()
+const { getById: getEstimateByid } = useEstimates()
+
+const contactMailingAddress = ref({ id: '', suite_apt_unit: '', street: '', city: '', state: '', country: '', zip: '' })
+
+const getContactData = async (contactId: string) => {
+  const { data: contactData } = await getById(contactId)
+
+  watch(contactData, newVal => {
+    contactMailingAddress.value = newVal.address_related_contact.find(address => address.is_mailing_address)
+  })
+}
+
+const trades = ref('')
+
+const getEstimateData = async (currentEstimateId: string) => {
+  const { data: estimateData } = await getEstimateByid(currentEstimateId)
+
+  watch(estimateData, newVal => {
+    trades.value = newVal.estimate_sections_related_estimate?.map(section => section.name).join(', ')
+  })
+}
+
+onMounted(async () => {
+  console.log('crew ', props.crew)
+  console.log('props.ticket ', props.ticket)
+  if (props.ticket.related_order?.related_estimate?.related_contact) {
+    const contact = props.ticket.related_order?.related_estimate?.related_contact
+
+    estimateId.value = props.ticket.related_order?.related_estimate?.id
+    contactName.value = `${contact.fi} ${contact.la}`
+
+    getContactData(contact.id)
+  }
+})
+
+watch(estimateId, newVal => {
+  console.log('newVal ', newVal)
+  getEstimateData(newVal)
+})
+
 const shared_photos: any[] = [
   shared1,
   shared2,
@@ -205,7 +257,7 @@ const getPaddingStyle = (index: number) =>
             />
           </VBtn>
 
-          <VToolbarTitle>Evan KENEPP</VToolbarTitle>
+          <VToolbarTitle> {{ contactName }} </VToolbarTitle>
 
           <VSpacer />
 
@@ -252,7 +304,7 @@ const getPaddingStyle = (index: number) =>
                 class="font-medium"
                 style="font-size: 2em;"
               >
-                Box Gutters Order (copy)
+                {{ props.ticket.related_order?.order_name }}
               </span>
             </VListItemTitle>
           </VListItem>
@@ -260,11 +312,11 @@ const getPaddingStyle = (index: number) =>
           <VListItem>
             <VListItemTitle>
               <span class="font-medium">
-                24-1364: Ben Anderson
+                {{ props.ticket.related_order?.order_po_number }}
               </span>
               <br>
               <span class="font-medium">
-                3223 Wainbell Avenue, Pittsburgh, PA 15216
+                {{ `${contactMailingAddress.suite_apt_unit} ${contactMailingAddress.street}, ${contactMailingAddress.city}, ${contactMailingAddress.state} ${contactMailingAddress.zip}` }}
               </span>
             </VListItemTitle>
           </VListItem>
@@ -275,18 +327,10 @@ const getPaddingStyle = (index: number) =>
                 Trade:
               </span>
               <div class="d-inline-block text-body-1">
-                Box Gutters
+                {{ trades }}
               </div>
             </VListItemTitle>
             <br>
-            <VListItemTitle>
-              <span class="font-medium">
-                Trade:
-              </span>
-              <div class="d-inline-block text-body-1">
-                Box Gutters
-              </div>
-            </VListItemTitle>
           </VListItem>
         </VList>
       </div>
@@ -318,15 +362,12 @@ const getPaddingStyle = (index: number) =>
                 </thead>
 
                 <tbody>
-                  <tr
-                    v-for="(transition, index) in lastTransitions"
-                    :key="index"
-                  >
+                  <tr>
                     <td :style="getPaddingStyle(index)">
-                      <span class="text-sm">{{ transition.sentDate }}</span>
+                      <span class="text-sm">{{ props.ticket.start_date }}</span>
                     </td>
                     <td :style="getPaddingStyle(index)">
-                      <span class="text-sm">{{ transition.sentDate }}</span>
+                      <span class="text-sm">{{ props.ticket.end_date }}</span>
                     </td>
                   </tr>
                 </tbody>
@@ -362,20 +403,20 @@ const getPaddingStyle = (index: number) =>
 
                 <tbody>
                   <tr
-                    v-for="(assignment, index) in crewAssignments"
+                    v-for="(user, index) in crew?.users"
                     :key="index"
                   >
                     <td :style="getPaddingStyle(index)">
-                      <span class="text-sm">{{ assignment.crewName }}</span>
+                      <span class="text-sm">{{ crew.name }}</span>
                     </td>
                     <td :style="getPaddingStyle(index)">
-                      <span class="text-sm">{{ assignment.crewContacts }}</span>
+                      <span class="text-sm">{{ `${user.firstName} ${user.lastName}` }}</span>
                     </td>
                     <td :style="getPaddingStyle(index)">
-                      <span class="text-sm">{{ assignment.contactInfo }}</span>
+                      <span class="text-sm">{{ user.email }} <br> {{ user.phoneNumber }}</span>
                     </td>
                     <td :style="getPaddingStyle(index)">
-                      <span class="text-sm">{{ assignment.apkLink }}</span>
+                      <span class="text-sm">{{ user.link ? user.link : '' }}</span>
                     </td>
                   </tr>
                 </tbody>
@@ -448,7 +489,7 @@ const getPaddingStyle = (index: number) =>
           <VExpansionPanel class="mb-2 py-3">
             <VExpansionPanelTitle>
               <div style="font-size: 1.1em">
-                Labor Order: 24-1322-1
+                Labor Order: {{ props.ticket.related_order?.order_po_number }}
               </div>
             </VExpansionPanelTitle>
 
@@ -459,33 +500,30 @@ const getPaddingStyle = (index: number) =>
                     <th>LABOR ITEM</th>
                     <th>QTY</th>
                     <th>UNIT</th>
-                    <th>UNIT COST</th>
-                    <th>COST</th>
+                    <th>TOTAL AMOUNT</th>
+                    <!--                    <th>COST</th> -->
                   </tr>
                 </thead>
 
                 <tbody>
-                  <tr
-                    v-for="(order, index) in laborOrder"
-                    :key="index"
-                  >
+                  <tr>
                     <td :style="getPaddingStyle(index)">
-                      <span class="text-sm">{{ order.laborItem }}</span>
+                      <span class="text-sm">{{ props.ticket.related_order.material_description }}</span>
                     </td>
                     <td :style="getPaddingStyle(index)">
                       <span class="text-sm">
-                        {{ order.qty }}
+                        {{ props.ticket.related_order.quantity }}
                       </span>
                     </td>
                     <td :style="getPaddingStyle(index)">
-                      <span class="text-sm"> {{ order.unit }}</span>
+                      <span class="text-sm"> {{ props.ticket.related_order.unit }}</span>
                     </td>
                     <td :style="getPaddingStyle(index)">
-                      <span class="text-sm"> {{ order.unit_cost }}</span>
+                      <span class="text-sm"> {{ props.ticket.related_order.total_amount }}</span>
                     </td>
-                    <td :style="getPaddingStyle(index)">
-                      <span class="text-sm"> {{ order.cost }}</span>
-                    </td>
+                    <!--                    <td :style="getPaddingStyle(index)"> -->
+                    <!--                      <span class="text-sm"> {{ order.cost }}</span> -->
+                    <!--                    </td> -->
                   </tr>
                 </tbody>
               </VTable>
@@ -517,12 +555,9 @@ const getPaddingStyle = (index: number) =>
                 </thead>
 
                 <tbody>
-                  <tr
-                    v-for="(instruction, index) in crewInstructions"
-                    :key="index"
-                  >
-                    <td :style="getPaddingStyle(index)">
-                      <span class="text-sm">{{ instruction.content }}</span>
+                  <tr>
+                    <td>
+                      <span class="text-sm">{{ props.ticket.crew_instructions }}</span>
                     </td>
                   </tr>
                 </tbody>
@@ -678,14 +713,19 @@ const getPaddingStyle = (index: number) =>
           <!-- Checklist Start -->
           <VExpansionPanel>
             <VExpansionPanelTitle> Checklist </VExpansionPanelTitle>
-            <VExpansionPanelText />
+            <VExpansionPanelText>
+              There are no Checklists associated to this order.
+            </VExpansionPanelText>
+
           </VExpansionPanel>
           <!-- Checklist  End -->
 
           <!-- Disclaimer Start -->
           <VExpansionPanel>
             <VExpansionPanelTitle> Disclaimer </VExpansionPanelTitle>
-            <VExpansionPanelText />
+            <VExpansionPanelText>
+              {{ props.ticket.disclaimer ??  'No Disclaimer has been added.' }}
+            </VExpansionPanelText>
           </VExpansionPanel>
           <!-- Disclaimer  End -->
         </VExpansionPanels>

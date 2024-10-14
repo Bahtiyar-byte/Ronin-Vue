@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import Crew from '@/components/scheduler/Crew.vue'
 import LaborTicket from '@/components/scheduler/LaborTicket.vue'
+import type { GetEstimatesRequest } from '@/types/estimates/GetEstimatesRequest'
 
 const zoomInOut = ref(10)
 const dateRange = ref(5)
@@ -132,7 +133,7 @@ const getTodayDate = () => {
   getDatesBetween(dateRangeStart.value, dateRangeEnd.value)
 }
 
-const laborTickets = [
+const laborTicketsDemo = [
   {
     crew: { name: 'Evans Service Crew 1', color: '#E8D213' },
     laborTickets: [
@@ -165,6 +166,18 @@ const isTicketStarts = (dayDate: string, ticketDate: string): boolean => {
   // Compare year, month, and day for equality
   return dayYear === ticketYear && dayMonth === ticketMonth && dayDay === ticketDay
 }
+
+const searchParams = defineModel<GetEstimatesRequest>('searchParams', { default: {} })
+const { getList } = useCrews()
+const crewsWithLaborTickets = ref([])
+
+onMounted(async () => {
+  const { data } = await getList(searchParams.value)
+
+  watch(data, newVal => {
+    crewsWithLaborTickets.value = newVal.rows
+  })
+})
 </script>
 
 <template>
@@ -375,17 +388,17 @@ const isTicketStarts = (dayDate: string, ticketDate: string): boolean => {
 
       <div class="main__scheduler__bottom">
         <div
-          v-for="(crew, index) in laborTickets"
+          v-for="(crew, index) in crewsWithLaborTickets"
           :key="`crew_${index}`"
           class="main__scheduler__bottom__trade"
         >
           <div class="crew__container">
-            <Crew :crew="crew.crew" />
+            <Crew :crew="crew" />
           </div>
           <div class="main__scheduler__bottom__trade__labor__tickets">
             <div class="main__scheduler__bottom__trade__content">
               <div
-                v-for="(singleTicket, indexTicket) in crew.laborTickets"
+                v-for="(singleTicket, indexTicket) in crew.assigned_crew"
                 :key="`singleTicket_${indexTicket}`"
                 class="main__scheduler__trade__row"
               >
@@ -396,10 +409,11 @@ const isTicketStarts = (dayDate: string, ticketDate: string): boolean => {
                   :style="{ background: isDateWeekend(singleDate) ? '#E9EAF5' : '#fff' }"
                 >
                   <LaborTicket
-                    v-if="isTicketStarts(singleDate, singleTicket.startDate)"
+                    v-if="isTicketStarts(singleDate, singleTicket.start_date)"
                     :ticket="singleTicket"
                     :days-of-scheduler="dateRange + 1"
-                    :color="crew.crew.color"
+                    :color="crew.color"
+                    :crew="crew"
                   />
                 </div>
               </div>
@@ -407,6 +421,41 @@ const isTicketStarts = (dayDate: string, ticketDate: string): boolean => {
           </div>
         </div>
       </div>
+
+      <!--      <div class="main__scheduler__bottom"> -->
+      <!--        <div -->
+      <!--          v-for="(crew, index) in laborTicketsDemo" -->
+      <!--          :key="`crew_${index}`" -->
+      <!--          class="main__scheduler__bottom__trade" -->
+      <!--        > -->
+      <!--          <div class="crew__container"> -->
+      <!--            <Crew :crew="crew.crew" /> -->
+      <!--          </div> -->
+      <!--          <div class="main__scheduler__bottom__trade__labor__tickets"> -->
+      <!--            <div class="main__scheduler__bottom__trade__content"> -->
+      <!--              <div -->
+      <!--                v-for="(singleTicket, indexTicket) in crew.laborTickets" -->
+      <!--                :key="`singleTicket_${indexTicket}`" -->
+      <!--                class="main__scheduler__trade__row" -->
+      <!--              > -->
+      <!--                <div -->
+      <!--                  v-for="(singleDate, indexDay) in dateRanges" -->
+      <!--                  :key="`singleDay_${indexDay}`" -->
+      <!--                  class="main__scheduler__bottom__trade__content__single__day" -->
+      <!--                  :style="{ background: isDateWeekend(singleDate) ? '#E9EAF5' : '#fff' }" -->
+      <!--                > -->
+      <!--                  <LaborTicket -->
+      <!--                    v-if="isTicketStarts(singleDate, singleTicket.startDate)" -->
+      <!--                    :ticket="singleTicket" -->
+      <!--                    :days-of-scheduler="dateRange + 1" -->
+      <!--                    :color="crew.crew.color" -->
+      <!--                  /> -->
+      <!--                </div> -->
+      <!--              </div> -->
+      <!--            </div> -->
+      <!--          </div> -->
+      <!--        </div> -->
+      <!--      </div> -->
     </div>
   </div>
 </template>
@@ -533,7 +582,7 @@ const isTicketStarts = (dayDate: string, ticketDate: string): boolean => {
   width: 100%;
   display: flex;
   border-right: 1px solid gray;
-  min-height: 47px;
+  min-height: 30px;
   padding: 1px 0 1px 1px;
 }
 

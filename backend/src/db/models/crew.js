@@ -45,6 +45,14 @@ module.exports = function (sequelize, DataTypes) {
       through: 'crewUsersUsers',
     });
 
+      db.crew.belongsToMany(db.labor_ticket, {
+          as: 'assigned_crew',
+          foreignKey: {
+              name: 'crewId',
+          },
+          constraints: false,
+          through: 'labor_ticketAssigned_crewCrew',
+      });
     /// loop through entities and it's fields, and if ref === current e[name] and create relation has many on parent entity
 
     //end loop

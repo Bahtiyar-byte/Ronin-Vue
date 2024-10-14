@@ -1,4 +1,5 @@
 const db = require('../models');
+const labor_ticket = require('../models/labor_ticket');
 const FileDBApi = require('./file');
 const crypto = require('crypto');
 const Utils = require('../utils');
@@ -155,6 +156,42 @@ module.exports = class CrewDBApi {
     let where = {};
     let include = [
       {
+        model: db.labor_ticket,
+        as: 'assigned_crew',
+        include: [
+          {
+            model: db.orders,
+            as: 'related_order',
+            include: [
+              {
+                model: db.estimates,
+                as: 'related_estimate',
+                include: [
+                  {
+                    model: db.contacts,
+                    as: 'related_contact',
+                  },
+                ]
+              },
+            ]
+          },
+          {
+            model: db.jobs,
+            as: 'related_job',
+          },
+        ],
+        through: filter.assigned_crew
+            ? {
+              where: {
+                [Op.or]: filter.assigned_crew.split('|').map((item) => {
+                  return { ['Id']: Utils.uuid(item) };
+                }),
+              },
+            }
+            : null,
+        required: filter.assigned_crew ? true : null,
+      },
+      {
         model: db.users,
         as: 'users',
         through: filter.users
@@ -168,6 +205,20 @@ module.exports = class CrewDBApi {
           : null,
         required: filter.users ? true : null,
       },
+      // {
+      //   model: db.labor_ticket,
+      //   as: 'labor_ticket',
+      //   through: filter.laborTickets
+      //       ? {
+      //         where: {
+      //           [Op.or]: filter.labor_ticket.split('|').map((item) => {
+      //             return { ['Id']: Utils.uuid(item) };
+      //           }),
+      //         },
+      //       }
+      //       : null,
+      //   required: filter.labor_ticket ? true : null,
+      // },
     ];
 
     if (filter) {

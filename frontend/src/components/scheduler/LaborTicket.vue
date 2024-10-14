@@ -5,9 +5,10 @@ import LaborTicketDialogFullscreen2 from '@/components/scheduler/LaborTicketDial
 const props = defineProps<Props>()
 
 interface Props {
-  ticket: { id: number; name: string; startDate: string; endDate: string; trade: string; template: string }
+  ticket: { id: number; name: string; start_date: string; end_date: string; trade: string; template: string; related_order: { related_estimate: { related_contact: object } } }
   daysOfScheduler: number
-  color: string
+  color: string,
+  crew: {}
 }
 
 const dayDuration = ref(1)
@@ -26,7 +27,17 @@ const getDayDuration = (startDate: string, endDate: string): void => {
   dayDuration.value = dayDiff
 }
 
-getDayDuration(props.ticket.startDate, props.ticket.endDate)
+const contactName = ref('')
+
+onMounted(() => {
+  if (props.ticket.related_order?.related_estimate?.related_contact) {
+    const contact = props.ticket.related_order?.related_estimate?.related_contact
+
+    contactName.value = `${contact.fi} ${contact.la}`
+  }
+})
+
+getDayDuration(props.ticket.start_date, props.ticket.end_date)
 </script>
 
 <template>
@@ -34,19 +45,29 @@ getDayDuration(props.ticket.startDate, props.ticket.endDate)
     class="labor__ticket"
     :style="{ width: `calc(100% / ${daysOfScheduler} * ${dayDuration} - 2px)`, background: `${color}` }"
   >
+
     <div class="labor__ticket__content">
-      <span class="labor__ticket__trade">{{ ticket.trade }} / {{ ticket.template }}</span>
-      <span class="labor__ticket__name">{{ ticket.name }}</span>
+<!--      <div style="background: 'yellow'; height: 30px; width: 40px;" >-->
+<!--        <VBtn-->
+<!--          icon="tabler-star"-->
+<!--          variant="tonal"-->
+<!--          color="success"-->
+<!--          size="x-small"-->
+<!--        />-->
+<!--      </div>-->
+      <span class="labor__ticket__trade">  {{ contactName }} </span>
+      <!--      <span class="labor__ticket__trade">{{ ticket.trade }} / {{ ticket.name }}</span> -->
+      <!--      <span class="labor__ticket__name">{{ ticket.name }}</span> -->
     </div>
     <div class="labor__ticket__details__icon">
-      <LaborTicketDialogFullscreen2 />
+      <LaborTicketDialogFullscreen2 :ticket="props.ticket" :color="color" :crew="props.crew" :daysOfScheduler="daysOfScheduler" />
     </div>
   </div>
 </template>
 
 <style scoped>
 .labor__ticket {
-  min-height: 47px;
+  min-height: 30px;
   color: #000;
   font-weight: bold;
   display: flex;
@@ -59,8 +80,8 @@ getDayDuration(props.ticket.startDate, props.ticket.endDate)
 
 .labor__ticket__content{
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  flex-direction: row;
+  align-items: center;
   justify-content: center;
 }
 
