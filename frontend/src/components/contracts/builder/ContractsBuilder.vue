@@ -88,8 +88,8 @@ const handlePreview = async () => {
   <InvoiceBuilderLayout>
     <template #leftColumn>
       <ContractEditable
-        v-model:contract-data="contractData as Contract"
-        v-model:estimate-data="estimateData as Estimate"
+        v-model:contract-data="contractData"
+        v-model:estimate-data="estimateData"
         v-model:loading="loading"
       />
     </template>

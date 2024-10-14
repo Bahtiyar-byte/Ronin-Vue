@@ -92,14 +92,14 @@ const handleSending = async (data: {
         <ContractEditable
           id="contract-editable"
           v-model:loading="loading"
-          v-model:contract-data="contractData as Contract"
-          v-model:estimate-data="estimateData as Estimate"
+          v-model:contract-data="contractData"
+          v-model:estimate-data="estimateData"
         />
       </template>
 
       <template #rightColumn>
         <ContractDetailsRightPanel
-          v-model:contract="contractData as Contract"
+          v-model:contract="contractData"
           v-model:loading="loading"
           v-model:is-send-contract-sidebar-visible="isSendContractSidebarVisible"
           :handle-download="handleDownload"

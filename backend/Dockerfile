@@ -17,6 +17,6 @@ RUN yarn install
 COPY . .
 
 
-EXPOSE 8080
+EXPOSE 8090
 
 CMD bash -c "yarn start"
