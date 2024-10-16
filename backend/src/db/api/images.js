@@ -13,9 +13,7 @@ module.exports = class ImagesDBApi {
 
     const images = await db.images.create(
       {
-        id: data.id || undefined,
-
-        Name: data.Name || null,
+        Name: data.filename || null,
         importHash: data.importHash || null,
         createdById: currentUser.id,
         updatedById: currentUser.id,
@@ -188,6 +186,7 @@ module.exports = class ImagesDBApi {
   }
 
   static async findAll(filter, options) {
+    const currentUser = (options && options.currentUser) || { id: null };
     var limit = filter.limit || 0;
     var offset = 0;
     const currentPage = +filter.page;
@@ -315,6 +314,149 @@ module.exports = class ImagesDBApi {
             filter.field && filter.sort
               ? [[filter.field, filter.sort]]
               : [['createdAt', 'desc']],
+          transaction,
+        });
+
+    //    rows = await this._fillWithRelationsAndFilesForRows(
+    //      rows,
+    //      options,
+    //    );
+
+    return { rows, count };
+  }
+
+  static async findCurrentUserImagesAll(filter, options, currentUserId) {
+    const currentUser = (options && options.currentUser) || { id: null };
+    var limit = filter.limit || 0;
+    var offset = 0;
+    const currentPage = +filter.page;
+
+    offset = currentPage * limit;
+
+    var orderBy = null;
+
+
+    const transaction = (options && options.transaction) || undefined;
+    let where = {
+      createdById: currentUserId
+    };
+    let include = [
+      {
+        model: db.jobs,
+        as: 'related_job',
+      },
+
+      {
+        model: db.contacts,
+        as: 'related_contact',
+      },
+
+      {
+        model: db.file,
+        as: 'image',
+      },
+    ];
+
+    if (filter) {
+      if (filter.id) {
+        where = {
+          ...where,
+          ['id']: Utils.uuid(filter.id),
+        };
+      }
+
+      if (filter.Name) {
+        where = {
+          ...where,
+          [Op.and]: Utils.ilike('images', 'Name', filter.Name),
+        };
+      }
+
+      if (
+          filter.active === true ||
+          filter.active === 'true' ||
+          filter.active === false ||
+          filter.active === 'false'
+      ) {
+        where = {
+          ...where,
+          active: filter.active === true || filter.active === 'true',
+        };
+      }
+
+      if (filter.related_job) {
+        var listItems = filter.related_job.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
+        where = {
+          ...where,
+          related_jobId: { [Op.or]: listItems },
+        };
+      }
+
+      if (filter.related_contact) {
+        var listItems = filter.related_contact.split('|').map((item) => {
+          return Utils.uuid(item);
+        });
+
+        where = {
+          ...where,
+          related_contactId: { [Op.or]: listItems },
+        };
+      }
+
+      if (filter.createdAtRange) {
+        const [start, end] = filter.createdAtRange;
+
+        if (start !== undefined && start !== null && start !== '') {
+          where = {
+            ...where,
+            ['createdAt']: {
+              ...where.createdAt,
+              [Op.gte]: start,
+            },
+          };
+        }
+
+        if (end !== undefined && end !== null && end !== '') {
+          where = {
+            ...where,
+            ['createdAt']: {
+              ...where.createdAt,
+              [Op.lte]: end,
+            },
+          };
+        }
+      }
+    }
+
+    let { rows, count } = options?.countOnly
+        ? {
+          rows: [],
+          count: await db.images.count({
+            where,
+            include,
+            distinct: true,
+            limit: limit ? Number(limit) : undefined,
+            offset: offset ? Number(offset) : undefined,
+            order:
+                filter.field && filter.sort
+                    ? [[filter.field, filter.sort]]
+                    : [['createdAt', 'desc']],
+            transaction,
+          }),
+        }
+        : await db.images.findAndCountAll({
+          where,
+          include,
+          distinct: true,
+          limit: limit ? Number(limit) : undefined,
+          offset: offset ? Number(offset) : undefined,
+          order:
+              filter.field && filter.sort
+                  ? [[filter.field, filter.sort]]
+                  : [['createdAt', 'desc']],
           transaction,
         });
 

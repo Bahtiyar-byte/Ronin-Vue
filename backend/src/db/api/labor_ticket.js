@@ -133,25 +133,39 @@ module.exports = class Labor_ticketDBApi {
       { transaction },
     );
 
-    await labor_ticket.setRelated_job(data.related_job || null, {
-      transaction,
-    });
 
-    await labor_ticket.setRelated_order(data.related_order || null, {
-      transaction,
-    });
 
-    await labor_ticket.setRelated_images(data.related_images || [], {
-      transaction,
-    });
+    if (data.related_job){
+      await labor_ticket.setRelated_job(data.related_job || null, {
+        transaction,
+      });
+    }
 
-    await labor_ticket.setRelated_document(data.related_document || [], {
-      transaction,
-    });
+    if (data.related_order){
+      await labor_ticket.setRelated_order(data.related_order || null, {
+        transaction,
+      });
+    }
 
-    await labor_ticket.setAssigned_crew(data.assigned_crew || [], {
-      transaction,
-    });
+    if (data.related_images){
+      await labor_ticket.setRelated_images(data.related_images || [], {
+        transaction,
+      });
+    }
+
+    if (data.related_document){
+      await labor_ticket.setRelated_document(data.related_document || [], {
+        transaction,
+      });
+    }
+
+    if (data.assigned_crew){
+      await labor_ticket.setAssigned_crew(data.assigned_crew || [], {
+        transaction,
+      });
+    }
+
+
 
     return labor_ticket;
   }

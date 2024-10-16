@@ -1,12 +1,10 @@
 <script lang="ts" setup>
-import visaIcon from '@images/icons/payments/visa-icon.png'
-
-const dateEdit = ref('')
-const checkboxOne = ref('')
-const currentTab = ref('item-1')
-
-const tabItemContent
-  = 'Candy canes donut chupa chups candy canes lemon drops oat cake wafer. Cotton candy candy canes marzipan carrot cake. Sesame snaps lemon drops candy marzipan donut brownie tootsie roll. Icing croissant bonbon biscuit gummi bears. Pudding candy canes sugar plum cookie chocolate cake powder croissant.'
+const props = defineProps<Props>()
+const { update: updateLaborTicket } = useLaborTickets()
+interface Props {
+  ticket: { id: number; name: string; start_date: string; end_date: string; trade: string; template: string; related_order: { related_estimate: { related_contact: object } } }
+}
+const _ticket = ref(props?.ticket)
 
 const isDialogVisible = ref(false)
 
@@ -25,94 +23,26 @@ interface Transition {
   trend: string
 }
 
-const lastTransitions: Transition[] = [
-  {
-    cardImg: visaIcon,
-    lastDigit: '*4230',
-    cardType: 'Credit',
-    sentDate: '17 Mar 2022',
-    status: 'Verified',
-    trend: '+$1,678',
-  },
-]
+const saveCrewInstructions = () => {
+  const laborTicket = {
+    id: props?.ticket.id,
+    name: props?.ticket.name || null,
+    start_date: props?.ticket.start_date || null,
+    end_date: props?.ticket.end_date || null,
+    crew_instructions: props?.ticket.crew_instructions || null,
+    actual_start_time: props?.ticket.actual_start_time || null,
+    actual_end_time: props?.ticket.actual_end_time || null,
+    crew_actions: props?.ticket.crew_actions || null,
+    labor_progress: props?.ticket.labor_progress || null,
+    disclaimer: props?.ticket.disclaimer || null,
+    assigned_date: props?.ticket.assigned_date || null,
+  }
 
-const crewAssignments: any[] = [
-  {
-    crewName: 'Evans Service Crew 1',
-    crewContacts: 'Griffin Watts',
-    contactInfo: 'griffin@evansroofingandgutters.com',
-    apkLink: 'google.com',
-  },
-  {
-    crewName: 'Evans Service Crew 2',
-    crewContacts: 'Matt Gross 1',
-    contactInfo: '(412) 484-6012',
-    apkLink: 'google.com',
-  },
-]
-
-const laborContacts: any[] = [
-  {
-    name: 'Griffin Watts',
-    contactInfo: ['griffin@evansroofingandgutters.com', '(412) 484-6012'],
-    jobs: ['Created Order'],
-  },
-  {
-    name: 'Ray Colagrande Sr',
-    contactInfo: ['griffin@evansroofingandgutters.com', '(412) 484-6012'],
-    jobs: ['Main Contact', 'Primary Job Owner'],
-  },
-]
-
-const laborOrder: any[] = [
-  {
-    laborItem: 'Material 1',
-    qty: '0',
-    unit: 'EA',
-    unit_cost: '$0.00 / EA',
-    cost: '$0.00',
-  },
-  {
-    laborItem: 'Material 1',
-    qty: '0',
-    unit: 'EA',
-    unit_cost: '$0.00 / EA',
-    cost: '$0.00',
-  },
-]
-
-const crewInstructions: any[] = [
-  {
-    content:
-      'Install new metal over the hole in gutter shown in the picture that was sent to us and seal it to the box gutter. Install one new eave drop. Install new silicone tape patches on all of the damaged box gutters that were damaged by the previous roofing contractor.',
-  },
-  {
-    content:
-      'Install new metal over the hole in gutter shown in the picture that was sent to us and seal it to the box gutter. Install one new eave drop. Install new silicone tape patches on all of the damaged box gutters that were damaged by the previous roofing contractor.',
-  },
-]
-
-const resolveStatus: Status = {
-  Verified: 'success',
-  Rejected: 'error',
-  Pending: 'secondary',
+  const response: boolean = updateLaborTicket(laborTicket)
+  if (response) {
+    isDialogVisible.value = false
+  }
 }
-
-const items = [
-  'Evans Service Crew 1',
-  'Evans Service Crew 2',
-  'Evans Service Crew 3',
-  'Evans Service Crew 4',
-]
-
-const columnRadio = ref('radio-1')
-const inlineRadio = ref('radio-1')
-const radioGroup = ref(1)
-
-const crewInstruction = 'Install new metal over the hole in gutter shown in the picture that was sent to us and seal it to the box gutter. Install one new eave drop. Install new silicone tape patches on all of the damaged box gutters that were damaged by the previous roofing contractor.'
-
-const getPaddingStyle = (index: number) =>
-  index ? 'padding-block-end: 1.5rem;' : 'padding-block: 1.5rem;'
 </script>
 
 <template>
@@ -176,7 +106,7 @@ const getPaddingStyle = (index: number) =>
       >
         <VCardText>
           <VDivider class="mb-2" />
-          <span><b>EPDM Order</b></span>
+          <span><b>{{ props?.ticket?.related_order?.order_name }}</b></span>
           <VList class="card-list m-3 ml-0">
             <VListItem>
               <VListItemTitle>
@@ -187,7 +117,7 @@ const getPaddingStyle = (index: number) =>
 
                 <span class="font-medium"> PO#: </span>
                 <div class="d-inline-block text-body-1">
-                  24-1364-1
+                  {{ props?.ticket?.related_order?.order_po_number }}
                 </div>
               </VListItemTitle>
             </VListItem>
@@ -201,9 +131,9 @@ const getPaddingStyle = (index: number) =>
               </VListItemTitle>
               <div style="">
                 <AppTextarea
+                  v-model="_ticket.crew_instructions"
                   label="Crew Instructions"
                   placeholder="Crew Instructions"
-                  :model="crewInstruction"
                 />
               </div>
             </VListItem>
@@ -216,7 +146,7 @@ const getPaddingStyle = (index: number) =>
               >
                 Cancel
               </VBtn>
-              <VBtn @click="isDialogVisible = false">
+              <VBtn @click="saveCrewInstructions">
                 Save
               </VBtn>
             </VCardText>

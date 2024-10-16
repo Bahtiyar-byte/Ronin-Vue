@@ -11,12 +11,13 @@ module.exports = class ImagesService {
   static async create(data, currentUser) {
     const transaction = await db.sequelize.transaction();
     try {
-      await ImagesDBApi.create(data, {
+      const image = await ImagesDBApi.create(data, {
         currentUser,
         transaction,
       });
 
       await transaction.commit();
+      return image
     } catch (error) {
       await transaction.rollback();
       throw error;
