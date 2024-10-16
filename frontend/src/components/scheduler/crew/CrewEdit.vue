@@ -1,12 +1,49 @@
 <script lang="ts" setup>
-import visaIcon from '@images/icons/payments/visa-icon.png'
+import { useCrews } from '@/composables/useCrews'
 
-const dateEdit = ref('')
+const props = defineProps<Props>()
+const { update: updateLaborTicket } = useLaborTickets()
+const { autocomplete: autocompleteCrew } = useCrews()
+interface Props {
+  ticket: { id: number; name: string; start_date: string; end_date: string; trade: string; template: string; related_order: { related_estimate: { related_contact: object } } }
+}
+const _ticket = ref(props?.ticket)
+
+let crews = []
+
+onMounted(async () => {
+  const query = ''
+  const { data } = await autocompleteCrew(query)
+
+  crews = data
+})
+
+const saveLaborTicket = () => {
+  const laborTicket = {
+    id: props?.ticket.id,
+    name: props?.ticket.name || null,
+    start_date: props?.ticket.start_date || null,
+    end_date: props?.ticket.end_date || null,
+    crew_instructions: props?.ticket.crew_instructions || null,
+    actual_start_time: props?.ticket.actual_start_time || null,
+    actual_end_time: props?.ticket.actual_end_time || null,
+    crew_actions: props?.ticket.crew_actions || null,
+    labor_progress: props?.ticket.labor_progress || null,
+    disclaimer: props?.ticket.disclaimer || null,
+    assigned_date: props?.ticket.assigned_date || props?.ticket.createdAt,
+    assigned_crew: props?.ticket.labor_ticketAssigned_crewCrew?.crewId,
+  }
+
+
+  const response: boolean = updateLaborTicket(laborTicket)
+  if (response) {
+    isDialogVisible.value = false
+  }
+}
+
+const isCompleted = ref(false)
+
 const checkboxOne = ref('')
-const currentTab = ref('item-1')
-
-const tabItemContent
-  = 'Candy canes donut chupa chups candy canes lemon drops oat cake wafer. Cotton candy candy canes marzipan carrot cake. Sesame snaps lemon drops candy marzipan donut brownie tootsie roll. Icing croissant bonbon biscuit gummi bears. Pudding candy canes sugar plum cookie chocolate cake powder croissant.'
 
 const isDialogVisible = ref(false)
 
@@ -25,79 +62,6 @@ interface Transition {
   trend: string
 }
 
-const lastTransitions: Transition[] = [
-  {
-    cardImg: visaIcon,
-    lastDigit: '*4230',
-    cardType: 'Credit',
-    sentDate: '17 Mar 2022',
-    status: 'Verified',
-    trend: '+$1,678',
-  },
-]
-
-const crewAssignments: any[] = [
-  {
-    crewName: 'Evans Service Crew 1',
-    crewContacts: 'Griffin Watts',
-    contactInfo: 'griffin@evansroofingandgutters.com',
-    apkLink: 'google.com',
-  },
-  {
-    crewName: 'Evans Service Crew 2',
-    crewContacts: 'Matt Gross 1',
-    contactInfo: '(412) 484-6012',
-    apkLink: 'google.com',
-  },
-]
-
-const laborContacts: any[] = [
-  {
-    name: 'Griffin Watts',
-    contactInfo: ['griffin@evansroofingandgutters.com', '(412) 484-6012'],
-    jobs: ['Created Order'],
-  },
-  {
-    name: 'Ray Colagrande Sr',
-    contactInfo: ['griffin@evansroofingandgutters.com', '(412) 484-6012'],
-    jobs: ['Main Contact', 'Primary Job Owner'],
-  },
-]
-
-const laborOrder: any[] = [
-  {
-    laborItem: 'Material 1',
-    qty: '0',
-    unit: 'EA',
-    unit_cost: '$0.00 / EA',
-    cost: '$0.00',
-  },
-  {
-    laborItem: 'Material 1',
-    qty: '0',
-    unit: 'EA',
-    unit_cost: '$0.00 / EA',
-    cost: '$0.00',
-  },
-]
-
-const crewInstructions: any[] = [
-  {
-    content:
-      'Install new metal over the hole in gutter shown in the picture that was sent to us and seal it to the box gutter. Install one new eave drop. Install new silicone tape patches on all of the damaged box gutters that were damaged by the previous roofing contractor.',
-  },
-  {
-    content:
-      'Install new metal over the hole in gutter shown in the picture that was sent to us and seal it to the box gutter. Install one new eave drop. Install new silicone tape patches on all of the damaged box gutters that were damaged by the previous roofing contractor.',
-  },
-]
-
-const resolveStatus: Status = {
-  Verified: 'success',
-  Rejected: 'error',
-  Pending: 'secondary',
-}
-
 const items = [
   'Evans Service Crew 1',
   'Evans Service Crew 2',
@@ -105,7 +69,6 @@ const items = [
   'Evans Service Crew 4',
 ]
 
-const columnRadio = ref('radio-1')
 const inlineRadio = ref('radio-1')
 
 const getPaddingStyle = (index: number) =>
@@ -173,7 +136,7 @@ const getPaddingStyle = (index: number) =>
       >
         <VCardText>
           <VDivider class="mb-2" />
-          <span><b>EPDM Order</b></span>
+          <span><b>{{ _ticket.related_order.order_name }}</b></span>
           <VList class="card-list m-3 ml-0">
             <VListItem>
               <VListItemTitle>
@@ -184,13 +147,16 @@ const getPaddingStyle = (index: number) =>
 
                 <span class="font-medium"> PO#: </span>
                 <div class="d-inline-block text-body-1">
-                  24-1364-1
+                  {{ _ticket.related_order.order_po_number }}
                 </div>
               </VListItemTitle>
             </VListItem>
           </VList>
 
-          <VList class="card-list m-3 ml-0">
+          <VList
+            class="card-list m-3 ml-0"
+            style="width: 50vw;"
+          >
             <VListItem>
               <VListItemTitle>
                 <span class="font-medium"> Assign a Crew </span>
@@ -200,85 +166,112 @@ const getPaddingStyle = (index: number) =>
                   assignments, click "Other" and type in the crew name.
                 </div>
               </VListItemTitle>
-              <div style="display: flex">
-                <AppAutocomplete
-                  label="Crew"
-                  :items="items"
-                  placeholder="Select Crew"
-                />
 
-                <VCheckbox
-                  v-model="checkboxOne"
-                  label="Others"
-                />
-              </div>
+              <VRow>
+                <VCol>
+                  <AppAutocomplete
+                    :items="crews"
+                    v-model="_ticket.labor_ticketAssigned_crewCrew.crewId"
+                    item-value="id"
+                    item-title="label"
+                    label="Crews"
+                    placeholder="Select Crew"
+                  />
+                </VCol>
 
-              <AppDateTimePicker
-                v-model="dateEdit"
-                label="Assigned Date"
-                placeholder="Select Date"
-              />
+                <VCol>
+                  <AppDateTimePicker
+                    v-model="_ticket.createdAt"
+                    label="Assigned Date"
+                    placeholder="Select Assigned Date"
+                  />
+                </VCol>
+
+                <VCol class="d-flex align-end">
+                  <VCheckbox
+                    v-model="checkboxOne"
+                    label="Others"
+                  />
+                </VCol>
+              </VRow>
             </VListItem>
 
-            <VDivider class="my-4" />
+            <div class="break-inside-avoid">
+              <VDivider class="my-4 border-line border-gray-700 !opacity-60" />
+            </div>
+
             <VListItem>
               <VListItemTitle>
                 <span class="font-medium"> Schedule Labor: </span>
                 <br>
               </VListItemTitle>
-              <div style="display: flex">
-                <VRadioGroup
-                  v-model="inlineRadio"
-                  inline
-                >
-                  <VRadio
-                    label="Add Dates Later"
-                    value="add_dates_later"
-                  />
-                  <VRadio
-                    label="Add Start and End Dates"
-                    value="add_start_and_end_dates"
-                  />
-                  <VRadio
-                    label="Never Schedule"
-                    value="never_schedule"
-                  />
-                </VRadioGroup>
+              <VRow>
+                <VCol>
+                  <VRadioGroup
+                    v-model="inlineRadio"
+                    inline
+                  >
+                    <VRadio
+                      label="Add Dates Later"
+                      value="add_dates_later"
+                    />
+                    <VRadio
+                      label="Add Start and End Dates"
+                      value="add_start_and_end_dates"
+                    />
+                    <VRadio
+                      label="Never Schedule"
+                      value="never_schedule"
+                    />
+                  </VRadioGroup>
+                </VCol>
 
-                <VCheckbox
-                  v-model="checkboxOne"
-                  label="All Day"
-                />
-              </div>
+                <VCol>
+                  <VCheckbox
+                    v-model="checkboxOne"
+                    label="All Day"
+                  />
+                </VCol>
+              </VRow>
 
-              <AppDateTimePicker
-                v-model="dateEdit"
-                label="Start Date"
-                placeholder="Select Date"
-              />
-
-              <AppDateTimePicker
-                v-model="dateEdit"
-                label="End Date"
-                placeholder="Select Date"
-              />
+              <VRow>
+                <VCol>
+                  <AppDateTimePicker
+                    v-model="_ticket.start_date"
+                    label="Start Time"
+                    placeholder="Select Time"
+                  />
+                </VCol>
+                <VCol>
+                  <AppDateTimePicker
+                    v-model="_ticket.end_date"
+                    label="End Time"
+                    placeholder="Select Time"
+                  />
+                </VCol>
+              </VRow>
             </VListItem>
 
-            <VDivider class="my-4" />
-            <VListItem>
-              <VListItemTitle>
+            <div class="break-inside-avoid">
+              <VDivider class="my-4 border-line border-gray-700 !opacity-60" />
+            </div>
+
+            <VRow>
+              <VCol>
+                <AppDateTimePicker
+                  v-model="_ticket.actual_end_time"
+                  label="Completion Date"
+                  :disabled="!isCompleted"
+                  placeholder="Completion Date"
+                />
+              </VCol>
+              <VCol class="d-flex align-end">
                 <VCheckbox
-                  v-model="checkboxOne"
+                  v-model="isCompleted"
                   label="Labor is Completed"
                 />
-                <br>
-              </VListItemTitle>
-              <AppDateTimePicker
-                v-model="dateEdit"
-                label="Start Date"
-                placeholder="Select Date"
-              />
-            </VListItem>
+              </VCol>
+            </VRow>
             <VCardText class="d-flex justify-end flex-wrap gap-3">
               <VBtn
                 variant="tonal"
@@ -287,7 +280,7 @@ const getPaddingStyle = (index: number) =>
               >
                 Cancel
               </VBtn>
-              <VBtn @click="isDialogVisible = false">
+              <VBtn @click="saveLaborTicket">
                 Save
               </VBtn>
             </VCardText>

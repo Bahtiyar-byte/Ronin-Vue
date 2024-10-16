@@ -3,12 +3,26 @@ const express = require('express');
 const ImagesService = require('../services/images.ts').default;
 const ImagesDBApi = require('../db/api/images.ts').default;
 const wrapAsync = require('../helpers').wrapAsync;
-
+const path = require('path');
+const fs = require('fs');
 const router = express.Router();
 
 const { parse } = require('json2csv');
 
 const { checkCrudPermissions } = require('../middlewares/check-permissions');
+const multer = require("multer");
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/images'); // Specify the upload directory
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + file.originalname); // Append timestamp to filename
+    },
+});
+
+
+const upload = multer({storage});
 
 router.use(checkCrudPermissions('images'));
 
@@ -66,15 +80,16 @@ router.use(checkCrudPermissions('images'));
  *        500:
  *          description: Some server error
  */
+
 router.post(
-  '/',
+  '/',upload.single('image'),
   wrapAsync(async (req, res) => {
     const link = new URL(req.headers.referer);
-    await ImagesService.create(req.body.data, req.currentUser, true, link.host);
-    const payload = true;
+      const payload = await ImagesService.create(req.file, req.currentUser, true, link.host);
     res.status(200).send(payload);
   }),
 );
+
 
 /**
  * @swagger
@@ -305,6 +320,28 @@ router.get(
       res.status(200).send(payload);
     }
   }),
+);
+
+router.get(
+    '/currentUser',
+    wrapAsync(async (req, res) => {
+        const filetype = req.query.filetype;
+        console.log('currentUser =================================== ', req.currentUser.id)
+        const payload = await ImagesDBApi.findCurrentUserImagesAll(req.query, req.currentUser, req.currentUser.id);
+        if (filetype && filetype === 'csv') {
+            const fields = ['id', 'Name'];
+            const opts = { fields };
+            try {
+                const csv = parse(payload.rows, opts);
+                res.status(200).attachment(csv);
+                res.send(csv);
+            } catch (err) {
+                console.error(err);
+            }
+        } else {
+            res.status(200).send(payload);
+        }
+    }),
 );
 
 /**

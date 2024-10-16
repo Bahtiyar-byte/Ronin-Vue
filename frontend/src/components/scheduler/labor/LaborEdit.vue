@@ -1,6 +1,13 @@
 <script lang="ts" setup>
 import visaIcon from '@images/icons/payments/visa-icon.png'
 
+const props = defineProps<Props>()
+interface Props {
+  ticket: { id: number; name: string; start_date: string; end_date: string; trade: string; template: string; related_order: { related_estimate: { related_contact: object } } }
+  crew: {}
+}
+const _ticket = ref(props?.ticket)
+
 const dateEdit = ref('')
 const checkboxOne = ref('')
 const currentTab = ref('item-1')
@@ -174,7 +181,7 @@ const getPaddingStyle = (index: number) =>
       >
         <VCardText>
           <VDivider class="mb-2" />
-          <span><b>EPDM Order</b></span>
+          <span><b> {{ props.ticket.related_order.order_name }} </b></span>
           <VList class="card-list m-3 ml-0">
             <VListItem>
               <VListItemTitle>
@@ -185,7 +192,7 @@ const getPaddingStyle = (index: number) =>
 
                 <span class="font-medium"> PO#: </span>
                 <div class="d-inline-block text-body-1">
-                  24-1364-1
+                  {{ props.ticket.related_order.order_po_number }}
                 </div>
               </VListItemTitle>
             </VListItem>
@@ -216,19 +223,15 @@ const getPaddingStyle = (index: number) =>
 
                   <tbody>
                     <tr
-                      v-for="(contact, index) in laborContacts"
+                      v-for="(user, index) in props.crew.users"
                       :key="index"
                     >
                       <td :style="getPaddingStyle(index)">
-                        <span class="text-sm">{{ contact.name }}</span>
+                        <span class="text-sm">{{ `${user.firstName} ${user.lastName}` }}</span>
                       </td>
                       <td :style="getPaddingStyle(index)">
-                        <span
-                          v-for="(job, indexJob) in contact.jobs"
-                          :key="indexJob"
-                          class="text-sm"
-                        >
-                          {{ job }}<br>
+                        <span class="text-sm">
+                          job
                         </span>
                       </td>
                       <td :style="getPaddingStyle(index)">

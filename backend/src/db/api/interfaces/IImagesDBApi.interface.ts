@@ -22,6 +22,9 @@ interface IImagesDBApi {
       transaction?: Transaction;
     },
   ): Promise<any>;
+
+
+
   bulkImport(
     data: ImagesDTO[],
     options?: {
@@ -56,6 +59,12 @@ interface IImagesDBApi {
     filter: FilterOptions,
     options?: { transaction?: Transaction; countOnly?: boolean },
   ): Promise<{ rows: any[]; count: number }>;
+
+    findCurrentUserImagesAll(
+        filter: FilterOptions,
+        options?: { transaction?: Transaction; countOnly?: boolean },
+    ): Promise<{ rows: any[]; count: number }>;
+
   findAllAutocomplete(
     query: string,
     limit?: number,

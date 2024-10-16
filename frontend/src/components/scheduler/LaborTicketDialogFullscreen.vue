@@ -1,7 +1,7 @@
 <script lang="ts" setup>
+import moment from 'moment'
 import mastercardIcon from '@images/icons/payments/mastercard-icon.png'
 import visaIcon from '@images/icons/payments/visa-icon.png'
-
 import DatesEdit from '@/components/scheduler/dates/DatesEdit.vue'
 
 import CrewEdit from '@/components/scheduler/crew/CrewEdit.vue'
@@ -16,11 +16,7 @@ import DocumentsSelect from '@/components/scheduler/documents/DocumentsSelect.vu
 
 import AddPhotos from '@/components/scheduler/shared-photos/AddPhotos.vue'
 
-import shared1 from '@images/shared-photos/shared1.jpg'
-import shared2 from '@images/shared-photos/shared2.jpg'
-import shared3 from '@images/shared-photos/shared3.jpg'
-import shared4 from '@images/shared-photos/shared4.jpg'
-import shared5 from '@images/shared-photos/shared4.jpg'
+const uploadsUrl = import.meta.env.VITE_API_BASE_UR_FILES
 
 const props = defineProps<Props>()
 
@@ -35,6 +31,7 @@ const contactName = ref('')
 const estimateId = ref('')
 const { getById } = useContacts()
 const { getById: getEstimateByid } = useEstimates()
+const { getById: getTicketsById } = useLaborTickets()
 
 const contactMailingAddress = ref({ id: '', suite_apt_unit: '', street: '', city: '', state: '', country: '', zip: '' })
 
@@ -56,9 +53,10 @@ const getEstimateData = async (currentEstimateId: string) => {
   })
 }
 
+const crewLabor = ref([])
+
 onMounted(async () => {
-  console.log('crew ', props.crew)
-  console.log('props.ticket ', props.ticket)
+  crewLabor.value = props.crew.users
   if (props.ticket.related_order?.related_estimate?.related_contact) {
     const contact = props.ticket.related_order?.related_estimate?.related_contact
 
@@ -66,26 +64,24 @@ onMounted(async () => {
     contactName.value = `${contact.fi} ${contact.la}`
 
     getContactData(contact.id)
+    getTicketData()
   }
 })
 
+
+const ticketData = ref({})
+
+const getTicketData = async () => {
+  const { data } = await getTicketsById(props.ticket.id)
+
+  watch(data, newVal => {
+    ticketData.value = newVal
+  })
+}
+
 watch(estimateId, newVal => {
-  console.log('newVal ', newVal)
   getEstimateData(newVal)
 })
-
-const shared_photos: any[] = [
-  shared1,
-  shared2,
-  shared3,
-  shared4,
-  shared5,
-]
-
-const currentTab = ref('item-1')
-
-const tabItemContent
-  = 'Candy canes donut chupa chups candy canes lemon drops oat cake wafer. Cotton candy candy canes marzipan carrot cake. Sesame snaps lemon drops candy marzipan donut brownie tootsie roll. Icing croissant bonbon biscuit gummi bears. Pudding candy canes sugar plum cookie chocolate cake powder croissant.'
 
 const isDialogVisible = ref(false)
 
@@ -104,81 +100,6 @@ interface Transition {
   trend: string
 }
 
-const lastTransitions: Transition[] = [
-  {
-    cardImg: visaIcon,
-    lastDigit: '*4230',
-    cardType: 'Credit',
-    sentDate: '17 Mar 2022',
-    status: 'Verified',
-    trend: '+$1,678',
-  },
-  {
-    cardImg: mastercardIcon,
-    lastDigit: '*5578',
-    cardType: 'Credit',
-    sentDate: '12 Feb 2022',
-    status: 'Rejected',
-    trend: '-$839',
-  },
-]
-
-const crewAssignments: any[] = [
-  {
-    crewName: 'Evans Service Crew 1',
-    crewContacts: 'Griffin Watts',
-    contactInfo: 'griffin@evansroofingandgutters.com',
-    apkLink: 'google.com',
-  },
-  {
-    crewName: 'Evans Service Crew 2',
-    crewContacts: 'Matt Gross 1',
-    contactInfo: '(412) 484-6012',
-    apkLink: 'google.com',
-  },
-]
-
-const laborContacts: any[] = [
-  {
-    name: 'Griffin Watts',
-    contactInfo: ['griffin@evansroofingandgutters.com', '(412) 484-6012'],
-    jobs: ['Created Order'],
-  },
-  {
-    name: 'Ray Colagrande Sr',
-    contactInfo: ['griffin@evansroofingandgutters.com', '(412) 484-6012'],
-    jobs: ['Main Contact', 'Primary Job Owner'],
-  },
-]
-
-const laborOrder: any[] = [
-  {
-    laborItem: 'Material 1',
-    qty: '0',
-    unit: 'EA',
-    unit_cost: '$0.00 / EA',
-    cost: '$0.00',
-  },
-  {
-    laborItem: 'Material 1',
-    qty: '0',
-    unit: 'EA',
-    unit_cost: '$0.00 / EA',
-    cost: '$0.00',
-  },
-]
-
-const crewInstructions: any[] = [
-  {
-    content: 'Install new metal over the hole in gutter shown in the picture that was sent to us and seal it to the box gutter. Install one new eave drop. Install new silicone tape patches on all of the damaged box gutters that were damaged by the previous roofing contractor.',
-  },
-]
-
-const resolveStatus: Status = {
-  Verified: 'success',
-  Rejected: 'error',
-  Pending: 'secondary',
-}
 
 const headers = [
   { title: 'Contract', key: 'filename' },
@@ -220,6 +141,14 @@ const data = [
 
 const getPaddingStyle = (index: number) =>
   index ? 'padding-block-end: 1.5rem;' : 'padding-block: 1.5rem;'
+
+const formattedDate = (date: string) => {
+  return moment(date).format(' MMM D')
+}
+
+const formattedDay = (date: string) => {
+  return moment(date).format('ddd')
+}
 </script>
 
 <template>
@@ -343,13 +272,13 @@ const getPaddingStyle = (index: number) =>
           <VExpansionPanel class="mb-2">
             <VExpansionPanelTitle>
               <div
-                style="width: 100vw;"
+                style="width: 100vw"
                 class="flex flex-row justify-between"
               >
                 <div style="font-size: 1.1em; display:flex; align-items: center">
                   <span>Dates</span>
                 </div>
-                <DatesEdit />
+                <DatesEdit :ticket="props.ticket" />
               </div>
             </VExpansionPanelTitle>
             <VExpansionPanelText>
@@ -387,7 +316,7 @@ const getPaddingStyle = (index: number) =>
                     Crew Assignment
                   </span>
                 </div>
-                <CrewEdit />
+                <CrewEdit :ticket="props.ticket" />
               </div>
             </VExpansionPanelTitle>
             <VExpansionPanelText>
@@ -438,7 +367,10 @@ const getPaddingStyle = (index: number) =>
                     Labor Contacts
                   </span>
                 </div>
-                <LaborEdit />
+                <LaborEdit
+                  :crew="props.crew"
+                  :ticket="props.ticket"
+                />
               </div>
             </VExpansionPanelTitle>
 
@@ -454,28 +386,20 @@ const getPaddingStyle = (index: number) =>
 
                 <tbody>
                   <tr
-                    v-for="(contact, index) in laborContacts"
+                    v-for="(labor, index) in crewLabor"
                     :key="index"
                   >
                     <td :style="getPaddingStyle(index)">
-                      <span class="text-sm">{{ contact.name }}</span>
+                      <span class="text-sm">{{ `${labor.firstName} ${labor.firstName}` }}</span>
                     </td>
                     <td :style="getPaddingStyle(index)">
-                      <span
-                        v-for="(job, indexJob) in contact.jobs"
-                        :key="indexJob"
-                        class="text-sm"
-                      >
-                        {{ job }}<br>
+                      <span class="text-sm">
+                        job
                       </span>
                     </td>
                     <td :style="getPaddingStyle(index)">
-                      <span
-                        v-for="(contact, indexContact) in contact.contactInfo"
-                        :key="indexContact"
-                        class="text-sm"
-                      >
-                        {{ contact }}<br>
+                      <span class="text-sm">
+                        {{ labor.email }}<br>{{ labor.phoneNumber }}
                       </span>
                     </td>
                   </tr>
@@ -543,7 +467,7 @@ const getPaddingStyle = (index: number) =>
                     Crew Instructions
                   </span>
                 </div>
-                <InstructionEdit />
+                <InstructionEdit :ticket="props.ticket" />
               </div>
             </VExpansionPanelTitle>
             <VExpansionPanelText>
@@ -583,7 +507,7 @@ const getPaddingStyle = (index: number) =>
                 <tbody>
                   <tr>
                     <td :style="getPaddingStyle(index)">
-                      <span class="text-sm"> <strong>Start: Wed</strong> Sep 04 — 8:00 AM</span>
+                      <span class="text-sm"> <strong>Start: {{ formattedDay(props.ticket.start_date) }}</strong> {{ formattedDate(props.ticket.start_date) }}</span>
                     </td>
                     <td :style="getPaddingStyle(index)">
                       <span class="text-sm" />
@@ -628,7 +552,7 @@ const getPaddingStyle = (index: number) =>
 
                   <tr>
                     <td :style="getPaddingStyle(index)">
-                      <span class="text-sm"> <strong>End: Thu</strong> Sep 05 </span>
+                      <span class="text-sm"> <strong>End: {{ formattedDay(props.ticket.end_date) }}</strong> {{ formattedDate(props.ticket.end_date) }} </span>
                     </td>
                     <td :style="getPaddingStyle(index)">
                       <span class="text-sm" />
@@ -658,7 +582,7 @@ const getPaddingStyle = (index: number) =>
                     Shared Documents
                   </span>
                 </div>
-                <DocumentsSelect />
+                <DocumentsSelect :ticket="props.ticket" />
               </div>
             </VExpansionPanelTitle>
             <VExpansionPanelText>
@@ -693,18 +617,17 @@ const getPaddingStyle = (index: number) =>
               <!--                density="default" -->
               <!--              /> -->
 
-              <AddPhotos />
-
+              <AddPhotos :ticket="props.ticket" />
               <VAvatar
-                v-for="(photo, index) in shared_photos"
-                :key="index"
+                v-for="(photo) in ticketData.related_images"
+                :key="photo.id"
                 rounded
                 :size="200"
                 color="primary"
                 variant="tonal"
                 class="m-4 ml-0"
               >
-                <VImg :src="photo" />
+                <VImg :src="`${uploadsUrl}images/${photo.Name}`" />
               </VAvatar>
             </VExpansionPanelText>
           </VExpansionPanel>
@@ -716,7 +639,6 @@ const getPaddingStyle = (index: number) =>
             <VExpansionPanelText>
               There are no Checklists associated to this order.
             </VExpansionPanelText>
-
           </VExpansionPanel>
           <!-- Checklist  End -->
 
@@ -724,7 +646,7 @@ const getPaddingStyle = (index: number) =>
           <VExpansionPanel>
             <VExpansionPanelTitle> Disclaimer </VExpansionPanelTitle>
             <VExpansionPanelText>
-              {{ props.ticket.disclaimer ??  'No Disclaimer has been added.' }}
+              {{ props.ticket.disclaimer ?? 'No Disclaimer has been added.' }}
             </VExpansionPanelText>
           </VExpansionPanel>
           <!-- Disclaimer  End -->

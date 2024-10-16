@@ -1,11 +1,19 @@
 <script lang="ts" setup>
-import visaIcon from '@images/icons/payments/visa-icon.png'
-
 import shared1 from '@images/shared-photos/shared1.jpg'
 import shared2 from '@images/shared-photos/shared2.jpg'
 import shared3 from '@images/shared-photos/shared3.jpg'
 import shared4 from '@images/shared-photos/shared4.jpg'
 import shared5 from '@images/shared-photos/shared4.jpg'
+
+const props = defineProps<Props>()
+
+interface Props {
+  ticket: { id: number; name: string; start_date: string; end_date: string; trade: string; template: string; related_order: { related_estimate: { related_contact: object } } }
+}
+
+const { create: createImages, getById: getImageById, update: updateImage } = useImages()
+
+const { update: updateLaborTicket } = useLaborTickets()
 
 const shared_photos: any[] = [
   {
@@ -30,14 +38,9 @@ const shared_photos: any[] = [
   },
 ]
 
-const dateEdit = ref('')
-const checkboxOne = ref('')
 const currentTab = ref('item-1')
 
-const tabItemContent
-  = 'Add documents intended to be shared with the crew. Crews linked to the mobile Crew App will have access to documents within the app. If the crew is not linked, the documents will need to be shared via email.'
-
-const isDialogVisible = ref(true)
+const isPhotoUploadDialogVisible = ref(false)
 
 interface Status {
   Verified: string
@@ -54,79 +57,6 @@ interface Transition {
   trend: string
 }
 
-const lastTransitions: Transition[] = [
-  {
-    cardImg: visaIcon,
-    lastDigit: '*4230',
-    cardType: 'Credit',
-    sentDate: '17 Mar 2022',
-    status: 'Verified',
-    trend: '+$1,678',
-  },
-]
-
-const crewAssignments: any[] = [
-  {
-    crewName: 'Evans Service Crew 1',
-    crewContacts: 'Griffin Watts',
-    contactInfo: 'griffin@evansroofingandgutters.com',
-    apkLink: 'google.com',
-  },
-  {
-    crewName: 'Evans Service Crew 2',
-    crewContacts: 'Matt Gross 1',
-    contactInfo: '(412) 484-6012',
-    apkLink: 'google.com',
-  },
-]
-
-const laborContacts: any[] = [
-  {
-    name: 'Griffin Watts',
-    contactInfo: ['griffin@evansroofingandgutters.com', '(412) 484-6012'],
-    jobs: ['Created Order'],
-  },
-  {
-    name: 'Ray Colagrande Sr',
-    contactInfo: ['griffin@evansroofingandgutters.com', '(412) 484-6012'],
-    jobs: ['Main Contact', 'Primary Job Owner'],
-  },
-]
-
-const laborOrder: any[] = [
-  {
-    laborItem: 'Material 1',
-    qty: '0',
-    unit: 'EA',
-    unit_cost: '$0.00 / EA',
-    cost: '$0.00',
-  },
-  {
-    laborItem: 'Material 1',
-    qty: '0',
-    unit: 'EA',
-    unit_cost: '$0.00 / EA',
-    cost: '$0.00',
-  },
-]
-
-// const crewInstructions: any[] = [
-//   {
-//     content:
-//       "Install new metal over the hole in gutter shown in the picture that was sent to us and seal it to the box gutter. Install one new eave drop. Install new silicone tape patches on all of the damaged box gutters that were damaged by the previous roofing contractor.",
-//   },
-//   {
-//     content:
-//       "Install new metal over the hole in gutter shown in the picture that was sent to us and seal it to the box gutter. Install one new eave drop. Install new silicone tape patches on all of the damaged box gutters that were damaged by the previous roofing contractor.",
-//   },
-// ];
-
-const resolveStatus: Status = {
-  Verified: 'success',
-  Rejected: 'error',
-  Pending: 'secondary',
-}
-
 const items = [
   'Aluminum/Flashing',
   'Box Gutters',
@@ -134,35 +64,6 @@ const items = [
   'Downspouts',
   'Flat Roof',
 ]
-
-const columnRadio = ref('radio-1')
-const inlineRadio = ref('radio-1')
-
-const getPaddingStyle = (index: number) =>
-  index ? 'padding-block-end: 1.5rem;' : 'padding-block: 1.5rem;'
-
-const checkoutSteps = [
-  {
-    title: '1',
-    icon: 'tabler-circle',
-  },
-  {
-    title: '2',
-    icon: 'tabler-circle',
-  },
-  {
-    title: '3',
-    icon: 'tabler-circle',
-  },
-]
-
-const laborTicketName = ref('')
-const crewInstructions = ref('')
-const currentStep = ref(0)
-
-const clickNextStep = () => {
-  currentStep.value++
-}
 
 const headers = [
   { title: 'Contract', key: 'filename' },
@@ -172,44 +73,90 @@ const headers = [
   { title: 'Preview', key: 'preview' },
 ]
 
-const resolveStatusVariant = (status: number) => {
-  if (status === 1)
-  { return { color: 'primary', text: 'Current' } }
-  else if (status === 2)
-  { return { color: 'success', text: 'Professional' } }
-  else if (status === 3)
-  { return { color: 'error', text: 'Rejected' } }
-  else if (status === 4)
-  { return { color: 'warning', text: 'Resigned' } }
-  else
-  { return { color: 'info', text: 'Applied' } }
-}
-
-const data = [
-  {
-    id: 1,
-    filename: 'test.pdf',
-    file_type: 'pdf',
-    created_at: '9/17/2024 9:48 am',
-    representative: 'Griffin Watts',
-  },
-  {
-    id: 2,
-    filename: 'test2.pdf',
-    file_type: 'pdf',
-    created_at: '9/17/2024 9:48 am',
-    representative: 'Griffin Watts',
-  },
-]
-
+const { getById } = useLaborTickets()
 const selectedCheckbox = ref(['basic'])
 
-const file = ref()
+const file = ref<File | null>(null)
+
+const handleFileUpload = (files: FileList | null) => {
+  if (files && files.length > 0) {
+    file.value = files[0]
+  }
+}
+
+const ticketData = ref({})
+
+const getTicketData = async () => {
+  const { data } = await getById(props.ticket.id)
+
+  watch(data, newVal => {
+    ticketData.value = newVal
+  })
+}
+
+const saveLaborTicket = () => {
+  const ids = ticketData.value.related_images.map(image => image.id)
+
+  ids.push(newSavedImageId.value)
+
+  const laborTicket = {
+    id: props?.ticket.id,
+    name: props?.ticket.name || null,
+    start_date: props?.ticket.start_date || null,
+    end_date: props?.ticket.end_date || null,
+    crew_instructions: props?.ticket.crew_instructions || null,
+    actual_start_time: props?.ticket.actual_start_time || null,
+    actual_end_time: props?.ticket.actual_end_time || null,
+    crew_actions: props?.ticket.crew_actions || null,
+    labor_progress: props?.ticket.labor_progress || null,
+    disclaimer: props?.ticket.disclaimer || null,
+    assigned_date: props?.ticket.assigned_date || props?.ticket.createdAt,
+    related_images: ids,
+
+    // related_images: [],
+  }
+
+  const response: boolean = updateLaborTicket(laborTicket)
+  if (response) {
+    // isDialogVisible.value = false
+  }
+}
+
+const newSavedImageId = ref('')
+
+const saveImageFile = async () => {
+  isPhotoUploadDialogVisible.value = false
+
+  const formData = new FormData()
+
+  formData.append('image', file.value[0])
+
+  const { data } = await createImages(formData)
+
+  watch(data, newVal => {
+    newSavedImageId.value = newVal.id
+    saveLaborTicket()
+  })
+}
+
+const { getCurrentUserImagesList } = useImages()
+
+const userUploadedImages = ref([])
+
+onMounted(async () => {
+  const { data } = await getCurrentUserImagesList()
+
+  watch(data, newVal => {
+    userUploadedImages.value = newVal.rows
+  })
+
+  getTicketData()
+})
 </script>
 
 <template>
   <VDialog
-    v-model="isDialogVisible"
+    v-model="isPhotoUploadDialogVisible"
     :scrim="false"
     persistent
     :width="$vuetify.display.smAndDown ? 'auto' : 1350"
@@ -227,7 +174,7 @@ const file = ref()
         color="secondary"
         class="m-4 ml-0"
         :size="200"
-        @click="isDialogVisible = true"
+        @click="isPhotoUploadDialogVisible = true"
       >
         Add Location View Photo
       </VBtn>
@@ -242,7 +189,7 @@ const file = ref()
           <VBtn
             icon
             variant="plain"
-            @click="isDialogVisible = false"
+            @click="isPhotoUploadDialogVisible = false"
           >
             <VIcon
               color="white"
@@ -257,7 +204,7 @@ const file = ref()
           <VToolbarItems>
             <VBtn
               variant="text"
-              @click="isDialogVisible = false"
+              @click="isPhotoUploadDialogVisible = false"
             >
               Save
             </VBtn>
@@ -309,6 +256,8 @@ const file = ref()
                 v-model:selected-checkbox="selectedCheckbox"
                 :checkbox-content="shared_photos"
                 :grid-column="{ sm: '2', md: '2', cols: '4' }"
+                :ticket="props.ticket"
+                :ticket-data="ticketData"
               />
             </VWindowItem>
 
@@ -322,6 +271,7 @@ const file = ref()
                 color="primary"
                 label="Browse Your Computer"
                 variant="outlined"
+                @change="handleFileUpload"
               />
             </VWindowItem>
 
@@ -355,7 +305,7 @@ const file = ref()
             <VBtn
               variant="tonal"
               color="secondary"
-              @click="isDialogVisible = false"
+              @click="isPhotoUploadDialogVisible = false"
             >
               Cancel
             </VBtn>
@@ -367,7 +317,7 @@ const file = ref()
                 <strong>Total size:</strong> 0.0 / 25 MB
               </p>
             </div>
-            <VBtn @click="isDialogVisible = false">
+            <VBtn @click="saveImageFile">
               Upload
             </VBtn>
           </VCardText>

@@ -5,19 +5,37 @@ interface Props {
   selectedCheckbox: string[]
   checkboxContent: { bgImage: string; value: string; label?: string }[]
   gridColumn?: GridColumn
+  ticketData: {}
+  ticket: { id: number; name: string; start_date: string; end_date: string; trade: string; template: string; related_order: { related_estimate: { related_contact: object } } }
 }
+
+const props = defineProps<Props>()
+
+const emit = defineEmits<Emit>()
+
+const uploadsUrl = import.meta.env.VITE_API_BASE_UR_FILES
+
+const { getCurrentUserImagesList } = useImages()
+const { getById } = useLaborTickets()
 
 interface Emit {
   (e: 'update:selectedCheckbox', value: string[]): void
 }
 
-const props = defineProps<Props>()
-const emit = defineEmits<Emit>()
-
 const updateSelectedOption = (value: string[] | null) => {
   if (typeof value !== 'boolean' && value !== null)
   { emit('update:selectedCheckbox', value) }
 }
+
+const userUploadedImages = ref([])
+
+onMounted(async () => {
+  const { data } = await getCurrentUserImagesList()
+
+  watch(data, newVal => {
+    userUploadedImages.value = newVal.rows
+  })
+})
 </script>
 
 <template>
@@ -26,24 +44,25 @@ const updateSelectedOption = (value: string[] | null) => {
     class="custom-input-wrapper"
   >
     <VCol
-      v-for="item in props.checkboxContent"
+      v-for="item in ticketData.related_images"
       :key="item.value"
       v-bind="gridColumn"
     >
       <VLabel
         class="custom-input custom-checkbox rounded cursor-pointer w-100"
-        :class="props.selectedCheckbox.includes(item.value) ? 'active' : ''"
+        :class="props.selectedCheckbox.includes('basic') ? 'active' : ''"
       >
         <div>
           <VCheckbox
-            :id="`custom-checkbox-with-img-${item.value}`"
+            :id="`custom-checkbox-with-img-${'basic'}`"
             :model-value="props.selectedCheckbox"
             :value="item.value"
             @update:model-value="updateSelectedOption"
           />
         </div>
+
         <img
-          :src="item.bgImage"
+          :src="`${uploadsUrl}images/${item.Name}`"
           alt="bg-img"
           class="custom-checkbox-image"
         >
@@ -51,7 +70,7 @@ const updateSelectedOption = (value: string[] | null) => {
 
       <VLabel
         v-if="item.label || $slots.label"
-        :for="`custom-checkbox-with-img-${item.value}`"
+        :for="`custom-checkbox-with-img-${'basic'}`"
         class="cursor-pointer"
       >
         <slot
