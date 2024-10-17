@@ -26,6 +26,10 @@ const breadcrumbs = ref([
   { title: 'New Order', disabled: true },
 ])
 
+const emit = defineEmits<{
+  (e: 'handleOrderAmount'): void
+}>()
+
 const { formFields, initializeFields } = useFormFields('orders')
 const orderRef = ref<Order>()
 const dataLoaded = ref(false)
@@ -89,6 +93,7 @@ const submitForm = async (values: Record<string, any>) => {
 
   watch(data, newVal => {
     if (newVal.id) {
+      emit('handleOrderAmount')
       isDialogVisible.value = false
     }
   })
@@ -96,9 +101,6 @@ const submitForm = async (values: Record<string, any>) => {
 
 const isVisibleMaterial = ref(false)
 
-watch(isVisibleMaterial, newVal => {
-  // console.log('isVisibleMaterial ', newVal)
-})
 </script>
 
 <template>

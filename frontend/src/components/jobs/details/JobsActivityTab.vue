@@ -14,12 +14,32 @@ const { count: laborTicketCount } = useLaborTickets()
 const { count: invoicesCount } = useInvoices()
 const { count: documentsCount } = useDocuments()
 
+const isVisibleOrderCreateForm = ref(false)
+const isVisibleLaborTicketCreateForm = ref(false)
+
 const dialogsVisibility = reactive({
   estimates: false,
   invoices: false,
   documents: false,
   orders: false,
   laborTickets: false,
+})
+
+const laborTicketAmount = ref('')
+
+const handleLaborTicketAmount = async () => {
+  laborTicketAmount.value = (await laborTicketCount({ related_job: jobData.value.id })).data.value?.count
+}
+
+const orderAmount = ref('')
+
+const handleOrderAmount = async () => {
+  orderAmount.value = (await orderCount({ related_job: jobData.value.id })).data.value?.count
+}
+
+onMounted(async () => {
+  await handleOrderAmount()
+  await handleLaborTicketAmount()
 })
 
 const widgets = ref<WidgetCardProps[]>([
@@ -134,7 +154,7 @@ const widgets = ref<WidgetCardProps[]>([
     },
     widget: {
       title: 'Order',
-      value: (await orderCount({ related_job: jobData.value.id })).data.value?.count,
+      value: orderAmount,
       icon: 'tabler-clipboard-list',
       iconColor: 'primary',
       action: {
@@ -153,7 +173,7 @@ const widgets = ref<WidgetCardProps[]>([
     },
     widget: {
       title: 'Labor Ticket',
-      value: (await laborTicketCount({ related_job: jobData.value.id })).data.value?.count,
+      value: laborTicketAmount,
       icon: 'tabler-checklist',
       iconColor: 'primary',
       action: {
@@ -179,10 +199,6 @@ const estimatesSearchParams: GetEstimatesRequest = {
 
 const invoicesSearchParams: GetEstimatesRequest = estimatesSearchParams
 const documentsSearchParams: GetEstimatesRequest = estimatesSearchParams
-
-const isVisibleOrderCreateForm = ref(false)
-const isVisibleLaborTicketCreateForm = ref(false)
-
 </script>
 
 <template>
@@ -231,12 +247,13 @@ const isVisibleLaborTicketCreateForm = ref(false)
     <CreateUpdateOrderDialog
       v-model:is-dialog-visible="isVisibleOrderCreateForm"
       v-model:search-params="estimatesSearchParams"
+      @handle-order-amount="handleOrderAmount"
     />
 
     <CreateUpdateLaborTicketDialog
       v-model:is-dialog-visible="isVisibleLaborTicketCreateForm"
       v-model:search-params="estimatesSearchParams"
+      @handle-labor-ticket-amount="handleLaborTicketAmount"
     />
   </div>
 </template>
-
