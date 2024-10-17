@@ -279,6 +279,16 @@ const date = ref<string | Date>(estimateData.value.createdAt ?? new Date())
     </div>
     <div class="space-y-6 break-inside-avoid">
       <span class="hidden">Signatures</span>
+
+      <VRow>
+        <VCol cols="8">
+          <SignatureField title="Customer Signature" />
+        </VCol>
+        <VCol cols="4">
+          <SignatureField title="Date" />
+        </VCol>
+      </VRow>
+
       <VRow>
         <VCol cols="8">
           <SignatureField title="Company Authorized Signature" />
@@ -287,22 +297,7 @@ const date = ref<string | Date>(estimateData.value.createdAt ?? new Date())
           <SignatureField title="Date" />
         </VCol>
       </VRow>
-      <VRow>
-        <VCol cols="8">
-          <SignatureField title="Customer Signature" />
-        </VCol>
-        <VCol cols="4">
-          <SignatureField title="Date" />
-        </VCol>
-      </VRow>
-      <VRow>
-        <VCol cols="8">
-          <SignatureField title="Customer Signature" />
-        </VCol>
-        <VCol cols="4">
-          <SignatureField title="Date" />
-        </VCol>
-      </VRow>
+
     </div>
   </VCard>
 </template>

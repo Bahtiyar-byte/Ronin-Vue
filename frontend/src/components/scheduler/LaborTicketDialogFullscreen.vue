@@ -1,7 +1,5 @@
 <script lang="ts" setup>
 import moment from 'moment'
-import mastercardIcon from '@images/icons/payments/mastercard-icon.png'
-import visaIcon from '@images/icons/payments/visa-icon.png'
 import DatesEdit from '@/components/scheduler/dates/DatesEdit.vue'
 
 import CrewEdit from '@/components/scheduler/crew/CrewEdit.vue'
@@ -16,9 +14,9 @@ import DocumentsSelect from '@/components/scheduler/documents/DocumentsSelect.vu
 
 import AddPhotos from '@/components/scheduler/shared-photos/AddPhotos.vue'
 
-const uploadsUrl = import.meta.env.VITE_API_BASE_UR_FILES
-
 const props = defineProps<Props>()
+
+const uploadsUrl = import.meta.env.VITE_API_BASE_UR_FILES
 
 interface Props {
   ticket: { id: number; name: string; start_date: string; end_date: string; trade: string; template: string; related_order: { related_estimate: { related_contact: object } } }
@@ -68,7 +66,6 @@ onMounted(async () => {
   }
 })
 
-
 const ticketData = ref({})
 
 const getTicketData = async () => {
@@ -99,7 +96,6 @@ interface Transition {
   status: keyof Status
   trend: string
 }
-
 
 const headers = [
   { title: 'Contract', key: 'filename' },
@@ -245,7 +241,7 @@ const formattedDay = (date: string) => {
               </span>
               <br>
               <span class="font-medium">
-                {{ `${contactMailingAddress.suite_apt_unit} ${contactMailingAddress.street}, ${contactMailingAddress.city}, ${contactMailingAddress.state} ${contactMailingAddress.zip}` }}
+                {{ `${contactMailingAddress?.suite_apt_unit ?? ''} ${contactMailingAddress?.street ?? ''}, ${contactMailingAddress?.city ?? ''}, ${contactMailingAddress?.state ?? ''} ${contactMailingAddress?.zip ?? ''}` }}
               </span>
             </VListItemTitle>
           </VListItem>

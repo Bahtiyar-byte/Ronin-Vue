@@ -6,8 +6,8 @@ const app = express();
 
 app.use(express.json({ limit: '10mb' }));
 
-const RoninEstimatesService = require('./roninServices/estimates');
-RoninEstimatesService.readEmailInbox()
+// const RoninEstimatesService = require('./roninServices/estimates');
+// RoninEstimatesService.readEmailInbox()
 
 const passport = require('passport');
 const path = require('path');

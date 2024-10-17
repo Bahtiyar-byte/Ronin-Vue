@@ -79,25 +79,25 @@ onMounted(() => {
 
 const vehicleTrackingData = [
   {
-    name: 'VOL-342808',
+    name: '24-002: John Eberle',
     location: 'Chelsea, NY, USA',
     progress: 88,
     driverName: 'Veronica Herman',
   },
   {
-    name: 'VOL-954784',
+    name: '24-003: James Narkus',
     location: 'Lincoln Harbor, NY, USA',
     progress: 100,
     driverName: 'Myrtle Ullrich',
   },
   {
-    name: 'VOL-342808',
+    name: '24-004: Julie Madera',
     location: 'Midtown East, NY, USA',
     progress: 60,
     driverName: 'Barry Schowalter',
   },
   {
-    name: 'VOL-343908',
+    name: '24-005: David Snokes',
     location: 'Hoboken, NY, USA',
     progress: 28,
     driverName: 'Helen Jacobs',
@@ -174,7 +174,7 @@ watch(activeIndex, () => {
               >
                 <div class="d-flex gap-x-4 align-center">
                   <VAvatar
-                    icon="tabler-car"
+                    icon="tabler-home"
                     variant="tonal"
                     color="secondary"
                   />
@@ -228,7 +228,7 @@ watch(activeIndex, () => {
                       >
                         <div class="ps-1">
                           <div class="text-caption text-success">
-                            TRACKING NUMBER CREATED
+                            ORDER CREATED
                           </div>
                           <div class="app-timeline-title">
                             {{ vehicle.driverName }}
@@ -248,10 +248,10 @@ watch(activeIndex, () => {
                         :elevation="0"
                       >
                         <div class="text-caption text-uppercase text-success">
-                          OUT FOR DELIVERY
+                          CONFIRMED
                         </div>
                         <div class="app-timeline-title">
-                          Veronica Herman
+                          {{ vehicle.driverName }}
                         </div>
                         <div class="text-body-2">
                           Sep 03, 8:02 AM
@@ -267,10 +267,10 @@ watch(activeIndex, () => {
                         :elevation="0"
                       >
                         <div class="text-caption text-uppercase text-success">
-                          ARRIVED
+                          CREW ARRIVED
                         </div>
                         <div class="app-timeline-title">
-                          Veronica Herman
+                          {{ vehicle.driverName }}
                         </div>
                         <div class="text-body-2">
                           Sep 04, 8:18 AM

@@ -91,10 +91,7 @@ module.exports = {
       'roles',
       'permissions',
     ];
-    // await queryInterface.bulkInsert(
-    //   'permissions',
-    //   entities.flatMap(createPermissions),
-    // );
+
     const permissions = entities.flatMap(createPermissions);
 
     for (const permission of permissions) {

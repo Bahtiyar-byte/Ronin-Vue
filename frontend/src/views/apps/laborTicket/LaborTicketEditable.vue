@@ -88,7 +88,7 @@ watch(materialDescription, newVal => {
 watch(quantity, newVal => {
   if (newVal) {
     orderData.value.quantity = newVal
-    unit.value = newVal.unit
+    // unit.value = newVal.unit
   }
 })
 
@@ -152,9 +152,7 @@ const updateMaterials = async () => {
 
 const date = ref<string | Date>(orderData.value?.createdAt ?? new Date())
 
-const computedUnit = computed(() => {
-  return unit.value ?? '';
-});
+
 
 </script>
 
@@ -258,14 +256,14 @@ const computedUnit = computed(() => {
         prepend-icon="tabler-plus"
         @click="tradesDialogVisible = !tradesDialogVisible"
       >
-        Add section
+        Edit section
       </VBtn>
 
       <MaterialSectionDialog
         v-if="hideControls"
         v-model:materialDescription="materialDescription"
         v-model:quantity="quantity"
-        v-model:unit="computedUnit"
+        v-model:unit="unit"
         v-model:dialog-visible="tradesDialogVisible"
         @save-material="(tradeId: string) => {
           isDialogVisible = true
