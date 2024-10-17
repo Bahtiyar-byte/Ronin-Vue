@@ -3,19 +3,15 @@ import Crew from '@/components/scheduler/Crew.vue'
 import LaborTicket from '@/components/scheduler/LaborTicket.vue'
 import type { GetEstimatesRequest } from '@/types/estimates/GetEstimatesRequest'
 
-const zoomInOut = ref(10)
 const dateRange = ref(5)
 const min = 1
 const max = 6
 
 const currentDate = new Date()
-const formattedDateStart = currentDate.toLocaleDateString('en-US', { month: 'short', day: '2-digit' }).toUpperCase()
 
 const dateRangeStart = ref(null)
 
 const dateRanges = ref([])
-
-// const currentDate = new Date();
 
 // Add 5 days to the current date
 const nextFifthDay = new Date()
@@ -132,23 +128,6 @@ const getTodayDate = () => {
   getEndDate()
   getDatesBetween(dateRangeStart.value, dateRangeEnd.value)
 }
-
-const laborTicketsDemo = [
-  {
-    crew: { name: 'Evans Service Crew 1', color: '#E8D213' },
-    laborTickets: [
-      { id: 1, name: 'KAREEM LEZAMA', startDate: '2024-09-24', endDate: '2024-09-26', trade: 'Aluminum', template: 'Flashing' },
-      { id: 2, name: 'BEN ANDERS', startDate: '2024-09-24', endDate: '2024-09-25', trade: 'Aluminum', template: 'Flashing' },
-    ],
-  },
-  {
-    crew: { name: 'Evans Service Crew 2', color: '#8bc541' },
-    laborTickets: [
-      { id: 3, name: 'DAVID JOHNSON', startDate: '2024-09-22', endDate: '2024-09-25', trade: 'Aluminum', template: 'Flashing' },
-      { id: 4, name: 'MIKE ROBINS', startDate: '2024-09-21', endDate: '2024-09-24', trade: 'Aluminum', template: 'Flashing' },
-    ],
-  },
-]
 
 const isTicketStarts = (dayDate: string, ticketDate: string): boolean => {
   // Convert string dates to Date objects
@@ -421,41 +400,6 @@ onMounted(async () => {
           </div>
         </div>
       </div>
-
-      <!--      <div class="main__scheduler__bottom"> -->
-      <!--        <div -->
-      <!--          v-for="(crew, index) in laborTicketsDemo" -->
-      <!--          :key="`crew_${index}`" -->
-      <!--          class="main__scheduler__bottom__trade" -->
-      <!--        > -->
-      <!--          <div class="crew__container"> -->
-      <!--            <Crew :crew="crew.crew" /> -->
-      <!--          </div> -->
-      <!--          <div class="main__scheduler__bottom__trade__labor__tickets"> -->
-      <!--            <div class="main__scheduler__bottom__trade__content"> -->
-      <!--              <div -->
-      <!--                v-for="(singleTicket, indexTicket) in crew.laborTickets" -->
-      <!--                :key="`singleTicket_${indexTicket}`" -->
-      <!--                class="main__scheduler__trade__row" -->
-      <!--              > -->
-      <!--                <div -->
-      <!--                  v-for="(singleDate, indexDay) in dateRanges" -->
-      <!--                  :key="`singleDay_${indexDay}`" -->
-      <!--                  class="main__scheduler__bottom__trade__content__single__day" -->
-      <!--                  :style="{ background: isDateWeekend(singleDate) ? '#E9EAF5' : '#fff' }" -->
-      <!--                > -->
-      <!--                  <LaborTicket -->
-      <!--                    v-if="isTicketStarts(singleDate, singleTicket.startDate)" -->
-      <!--                    :ticket="singleTicket" -->
-      <!--                    :days-of-scheduler="dateRange + 1" -->
-      <!--                    :color="crew.crew.color" -->
-      <!--                  /> -->
-      <!--                </div> -->
-      <!--              </div> -->
-      <!--            </div> -->
-      <!--          </div> -->
-      <!--        </div> -->
-      <!--      </div> -->
     </div>
   </div>
 </template>
