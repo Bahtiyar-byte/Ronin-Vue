@@ -107,11 +107,6 @@ module.exports = class RoninEstimatesService extends EstimatesService {
                                 simpleParser(stream, (err, parsed) => {
                                     if (err) console.error('Email parsing error:', err);
 
-                                    // Log email details
-                                    // console.log('Subject: ============================================', parsed.subject);
-                                    // console.log('From: ================================================', parsed.from.text);
-                                    // console.log('Body: =================================================', parsed.text);
-
                                     const lines = parsed.text.split('\n');
                                     const filteredLines = lines.filter(line => line.startsWith('https://docuseal.co/submissions/'));
                                     RoninEstimatesService.getSubmissionId(filteredLines)
@@ -120,7 +115,6 @@ module.exports = class RoninEstimatesService extends EstimatesService {
                         });
 
                         f.once('end', function () {
-                            console.log('Done fetching unseen messages.');
                             imap.end();
                         });
                     });
@@ -143,7 +137,6 @@ module.exports = class RoninEstimatesService extends EstimatesService {
     }
 
     static async saveSignedEstimate( submissionId ){
-        // console.log('inside of estimates ================================= ', submissionId)
 
         const {data} = await axios.get(`${apiUrl}/${submissionId}`, {
             headers: {
@@ -156,7 +149,6 @@ module.exports = class RoninEstimatesService extends EstimatesService {
             const filePath = path.join(uploadsFolder, submissionId + 'downloaded.pdf');
 
             if (fs.existsSync(filePath)) {
-                // console.log('File already exists================================================= :');
             } else {
 
 
@@ -174,7 +166,6 @@ module.exports = class RoninEstimatesService extends EstimatesService {
 
                 // Listen for finish event to confirm download is complete
                 writer.on('finish', async() => {
-                    console.log('PDF successfully downloaded and saved to uploads folder.');
                     const transaction = await db.sequelize.transaction();
                     const dataBuffer = fs.readFileSync(filePath);
 
@@ -186,10 +177,10 @@ module.exports = class RoninEstimatesService extends EstimatesService {
 
                     if (subject){
                         const metadataSubject = JSON.parse(subject);
-                        console.log('metadataSubject ================================== ', metadataSubject)
+
                         const estimateId = metadataSubject.estimate_id
                         const estimate = await db.estimates.findByPk(estimateId, {}, { transaction });
-                        console.log('estimate ================================= ', estimate)
+
                         await estimate.update(
                             {
                                 status: 'Approved',
@@ -201,11 +192,6 @@ module.exports = class RoninEstimatesService extends EstimatesService {
                         await transaction.commit();
                         // await fs.copyFile(filePath, newFilePath);
                         await fs.copyFile(filePath, newFilePath, (err) => {
-                            if (err) {
-                                // return res.status(500).json({ message: 'Error copying file', error: err });
-                            }
-
-                            // res.status(200).json({ message: 'File copied and renamed successfully!' });
                         });
                     }
 
@@ -215,8 +201,6 @@ module.exports = class RoninEstimatesService extends EstimatesService {
 
                 // Handle any error during writing to file
                 writer.on('error', (error) => {
-                    console.error('Error writing file:', error);
-                    // res.status(500).send('Error saving the file');
                 });
             }
 
@@ -225,13 +209,11 @@ module.exports = class RoninEstimatesService extends EstimatesService {
 
 
     static async getSubmissionId(submissions) {
-        // console.log('submissions ================================= ', submissions)
+
 
         if (submissions.length > 0){
-            // console.log('submissions typeof ================================= ', typeof submissions[0])
             const submission = submissions[0]
             const submissionId = submission.match(/\d+/g);
-            console.log('submissionId =================================', submissionId[0])
             RoninEstimatesService.saveSignedEstimate(submissionId[0])
         }
     }

@@ -79,7 +79,7 @@ watch(materialDescription, newVal => {
 watch(quantity, newVal => {
   if (newVal) {
     orderData.value.quantity = newVal
-    unit.value = newVal.unit
+    // unit.value = newVal.unit
   }
 })
 
@@ -223,7 +223,7 @@ const date = ref<string | Date>(orderData.value?.createdAt ?? new Date())
         prepend-icon="tabler-plus"
         @click="tradesDialogVisible = !tradesDialogVisible"
       >
-        Add section
+        Edit section
       </VBtn>
 
       <MaterialSectionDialog

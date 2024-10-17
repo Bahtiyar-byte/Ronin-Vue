@@ -37,7 +37,7 @@ const templatesRelated_tradeTrades = db.templatesRelated_tradeTrades;
 
 const ContactsData = [
   {
-    name: 'Albert Einstein',
+    name: 'John Roberts',
 
     email: 'rolando@padberg.biz',
 
@@ -47,15 +47,15 @@ const ContactsData = [
 
     status: 'Prospect',
 
-    firstName: 'My boss gonna fire me',
+    firstName: 'John',
 
-    lastName: 'Might be DQ time',
+    lastName: 'Roberts',
 
     source: 'Google Ads',
   },
 
   {
-    name: 'Ernst Mayr',
+    name: 'Mike Davidson',
 
     email: 'charlie.terry@satterfield-lemke.io',
 
@@ -65,15 +65,15 @@ const ContactsData = [
 
     status: 'Prospect',
 
-    firstName: "How 'bout them Cowboys",
+    firstName: "Mike",
 
-    lastName: 'That damn gimble',
+    lastName: 'Davidson',
 
     source: 'Google Ads',
   },
 
   {
-    name: 'Gregor Mendel',
+    name: 'Ryan Pike',
 
     email: 'catalina_armstrong@dickens.info',
 
@@ -83,15 +83,15 @@ const ContactsData = [
 
     status: 'Customer',
 
-    firstName: 'Got depression, Smith and Wessen',
+    firstName: 'Ryan',
 
-    lastName: "Y'all never listen to me",
+    lastName: "Pike",
 
     source: 'Google Ads',
   },
 
   {
-    name: 'Ernest Rutherford',
+    name: 'Kevin Smith',
 
     email: 'edith@welch-wilkinson.com',
 
@@ -101,15 +101,15 @@ const ContactsData = [
 
     status: 'Lead',
 
-    firstName: 'That damn gimble',
+    firstName: 'Kevin',
 
-    lastName: "It's around here somewhere",
+    lastName: "Smith",
 
     source: 'Other',
   },
 
   {
-    name: 'Ludwig Boltzmann',
+    name: 'Hudo Lopez',
 
     email: 'lela@dickinson.info',
 
@@ -119,9 +119,9 @@ const ContactsData = [
 
     status: 'Prospect',
 
-    firstName: 'I want my damn cart back',
+    firstName: 'Hudo',
 
-    lastName: 'Let me tell ya',
+    lastName: 'Lopez',
 
     source: 'Google Ads',
   },
@@ -129,12 +129,12 @@ const ContactsData = [
 
 const EstimatesData = [
   {
-    name: 'Paul Ehrlich',
+    name: '1-Downspouts-Flat Roofing',
 
     description:
-      'Much to learn you still have my old padawan. ... This is just the beginning!',
+      '1-Downspouts-Flat Roofing',
 
-    trade: "It's around here somewhere",
+    trade: "1-Downspouts-Flat Roofing",
 
     template_used: "Y'all never listen to me",
 
@@ -156,11 +156,11 @@ const EstimatesData = [
   },
 
   {
-    name: 'Alfred Kinsey',
+    name: '2-Downspouts',
 
-    description: 'Good relations with the Wookiees, I have.',
+    description: '2-Downspouts',
 
-    trade: 'I want my damn cart back',
+    trade: 'Downspouts',
 
     template_used: 'I want my damn cart back',
 
@@ -182,12 +182,12 @@ const EstimatesData = [
   },
 
   {
-    name: 'Emil Kraepelin',
+    name: '3-Gutters',
 
     description:
-      'Through the Force, things you will see. Other places. The future - the past. Old friends long gone.',
+      'Gutters',
 
-    trade: "I'm washing my hands of it",
+    trade: "Gutters",
 
     template_used: 'So I was walking Oscar',
 
@@ -209,11 +209,11 @@ const EstimatesData = [
   },
 
   {
-    name: 'Neils Bohr',
+    name: '4-Box Gutters',
 
-    description: 'Do. Or do not. There is no try.',
+    description: 'Box Gutters',
 
-    trade: 'That damn Bill Stull',
+    trade: 'Box Gutters',
 
     template_used: 'Let me tell ya',
 
@@ -235,12 +235,12 @@ const EstimatesData = [
   },
 
   {
-    name: 'Sigmund Freud',
+    name: '5-Flat Roof',
 
     description:
-      'Do not assume anything Obi-Wan. Clear your mind must be if you are to discover the real villains behind this plot.',
+      'Flat Roof',
 
-    trade: "Y'all never listen to me",
+    trade: "Flat Roof",
 
     template_used: 'That damn diabetes',
 
@@ -264,9 +264,9 @@ const EstimatesData = [
 
 const JobsData = [
   {
-    name: 'Alfred Kinsey',
+    name: '24-0001: John Roberts',
 
-    description: 'That is why you fail.',
+    description: 'Fixing Roofings',
 
     category: 'Commercial',
 
@@ -284,15 +284,15 @@ const JobsData = [
 
     address: 'Apt. 170 4000 King Garden, Ahmadmouth, OR 14195-0373',
 
-    start_date: new Date('2023-09-13'),
+    start_date: new Date('2024-10-10'),
 
-    end_date: new Date('2024-05-18'),
+    end_date: new Date('2024-10-15'),
   },
 
   {
-    name: 'August Kekule',
+    name: '24-0002: Ryan Smith',
 
-    description: 'Mudhole? Slimy? My home this is!',
+    description: 'Replacing new downspouts',
 
     category: 'Residential',
 
@@ -310,16 +310,15 @@ const JobsData = [
 
     address: 'Apt. 833 784 Janell Squares, Wernerfort, AR 36907-4065',
 
-    start_date: new Date('2023-12-26'),
+    start_date: new Date('2024-10-12'),
 
-    end_date: new Date('2023-09-20'),
+    end_date: new Date('2024-10-16'),
   },
 
   {
-    name: 'Jean Piaget',
+    name: '24-0003: Jean Piaget',
 
-    description:
-      'Like fire across the galaxy the Clone Wars spread. In league with the wicked Count Dooku, more and more planets slip. Against this threat, upon the Jedi Knights falls the duty to lead the newly formed army of the Republic. And as the heat of war grows, so, to, grows the prowess of one most gifted student of the Force.',
+    description: 'Fix new gutters',
 
     category: 'Residential',
 
@@ -327,23 +326,15 @@ const JobsData = [
 
     status: 'Completed',
 
-    // type code here for "relation_one" field
-
-    // type code here for "relation_one" field
-
-    // type code here for "images" field
-
-    // type code here for "files" field
-
     address: '56743 Waters Corner, Port Ignaciochester, OR 99538-4219',
 
-    start_date: new Date('2024-02-20'),
+    start_date: new Date('2024-10-21'),
 
-    end_date: new Date('2023-11-21'),
+    end_date: new Date('2024-10-25'),
   },
 
   {
-    name: 'Charles Darwin',
+    name: '24-0004: Charles Davin',
 
     description:
       'Always two there are, no more, no less. A master and an apprentice.',
@@ -364,15 +355,15 @@ const JobsData = [
 
     address: '65523 McGlynn Roads, Hilllton, FL 61059',
 
-    start_date: new Date('2024-06-03'),
+    start_date: new Date('2024-10-22'),
 
-    end_date: new Date('2024-04-23'),
+    end_date: new Date('2024-10-26'),
   },
 
   {
-    name: 'Jean Piaget',
+    name: '24-0005: Jean Powel',
 
-    description: 'Mudhole? Slimy? My home this is!',
+    description: 'Replace new Roofings',
 
     category: 'PropertyManagement',
 
@@ -390,9 +381,9 @@ const JobsData = [
 
     address: '717 Sherwood Lane, Port Zacharychester, GA 03297',
 
-    start_date: new Date('2023-10-07'),
+    start_date: new Date('2024-10-22'),
 
-    end_date: new Date('2023-08-13'),
+    end_date: new Date('2024-10-24'),
   },
 ];
 
@@ -477,8 +468,6 @@ const TemplatesData = [
     trade : 'Aluminum/ Flashing',
 
     related_trade: []
-
-    // type code here for "relation_one" field
   },
 
   {
@@ -597,8 +586,7 @@ const TemplatesData = [
   {
     name: '5" Gutters',
 
-    description: '\n' +
-        '- We will remove and dispose of the existing gutters and downspouts.\n' +
+    description: '- We will remove and dispose of the existing gutters and downspouts.\n' +
         '- New 5" aluminum seamless gutters will be installed.  Color selection to be picked out by homeowner.\n' +
         '- Install new 2x3 downspouts.',
 
@@ -1011,9 +999,9 @@ const TemplatesData = [
 
 const InvoicesData = [
   {
-    invoice_number: 'I got that scurvy',
+    invoice_number: '24-0001',
 
-    invoice_date: new Date('2023-09-29'),
+    invoice_date: new Date('2023-10-19'),
 
     terms: 'Net 10 Days',
 
@@ -1025,9 +1013,9 @@ const InvoicesData = [
   },
 
   {
-    invoice_number: "How 'bout them Cowboys",
+    invoice_number: "24-0002",
 
-    invoice_date: new Date('2023-11-24'),
+    invoice_date: new Date('2023-10-11'),
 
     terms: 'Net 10 Days',
 
@@ -1039,9 +1027,9 @@ const InvoicesData = [
   },
 
   {
-    invoice_number: 'That damn diabetes',
+    invoice_number: '24-0003',
 
-    invoice_date: new Date('2024-02-18'),
+    invoice_date: new Date('2024-10-14'),
 
     terms: 'By Due Date',
 
@@ -1053,9 +1041,9 @@ const InvoicesData = [
   },
 
   {
-    invoice_number: "It's around here somewhere",
+    invoice_number: "24-0004",
 
-    invoice_date: new Date('2024-07-13'),
+    invoice_date: new Date('2024-10-13'),
 
     terms: 'Net 10 Days',
 
@@ -1067,9 +1055,9 @@ const InvoicesData = [
   },
 
   {
-    invoice_number: 'That goddamn Datamate',
+    invoice_number: '24-0005',
 
-    invoice_date: new Date('2024-03-18'),
+    invoice_date: new Date('2024-10-15'),
 
     terms: 'Net 10 Days',
 
@@ -1083,7 +1071,9 @@ const InvoicesData = [
 
 const OrdersData = [
   {
-    order_number: 'Contact the tower',
+    order_name: 'Gutters Order',
+    order_po_number: '24-0001: Mike Nigel',
+    order_number: '24-0001',
 
     total_amount: 55.23,
 
@@ -1093,7 +1083,9 @@ const OrdersData = [
   },
 
   {
-    order_number: 'Reminds me of my old girlfriend Olga Goodntight',
+    order_name: 'Box Gutters Order',
+    order_po_number: '24-0002: Kevin Wayne',
+    order_number: '24-0002',
 
     total_amount: 93.87,
 
@@ -1103,7 +1095,9 @@ const OrdersData = [
   },
 
   {
-    order_number: "Goin' hog huntin'",
+    order_name: 'Metal Order',
+    order_po_number: '24-0003: Levi Patrick',
+    order_number: '24-0003',
 
     total_amount: 62.24,
 
@@ -1113,7 +1107,9 @@ const OrdersData = [
   },
 
   {
-    order_number: 'I want my 5$ back',
+    order_name: 'Gutter Cleaning Order',
+    order_po_number: '24-0004: Adam Gordish',
+    order_number: '24-0004',
 
     total_amount: 65.53,
 
@@ -1123,7 +1119,10 @@ const OrdersData = [
   },
 
   {
-    order_number: "Y'all never listen to me",
+    order_name: 'Gutter Cleaning Order',
+    order_po_number: '24-0005: Gareth Boyd',
+    order_number: '24-0005',
+
 
     total_amount: 98.16,
 
@@ -1884,89 +1883,7 @@ async function associateTemplateWithRelated_trade() {
   if (Template0?.setRelated_trade) {
     await Template0.setRelated_trade(relatedRelated_trade0);
   }
-
-  // const relatedRelated_trade1 = await Trades.findOne({
-  //   offset: Math.floor(Math.random() * (await Trades.count())),
-  // });
-  // const Template1 = await Templates.findOne({
-  //   order: [['id', 'ASC']],
-  //   offset: 1,
-  // });
-  // if (Template1?.setRelated_trade) {
-  //   await Template1.setRelated_trade(relatedRelated_trade1);
-  // }
-
-  // const relatedRelated_trade2 = await Trades.findOne({
-  //   offset: Math.floor(Math.random() * (await Trades.count())),
-  // });
-  // const Template2 = await Templates.findOne({
-  //   order: [['id', 'ASC']],
-  //   offset: 2,
-  // });
-  // if (Template2?.setRelated_trade) {
-  //   await Template2.setRelated_trade(relatedRelated_trade2);
-  // }
-  //
-  // const relatedRelated_trade3 = await Trades.findOne({
-  //   offset: Math.floor(Math.random() * (await Trades.count())),
-  // });
-  // const Template3 = await Templates.findOne({
-  //   order: [['id', 'ASC']],
-  //   offset: 3,
-  // });
-  // if (Template3?.setRelated_trade) {
-  //   await Template3.setRelated_trade(relatedRelated_trade3);
-  // }
-  //
-  // const relatedRelated_trade4 = await Trades.findOne({
-  //   offset: Math.floor(Math.random() * (await Trades.count())),
-  // });
-  // const Template4 = await Templates.findOne({
-  //   order: [['id', 'ASC']],
-  //   offset: 4,
-  // });
-  // if (Template4?.setRelated_trade) {
-  //   await Template4.setRelated_trade(relatedRelated_trade4);
-  // }
 }
-
-// async function associateTemplateWithRelated_trade() {
-//   for (const template of TemplatesData) {
-//     try {
-//
-//       const transaction = await db.sequelize.transaction();
-//       // Search for the trade in the Trades model based on the trade keyword
-//       const relatedTrade = await Trades.findOne({
-//         where: { name: template.trade } // Assuming `trade` is the field name in Trades model
-//       });
-//
-//       if (relatedTrade) {
-//
-//         if (!template.name) {
-//           continue; // Skip this iteration if 'name' is undefined
-//         }
-//
-//         // Find the current template in the Templates model
-//         const currentTemplate = await db.templates.findOne({
-//           where: { name: template.name } // Assuming each template object in TemplatesData has an 'id'
-//         }, { transaction });
-//
-//         if (currentTemplate) {
-//
-//           const templates = await db.templates.findByPk(currentTemplate.id, {}, { transaction });
-//
-//           await templates.setRelated_trade(relatedTrade.id);
-//
-//
-//           await transaction.commit();
-//         }
-//       }
-//     } catch (error) {
-//       console.error(`Error associating trade for template :`, error);
-//     }
-//   }
-// }
-
 
 async function associateInvoiceWithRelated_job() {
   const relatedRelated_job0 = await Jobs.findOne({
