@@ -633,7 +633,7 @@ const formattedDay = (date: string) => {
           <VExpansionPanel>
             <VExpansionPanelTitle> Checklist </VExpansionPanelTitle>
             <VExpansionPanelText>
-              There are no Checklists associated to this order.
+              {{ props.ticket.checklist ?? "There are no Checklists associated to this order." }}
             </VExpansionPanelText>
           </VExpansionPanel>
           <!-- Checklist  End -->

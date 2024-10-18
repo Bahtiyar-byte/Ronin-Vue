@@ -5,6 +5,8 @@ const Contacts = db.contacts;
 
 const Estimates = db.estimates;
 
+const Addresses = db.addresses;
+
 const Jobs = db.jobs;
 
 const Templates = db.templates;
@@ -124,6 +126,77 @@ const ContactsData = [
     lastName: 'Lopez',
 
     source: 'Google Ads',
+  },
+];
+
+const AddressesData = [
+  {
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    street: 'Liberty',
+
+    suite_apt_unit: '1',
+
+    city: 'Montgomery',
+
+    state: 'AL',
+
+    zip: '36043',
+
+    country: 'USA',
+
+    is_mailing_address: true,
+
+    is_billing_address: false,
+
+    is_location_address: true
+  },
+
+  {
+
+    street: 'Santa Barbara',
+
+    suite_apt_unit: "24",
+
+    city: 'Los Angeles',
+
+    state: 'CA',
+
+    zip: '93101',
+
+    country: 'USA',
+
+    is_mailing_address: true,
+
+    is_billing_address: false,
+
+    is_location_address: true
+  },
+
+  {
+    // type code here for "relation_one" field
+
+    // type code here for "relation_one" field
+
+    street: '10th',
+
+    suite_apt_unit: '163',
+
+    city: 'Rogers',
+
+    state: 'AR',
+
+    zip: '72712',
+
+    country: 'USA',
+
+    is_mailing_address: false,
+
+    is_billing_address: true,
+
+    is_location_address: false
   },
 ];
 
@@ -334,7 +407,7 @@ const JobsData = [
   },
 
   {
-    name: '24-0004: Charles Davin',
+    name: '24-0004: Cory Davin',
 
     description:
       'Always two there are, no more, no less. A master and an apprentice.',
@@ -1344,9 +1417,9 @@ const EstimateSectionsData = [
 
     labor_price: 40.56,
 
-    name: 'Louis Pasteur',
+    name: 'Roofing',
 
-    description: 'Hmm. In the end, cowards are those who follow the dark side.',
+    description: 'Reparing Roofings',
   },
 
   {
@@ -1360,9 +1433,9 @@ const EstimateSectionsData = [
 
     labor_price: 28.99,
 
-    name: 'Edward Teller',
+    name: 'Gutters',
 
-    description: 'To answer power with power, the Jedi way this is',
+    description: 'Replacing Gutters',
   },
 
   {
@@ -1376,9 +1449,9 @@ const EstimateSectionsData = [
 
     labor_price: 76.03,
 
-    name: 'Heike Kamerlingh Onnes',
+    name: 'Flat Roof',
 
-    description: 'Truly wonderful, the mind of a child is.',
+    description: 'Fix Flat Roof',
   },
 
   {
@@ -1392,9 +1465,9 @@ const EstimateSectionsData = [
 
     labor_price: 44.68,
 
-    name: 'Wilhelm Wundt',
+    name: 'Ventilation',
 
-    description: 'Difficult to see. Always in motion is the future...',
+    description: 'Install Ventilation',
   },
 
   {
@@ -1408,13 +1481,50 @@ const EstimateSectionsData = [
 
     labor_price: 31.11,
 
-    name: 'Paul Ehrlich',
+    name: 'Singles',
 
-    description: 'That is why you fail.',
+    description: 'Reparing Singles',
   },
 ];
 
 // Similar logic for "relation_many"
+
+
+async function associateAddressWithContactid() {
+  const relatedContactid0 = await Contacts.findOne({
+    offset: Math.floor(Math.random() * (await Contacts.count())),
+  });
+  const Address0 = await Addresses.findOne({
+    order: [['id', 'ASC']],
+    offset: 0,
+  });
+  if (Address0?.setContactid) {
+    await Address0.setContactid(relatedContactid0);
+  }
+
+  const relatedContactid1 = await Contacts.findOne({
+    offset: Math.floor(Math.random() * (await Contacts.count())),
+  });
+  const Address1 = await Addresses.findOne({
+    order: [['id', 'ASC']],
+    offset: 1,
+  });
+  if (Address1?.setContactid) {
+    await Address1.setContactid(relatedContactid1);
+  }
+
+  const relatedContactid2 = await Contacts.findOne({
+    offset: Math.floor(Math.random() * (await Contacts.count())),
+  });
+  const Address2 = await Addresses.findOne({
+    order: [['id', 'ASC']],
+    offset: 2,
+  });
+  if (Address2?.setContactid) {
+    await Address2.setContactid(relatedContactid2);
+  }
+}
+
 
 async function associateEstimateWithRelated_contact() {
   const relatedRelated_contact0 = await Contacts.findOne({
@@ -2783,6 +2893,8 @@ module.exports = {
 
     await Estimates.bulkCreate(EstimatesData);
 
+    await Addresses.bulkCreate(AddressesData);
+
     await Jobs.bulkCreate(JobsData);
 
     await Templates.bulkCreate(TemplatesData);
@@ -2814,7 +2926,9 @@ module.exports = {
     await Promise.all([
       // Similar logic for "relation_many"
 
-      await associateEstimateWithRelated_contact(),
+      await associateAddressWithContactid(),
+
+      // await associateEstimateWithRelated_contact(),
 
       await associateEstimateWithRelated_job(),
 

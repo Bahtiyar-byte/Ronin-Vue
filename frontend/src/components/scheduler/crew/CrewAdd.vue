@@ -158,6 +158,7 @@ const clickNextStep = () => {
     :width="$vuetify.display.smAndDown ? 'auto' : 1350"
     :height="$vuetify.display.smAndDown ? 'auto' : 950"
     transition="dialog-transition"
+    style="z-index: 2400 !important;"
   >
     <!-- Dialog Activator -->
     <template #activator="{ props }">
@@ -246,20 +247,24 @@ const clickNextStep = () => {
                     <VListItemTitle>
                       <span class="font-medium font-weight-bold"> Verify Trade: </span>
                     </VListItemTitle>
-                    <div style="display: flex">
-                      <AppAutocomplete
-                        label="Trade"
-                        :items="items"
-                        placeholder="Select Trade"
-                      />
-                    </div>
 
-                    <AppTextField
-                      v-model="laborTicketName"
-                      class="my-2"
-                      label="Labor Ticket Name"
-                      placeholder="Labor Ticket Name"
-                    />
+                    <VRow>
+                      <VCol>
+                        <AppAutocomplete
+                          label="Trade"
+                          :items="items"
+                          placeholder="Select Trade"
+                        />
+                      </VCol>
+                      <VCol>
+                        <AppTextField
+                          v-model="laborTicketName"
+                          class="my-2"
+                          label="Labor Ticket Name"
+                          placeholder="Labor Ticket Name"
+                        />
+                      </VCol>
+                    </VRow>
                   </VListItem>
 
                   <VListItem>
@@ -271,18 +276,22 @@ const clickNextStep = () => {
                         assignments, click "Other" and type in the crew name.
                       </div>
                     </VListItemTitle>
-                    <div style="display: flex">
-                      <AppAutocomplete
-                        label="Crew"
-                        :items="items"
-                        placeholder="Select Crew"
-                      />
+                    <VRow>
+                      <VCol>
+                        <AppAutocomplete
+                          label="Crew"
+                          :items="items"
+                          placeholder="Select Crew"
+                        />
+                      </VCol>
 
-                      <VCheckbox
-                        v-model="checkboxOne"
-                        label="Others"
-                      />
-                    </div>
+                      <VCol class="d-flex align-end">
+                        <VCheckbox
+                          v-model="checkboxOne"
+                          label="Others"
+                        />
+                      </VCol>
+                    </VRow>
                   </VListItem>
 
                   <VDivider class="my-4" />
@@ -291,42 +300,52 @@ const clickNextStep = () => {
                       <span class="font-medium font-weight-bold"> Schedule Labor: </span>
                       <br>
                     </VListItemTitle>
-                    <div style="display: flex">
-                      <VRadioGroup
-                        v-model="inlineRadio"
-                        inline
-                      >
-                        <VRadio
-                          label="Add Dates Later"
-                          value="add_dates_later"
-                        />
-                        <VRadio
-                          label="Add Start and End Dates"
-                          value="add_start_and_end_dates"
-                        />
-                        <VRadio
-                          label="Never Schedule"
-                          value="never_schedule"
-                        />
-                      </VRadioGroup>
+                    <VRow>
+                      <VCol>
+                        <VRadioGroup
+                          v-model="inlineRadio"
+                          inline
+                        >
+                          <VRadio
+                            label="Add Dates Later"
+                            value="add_dates_later"
+                          />
+                          <VRadio
+                            label="Add Start and End Dates"
+                            value="add_start_and_end_dates"
+                          />
+                          <VRadio
+                            label="Never Schedule"
+                            value="never_schedule"
+                          />
+                        </VRadioGroup>
+                      </VCol>
 
-                      <VCheckbox
-                        v-model="checkboxOne"
-                        label="All Day"
-                      />
-                    </div>
+                      <VCol>
+                        <VCheckbox
+                          v-model="checkboxOne"
+                          label="All Day"
+                        />
+                      </VCol>
+                    </VRow>
 
-                    <AppDateTimePicker
-                      v-model="dateEdit"
-                      label="Start Date"
-                      placeholder="Select Date"
-                    />
+                    <VRow>
+                      <VCol>
+                        <AppDateTimePicker
+                          v-model="dateEdit"
+                          label="Start Date"
+                          placeholder="Select Date"
+                        />
+                      </VCol>
 
-                    <AppDateTimePicker
-                      v-model="dateEdit"
-                      label="End Date"
-                      placeholder="Select Date"
-                    />
+                      <VCol>
+                        <AppDateTimePicker
+                          v-model="dateEdit"
+                          label="End Date"
+                          placeholder="Select Date"
+                        />
+                      </VCol>
+                    </VRow>
                   </VListItem>
 
                   <VDivider class="my-4" />
