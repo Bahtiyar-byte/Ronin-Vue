@@ -8,6 +8,10 @@ import { useFormFields } from '@/utils/forms/useFormFields'
 import { initialFieldsLaborTicket } from '@/utils/initial_data/initialFieldsLaborTicket'
 import type FormField from '@/types/forms/FormField'
 
+const emit = defineEmits<{
+  (e: 'handleLaborTicketAmount'): void
+}>()
+
 const { create: createLaborTicket, getById: getLaborTicketById, update: updateLaborTicket } = useLaborTickets()
 const router = useRouter()
 const route = useRoute() as RouteLocationNormalizedLoaded & { params: { id: string } }
@@ -87,6 +91,7 @@ const submitForm = async (values: Record<string, any>) => {
 
   watch(data, newVal => {
     if (newVal.id) {
+      emit('handleLaborTicketAmount')
       isDialogVisible.value = false
     }
   })

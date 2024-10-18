@@ -82,7 +82,7 @@ const getPaddingStyle = (index: number) =>
     :width="$vuetify.display.smAndDown ? 'auto' : 1350"
     :height="$vuetify.display.smAndDown ? 'auto' : 950"
     transition="dialog-transition"
-    style="z-index: 50002"
+    style="z-index: 2400 !important;"
   >
     <!-- Dialog Activator -->
     <template #activator="{ props }">
@@ -183,10 +183,8 @@ const getPaddingStyle = (index: number) =>
                   <AppDateTimePicker
                     v-model="_ticket.createdAt"
                     label="Assigned Date"
-                    :config="{ inline: false }"
                     class="calendar-date-picker"
                     placeholder="Select Assigned Date"
-                    style="z-index: 80002;"
                   />
                 </VCol>
 
@@ -250,6 +248,8 @@ const getPaddingStyle = (index: number) =>
                     v-model="_ticket.end_date"
                     label="End Time"
                     placeholder="Select Time"
+                    :config="{ position: 'auto right' }"
+
                   />
                 </VCol>
               </VRow>

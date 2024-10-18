@@ -83,6 +83,7 @@ const getPaddingStyle = (index: number) =>
     :width="$vuetify.display.smAndDown ? 'auto' : 1350"
     :height="$vuetify.display.smAndDown ? 'auto' : 950"
     transition="dialog-transition"
+    style="z-index: 2400 !important;"
   >
     <!-- Dialog Activator -->
     <template #activator="{ props }">

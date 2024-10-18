@@ -4,15 +4,12 @@ import { storeToRefs } from 'pinia'
 import type { RouteLocationNormalizedLoaded } from 'vue-router'
 
 import { watch } from 'vue'
+import moment from 'moment/moment'
 import type User from '@/types/users/User'
-import type EstimateSectionTemplate from '@/types/estimateSectionTemplates/EstimateSectionTemplate'
 import type EstimateSection from '@/types/estimateSections/EstimateSection'
 import type Order from '@/types/orders/Order'
 
 import { useCurrentUserStore } from '@/@core/stores/auth/currentUser'
-import { useEstimateSectionTemplates } from '@/composables/useEstimateSectionTemplates'
-
-import { convertTemplateToSection } from '@/utils/estimates'
 
 import { useOrders } from '@/composables/useOrders'
 
@@ -28,16 +25,15 @@ const emit = defineEmits<{
 const { update: updateOrder } = useOrders()
 
 const { user: currentUser } = storeToRefs(useCurrentUserStore())
-const { getById: getContactById } = useContacts()
 const { getById: getUserById } = useUsers()
 const { getById: getOrderById } = useOrders()
 const { getById: getLaborTicketById } = useLaborTickets()
+const { getById: getCrewByid } = useCrews()
 
 const orderData = defineModel<Partial<Order>>('data', { required: true })
 const isVisibleAddButton = defineModel<boolean>('isVisibleAddButton', { required: true })
 
 const isLoading = ref<boolean>()
-const contactId = ref<string>()
 
 const userId = ref<string>()
 const selectedUser = ref<User>()
@@ -47,7 +43,7 @@ const quantity = ref('')
 const unit = ref('')
 
 const route = useRoute() as RouteLocationNormalizedLoaded & { query: Partial<{ contact_id: string }> }
-const laborTicketData = ref({})
+const laborTicketData = ref({ assigned_crew: [], start_date: '', end_date: '' })
 
 const getOrder = async (orderId: string) => {
   const { data } = await getOrderById(orderId)
@@ -62,6 +58,17 @@ const getOrder = async (orderId: string) => {
   })
 }
 
+const crewUsers = ref({})
+
+const getCrewUsers = async (crewId: string) => {
+  const { data: crewData } = await getCrewByid(crewId)
+
+  watch(crewData, newVal => {
+    console.log('crew data ', newVal)
+    crewUsers.value = newVal.users
+  })
+}
+
 onMounted(async () => {
   const laborTicketId = route.params.id as string
   const { data } = await getLaborTicketById(laborTicketId)
@@ -70,6 +77,8 @@ onMounted(async () => {
     if (newVal) {
       laborTicketData.value = newVal
       getOrder(newVal.related_orderId)
+      console.log('laborTicketData.value ', laborTicketData.value.assigned_crew)
+      getCrewUsers(laborTicketData.value.assigned_crew[0].id)
     }
   })
 
@@ -88,7 +97,6 @@ watch(materialDescription, newVal => {
 watch(quantity, newVal => {
   if (newVal) {
     orderData.value.quantity = newVal
-    // unit.value = newVal.unit
   }
 })
 
@@ -109,33 +117,7 @@ watch(userId, async newVal => {
 const tradesDialogVisible = ref<boolean>(false)
 const isDialogVisible = ref<boolean>(false)
 
-const tradesUuid = ref<string>()
-
-const { getById: getEstimateSectionTemplateById } = useEstimateSectionTemplates()
-
-const handleTemplateSectionSelected = async (templateId: string) => {
-  const { data, isFetching } = await getEstimateSectionTemplateById(templateId)
-
-  watch(isFetching, newVal => {
-    isLoading.value = newVal
-  }, { immediate: true })
-
-  watch(data, (newVal: EstimateSectionTemplate | null) => {
-    const section = convertTemplateToSection(newVal as EstimateSectionTemplate)
-
-    emit('push', section)
-  })
-}
-
 const updateMaterials = async () => {
-  // const orderId = route.params.id as string
-  // const { data } = await getOrderById(orderId)
-
-  // watch(data, newVal => {
-  //   if (newVal) {
-  //     orderData.value = newVal
-  //   }
-  // })
   const action = updateOrder
 
   orderData.value.related_estimate = orderData.value.related_estimateId
@@ -150,10 +132,11 @@ const updateMaterials = async () => {
   })
 }
 
+const formattedDate = (date: string) => {
+  return moment(date).format('ddd MMM DD, YYYY')
+}
+
 const date = ref<string | Date>(orderData.value?.createdAt ?? new Date())
-
-
-
 </script>
 
 <template>
@@ -215,6 +198,68 @@ const date = ref<string | Date>(orderData.value?.createdAt ?? new Date())
       </template>
     </InvoiceHeader>
 
+    <VRow
+      cols="12"
+      md="12"
+    >
+      <VCol
+        cols="12"
+        md="12"
+        sm="12"
+        class="text-no-wrap"
+      >
+        <VTable class="text-no-wrap">
+          <thead>
+            <tr class="gray__background">
+              <th>{{ laborTicketData?.assigned_crew.length > 0 ? laborTicketData.assigned_crew[0].name : '' }}</th>
+              <th />
+              <th style="text-align:right">
+                MOBILE CREW APP
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{ formattedDate(laborTicketData.start_date) }}</td>
+              <td style="text-align:center">
+                <VIcon
+                  size="30"
+                  icon="tabler-arrow-right"
+                />
+              </td>
+              <td style="text-align:right">
+                {{ formattedDate(laborTicketData.end_date) }}
+              </td>
+            </tr>
+          </tbody>
+        </VTable>
+
+        <VTable class="text-no-wrap">
+          <thead>
+            <tr class="gray__background">
+              <th>Crew Contacts</th>
+              <th />
+              <th />
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="user in crewUsers"
+              :key="user.id"
+            >
+              <td>{{ user.firstName ?? '' }} {{ user.lastName ?? '' }}</td>
+              <td style="text-align:center">
+                JOB
+              </td>
+              <td style="text-align:right">
+                {{ user?.email }} <br> {{ user?.phone_number }}
+              </td>
+            </tr>
+          </tbody>
+        </VTable>
+      </VCol>
+    </VRow>
+
     <VRow>
       <VCol class="text-no-wrap">
         <h6 class="text-h6 mb-4 text-primary font-weight-bold">
@@ -229,7 +274,7 @@ const date = ref<string | Date>(orderData.value?.createdAt ?? new Date())
               </td>
               <td>
                 <p class="text-wrap me-4">
-                  {{ laborTicketData?.assigned_crew ? laborTicketData?.assigned_crew[0].name : '' }}
+                  {{ laborTicketData?.assigned_crew.length > 0 ? laborTicketData?.assigned_crew[0].name : '' }}
                 </p>
               </td>
             </tr>
@@ -319,3 +364,9 @@ const date = ref<string | Date>(orderData.value?.createdAt ?? new Date())
     </div>
   </VCard>
 </template>
+
+<style scoped>
+.gray__background {
+  background-color: #DCDCDC;
+}
+</style>
